@@ -16,5 +16,12 @@
     "./bin/",
     "./lib/",
     "./types/"
-  ]
+  ],
+  "dependencies": {
+    "commander": "^2.12.2"
+  },
+  "devDependencies": {
+    "@types/node": "^8.5.2",
+    "typescript": "^2.6.2"
+  }
 }

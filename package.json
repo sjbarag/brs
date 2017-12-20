@@ -1,0 +1,20 @@
+{
+  "name": "orbs",
+  "version": "0.1.0",
+  "description": "An interpreter for the BrightScript language that runs on non-Roku platforms.",
+  "author": "Sean Barag <sean@barag.org>",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": {
+    "orbs": "./bin/orbs.js"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rm -r ./lib ./types"
+  },
+  "files": [
+    "./bin/",
+    "./lib/",
+    "./types/"
+  ]
+}

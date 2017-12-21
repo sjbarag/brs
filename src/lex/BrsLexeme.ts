@@ -1,4 +1,4 @@
-export enum BrsLexeme {
+export enum Lexeme {
     // parens (and friends)
     LeftParen,
     RightParen,
@@ -35,30 +35,53 @@ export enum BrsLexeme {
     Number,
 
     // keywords
-    If,
-    Then,
-    ElseIf,
-    Else,
-    EndIf,
-
-    For,
-    ForEach,
-    In,
-    To,
-    EndFor,
-    Step,
-    ExitFor,
-
-    Not,
+    // canonical source: https://sdkdocs.roku.com/display/sdkdoc/Reserved+Words
     And,
-    Or,
-
+    Box,
+    CreateObject,
+    Dim,
+    Each,
+    Else,
+    ElseIf,
+    End,
+    EndFunction,
+    EndIf,
+    EndSub,
+    EndWhile,
+    Eval,
+    Exit,
+    ExitWhile,
+    False,
+    For,
     Function,
-    Sub,
-
+    GetGlobalAA,
+    GetLastRunCompileError,
+    GetLastRunRunTimeError,
+    Goto,
+    If,
+    Invalid,
+    Let,
+    LineNum,
+    Next,
+    Not,
+    ObjFun,
+    Or,
+    Pos,
     Print,
+    Rem,
     Return,
+    Run,
+    Step,
+    Stop,
+    Sub,
+    Tab,
+    Then,
+    To,
+    True,
+    Type,
+    While,
 
+    // structural
     Newline,
     Eof
 }

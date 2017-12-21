@@ -8,7 +8,6 @@ export enum Lexeme {
     RightBrace,
 
     // operators
-    Dot,
     Caret,
     Minus,
     Plus,
@@ -27,12 +26,17 @@ export enum Lexeme {
     Greater,
     GreaterEqual,
     Equal,
-    LessGreater,
+    LessGreater, // BrightScript uses `<>` for "not equal"
 
     // literals
     Identifier,
     String,
     Number,
+
+    // other single-character symbols
+    Dot,
+    Comma,
+    Semicolon,
 
     // keywords
     // canonical source: https://sdkdocs.roku.com/display/sdkdoc/Reserved+Words
@@ -80,6 +84,9 @@ export enum Lexeme {
     True,
     Type,
     While,
+
+    // non-reserved but still meaningful
+    As,
 
     // structural
     Newline,

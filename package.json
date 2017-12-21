@@ -5,6 +5,7 @@
   "author": "Sean Barag <sean@barag.org>",
   "license": "MIT",
   "main": "index.js",
+  "typings": "./types/index.d.ts",
   "bin": {
     "orbs": "./bin/cli.js"
   },

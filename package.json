@@ -6,14 +6,13 @@
   "license": "MIT",
   "main": "index.js",
   "bin": {
-    "orbs": "./bin/orbs.js"
+    "orbs": "./bin/cli.js"
   },
   "scripts": {
     "build": "tsc -p .",
-    "clean": "rm -r ./lib ./types"
+    "clean": "rm -rf ./lib ./types"
   },
   "files": [
-    "./bin/",
     "./lib/",
     "./types/"
   ],

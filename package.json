@@ -21,7 +21,11 @@
     "commander": "^2.12.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.0.10",
+    "@types/mocha": "^2.2.44",
     "@types/node": "^8.5.2",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
     "typescript": "^2.6.2"
   }
 }

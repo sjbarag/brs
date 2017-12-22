@@ -1,9 +1,17 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
+import { Token } from "./Token";
+import * as Lexer from "./Lexer";
+import * as OrbsError from "./Error";
+
+
 export function execute(filename: string) {
-    fs.readFile(filename, "utf-8", (err, data) => {
-        
+    fs.readFile(filename, "utf-8", (err, contents) => {
+        run(contents);
+        if (OrbsError.found()) {
+            process.exit(1);
+        }
     });
 }
 
@@ -16,15 +24,16 @@ export function repl() {
 
     rl.on("line", (line) => {
         run(line);
+
+        OrbsError.reset();
         rl.prompt();
-    }).on("close", () => {
-        // ensure user's prompt starts on new line
-        rl.write("");
     });
 
     rl.prompt();
 }
 
-function run(line: string) {
-    console.log(`Thanks for entering '${line}'`);
+function run(contents: string) {
+    const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
+
+    tokens.forEach(console.dir);
 }

@@ -3,3 +3,4 @@ node_js:
   - "6"
   - "7"
   - "lts/*"
+before_script: yarn build

@@ -1,10 +1,12 @@
 import { Lexeme } from "./Lexeme";
+import Int64 = require("node-int64");
 
-export type invalid = undefined;
+export type Invalid = undefined;
+export type Literal = string | number | Int64 | boolean;
 
 export interface Token {
     kind: Lexeme;
     text?: string;
-    literal?: string | Number | true | false;
+    literal?: Literal;
     line: number;
 }

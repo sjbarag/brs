@@ -1,5 +1,7 @@
-import { Lexeme } from "./Lexeme";
-import { Token } from "./Token";
+import Int64 = require("node-int64");
+
+import { Lexeme} from "./Lexeme";
+import { Token, Literal } from "./Token";
 import * as OrbsError from "./Error";
 
 let start: number;
@@ -36,7 +38,7 @@ function isAtEnd() {
 
 function scanToken() {
     let c = advance();
-    switch (c) {
+    switch (c.toLowerCase()) {
         case "(": addToken(Lexeme.LeftParen); break;
         case ")": addToken(Lexeme.RightParen); break;
         case "{": addToken(Lexeme.LeftBrace); break;
@@ -80,7 +82,6 @@ function scanToken() {
                 default: addToken(Lexeme.Greater); break;
             }
             break;
-        case "M":
         case "m":
             if (peek().toLowerCase() === "o" && peekNext().toLowerCase() === "d") {
                 addToken(Lexeme.Mod);
@@ -109,7 +110,6 @@ function scanToken() {
         case "\"":
             string();
             break;
-        case "R":
         case "r":
             // brightscript allows the `rem` keyword to start comments in addition to
             // `'` prefixes
@@ -122,7 +122,11 @@ function scanToken() {
                 break;
             }
         default:
-            OrbsError.make(`Unexpected character '${c}'`, line);
+            if (isDigit(c)) {
+                number();
+            } else {
+                OrbsError.make(`Unexpected character '${c}'`, line);
+            }
             break;
     }
 }
@@ -190,7 +194,116 @@ function string() {
     addToken(Lexeme.String, value);
 }
 
-function addToken(kind: Lexeme, literal?: string): void {
+function isDigit(char: string) {
+    if (char.length > 1) {
+        throw new Error(`Lexer#isDigit expects a single character; received '${char}'`);
+    }
+
+    return char >= "0" && char <= "9";
+}
+
+function number() {
+    let containsDecimal = false;
+    while (isDigit(peek())) { advance(); }
+
+    // look for a fractional portion
+    if (peek() === "." && isDigit(peekNext())) {
+        containsDecimal = true;
+
+        // consume the "." parse the fractional part
+        advance();
+
+        // read the remaining digits
+        while (isDigit(peek())) { advance(); }
+    }
+
+    let asString = source.slice(start, current);
+    let numberOfDigits = containsDecimal ? asString.length - 1 : asString.length;
+
+    if (numberOfDigits >= 10) {
+        // numeric literals over 10 digits are automatically Doubles
+        addToken(Lexeme.Double, Number.parseFloat(asString));
+        return;
+    } else if (peek() === "#") {
+        // numeric literals ending with "#" are forced to Doubles
+        advance();
+        asString = source.slice(start, current);
+        addToken(Lexeme.Double, Number.parseFloat(asString));
+        return;
+    } else if (peek().toLowerCase() === "d") {
+        // literals that use "D" as the exponent are also automatic Doubles
+        
+        // consume the "D"
+        advance();
+
+        // exponents are optionally signed
+        // TODO: Confirm this in BrightScript documentation!
+        if (peek() === "+" || peek() === "-") {
+            advance();
+        }
+
+        // consume the exponent
+        while (isDigit(peek())) { advance(); }
+
+        // replace the exponential marker with a JavaScript-friendly "e"
+        asString = source.slice(start, current).replace(/[dD]/, "e");
+        addToken(Lexeme.Double, Number.parseFloat(asString));
+        return;
+    }
+
+    if (peek() === "!") {
+        // numeric literals ending with "!" are forced to Floats
+        advance();
+        asString = source.slice(start, current);
+        addToken(
+            Lexeme.Float,
+            Math.fround(Number.parseFloat(asString))
+        );
+        return;
+    } else if (peek().toLowerCase() === "e") {
+        // literals that use "E" as the exponent are also automatic Floats
+        
+        // consume the "E"
+        advance();
+
+        // exponents are optionally signed
+        // TODO: Confirm this in BrightScript documentation!
+        if (peek() === "+" || peek() === "-") {
+            advance();
+        }
+
+        // consume the exponent
+        while (isDigit(peek())) { advance(); }
+
+        asString = source.slice(start, current);
+        addToken(
+            Lexeme.Float,
+            Math.fround(Number.parseFloat(asString))
+        );
+        return;
+    } else if (containsDecimal) {
+        // anything with a decimal but without matching Double rules is a Float
+        addToken(
+            Lexeme.Float,
+            Math.fround(Number.parseFloat(asString))
+        );
+        return;
+    }
+
+    if (peek() === "&") {
+        // numeric literals ending with "&" are forced to LongIntegers
+        advance();
+        asString = source.slice(start, current);
+        addToken(Lexeme.LongInteger, new Int64(asString));
+        return;
+    } else {
+        // otherwise, it's a regular integer
+        addToken(Lexeme.Integer, Number.parseInt(asString, 10));
+        return;
+    }
+}
+
+function addToken(kind: Lexeme, literal?: Literal): void {
     tokens.push({
         kind: kind,
         text: source.slice(start, current),

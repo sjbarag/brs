@@ -36,7 +36,7 @@ function isAtEnd() {
 
 function scanToken() {
     let c = advance();
-    switch (c) {
+    switch (c.toLowerCase()) {
         case "(": addToken(Lexeme.LeftParen); break;
         case ")": addToken(Lexeme.RightParen); break;
         case "{": addToken(Lexeme.LeftBrace); break;
@@ -80,7 +80,6 @@ function scanToken() {
                 default: addToken(Lexeme.Greater); break;
             }
             break;
-        case "M":
         case "m":
             if (peek().toLowerCase() === "o" && peekNext().toLowerCase() === "d") {
                 addToken(Lexeme.Mod);
@@ -109,7 +108,6 @@ function scanToken() {
         case "\"":
             string();
             break;
-        case "R":
         case "r":
             // brightscript allows the `rem` keyword to start comments in addition to
             // `'` prefixes

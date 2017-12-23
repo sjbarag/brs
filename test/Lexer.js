@@ -57,7 +57,7 @@ describe("lexer", function() {
                 "Tokens found after `rem` must be ignored"
             );
         });
-    });
+    }); // comments
 
     context("non-literals", function() {
         it("reads parens & braces", function() {
@@ -140,6 +140,42 @@ describe("lexer", function() {
                 tokens.filter(t => !!t.literal),
                 "Comparators should have no literal values"
             );
-        })
-    });
-});
+        });
+    }); // non-literals
+
+    context("string literals", function() {
+        it("stores produces string literal tokens", function() {
+            let tokens = Lexer.scan(`"hello world"`);
+            assert.sameOrderedMembers(
+                tokens.map(t => t.kind),
+                [
+                    Lexeme.String,
+                    Lexeme.Eof
+                ],
+                "Should produce a string token"
+            );
+            assert.equal(
+                tokens[0].literal,
+                "hello world",
+                "Should include string value in token"
+            );
+        });
+
+        it(`escapes safely escapes " literals`, function(){
+            let tokens = Lexer.scan(`"the cat says ""meow"""`);
+            assert.equal(
+                tokens[0].kind,
+                Lexeme.String,
+                "Should produce a string token"
+            );
+            assert.equal(
+                tokens[0].literal,
+                `the cat says "meow"`,
+                `Should convert escaped double-quotes to "`
+            );
+        });
+
+        it("produces an error for unterminated strings");
+        it("disallows multiline strings");
+    }); // string literals
+}); // lexer

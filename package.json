@@ -11,7 +11,8 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "clean": "rm -rf ./lib ./types"
+    "clean": "rm -rf ./lib ./types",
+    "test": "mocha"
   },
   "files": [
     "./lib/",

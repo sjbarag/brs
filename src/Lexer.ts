@@ -48,21 +48,50 @@ function scanToken() {
         case "*": addToken(Lexeme.Star); break;
         case "/": addToken(Lexeme.Slash); break;
         case "=": addToken(Lexeme.Equal); break;
+        case "^": addToken(Lexeme.Caret); break;
+        case "\\": addToken(Lexeme.Backslash); break;
         case "<": 
             switch (peek()) {
-                case "=": addToken(Lexeme.LessEqual); break;
-                case "<": addToken(Lexeme.LeftShift); break;
-                case ">": addToken(Lexeme.LessGreater); break;
+                case "=":
+                    advance();
+                    addToken(Lexeme.LessEqual);
+                    break;
+                case "<":
+                    advance();
+                    addToken(Lexeme.LeftShift);
+                    break;
+                case ">":
+                    advance();
+                    addToken(Lexeme.LessGreater);
+                    break;
                 default: addToken(Lexeme.Less); break;
             }
             break;
         case ">": 
             switch (peek()) {
-                case "=": addToken(Lexeme.GreaterEqual); break;
-                case ">": addToken(Lexeme.RightShift); break;
+                case "=":
+                    advance();
+                    addToken(Lexeme.GreaterEqual);
+                    break;
+                case ">":
+                    advance();
+                    addToken(Lexeme.RightShift);
+                    break;
                 default: addToken(Lexeme.Greater); break;
             }
             break;
+        case "M":
+        case "m":
+            if (peek().toLowerCase() === "o" && peekNext().toLowerCase() === "d") {
+                addToken(Lexeme.Mod);
+                // move past the "o" and "d"
+                advance();
+                advance();
+                break;
+            } else {
+                OrbsError.make(`Unexpected character '${c}'`, line);
+                break;
+            }
         case "'":
             // BrightScript doesn't have block comments; only line
             while (peek() !== "\n" && !isAtEnd()) { advance(); }
@@ -72,12 +101,26 @@ function scanToken() {
         case "\t":
             // ignore whitespace; indentation isn't signficant in BrightScript
             break;
-        case "\"": string(); break;
         case "\n":
             // but newlines _are_ important
             addToken(Lexeme.Newline);
             line++;
             break;
+        case "\"":
+            string();
+            break;
+        case "R":
+        case "r":
+            // brightscript allows the `rem` keyword to start comments in addition to
+            // `'` prefixes
+            if (peek().toLowerCase() === "e" && peekNext().toLowerCase() === "m") {
+                // consume the rest of the line
+                while (peek() !== "\n" && !isAtEnd()) { advance(); }
+                break;
+            } else{
+                OrbsError.make(`Unexpected character '${c}'`, line);
+                break;
+            }
         default:
             OrbsError.make(`Unexpected character '${c}'`, line);
             break;

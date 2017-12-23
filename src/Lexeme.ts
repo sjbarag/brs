@@ -31,7 +31,10 @@ export enum Lexeme {
     // literals
     Identifier,
     String,
-    Number,
+    Integer,
+    Float,
+    Double,
+    LongInteger,
 
     // other single-character symbols
     Dot,

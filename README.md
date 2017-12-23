@@ -86,7 +86,13 @@ index.d.ts (and friends)
 ```
 
 #### Testing
-TODO once I set up unit tests!
+Tests are written with [mocha](https://mochajs.org) and [chai](https://chaijs.com), and can be run with the `test` target:
+
+```shell
+$ yarn test
+
+# tests start running
+```
 
 #### Cleaning
 Compiled output in `lib/` and `types/` can be removed with the `clean` target:

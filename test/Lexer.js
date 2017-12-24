@@ -301,6 +301,18 @@ describe("lexer", function() {
             );
         });
 
-        it("allows alphanumeric non-reserved identifiers");
+        it("allows alpha-numeric (plus '_') identifiers", function() {
+            let identifier = Lexer.scan("_abc_123_")[0];
+            assert.equal(
+                identifier.kind,
+                Lexeme.Identifier,
+                "Non-reserved words should map to Identifier lexemes"
+            );
+            assert.equal(
+                identifier.text,
+                "_abc_123_",
+                "Non-reserved words should use their name as their text"
+            );
+        });
     });
 }); // lexer

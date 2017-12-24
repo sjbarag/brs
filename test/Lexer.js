@@ -243,7 +243,64 @@ describe("lexer", function() {
     });
 
     context("identifiers", function() {
-        it("matches reserved words");
+        it("matches single-word reserved words", function() {
+            // test just a sample of single-word reserved words for now.
+            // if we find any that we've missed 
+            let words = Lexer.scan("and or box if else endif return true false");
+            assert.sameOrderedMembers(
+                words.map(w => w.kind),
+                [
+                    Lexeme.And,
+                    Lexeme.Or,
+                    Lexeme.Box,
+                    Lexeme.If,
+                    Lexeme.Else,
+                    Lexeme.EndIf,
+                    Lexeme.Return,
+                    Lexeme.True,
+                    Lexeme.False,
+                    Lexeme.Eof
+                ],
+                "Should map single-word reserved words to matching lexemes"
+            );
+            assert.isEmpty(
+                words.filter(w => !!w.literal),
+                "Reserved words should have no literal values"
+            );
+        });
+
+        it("matches reserved words with silly capitalization", function() {
+            let words = Lexer.scan("iF ELSE eNDIf FUncTioN");
+            assert.sameOrderedMembers(
+                words.map(w => w.kind),
+                [
+                    Lexeme.If,
+                    Lexeme.Else,
+                    Lexeme.EndIf,
+                    Lexeme.Function,
+                    Lexeme.Eof
+                ],
+                "Should map reserved words with silly capitaliation to matching lexemes"
+            );
+        });
+
+        it("matches multi-word reserved words", function() {
+            let words = Lexer.scan("else if end function end if end sub end while exit while");
+            assert.sameOrderedMembers(
+                words.map(w => w.kind),
+                [
+                    Lexeme.ElseIf,
+                    Lexeme.EndFunction,
+                    Lexeme.EndIf,
+                    Lexeme.EndSub,
+                    Lexeme.EndWhile,
+                    Lexeme.ExitWhile,
+                    Lexeme.Eof
+                ],
+                "Should map spaced reserved words to matching single-word lexemes"
+            );
+        });
+
         it("allows alphanumeric non-reserved identifiers");
     });
 }); // lexer

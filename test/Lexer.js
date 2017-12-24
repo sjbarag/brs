@@ -46,7 +46,7 @@ describe("lexer", function() {
             let tokens = Lexer.scan("= REM (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
-                [ Lexeme.Equal, Lexeme.Rem, Lexeme.Eof],
+                [ Lexeme.Equal, Lexeme.Eof],
                 "Tokens found after `REM` must be ignored"
             );
         });
@@ -55,7 +55,7 @@ describe("lexer", function() {
             let tokens = Lexer.scan("= rem (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
-                [ Lexeme.Equal, Lexeme.Rem, Lexeme.Eof],
+                [ Lexeme.Equal, Lexeme.Eof],
                 "Tokens found after `rem` must be ignored"
             );
         });

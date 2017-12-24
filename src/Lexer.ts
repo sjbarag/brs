@@ -309,12 +309,13 @@ function identifier() {
 
     let tokenType = ReservedWords[text.toLowerCase()] || Lexeme.Identifier;
 
-    addToken(tokenType);
-
     if (tokenType === ReservedWords.rem) {
-        // The 'rem' keyword can be used to indicate comments as well,
-        // so consume the rest of the line.
+        // The 'rem' keyword can be used to indicate comments as well, so
+        // consume the rest of the line, but don't add the token; it's not
+        // particularly useful.
         while (peek() !== "\n" && !isAtEnd()) { advance(); }
+    } else {
+        addToken(tokenType);
     }
 }
 

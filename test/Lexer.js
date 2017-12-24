@@ -241,4 +241,61 @@ describe("lexer", function() {
             assert.equal(i.literal, 123, "Should contain an integer value");
         });
     });
+
+    context("identifiers", function() {
+        it("matches single-word reserved words", function() {
+            // test just a sample of single-word reserved words for now.
+            // if we find any that we've missed 
+            let words = Lexer.scan("and or box if else endif return true false");
+            assert.sameOrderedMembers(
+                words.map(w => w.kind),
+                [
+                    Lexeme.And,
+                    Lexeme.Or,
+                    Lexeme.Box,
+                    Lexeme.If,
+                    Lexeme.Else,
+                    Lexeme.EndIf,
+                    Lexeme.Return,
+                    Lexeme.True,
+                    Lexeme.False,
+                    Lexeme.Eof
+                ],
+                "Should map single-word reserved words to matching lexemes"
+            );
+            assert.isEmpty(
+                words.filter(w => !!w.literal),
+                "Reserved words should have no literal values"
+            );
+        });
+
+        it("matches reserved words with silly capitalization", function() {
+            let words = Lexer.scan("iF ELSE eNDIf FUncTioN");
+            assert.sameOrderedMembers(
+                words.map(w => w.kind),
+                [
+                    Lexeme.If,
+                    Lexeme.Else,
+                    Lexeme.EndIf,
+                    Lexeme.Function,
+                    Lexeme.Eof
+                ],
+                "Should map reserved words with silly capitaliation to matching lexemes"
+            );
+        });
+
+        it("allows alpha-numeric (plus '_') identifiers", function() {
+            let identifier = Lexer.scan("_abc_123_")[0];
+            assert.equal(
+                identifier.kind,
+                Lexeme.Identifier,
+                "Non-reserved words should map to Identifier lexemes"
+            );
+            assert.equal(
+                identifier.text,
+                "_abc_123_",
+                "Non-reserved words should use their name as their text"
+            );
+        });
+    });
 }); // lexer

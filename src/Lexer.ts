@@ -200,14 +200,6 @@ function isAlphaNumeric(char: string) {
     return isAlpha(char) || isDigit(char);
 }
 
-function isWhitespace(char: string) {
-    if (char.length > 1) {
-        throw new Error(`Lexer#isAlphaNumeric expects a single character; received '${char}'`);
-    }
-
-    return char === " " || char === "\t";
-}
-
 function number() {
     let containsDecimal = false;
     while (isDigit(peek())) { advance(); }
@@ -314,35 +306,6 @@ function identifier() {
 
     // TODO: support type designators:
     // https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types
-
-    let lowercase = text.toLowerCase();
-    if (lowercase === "else" || lowercase === "end" || lowercase === "exit") {
-        // `elseif`, `endif`, `endsub`, etc. are equivalent to their
-        // spaced variants `else if`, `end if`, and `end sub`, so
-        // check the *next* word to see if we're attempting to make a
-        // spaced version.
-
-        // The simplest way to do that is to set a checkpoint, read the
-        // next alphabetic word, and reset to the checkpoint if it
-        // doesn't form a spaced reserved word.
-        const checkpoint = current;
-
-        // advance through whitespace to the start of the next word
-        while (isWhitespace(peek())) { advance(); }
-
-        // then consume the entire next word
-        while (isAlpha(peek())) { advance(); }
-        let textWithSpace = source.slice(start, current).toLowerCase();
-        if (ReservedWords[textWithSpace]) {
-            // we found a spaced reserved word!
-            addToken(ReservedWords[textWithSpace]);
-            return;
-        } else {
-            // we didn't find a spaced reserved word, so reset to the
-            // checkpoint and pretend this never happened
-            current = checkpoint;
-        }
-    }
 
     let tokenType = ReservedWords[text.toLowerCase()] || Lexeme.Identifier;
     if (tokenType === ReservedWords.rem) {

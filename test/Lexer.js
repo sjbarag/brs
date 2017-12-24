@@ -284,23 +284,6 @@ describe("lexer", function() {
             );
         });
 
-        it("matches multi-word reserved words", function() {
-            let words = Lexer.scan("else if end function end if end sub end while exit while");
-            assert.sameOrderedMembers(
-                words.map(w => w.kind),
-                [
-                    Lexeme.ElseIf,
-                    Lexeme.EndFunction,
-                    Lexeme.EndIf,
-                    Lexeme.EndSub,
-                    Lexeme.EndWhile,
-                    Lexeme.ExitWhile,
-                    Lexeme.Eof
-                ],
-                "Should map spaced reserved words to matching single-word lexemes"
-            );
-        });
-
         it("allows alpha-numeric (plus '_') identifiers", function() {
             let identifier = Lexer.scan("_abc_123_")[0];
             assert.equal(

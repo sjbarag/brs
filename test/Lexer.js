@@ -46,7 +46,7 @@ describe("lexer", function() {
             let tokens = Lexer.scan("= REM (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
-                [ Lexeme.Equal, Lexeme.Eof],
+                [ Lexeme.Equal, Lexeme.Rem, Lexeme.Eof],
                 "Tokens found after `REM` must be ignored"
             );
         });
@@ -55,7 +55,7 @@ describe("lexer", function() {
             let tokens = Lexer.scan("= rem (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
-                [ Lexeme.Equal, Lexeme.Eof],
+                [ Lexeme.Equal, Lexeme.Rem, Lexeme.Eof],
                 "Tokens found after `rem` must be ignored"
             );
         });
@@ -240,5 +240,10 @@ describe("lexer", function() {
             assert.isTrue(Number.isInteger(i.literal), "Should contain an integer value");
             assert.equal(i.literal, 123, "Should contain an integer value");
         });
+    });
+
+    context("identifiers", function() {
+        it("matches reserved words");
+        it("allows alphanumeric non-reserved identifiers");
     });
 }); // lexer

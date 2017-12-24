@@ -1,7 +1,8 @@
 import Int64 = require("node-int64");
 
-import { Lexeme} from "./Lexeme";
+import { Lexeme } from "./Lexeme";
 import { Token, Literal } from "./Token";
+import { ReservedWords } from "./ReservedWords";
 import * as OrbsError from "./Error";
 
 let start: number;
@@ -82,17 +83,6 @@ function scanToken() {
                 default: addToken(Lexeme.Greater); break;
             }
             break;
-        case "m":
-            if (peek().toLowerCase() === "o" && peekNext().toLowerCase() === "d") {
-                addToken(Lexeme.Mod);
-                // move past the "o" and "d"
-                advance();
-                advance();
-                break;
-            } else {
-                OrbsError.make(`Unexpected character '${c}'`, line);
-                break;
-            }
         case "'":
             // BrightScript doesn't have block comments; only line
             while (peek() !== "\n" && !isAtEnd()) { advance(); }
@@ -110,20 +100,11 @@ function scanToken() {
         case "\"":
             string();
             break;
-        case "r":
-            // brightscript allows the `rem` keyword to start comments in addition to
-            // `'` prefixes
-            if (peek().toLowerCase() === "e" && peekNext().toLowerCase() === "m") {
-                // consume the rest of the line
-                while (peek() !== "\n" && !isAtEnd()) { advance(); }
-                break;
-            } else{
-                OrbsError.make(`Unexpected character '${c}'`, line);
-                break;
-            }
         default:
             if (isDigit(c)) {
                 number();
+            } else if (isAlpha(c)) {
+                identifier();
             } else {
                 OrbsError.make(`Unexpected character '${c}'`, line);
             }
@@ -200,6 +181,23 @@ function isDigit(char: string) {
     }
 
     return char >= "0" && char <= "9";
+}
+
+function isAlpha(char: string) {
+    if (char.length > 1) {
+        throw new Error(`Lexer#isAlpha expects a single character; received '${char}'`);
+    }
+
+    let c = char.toLowerCase();
+    return (c >= "a" && c <= "z") || c === "_";
+}
+
+function isAlphaNumeric(char: string) {
+    if (char.length > 1) {
+        throw new Error(`Lexer#isAlphaNumeric expects a single character; received '${char}'`);
+    }
+
+    return isAlpha(char) || isDigit(char);
 }
 
 function number() {
@@ -291,13 +289,32 @@ function number() {
     if (peek() === "&") {
         // numeric literals ending with "&" are forced to LongIntegers
         advance();
-        asString = source.slice(start, current);
+    asString = source.slice(start, current);
         addToken(Lexeme.LongInteger, new Int64(asString));
         return;
     } else {
         // otherwise, it's a regular integer
         addToken(Lexeme.Integer, Number.parseInt(asString, 10));
         return;
+    }
+}
+
+function identifier() {
+    while (isAlphaNumeric(peek())) { advance(); }
+
+    let text = source.slice(start, current);
+
+    // TODO: support type designators:
+    // https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types
+
+    let tokenType = ReservedWords[text.toLowerCase()] || Lexeme.Identifier;
+
+    addToken(tokenType);
+
+    if (tokenType === ReservedWords.rem) {
+        // The 'rem' keyword can be used to indicate comments as well,
+        // so consume the rest of the line.
+        while (peek() !== "\n" && !isAtEnd()) { advance(); }
     }
 }
 

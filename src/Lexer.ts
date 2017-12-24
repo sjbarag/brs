@@ -237,7 +237,6 @@ function number() {
         advance();
 
         // exponents are optionally signed
-        // TODO: Confirm this in BrightScript documentation!
         if (peek() === "+" || peek() === "-") {
             advance();
         }
@@ -267,7 +266,6 @@ function number() {
         advance();
 
         // exponents are optionally signed
-        // TODO: Confirm this in BrightScript documentation!
         if (peek() === "+" || peek() === "-") {
             advance();
         }

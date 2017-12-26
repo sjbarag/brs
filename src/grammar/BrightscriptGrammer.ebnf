@@ -1,0 +1,196 @@
+(*
+    This is an attempt at defining a formal grammar of the brightscript language that we can iterate on and
+    define as we continue to implement the parser. This is written in EBNF syntax (but using regex
+    to instead represent required/optional symbols or groupings).
+    
+    Note: Any words that are fully capitalized represent a lexeme (see full enum in lexeme.ts) whose text
+    representation may vary or where deems appropriate (e.g. the 'Integer' lexeme can represent any valid integer, 
+    so we reference the 'Integer' lexeme here as 'INTEGER', but the 'True' lexeme only represents the value 'true' 
+    so we instead just reference the text value here as 'true' to be explicit). 
+
+    QRC (Quick Regex Cheatsheet)
+        *  - zero or more
+        +  - one or more
+        ?  - zero or one
+*)
+
+
+(* Start from the top, a brightscript script will have a number of "statements" before reaching the end of the file *)
+program
+    : statementList? EOF
+    ;
+
+statementList
+    : multiStatement+
+    ;
+
+(* In brightscript you can have several statements on the same line separated by a colon *)
+multiStatement
+    : singleStatement (":" singleStatement)* NEWLINE
+    ;
+
+singleStatement
+    : expressionStatement
+    | ifStatement
+    | methodStatement
+    ;
+
+(* 
+    Expressions 
+*)
+
+expressionStatement
+    : expression
+    ;
+
+expression
+    : assignmentExpression
+    ;
+
+assignmentExpression
+    : conditionalExpression
+    | assignment
+    ;
+
+assignment
+    : IDENTIFIER assignmentOperator expression
+    ;
+
+assignmentOperator
+    : ("=" | "*=" | "/=" | "\=" | "+=" | "-=" | "<<=" | ">>=")
+    ;
+
+(* 
+    These expression rules start from the lower-precedence and proceeds to the higher precedence (Logical and/or -> Primary) 
+    which is also known as "top-down", meaning you reach the lowest-precedence expressions first because they may in turn  
+    contain subexpressions of higher precedence. 
+    Operator Precedence: https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types
+*)
+conditionalExpression
+    : conditionalOrExpression
+    ;
+
+conditionalOrExpression
+    : conditionalAndExpression ("or" conditionalAndExpression)*
+    ;
+
+conditionalAndExpression
+    : unaryNotExpression ("and" unaryNotExpression)*
+    ;
+
+unaryNotExpression
+    : relationalExpression ("not" relationalExpression)*
+    ;
+
+relationalExpression
+    : shiftExpression (("=" | "<" | ">" | "<=" | ">=" | "<>") shiftExpression)*
+    ;
+
+shiftExpression
+    : additiveExpression (("<<" | ">>") additiveExpression)*
+    ;
+
+additiveExpression
+    : multiplicativeExpression (("+" | "-") multiplicativeExpression)*
+    ;
+
+multiplicativeExpression
+    : unaryExpression (("*" | "/" | "MOD" | "\") unaryExpression)*
+    ;
+
+unaryExpression
+    : exponentiationExpression
+    | ("+" | "-") unaryExpression
+    ;
+
+exponentiationExpression
+    : primary ("^" primary)*
+    ;
+
+(* Primary expressions are the highest level of precedence *)
+primary
+    : literal
+    | IDENTIFIER
+    | "(" expression ")"
+    ;
+
+(* 
+    Since we know the literal text of the True/False/Invalid lexemes we just reference
+    their text value here to be explicit
+*)
+literal
+    : "true"
+    | "false"
+    | "invalid"
+    | STRING
+    | INTEGER
+    | FLOAT
+    | DOUBLE
+    | LONG_INTEGER
+    ;
+
+(* 
+    Conditionals 
+*)
+
+ifStatement
+    : multilineIfStatement
+    ;
+
+multilineIfStatement
+    : "if" expression "then" statementList elseIfStatement* "end if"
+    ;
+
+elseIfStatement
+    : "else" ("if" expression "then")? statementList
+    ;
+
+(*
+    Functions
+*)
+
+methodStatement
+    : functionMethod
+    | subMethod
+    ;
+
+functionMethod
+    : "function" methodDeclarator definedAsType? methodBody "end function"
+    ;
+
+subMethod
+    : "sub" methodDeclarator methodBody "end sub"
+    ;
+
+methodDeclarator
+    : IDENTIFIER "(" parameterList? ")"
+    ;
+
+methodBody
+    : statementList
+    ;
+
+parameterList
+    : parameter ("," parameter)*
+    ;
+
+parameter
+    : IDENTIFIER ("=" expression)? definedAsType?
+    ;
+
+definedAsType
+    : "as" functionReturnAndParamTypes
+    ;
+
+(* the different types that a function can return and param can be? This may need to be changed *)
+functionReturnAndParamTypes
+    : "integer"
+    | "float"
+    | "double"
+    | "boolean"
+    | "string"
+    | "object"
+    | "dynamic"
+    | "function"
+    | "void"
+    ;

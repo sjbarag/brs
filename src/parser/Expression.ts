@@ -2,7 +2,7 @@ import { Visitor } from "./Visitor";
 import { Token, Literal as TokenLiteral } from "../Token";
 
 export interface Expression {
-    accept <R extends Expression> (visitor: Visitor<R>): R;
+    accept <R> (visitor: Visitor<R>): R;
 }
 
 export class Assign implements Expression {
@@ -11,7 +11,7 @@ export class Assign implements Expression {
         readonly value: Expression
     ) {}
 
-    accept <R extends Expression> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R {
         return visitor.visitAssign(this);
     }
 }
@@ -24,7 +24,7 @@ export class Binary implements Expression {
     ) { }
 
 
-    accept <R extends Expression> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R {
         return visitor.visitBinary(this);
     }
 }
@@ -36,7 +36,7 @@ export class Call implements Expression {
         readonly args: Expression[]
     ) {}
     
-    accept <R extends Expression> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R {
         return visitor.visitCall(this);
     }
 }
@@ -47,7 +47,7 @@ export class Get implements Expression {
         readonly name: Token
     ) {}
 
-    accept <R extends Expression> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R {
         return visitor.visitGet(this);
     }
 }
@@ -58,7 +58,7 @@ export class Grouping implements Expression {
         readonly expression: Expression
     ) {}
 
-    accept <R extends Expression> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R {
         return visitor.visitGrouping(this);
     }
 }
@@ -66,7 +66,7 @@ export class Grouping implements Expression {
 export class Literal implements Expression {
     constructor( readonly value: TokenLiteral) {}
 
-    accept <R extends Expression> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);
     }
 }
@@ -78,7 +78,7 @@ export class Logical implements Expression {
         readonly right: Expression
     ) {}
 
-    accept<R extends Expression>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitLogical(this);
     }
 }
@@ -86,7 +86,7 @@ export class Logical implements Expression {
 export class M implements Expression {
     constructor(readonly keyword: Token) {}    
 
-    accept<R extends Expression>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitM(this);
     }
 }
@@ -98,7 +98,7 @@ export class Set implements Expression {
        readonly value: Expression
     ) {}
 
-    accept<R extends Expression>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitSet(this);
     }
 }
@@ -109,7 +109,7 @@ export class Unary implements Expression {
         readonly right: Expression
     ) {}
 
-    accept<R extends Expression>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitUnary(this);
     }
 }
@@ -119,7 +119,7 @@ export class Variable implements Expression {
         readonly name: Token
     ) {}
 
-    accept<R extends Expression>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitVariable(this);
     }
 }

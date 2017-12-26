@@ -10,8 +10,8 @@
     "orbs": "./bin/cli.js"
   },
   "scripts": {
-    "build": "tsc -p .",
-    "clean": "rm -rf ./lib ./types",
+    "build": "tsc",
+    "clean": "rimraf ./lib ./types",
     "test": "mocha"
   },
   "files": [
@@ -29,6 +29,7 @@
     "@types/node-int64": "^0.4.29",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
+    "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   }
 }

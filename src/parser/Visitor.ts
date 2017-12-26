@@ -1,7 +1,6 @@
-import * as Expr from "./expressions";
-import { Expression } from "./Expression";
+import * as Expr from "./Expression";
 
-export interface Visitor<ExpressionType extends Expression> {
+export interface Visitor<ExpressionType extends Expr.Expression> {
     visitAssign(expression: Expr.Assign): ExpressionType;
     visitBinary(expression: Expr.Binary): ExpressionType;
     visitCall(expression: Expr.Call): ExpressionType;

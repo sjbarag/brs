@@ -12,4 +12,4 @@ export function make(token: Token, message: string) {
     return new ParseError();
 }
 
-class ParseError extends Error {}
+export class ParseError extends Error {}

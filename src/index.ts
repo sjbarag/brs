@@ -3,6 +3,8 @@ import * as readline from "readline";
 
 import { Token } from "./Token";
 import * as Lexer from "./Lexer";
+import * as Parser from "./parser";
+import { AstPrinter } from "./parser/AstPrinter";
 import * as OrbsError from "./Error";
 
 
@@ -34,6 +36,13 @@ export function repl() {
 
 function run(contents: string) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
+    const expr = Parser.parse(tokens);
 
-    tokens.forEach(console.dir);
+    if (OrbsError.found()) {
+        return;
+    }
+
+    const printer = new AstPrinter();
+
+    console.log(printer.print(expr!));
 }

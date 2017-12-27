@@ -5,11 +5,17 @@ import { Token } from "../Token"
 import * as ParseError from "./ParseError";
 
 let current: number;
-let tokens: Token[];
+let tokens: ReadonlyArray<Token>;
 
-export function parse(toParse: Token[]) {
+export function parse(toParse: ReadonlyArray<Token>) {
     current = 0;
     tokens = toParse;
+
+    try {
+        return expression();
+    } catch (parseError) {
+        return;
+    }
 }
 
 function expression(): Expression {
@@ -83,13 +89,15 @@ function primary(): Expression {
             Lexeme.Double,
             Lexeme.String
         ):
-            return new Expr.Literal(previous().literal);
+            let p = previous();
+            let lit = new Expr.Literal(p.literal);
+            return lit;
         case match(Lexeme.LeftParen):
             let expr = expression();
             consume(Lexeme.RightParen, "Unmatched '(' - expected ')' after expression");
             return new Expr.Grouping(expr);
         default:
-            throw new Error(`Found unexpected token '${peek().kind}' on line ${peek().line}`);
+            throw ParseError.make(peek(), `Found unexpected token '${peek().text}'`);
     }
 }
 
@@ -110,7 +118,7 @@ function consume(lexeme: Lexeme, message: string): Token {
 }
 
 function advance(): Token {
-    if (!isAtEnd()) { current ++; }
+    if (!isAtEnd()) { current++; }
     return previous();
 }
 
@@ -128,7 +136,7 @@ function peek() {
 }
 
 function previous() {
-    return tokens[current - 0];
+    return tokens[current - 1];
 }
 
 function synchronize() {

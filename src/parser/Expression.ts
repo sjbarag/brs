@@ -64,7 +64,7 @@ export class Grouping implements Expression {
 }
 
 export class Literal implements Expression {
-    constructor( readonly value: TokenLiteral) {}
+    constructor(readonly value: TokenLiteral) {}
 
     accept <R> (visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);

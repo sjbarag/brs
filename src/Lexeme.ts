@@ -39,6 +39,7 @@ export enum Lexeme {
     // other single-character symbols
     Dot,
     Comma,
+    Colon,
     Semicolon,
 
     // keywords

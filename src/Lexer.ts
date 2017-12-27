@@ -53,6 +53,7 @@ function scanToken() {
         case "=": addToken(Lexeme.Equal); break;
         case "^": addToken(Lexeme.Caret); break;
         case "\\": addToken(Lexeme.Backslash); break;
+        case ":": addToken(Lexeme.Colon); break;
         case "<": 
             switch (peek()) {
                 case "=":
@@ -289,7 +290,7 @@ function number() {
     if (peek() === "&") {
         // numeric literals ending with "&" are forced to LongIntegers
         advance();
-    asString = source.slice(start, current);
+        asString = source.slice(start, current);
         addToken(Lexeme.LongInteger, new Int64(asString));
         return;
     } else {

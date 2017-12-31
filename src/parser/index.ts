@@ -56,9 +56,21 @@ function additive(): Expression {
 }
 
 function multiplicative(): Expression {
-    let expr = unary();
+    let expr = exponential();
 
     while (match(Lexeme.Slash, Lexeme.Backslash, Lexeme.Star, Lexeme.Mod)) {
+        let operator = previous();
+        let right = exponential();
+        expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
+}
+
+function exponential(): Expression {
+    let expr = unary();
+
+    while (match(Lexeme.Caret)) {
         let operator = previous();
         let right = unary();
         expr = new Expr.Binary(expr, operator, right);

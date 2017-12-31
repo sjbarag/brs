@@ -72,7 +72,49 @@ describe("parser", function() {
     }); // primary expressions
 
     context("exponentiation", function() {
-        it("parses exponentiation operators");
+        it("parses exponentiation operators", function() {
+            let parsed = Parser.parse([
+                token(Lexeme.Integer, 2),
+                token(Lexeme.Caret),
+                token(Lexeme.Integer, 3),
+                EOF
+            ]);
+            assert.deepEqual(
+                parsed,
+                new Expr.Binary(
+                    new Expr.Literal(2),
+                    token(Lexeme.Caret),
+                    new Expr.Literal(3)
+                ),
+                "Must parse caret tokens into exponentiation AST nodes"
+            );
+        });
+
+        it("parses repeated exponentiation as left-associative", function() {
+            let parsed = Parser.parse([
+                token(Lexeme.Integer, 2),
+                token(Lexeme.Caret),
+                token(Lexeme.Integer, 3),
+                token(Lexeme.Caret),
+                token(Lexeme.Integer, 4),
+                EOF
+            ]);
+            let expected = new Expr.Binary(
+                new Expr.Binary(
+                    new Expr.Literal(2),
+                    token(Lexeme.Caret),
+                    new Expr.Literal(3)
+                ),
+                token(Lexeme.Caret),
+                new Expr.Literal(4),
+            );
+
+            assert.deepEqual(
+                parsed,
+                expected,
+                "Must parse repeated '^'s into left-associative exponentials"
+            );
+        });
     }); // exponentiation
 
     context("unary expressions", function() {

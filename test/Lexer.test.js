@@ -1,4 +1,3 @@
-const { assert } = require("chai");
 const Int64 = require("node-int64");
 
 const Lexer = require("../lib/Lexer");

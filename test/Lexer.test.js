@@ -4,8 +4,8 @@ const Int64 = require("node-int64");
 const Lexer = require("../lib/Lexer");
 const { Lexeme } = require("../lib/Lexeme");
 
-describe("lexer", function() {
-    it("includes an end-of-file marker", function(){
+describe("lexer", () => {
+    test("includes an end-of-file marker", () => {
         let tokens = Lexer.scan("");
         assert.sameOrderedMembers(
             tokens.map(t => t.kind),
@@ -14,7 +14,7 @@ describe("lexer", function() {
         );
     });
 
-    it("ignores tabs and spaces", function() {
+    test("ignores tabs and spaces", () => {
         let tokens = Lexer.scan("\t\t  \t     \t");
         assert.sameOrderedMembers(
             tokens.map(t => t.kind),
@@ -23,7 +23,7 @@ describe("lexer", function() {
         );
     });
 
-    it("retains newlines", function() {
+    test("retains newlines", () => {
         let tokens = Lexer.scan("\n\n\n");
         assert.sameOrderedMembers(
             tokens.map(t => t.kind),
@@ -32,8 +32,8 @@ describe("lexer", function() {
         )
     });
 
-    context("comments", function(){ 
-        it("ignores everything after `'`", function() {
+    describe("comments", () => { 
+        test("ignores everything after `'`", () => {
             let tokens = Lexer.scan("= ' (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
@@ -42,7 +42,7 @@ describe("lexer", function() {
             );
         });
 
-        it("ignores everything after `REM`", function() {
+        test("ignores everything after `REM`", () => {
             let tokens = Lexer.scan("= REM (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
@@ -51,7 +51,7 @@ describe("lexer", function() {
             );
         });
 
-        it("ignores everything after `rem`", function() {
+        test("ignores everything after `rem`", () => {
             let tokens = Lexer.scan("= rem (");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
@@ -61,8 +61,8 @@ describe("lexer", function() {
         });
     }); // comments
 
-    context("non-literals", function() {
-        it("reads parens & braces", function() {
+    describe("non-literals", () => {
+        test("reads parens & braces", () => {
             let tokens = Lexer.scan("(){}");
 
             assert.sameOrderedMembers(
@@ -82,7 +82,7 @@ describe("lexer", function() {
             );
         });
 
-        it("reads operators", function() {
+        test("reads operators", () => {
             let tokens = Lexer.scan("^ - + * MOD / \\");
 
             assert.sameOrderedMembers(
@@ -105,7 +105,7 @@ describe("lexer", function() {
             );
         });
 
-        it("reads bitshift operators", function() {
+        test("reads bitshift operators", () => {
             let tokens = Lexer.scan("<< >> <<");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
@@ -123,7 +123,7 @@ describe("lexer", function() {
             );
         });
 
-        it("reads comparators", function() {
+        test("reads comparators", () => {
             let tokens = Lexer.scan("< <= > >= = <>");
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
@@ -145,8 +145,8 @@ describe("lexer", function() {
         });
     }); // non-literals
 
-    context("string literals", function() {
-        it("stores produces string literal tokens", function() {
+    describe("string literals", () => {
+        test("stores produces string literal tokens", () => {
             let tokens = Lexer.scan(`"hello world"`);
             assert.sameOrderedMembers(
                 tokens.map(t => t.kind),
@@ -163,7 +163,7 @@ describe("lexer", function() {
             );
         });
 
-        it(`escapes safely escapes " literals`, function(){
+        test(`escapes safely escapes " literals`, () => {
             let tokens = Lexer.scan(`"the cat says ""meow"""`);
             assert.equal(
                 tokens[0].kind,
@@ -177,32 +177,32 @@ describe("lexer", function() {
             );
         });
 
-        it("produces an error for unterminated strings");
-        it("disallows multiline strings");
+        test("produces an error for unterminated strings");
+        test("disallows multiline strings");
     }); // string literals
 
-    context("double literals", function() {
-        it("respects '#' suffix", function() {
+    describe("double literals", () => {
+        test("respects '#' suffix", () => {
             let d = Lexer.scan("123#")[0];
             assert.equal(d.kind, Lexeme.Double, "Should produce a double token");
             assert.equal(d.literal, 123, "Should contain a double-precision value");
         });
 
-        it("forces literals >= 10 digits into doubles", function() {
+        test("forces literals >= 10 digits into doubles", () => {
             let d = Lexer.scan("0000000005")[0];
             assert.equal(d.kind, Lexeme.Double, "Should produce a double token");
             assert.equal(d.literal, 5, "Should contain a double-precision value");
         });
 
-        it("forces literals with 'D' in exponent into doubles", function() {
+        test("forces literals with 'D' in exponent into doubles", () => {
             let d = Lexer.scan("2.5d3")[0];
             assert.equal(d.kind, Lexeme.Double, "Should produce a double token");
             assert.equal(d.literal, 2500, "Should contain a double-precision value");
         });
     });
 
-    context("float literals", function() {
-        it("respects '!' suffix", function() {
+    describe("float literals", () => {
+        test("respects '!' suffix", () => {
             let f = Lexer.scan("0.00000008!")[0];
             assert.equal(f.kind, Lexeme.Float, "Should produce a float token");
             // Floating precision will make this *not* equal
@@ -210,31 +210,31 @@ describe("lexer", function() {
             assert.equal(f.literal, Math.fround(0.00000008), "Should contain a single-precision value");
         });
 
-        it("forces literals with a decimal into floats", function() {
+        test("forces literals with a decimal into floats", () => {
             let f = Lexer.scan("1.0")[0];
             assert.equal(f.kind, Lexeme.Float, "Should produce a float token");
             assert.equal(f.literal, Math.fround(1000000000000e-12), "Should contain a single-precision value");
         });
 
-        it("forces literals with 'E' in exponent into floats", function() {
+        test("forces literals with 'E' in exponent into floats", () => {
             let d = Lexer.scan("2.5e3")[0];
             assert.equal(d.kind, Lexeme.Float, "Should produce a float token");
             assert.equal(d.literal, 2500, "Should contain a single-precision value");
         });
     });
 
-    context("long integer literals", function() {
-        it("supports hexadecimal literals");
-        it("respects '&' suffix", function() {
+    describe("long integer literals", () => {
+        test("supports hexadecimal literals");
+        test("respects '&' suffix", () => {
             let li = Lexer.scan("123&")[0];
             assert.equal(li.kind, Lexeme.LongInteger, "Should produce a long integer token");
             assert.deepEqual(li.literal, new Int64("123"), "Should contain a long integer value");
         });
     });
 
-    context("integer literals", function() {
-        it("supports hexadecimal literals");
-        it("falls back to a regular integer", function() {
+    describe("integer literals", () => {
+        test("supports hexadecimal literals");
+        test("falls back to a regular integer", () => {
             let i = Lexer.scan("123")[0];
             assert.equal(i.kind, Lexeme.Integer, "Should produce an integer token");
             assert.isTrue(Number.isInteger(i.literal), "Should contain an integer value");
@@ -242,8 +242,8 @@ describe("lexer", function() {
         });
     });
 
-    context("identifiers", function() {
-        it("matches single-word reserved words", function() {
+    describe("identifiers", () => {
+        test("matches single-word reserved words", () => {
             // test just a sample of single-word reserved words for now.
             // if we find any that we've missed 
             let words = Lexer.scan("and or box if else endif return true false");
@@ -269,7 +269,7 @@ describe("lexer", function() {
             );
         });
 
-        it("matches reserved words with silly capitalization", function() {
+        test("matches reserved words with silly capitalization", () => {
             let words = Lexer.scan("iF ELSE eNDIf FUncTioN");
             assert.sameOrderedMembers(
                 words.map(w => w.kind),
@@ -284,7 +284,7 @@ describe("lexer", function() {
             );
         });
 
-        it("allows alpha-numeric (plus '_') identifiers", function() {
+        test("allows alpha-numeric (plus '_') identifiers", () => {
             let identifier = Lexer.scan("_abc_123_")[0];
             assert.equal(
                 identifier.kind,

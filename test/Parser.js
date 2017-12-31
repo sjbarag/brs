@@ -118,6 +118,22 @@ describe("parser", function() {
     }); // exponentiation
 
     context("unary expressions", function() {
-        it("parses unary operators");
+        it("parses unary 'not'", function() {
+            let parsed = Parser.parse([
+                token(Lexeme.Not),
+                token(Lexeme.True),
+                EOF
+            ]);
+            let expected = new Expr.Unary(
+                token(Lexeme.Not),
+                new Expr.Literal(true)
+            );
+
+            assert.deepEqual(
+                parsed,
+                expected,
+                "Must parse 'not' operator into unary expression"
+            );
+        });
     }); // unary expressions
 }); // parser

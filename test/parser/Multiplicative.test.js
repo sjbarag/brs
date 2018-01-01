@@ -8,7 +8,7 @@ const { token, EOF } = require("./ParserTests");
 describe("parser", () => {
     afterEach(() => OrbsError.reset());
 
-    describe("multiplication expressions", () => {
+    describe("multiplicative expressions", () => {
         it("parses left-associative multiplication chains", () => {
             let parsed = Parser.parse([
                 token(Lexeme.Float, Math.fround(3.0)),

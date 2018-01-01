@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser addition expressions parses left-associative addition chains 1`] = `
+exports[`parser additive expressions parses left-associative addition chains 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {
@@ -26,7 +26,7 @@ Binary {
 }
 `;
 
-exports[`parser addition expressions parses left-associative subtraction chains 1`] = `
+exports[`parser additive expressions parses left-associative subtraction chains 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {

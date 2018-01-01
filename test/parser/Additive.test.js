@@ -7,29 +7,32 @@ const { token, EOF } = require("./ParserTests");
 
 describe("parser", () => {
     afterEach(() => OrbsError.reset());
-
-    describe("exponentiation expressions", () => {
-        it("parses exponentiation operators", () => {
+    describe("additive expressions", () => {
+        it("parses left-associative addition chains", () => {
             let parsed = Parser.parse([
+                token(Lexeme.Integer, 1),
+                token(Lexeme.Plus),
                 token(Lexeme.Integer, 2),
-                token(Lexeme.Caret),
+                token(Lexeme.Plus),
                 token(Lexeme.Integer, 3),
                 EOF
             ]);
+
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
         });
 
-        it("parses repeated exponentiation as left-associative", () => {
+        it("parses left-associative subtraction chains", () => {
             let parsed = Parser.parse([
+                token(Lexeme.Integer, 1),
+                token(Lexeme.Minus),
                 token(Lexeme.Integer, 2),
-                token(Lexeme.Caret),
-                token(Lexeme.Integer, 3),
-                token(Lexeme.Caret),
-                token(Lexeme.Integer, 4),
+                token(Lexeme.Minus),
+                token(Lexeme.Integer, 1),
                 EOF
             ]);
+
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();

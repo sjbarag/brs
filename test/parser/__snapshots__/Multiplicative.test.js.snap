@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser multiplication expressions parses left-associative division chains 1`] = `
+exports[`parser multiplicative expressions parses left-associative division chains 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {
@@ -26,7 +26,7 @@ Binary {
 }
 `;
 
-exports[`parser multiplication expressions parses left-associative integer-division chains 1`] = `
+exports[`parser multiplicative expressions parses left-associative integer-division chains 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {
@@ -52,7 +52,7 @@ Binary {
 }
 `;
 
-exports[`parser multiplication expressions parses left-associative modulo chains 1`] = `
+exports[`parser multiplicative expressions parses left-associative modulo chains 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {
@@ -78,7 +78,7 @@ Binary {
 }
 `;
 
-exports[`parser multiplication expressions parses left-associative multiplication chains 1`] = `
+exports[`parser multiplicative expressions parses left-associative multiplication chains 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {

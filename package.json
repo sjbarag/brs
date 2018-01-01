@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf ./lib ./types",
-    "test": "mocha"
+    "test": "jest"
   },
   "files": [
     "./lib/",
@@ -23,12 +23,10 @@
     "node-int64": "^0.4.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.10",
-    "@types/mocha": "^2.2.44",
+    "@types/jest": "^22.0.0",
     "@types/node": "^8.5.2",
     "@types/node-int64": "^0.4.29",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1",
+    "jest": "^22.0.4",
     "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   }

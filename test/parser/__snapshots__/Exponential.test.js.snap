@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser exponentiation expressions parses exponentiation operators 1`] = `
+exports[`parser exponential expressions parses exponential operators 1`] = `
 Binary {
   "left": Literal {
     "value": 2,
@@ -16,7 +16,7 @@ Binary {
 }
 `;
 
-exports[`parser exponentiation expressions parses repeated exponentiation as left-associative 1`] = `
+exports[`parser exponential expressions parses repeated exponential operators as left-associative 1`] = `
 Binary {
   "left": Binary {
     "left": Literal {

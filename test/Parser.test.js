@@ -131,4 +131,96 @@ describe("parser", () => {
             expect(parsed).toMatchSnapshot();
         });
     }); // unary expressions
+
+    describe("binary expressions", () => {
+        it("parses left-associative multiplication chains", () => {
+            let parsed = Parser.parse([
+                token(Lexeme.Float, Math.fround(3.0)),
+                token(Lexeme.Star),
+                token(Lexeme.Float, Math.fround(5.0)),
+                token(Lexeme.Star),
+                token(Lexeme.Float, Math.fround(7.0)),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses left-associative division chains", () => {
+            let parsed = Parser.parse([
+                token(Lexeme.Float, Math.fround(7.0)),
+                token(Lexeme.Slash),
+                token(Lexeme.Float, Math.fround(5.0)),
+                token(Lexeme.Slash),
+                token(Lexeme.Float, Math.fround(3.0)),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses left-associative modulo chains", () => {
+            let parsed = Parser.parse([
+                token(Lexeme.Float, Math.fround(7.0)),
+                token(Lexeme.Mod),
+                token(Lexeme.Float, Math.fround(9.0)),
+                token(Lexeme.Mod),
+                token(Lexeme.Float, Math.fround(3.0)),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses left-associative integer-division chains", () => {
+            let parsed = Parser.parse([
+                token(Lexeme.Float, Math.fround(32.5)),
+                token(Lexeme.Backslash),
+                token(Lexeme.Float, Math.fround(5.0)),
+                token(Lexeme.Mod),
+                token(Lexeme.Float, Math.fround(3.0)),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses left-associative addition chains", () => {
+            let parsed = Parser.parse([
+                token(Lexeme.Integer, 1),
+                token(Lexeme.Plus),
+                token(Lexeme.Integer, 2),
+                token(Lexeme.Plus),
+                token(Lexeme.Integer, 3),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses left-associative addition chains", () => {
+            let parsed = Parser.parse([
+                token(Lexeme.Integer, 1),
+                token(Lexeme.Minus),
+                token(Lexeme.Integer, 2),
+                token(Lexeme.Minus),
+                token(Lexeme.Integer, 1),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+    });
 }); // parser

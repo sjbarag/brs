@@ -2,7 +2,7 @@ import { Lexeme } from "./Lexeme";
 import Int64 = require("node-int64");
 
 export type Invalid = undefined;
-export type Literal = string | number | Int64 | boolean;
+export type Literal = string | number | Int64 | boolean | Invalid;
 
 export interface Token {
     kind: Lexeme;

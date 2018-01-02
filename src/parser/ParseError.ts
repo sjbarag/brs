@@ -1,5 +1,5 @@
 import { Token } from "../Token";
-import * as OrbsError from "../Error";
+import * as BrsError from "../Error";
 import { Lexeme } from "../Lexeme";
 
 export function make(token: Token, message: string) {
@@ -7,7 +7,7 @@ export function make(token: Token, message: string) {
     if (token.kind === Lexeme.Eof) {
         m = "(At end of file) " + message;
     }
-    OrbsError.make(m, token.line);
+    BrsError.make(m, token.line);
 
     return new ParseError();
 }

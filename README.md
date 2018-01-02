@@ -1,55 +1,55 @@
-# ORBS: Off-Roku BrightScript
+# BRS: Off-Roku BrightScript
 An interpreter for the BrightScript language that runs on non-Roku platforms.
 
 ## Installation
-ORBS is published as a `node` package, so use `npm`:
+The BRS project is published as a `node` package, so use `npm`:
 
 ```shell
-$ npm install -g orbs
+$ npm install -g brs
 ```
 
 or `yarn` if that's your preference:
 
 ```shell
-$ yarn global add orbs
+$ yarn global add brs
 ```
 
 ## Usage
-This repo provides the `orbs` executable, which operates in two ways.
+This repo provides the `brs` executable, which operates in two ways.
 
 ### REPL
-An interactive BrightScript REPL (Read-Execute-Print Loop) is available by running `orbs` with no arguments, e.g.:
+An interactive BrightScript REPL (Read-Execute-Print Loop) is available by running `brs` with no arguments, e.g.:
 
 ```
-$ orbs
-ORBS> ?"Dennis Ritchie said ""Hello, World!"""
+$ brs
+brs> ?"Dennis Ritchie said ""Hello, World!"""
 Dennis Ritchie said "Hello, World!"
 ```
 
 Quit by entering `^D` (Control-D).
 
 ### Executing a file
-ORBS can execute an arbitrary BrightScript file as well!  Simply pass the file to the `orbs` executable, e.g.:
+BRS can execute an arbitrary BrightScript file as well!  Simply pass the file to the `brs` executable, e.g.:
 
 ```
 $ cat hello-world.brs
 ?"Dennis Ritchie said ""Hello, World!"""
 
-$ orbs hello-world.brs
+$ brs hello-world.brs
 Dennis Ritchie said "Hello, World!"
 ```
 
 ## Sure, but why?
-The [Roku](https://roku.com) series of media streaming devices are wildly popular amongst consumers, and several [very](https://netflix.com) [popular](https://hulu.com) [streaming](https://amazon.com/primevideo) [services](https://crackle.com) offer Channels for the Roku platform.  Unfortunately, Roku chanels *must* be written in a language called BrightScript, which is only executable directly on a Roku device.  ORBS hopes to change that by allowing Roku developers to test their code on their own machines, thus improving the quality of their channels and the end-user's experience as a whole.
+The [Roku](https://roku.com) series of media streaming devices are wildly popular amongst consumers, and several [very](https://netflix.com) [popular](https://hulu.com) [streaming](https://amazon.com/primevideo) [services](https://crackle.com) offer Channels for the Roku platform.  Unfortunately, Roku chanels *must* be written in a language called BrightScript, which is only executable directly on a Roku device.  BRS hopes to change that by allowing Roku developers to test their code on their own machines, thus improving the quality of their channels and the end-user's experience as a whole.
 
 ## So can I use this to watch TV without a Roku?
-Nope!  The ORBS project currently has no intention of emulating the Roku user interface, integrating with the Roku store, or emulating content playback.  In addition to likely getting this project in legal trouble, that sort of emulation is a ton of work.  ORBS isn't mature enough to be able to sustain that yet.
+Nope!  The BRS project currently has no intention of emulating the Roku user interface, integrating with the Roku store, or emulating content playback.  In addition to likely getting this project in legal trouble, that sort of emulation is a ton of work.  BRS isn't mature enough to be able to sustain that yet.
 
 ## Building from source
-ORBS follows pretty standard `node` development patterns, with the caveat that it uses `yarn` for dependency management.
+The BRS project follows pretty standard `node` development patterns, with the caveat that it uses `yarn` for dependency management.
 
 ### Prerequisites
-ORBS builds (and runs) in `node`, so you'll need to [install that first](https://nodejs.org).
+BRS builds (and runs) in `node`, so you'll need to [install that first](https://nodejs.org).
 
 Once that's ready, install [yarn](https://yarnpkg.com).  Installing it with `npm` is probably the simplest:
 
@@ -59,7 +59,7 @@ $ npm install -g yarn
 ### Setup
 1. Clone this repo:
    ```
-   $ git clone https://github.com/sjbarag/orbs.git
+   $ git clone https://github.com/sjbarag/brs.git
    ```
 
 2. Install dependencies:
@@ -67,7 +67,7 @@ $ npm install -g yarn
     $ yarn install     # or just `yarn`
     ```
 
-3. Get `orbs` onto your `PATH`:
+3. Get `brs` onto your `PATH`:
     ``` shell
     $ yarn link
     ```

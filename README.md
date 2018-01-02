@@ -86,7 +86,7 @@ index.d.ts (and friends)
 ```
 
 #### Testing
-Tests are written with [mocha](https://mochajs.org) and [chai](https://chaijs.com), and can be run with the `test` target:
+Tests are written with [Facebook's Jest](http://facebook.github.io/jest/), and can be run with the `test` target:
 
 ```shell
 $ yarn test

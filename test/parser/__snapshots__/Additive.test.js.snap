@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser additive expressions parses left-associative addition chains 1`] = `
+Binary {
+  "left": Binary {
+    "left": Literal {
+      "value": 1,
+    },
+    "right": Literal {
+      "value": 2,
+    },
+    "token": Object {
+      "kind": 8,
+      "line": 1,
+      "literal": undefined,
+    },
+  },
+  "right": Literal {
+    "value": 3,
+  },
+  "token": Object {
+    "kind": 8,
+    "line": 1,
+    "literal": undefined,
+  },
+}
+`;
+
+exports[`parser additive expressions parses left-associative subtraction chains 1`] = `
+Binary {
+  "left": Binary {
+    "left": Literal {
+      "value": 1,
+    },
+    "right": Literal {
+      "value": 2,
+    },
+    "token": Object {
+      "kind": 7,
+      "line": 1,
+      "literal": undefined,
+    },
+  },
+  "right": Literal {
+    "value": 1,
+  },
+  "token": Object {
+    "kind": 7,
+    "line": 1,
+    "literal": undefined,
+  },
+}
+`;

@@ -3,7 +3,7 @@ import Int64 = require("node-int64");
 import { Lexeme } from "./Lexeme";
 import { Token, Literal } from "./Token";
 import { ReservedWords } from "./ReservedWords";
-import * as OrbsError from "./Error";
+import * as BrsError from "./Error";
 
 let start: number;
 let current: number;
@@ -107,7 +107,7 @@ function scanToken() {
             } else if (isAlpha(c)) {
                 identifier();
             } else {
-                OrbsError.make(`Unexpected character '${c}'`, line);
+                BrsError.make(`Unexpected character '${c}'`, line);
             }
             break;
     }
@@ -154,7 +154,7 @@ function string() {
 
         if (peekNext() === "\n") {
             // BrightScript doesn't support multi-line strings
-            OrbsError.make("Unterminated string at end of line", line);
+            BrsError.make("Unterminated string at end of line", line);
             return;
         }
         // if (peekNext() === "\"") { advance();}
@@ -164,7 +164,7 @@ function string() {
 
     if (isAtEnd()) {
         // terminating a string with EOF is also not allowed
-        OrbsError.make("Unterminated string at end of file", line);
+        BrsError.make("Unterminated string at end of file", line);
         return;
     }
 

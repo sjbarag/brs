@@ -5,13 +5,13 @@ import { Token } from "./Token";
 import * as Lexer from "./Lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./parser/AstPrinter";
-import * as OrbsError from "./Error";
+import * as BrsError from "./Error";
 
 
 export function execute(filename: string) {
     fs.readFile(filename, "utf-8", (err, contents) => {
         run(contents);
-        if (OrbsError.found()) {
+        if (BrsError.found()) {
             process.exit(1);
         }
     });
@@ -22,12 +22,12 @@ export function repl() {
         input: process.stdin,
         output: process.stdout,
     });
-    rl.setPrompt("ORBS> ");
+    rl.setPrompt("brs> ");
 
     rl.on("line", (line) => {
         run(line);
 
-        OrbsError.reset();
+        BrsError.reset();
         rl.prompt();
     });
 
@@ -38,7 +38,7 @@ function run(contents: string) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
     const expr = Parser.parse(tokens);
 
-    if (OrbsError.found()) {
+    if (BrsError.found()) {
         return;
     }
 

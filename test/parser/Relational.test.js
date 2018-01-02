@@ -1,11 +1,11 @@
 const Parser = require("../../lib/parser");
 const { Lexeme } = require("../../lib/Lexeme");
-const OrbsError = require("../../lib/Error");
+const BrsError = require("../../lib/Error");
 
 const { token, EOF } = require("./ParserTests");
 
 describe("parser", () => {
-    afterEach(() => OrbsError.reset());
+    afterEach(() => BrsError.reset());
 
     describe("relational expressions", () => {
         it("parses less-than expressions", () => {

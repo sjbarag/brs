@@ -1,6 +1,6 @@
 const { Lexeme } = require("../../lib/Lexeme");
 
-/* A set of utilities to be used while writing tests for the ORBS parser. */
+/* A set of utilities to be used while writing tests for the BRS parser. */
 
 /**
  * Creates a token with the given `kind` and (optional) `literal` value.

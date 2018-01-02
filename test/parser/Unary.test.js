@@ -1,12 +1,12 @@
 const Parser = require("../../lib/parser");
 const Expr = require("../../lib/parser/Expression");
 const { Lexeme } = require("../../lib/Lexeme");
-const OrbsError = require("../../lib/Error");
+const BrsError = require("../../lib/Error");
 
 const { token, EOF } = require("./ParserTests");
 
 describe("parser", () => {
-    afterEach(() => OrbsError.reset());
+    afterEach(() => BrsError.reset());
 
     describe("unary expressions", () => {
         it("parses unary 'not'", () => {

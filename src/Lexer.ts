@@ -5,13 +5,25 @@ import { Token, Literal } from "./Token";
 import { ReservedWords } from "./ReservedWords";
 import * as BrsError from "./Error";
 
+/** The zero-indexed position at which the token under consideration begins. */
 let start: number;
+/** The zero-indexed position being examined for the token under consideration. */
 let current: number;
+/** The one-indexed line number being parsed. */
 let line: number;
 
+/** The BrightScript code being converted to an array of `Token`s. */
 let source: string;
+/** The tokens produced from `source`. */
 let tokens: Token[];
 
+/**
+ * Converts a string containing BrightScript code to an array of `Token` objects that will later be
+ * used to build an abstract syntax tree.
+ *
+ * @param toScan the BrightScript code to convert into tokens
+ * @returns a (read-only) array of tokens to be passed to a parser.
+ */
 export function scan(toScan: string): ReadonlyArray<Token> {
     start = 0;
     current = 0;
@@ -33,11 +45,21 @@ export function scan(toScan: string): ReadonlyArray<Token> {
     return tokens;
 }
 
+/**
+ * Determines whether or not the lexer as reached the end of its input.
+ * @returns `true` if the lexer has read to (or past) the end of its input, otherwise `false`.
+ */
 function isAtEnd() {
     return current >= source.length;
 }
 
-function scanToken() {
+/**
+ * Reads a non-deterministic number of characters from `source`, produces a `Token`, and adds it to
+ * the `tokens` array.
+ *
+ * Accepts and returns nothing, because it's side-effect driven.
+ */
+function scanToken(): void {
     let c = advance();
     switch (c.toLowerCase()) {
         case "(": addToken(Lexeme.LeftParen); break;
@@ -54,7 +76,7 @@ function scanToken() {
         case "^": addToken(Lexeme.Caret); break;
         case "\\": addToken(Lexeme.Backslash); break;
         case ":": addToken(Lexeme.Colon); break;
-        case "<": 
+        case "<":
             switch (peek()) {
                 case "=":
                     advance();
@@ -71,7 +93,7 @@ function scanToken() {
                 default: addToken(Lexeme.Less); break;
             }
             break;
-        case ">": 
+        case ">":
             switch (peek()) {
                 case "=":
                     advance();
@@ -113,33 +135,64 @@ function scanToken() {
     }
 }
 
-function advance() {
+/**
+ * Reads and returns the next character from `string` while **moving the current position forward**.
+ * @returns the new "current" character.
+ */
+function advance(): string {
     current++;
     return source.charAt(current - 1);
 }
 
+/**
+ * Determines whether the "current" character matches an `expected` character and advances the
+ * "current" character if it does.
+ *
+ * @param expected a single-character string to test for.
+ * @returns `true` if `expected` is strictly equal to the current character, otherwise `false`
+ *          (including if we've reached the end of the input).
+ */
 function match(expected: string) {
     if (expected.length > 1) {
         throw new Error(`Lexer#match expects a single character; received '${expected}'`);
     }
 
     if (isAtEnd()) { return false; }
-    if (source.charAt(current) !== expected)  { return false; }
+    if (source.charAt(current) !== expected) { return false; }
 
     current++;
     return true;
 }
 
+/**
+ * Returns the character at position `current` or a null character if we've reached the end of
+ * input.
+ *
+ * @returns the current character if we haven't reached the end of input, otherwise a null
+ *          character.
+ */
 function peek() {
     if (isAtEnd()) { return "\0" };
     return source.charAt(current);
 }
 
+/**
+ * Returns the character after position `current`, or a null character if we've reached the end of
+ * input.
+ *
+ * @returns the character after the current one if we haven't reached the end of input, otherwise a
+ *          null character.
+ */
 function peekNext() {
     if (current + 1 > source.length) { return "\0"; }
     return source.charAt(current + 1);
 }
 
+/**
+ * Reads characters within a string literal, advancing through escaped characters to the
+ * terminating `"`, and adds the produced token to the `tokens` array. Creates a `BrsError` if the
+ * string is terminated by a newline or the end of input.
+ */
 function string() {
     while (!isAtEnd()) {
         if (peek() === "\"") {
@@ -150,7 +203,7 @@ function string() {
                 // otherwise the string has ended
                 break;
             }
-        } 
+        }
 
         if (peekNext() === "\n") {
             // BrightScript doesn't support multi-line strings
@@ -176,6 +229,12 @@ function string() {
     addToken(Lexeme.String, value);
 }
 
+/**
+ * Determines whether or not a single-character string is a digit.
+ *
+ * @param char a single-character string that might contain a digit.
+ * @returns `true` if `char` is between 0 and 9 (inclusive), otherwise `false`.
+ */
 function isDigit(char: string) {
     if (char.length > 1) {
         throw new Error(`Lexer#isDigit expects a single character; received '${char}'`);
@@ -184,6 +243,13 @@ function isDigit(char: string) {
     return char >= "0" && char <= "9";
 }
 
+/**
+ * Determines whether a single-character string is alphabetic (or `_`).
+ *
+ * @param char a single-character string that might contain an alphabetic character.
+ * @returns `true` if `char` is between "a" and "z" or "A" and "Z" (inclusive), or is `_`,
+ *          otherwise false.
+ */
 function isAlpha(char: string) {
     if (char.length > 1) {
         throw new Error(`Lexer#isAlpha expects a single character; received '${char}'`);
@@ -193,6 +259,12 @@ function isAlpha(char: string) {
     return (c >= "a" && c <= "z") || c === "_";
 }
 
+/**
+ * Determines whether a single-character string is alphanumeric (or `_`).
+ *
+ * @param char a single-character string that might contain an alphabetic or numeric character.
+ * @returns `true` if `char` is alphabetic, numeric, or `_`, otherwise `false`.
+ */
 function isAlphaNumeric(char: string) {
     if (char.length > 1) {
         throw new Error(`Lexer#isAlphaNumeric expects a single character; received '${char}'`);
@@ -201,6 +273,13 @@ function isAlphaNumeric(char: string) {
     return isAlpha(char) || isDigit(char);
 }
 
+/**
+ * Reads characters within a number literal, advancing through fractional and exponential portions
+ * as well as trailing type identifiers, and adds the produced token to the `tokens` array. Also
+ * responsible for BrightScript's integer literal vs. float literal rules.
+ *
+ * @see https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types#Expressions,Variables,andTypes-NumericLiterals
+ */
 function number() {
     let containsDecimal = false;
     while (isDigit(peek())) { advance(); }
@@ -231,7 +310,7 @@ function number() {
         return;
     } else if (peek().toLowerCase() === "d") {
         // literals that use "D" as the exponent are also automatic Doubles
-        
+
         // consume the "D"
         advance();
 
@@ -260,7 +339,7 @@ function number() {
         return;
     } else if (peek().toLowerCase() === "e") {
         // literals that use "E" as the exponent are also automatic Floats
-        
+
         // consume the "E"
         advance();
 
@@ -300,6 +379,10 @@ function number() {
     }
 }
 
+/**
+ * Reads characters within an identifier, advancing through alphanumeric characters. Adds the
+ * produced token to the `tokens` array.
+ */
 function identifier() {
     while (isAlphaNumeric(peek())) { advance(); }
 
@@ -319,6 +402,11 @@ function identifier() {
     }
 }
 
+/**
+ * Creates a `Token` and adds it to the `tokens` array.
+ * @param kind the type of token to produce.
+ * @param literal an optional literal value to include in the token.
+ */
 function addToken(kind: Lexeme, literal?: Literal): void {
     tokens.push({
         kind: kind,

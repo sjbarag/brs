@@ -1,4 +1,4 @@
-const Int64 = require("node-int64");
+const Long = require("long");
 
 const Lexer = require("../lib/lexer");
 const { Lexeme } = require("../lib/Lexeme");
@@ -169,7 +169,7 @@ describe("lexer", () => {
         it("respects '&' suffix", () => {
             let li = Lexer.scan("123&")[0];
             expect(li.kind).toBe(Lexeme.LongInteger);
-            expect(li.literal).toEqual(new Int64("123"));
+            expect(li.literal).toEqual(Long.fromInt(123));
         });
     });
 

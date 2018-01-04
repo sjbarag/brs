@@ -1,4 +1,4 @@
-import Int64 = require("node-int64");
+import Long = require("long");
 
 import { Lexeme } from "../Lexeme";
 import { Token, Literal } from "../Token";
@@ -327,7 +327,7 @@ function number() {
         // numeric literals ending with "&" are forced to LongIntegers
         advance();
         asString = source.slice(start, current);
-        addToken(Lexeme.LongInteger, new Int64(asString));
+        addToken(Lexeme.LongInteger, Long.fromString(asString));
         return;
     } else {
         // otherwise, it's a regular integer

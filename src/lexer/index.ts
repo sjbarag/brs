@@ -1,9 +1,10 @@
 import Int64 = require("node-int64");
 
-import { Lexeme } from "./Lexeme";
-import { Token, Literal } from "./Token";
-import { ReservedWords } from "./ReservedWords";
-import * as BrsError from "./Error";
+import { Lexeme } from "../Lexeme";
+import { Token, Literal } from "../Token";
+import { ReservedWords } from "../ReservedWords";
+import * as BrsError from "../Error";
+import { isAlpha, isDigit, isAlphaNumeric } from "./Characters";
 
 /** The zero-indexed position at which the token under consideration begins. */
 let start: number;
@@ -227,50 +228,6 @@ function string() {
     // trim the surrounding quotes, and replace the double-" literal with a single
     let value = source.slice(start + 1, current - 1).replace(/""/g, "\"");
     addToken(Lexeme.String, value);
-}
-
-/**
- * Determines whether or not a single-character string is a digit.
- *
- * @param char a single-character string that might contain a digit.
- * @returns `true` if `char` is between 0 and 9 (inclusive), otherwise `false`.
- */
-function isDigit(char: string) {
-    if (char.length > 1) {
-        throw new Error(`Lexer#isDigit expects a single character; received '${char}'`);
-    }
-
-    return char >= "0" && char <= "9";
-}
-
-/**
- * Determines whether a single-character string is alphabetic (or `_`).
- *
- * @param char a single-character string that might contain an alphabetic character.
- * @returns `true` if `char` is between "a" and "z" or "A" and "Z" (inclusive), or is `_`,
- *          otherwise false.
- */
-function isAlpha(char: string) {
-    if (char.length > 1) {
-        throw new Error(`Lexer#isAlpha expects a single character; received '${char}'`);
-    }
-
-    let c = char.toLowerCase();
-    return (c >= "a" && c <= "z") || c === "_";
-}
-
-/**
- * Determines whether a single-character string is alphanumeric (or `_`).
- *
- * @param char a single-character string that might contain an alphabetic or numeric character.
- * @returns `true` if `char` is alphabetic, numeric, or `_`, otherwise `false`.
- */
-function isAlphaNumeric(char: string) {
-    if (char.length > 1) {
-        throw new Error(`Lexer#isAlphaNumeric expects a single character; received '${char}'`);
-    }
-
-    return isAlpha(char) || isDigit(char);
 }
 
 /**

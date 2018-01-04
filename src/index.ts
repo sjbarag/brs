@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as readline from "readline";
 
 import { Token } from "./Token";
-import * as Lexer from "./Lexer";
+import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./parser/AstPrinter";
 import * as BrsError from "./Error";

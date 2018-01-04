@@ -1,6 +1,6 @@
 const Int64 = require("node-int64");
 
-const Lexer = require("../lib/Lexer");
+const Lexer = require("../lib/lexer");
 const { Lexeme } = require("../lib/Lexeme");
 
 describe("lexer", () => {
@@ -24,7 +24,7 @@ describe("lexer", () => {
         ]);
     });
 
-    describe("comments", () => { 
+    describe("comments", () => {
         it("ignores everything after `'`", () => {
             let tokens = Lexer.scan("= ' (");
             expect(tokens.map(t => t.kind)).toEqual([
@@ -186,7 +186,7 @@ describe("lexer", () => {
     describe("identifiers", () => {
         it("matches single-word reserved words", () => {
             // test just a sample of single-word reserved words for now.
-            // if we find any that we've missed 
+            // if we find any that we've missed
             let words = Lexer.scan("and or box if else endif return true false");
             expect(words.map(w => w.kind)).toEqual([
                 Lexeme.And,

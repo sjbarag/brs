@@ -1,5 +1,5 @@
-import * as Expr from "./Expression";
-import { Visitor } from "./Visitor";
+import * as Expr from "../parser/Expression";
+import { Visitor } from "./";
 import { Literal as TokenLiteral, Invalid } from "../Token";
 
 /** Creates a pretty-printed representation of an expression to ease debugging. */
@@ -52,7 +52,7 @@ export class AstPrinter implements Visitor<string> {
 
     /**
      * Wraps an expression in parentheses to make its grouping visible during debugging.
-     * 
+     *
      * @param name The name of the expression type being printed.
      * @param expressions any subexpressions that need to be stringified as well.
      */

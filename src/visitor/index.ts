@@ -1,4 +1,4 @@
-import * as Expr from "./Expression";
+import * as Expr from "../parser/Expression";
 
 export interface Visitor<T> {
     visitAssign(expression: Expr.Assign): T;

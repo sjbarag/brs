@@ -5,6 +5,7 @@ import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./visitor/AstPrinter";
+import { Executioner } from "./visitor/Executioner";
 import * as BrsError from "./Error";
 
 
@@ -42,7 +43,7 @@ function run(contents: string) {
         return;
     }
 
-    const printer = new AstPrinter();
+    const printer = new Executioner();
 
-    console.log(printer.print(expr!));
+    console.log(printer.exec(expr!));
 }

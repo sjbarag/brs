@@ -261,8 +261,16 @@ export class Executioner implements Visitor<TokenLiteral> {
 
         switch (expression.operator.kind) {
             case Lexeme.Minus:
-                // TODO: protect against negating strings or booleans
-                return -(right!);
+                if (isLong(right) || isNumber(right)) {
+                    return -(right!);
+                } else {
+                    BrsError.make(
+                        `Attempting to negate non-numeric value.
+                        value type: ${typeof right}`,
+                        expression.operator.line
+                    );
+                    return;
+                }
             case Lexeme.Not:
                 // TODO: protect against inverting numbers or strings
                 return !right;

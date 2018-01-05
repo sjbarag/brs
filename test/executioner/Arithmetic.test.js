@@ -127,6 +127,17 @@ describe("executioner", () => {
         expect(result).toBe(35);
     });
 
+    it("doesn't allow non-numeric negation", () => {
+        let ast = new Expr.Unary(
+            token(Lexeme.Minus),
+            new Expr.Literal("four")
+        );
+
+        let result = executioner.exec(ast);
+        expect(BrsError.found()).toBe(true);
+        expect(result).toBeUndefined();
+    });
+
     it("doesn't allow mixed-type arithmetic", () => {
         let ast = new Expr.Binary(
             new Expr.Literal(3),

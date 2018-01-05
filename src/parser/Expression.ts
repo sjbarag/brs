@@ -1,4 +1,4 @@
-import { Visitor } from "./Visitor";
+import { Visitor } from "../visitor";
 import { Token, Literal as TokenLiteral } from "../Token";
 
 export interface Expression {
@@ -35,7 +35,7 @@ export class Call implements Expression {
         readonly paren: Token,
         readonly args: Expression[]
     ) {}
-    
+
     accept <R> (visitor: Visitor<R>): R {
         return visitor.visitCall(this);
     }
@@ -84,7 +84,7 @@ export class Logical implements Expression {
 }
 
 export class M implements Expression {
-    constructor(readonly keyword: Token) {}    
+    constructor(readonly keyword: Token) {}
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitM(this);

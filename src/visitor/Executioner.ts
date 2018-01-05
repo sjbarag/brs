@@ -6,7 +6,7 @@ import { Literal as TokenLiteral } from "../Token";
 import { Lexeme } from "../Lexeme";
 import * as BrsError from "../Error";
 
-function isLong(arg: TokenLiteral): arg is Long {
+export function isLong(arg: TokenLiteral): arg is Long {
     return Long.isLong(arg);
 }
 
@@ -20,14 +20,7 @@ function isString(arg: TokenLiteral): arg is string {
 
 export class Executioner implements Visitor<TokenLiteral> {
     exec(expression: Expr.Expression) {
-        let output = this.evaluate(expression);
-        if (output === undefined) {
-            return console.log("invalid");
-        } else if (isLong(output)) {
-            return console.log(output.toString());
-        } else {
-            return console.log(JSON.stringify(output));
-        }
+        return this.evaluate(expression);
     }
 
     visitAssign(expression: Expr.Assign) {

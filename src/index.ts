@@ -1,10 +1,11 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import { Token } from "./Token";
+import { Token, Literal as TokenLiteral } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
-import { AstPrinter } from "./parser/AstPrinter";
+import { AstPrinter } from "./visitor/AstPrinter";
+import { Executioner, isLong } from "./visitor/Executioner";
 import * as BrsError from "./Error";
 
 
@@ -14,6 +15,7 @@ export function execute(filename: string) {
         if (BrsError.found()) {
             process.exit(1);
         }
+        // TODO: Wire up runtime errors so we can use a second exit code
     });
 }
 
@@ -25,7 +27,8 @@ export function repl() {
     rl.setPrompt("brs> ");
 
     rl.on("line", (line) => {
-        run(line);
+        let result = run(line);
+        console.log(stringify(result));
 
         BrsError.reset();
         rl.prompt();
@@ -42,7 +45,16 @@ function run(contents: string) {
         return;
     }
 
-    const printer = new AstPrinter();
+    const executioner = new Executioner();
+    return executioner.exec(expr!);
+}
 
-    console.log(printer.print(expr!));
+function stringify(value: TokenLiteral) {
+    if (value === undefined) {
+        return "invalid";
+    } else if (isLong(value)) {
+        return value.toString();
+    } else {
+        return JSON.stringify(value);
+    }
 }

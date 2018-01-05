@@ -43,7 +43,7 @@ function run(contents: string) {
         return;
     }
 
-    const printer = new Executioner();
+    const executioner = new Executioner();
 
-    console.log(printer.exec(expr!));
+    executioner.exec(expr!);
 }

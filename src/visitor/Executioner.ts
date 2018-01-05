@@ -57,8 +57,24 @@ export class Executioner implements Visitor<TokenLiteral> {
                         right: ${typeof right}`,
                         expression.token.line
                     );
+                    return;
                 }
-                return;
+            case Lexeme.Caret:
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
+                    // TODO: Figure out how to exponentiate Longs
+                    return;
+                } else if (isNumber(left) && isNumber(right)) {
+                    // TODO: See if we can use a Long as an exponent
+                    return Math.pow(left, right);
+                } else {
+                    BrsError.make(
+                        `Attempting to exponentiate non-numeric objects.
+                        left: ${typeof left}
+                        right: ${typeof right}`,
+                        expression.token.line
+                    );
+                    return;
+                }
             case Lexeme.Slash:
                 if (isLong(left) && isLong(right)) {
                     return left.divide(right);

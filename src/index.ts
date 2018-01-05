@@ -15,6 +15,7 @@ export function execute(filename: string) {
         if (BrsError.found()) {
             process.exit(1);
         }
+        // TODO: Wire up runtime errors so we can use a second exit code
     });
 }
 

@@ -90,6 +90,43 @@ describe("executioner", () => {
         expect(result).toBe(1);
     });
 
+    it("exponentiates numbers", () => {
+        let ast = new Expr.Binary(
+            new Expr.Literal(3),
+            token(Lexeme.Caret),
+            new Expr.Literal(3)
+        );
+
+        let result = executioner.exec(ast);
+        expect(result).toBe(27);
+    });
+
+    it("follows arithmetic order-of-operations (PEMDAS)", () => {
+        // (6 + 5) * 4 - 3 ^ 2
+        let ast = new Expr.Binary(
+            new Expr.Binary(
+                new Expr.Grouping(
+                    new Expr.Binary(
+                        new Expr.Literal(6),
+                        token(Lexeme.Plus),
+                        new Expr.Literal(5)
+                    )
+                ),
+                token(Lexeme.Star),
+                new Expr.Literal(4)
+            ),
+            token(Lexeme.Minus),
+            new Expr.Binary(
+                new Expr.Literal(3),
+                token(Lexeme.Caret),
+                new Expr.Literal(2)
+            )
+        );
+
+        let result = executioner.exec(ast);
+        expect(result).toBe(35);
+    });
+
     it("doesn't allow mixed-type arithmetic", () => {
         let ast = new Expr.Binary(
             new Expr.Literal(3),

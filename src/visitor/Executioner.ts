@@ -20,7 +20,14 @@ function isString(arg: TokenLiteral): arg is string {
 
 export class Executioner implements Visitor<TokenLiteral> {
     exec(expression: Expr.Expression) {
-        return this.evaluate(expression);
+        let output = this.evaluate(expression);
+        if (output === undefined) {
+            return console.log("invalid");
+        } else if (isLong(output)) {
+            return console.log(output.toString());
+        } else {
+            return console.log(JSON.stringify(output));
+        }
     }
 
     visitAssign(expression: Expr.Assign) {

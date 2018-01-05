@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import { Token } from "./Token";
+import { Token, Literal as TokenLiteral } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./visitor/AstPrinter";
-import { Executioner } from "./visitor/Executioner";
+import { Executioner, isLong } from "./visitor/Executioner";
 import * as BrsError from "./Error";
 
 
@@ -27,7 +27,8 @@ export function repl() {
     rl.setPrompt("brs> ");
 
     rl.on("line", (line) => {
-        run(line);
+        let result = run(line);
+        console.log(stringify(result));
 
         BrsError.reset();
         rl.prompt();
@@ -45,6 +46,15 @@ function run(contents: string) {
     }
 
     const executioner = new Executioner();
+    return executioner.exec(expr!);
+}
 
-    executioner.exec(expr!);
+function stringify(value: TokenLiteral) {
+    if (value === undefined) {
+        return "invalid";
+    } else if (isLong(value)) {
+        return value.toString();
+    } else {
+        return JSON.stringify(value);
+    }
 }

@@ -1,7 +1,6 @@
 import Long = require("long");
 
 import * as Expr from "../parser/Expression";
-import { Visitor } from "./";
 import { Literal as TokenLiteral } from "../Token";
 import { Lexeme } from "../Lexeme";
 import * as BrsError from "../Error";
@@ -18,7 +17,7 @@ function isString(arg: TokenLiteral): arg is string {
     return typeof arg === "string";
 }
 
-export class Executioner implements Visitor<TokenLiteral> {
+export class Executioner implements Expr.Visitor<TokenLiteral> {
     exec(expression: Expr.Expression) {
         return this.evaluate(expression);
     }

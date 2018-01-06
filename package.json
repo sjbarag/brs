@@ -15,6 +15,7 @@
     "test": "jest"
   },
   "files": [
+    "./bin/",
     "./lib/",
     "./types/"
   ],

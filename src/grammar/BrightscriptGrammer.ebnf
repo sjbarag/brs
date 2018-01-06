@@ -2,11 +2,11 @@
     This is an attempt at defining a formal grammar of the brightscript language that we can iterate on and
     define as we continue to implement the parser. This is written in EBNF syntax (but using regex
     to instead represent required/optional symbols or groupings).
-    
+
     Note: Any words that are fully capitalized represent a lexeme (see full enum in lexeme.ts) whose text
-    representation may vary or where deems appropriate (e.g. the 'Integer' lexeme can represent any valid integer, 
-    so we reference the 'Integer' lexeme here as 'INTEGER', but the 'True' lexeme only represents the value 'true' 
-    so we instead just reference the text value here as 'true' to be explicit). 
+    representation may vary or where deems appropriate (e.g. the 'Integer' lexeme can represent any valid integer,
+    so we reference the 'Integer' lexeme here as 'INTEGER', but the 'True' lexeme only represents the value 'true'
+    so we instead just reference the text value here as 'true' to be explicit).
 
     QRC (Quick Regex Cheatsheet)
         *  - zero or more
@@ -33,10 +33,16 @@ singleStatement
     : expressionStatement
     | ifStatement
     | methodStatement
+    | printStatement
     ;
 
-(* 
-    Expressions 
+(* Brightscript uses a "print" statement like in python2, not a function like in python3 *)
+printStatement
+    : "print" expression
+    ;
+
+(*
+    Expressions
 *)
 
 expressionStatement
@@ -60,10 +66,10 @@ assignmentOperator
     : ("=" | "*=" | "/=" | "\=" | "+=" | "-=" | "<<=" | ">>=")
     ;
 
-(* 
-    These expression rules start from the lower-precedence and proceeds to the higher precedence (Logical and/or -> Primary) 
-    which is also known as "top-down", meaning you reach the lowest-precedence expressions first because they may in turn  
-    contain subexpressions of higher precedence. 
+(*
+    These expression rules start from the lower-precedence and proceeds to the higher precedence (Logical and/or -> Primary)
+    which is also known as "top-down", meaning you reach the lowest-precedence expressions first because they may in turn
+    contain subexpressions of higher precedence.
     Operator Precedence: https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types
 *)
 conditionalExpression
@@ -114,7 +120,7 @@ primary
     | "(" expression ")"
     ;
 
-(* 
+(*
     Since we know the literal text of the True/False/Invalid lexemes we just reference
     their text value here to be explicit
 *)
@@ -129,8 +135,8 @@ literal
     | LONG_INTEGER
     ;
 
-(* 
-    Conditionals 
+(*
+    Conditionals
 *)
 
 ifStatement

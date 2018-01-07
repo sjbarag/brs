@@ -5,7 +5,6 @@ const { Lexeme } = require("../../lib/Lexeme");
 const { Executioner } = require("../../lib/visitor/Executioner");
 
 let executioner;
-let stashedConsole;
 
 describe("executioner", () => {
     beforeEach(() => {
@@ -148,5 +147,31 @@ describe("executioner", () => {
         let result = executioner.exec(ast);
         expect(BrsError.found()).toBe(true);
         expect(result).toBeUndefined();
+    });
+
+    it("bitwise ANDs integers", () => {
+        // 110 AND 101 = 100
+        // (6)     (5) = (4)
+        let ast = new Expr.Binary(
+            new Expr.Literal(6),
+            token(Lexeme.And),
+            new Expr.Literal(5)
+        );
+
+        let result = executioner.exec(ast);
+        expect(result).toBe(4);
+    });
+
+    it("bitwise ORs integers", () => {
+        // 110 OR 011 = 111
+        // (6)    (3) = (7)
+        let ast = new Expr.Binary(
+            new Expr.Literal(6),
+            token(Lexeme.Or),
+            new Expr.Literal(3)
+        );
+
+        let result = executioner.exec(ast);
+        expect(result).toBe(7);
     });
 });

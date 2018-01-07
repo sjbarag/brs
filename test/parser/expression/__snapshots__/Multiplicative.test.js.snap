@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser multiplicative expressions parses left-associative division chains 1`] = `
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Binary {
+        "left": Literal {
+          "value": 7,
+        },
+        "right": Literal {
+          "value": 5,
+        },
+        "token": Object {
+          "kind": 10,
+          "line": 1,
+          "literal": undefined,
+        },
+      },
+      "right": Literal {
+        "value": 3,
+      },
+      "token": Object {
+        "kind": 10,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
+  },
+]
+`;
+
+exports[`parser multiplicative expressions parses left-associative integer-division chains 1`] = `
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Binary {
+        "left": Literal {
+          "value": 32.5,
+        },
+        "right": Literal {
+          "value": 5,
+        },
+        "token": Object {
+          "kind": 12,
+          "line": 1,
+          "literal": undefined,
+        },
+      },
+      "right": Literal {
+        "value": 3,
+      },
+      "token": Object {
+        "kind": 11,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
+  },
+]
+`;
+
+exports[`parser multiplicative expressions parses left-associative modulo chains 1`] = `
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Binary {
+        "left": Literal {
+          "value": 7,
+        },
+        "right": Literal {
+          "value": 9,
+        },
+        "token": Object {
+          "kind": 11,
+          "line": 1,
+          "literal": undefined,
+        },
+      },
+      "right": Literal {
+        "value": 3,
+      },
+      "token": Object {
+        "kind": 11,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
+  },
+]
+`;
+
+exports[`parser multiplicative expressions parses left-associative multiplication chains 1`] = `
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Binary {
+        "left": Literal {
+          "value": 3,
+        },
+        "right": Literal {
+          "value": 5,
+        },
+        "token": Object {
+          "kind": 9,
+          "line": 1,
+          "literal": undefined,
+        },
+      },
+      "right": Literal {
+        "value": 7,
+      },
+      "token": Object {
+        "kind": 9,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
+  },
+]
+`;

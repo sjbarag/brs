@@ -1,9 +1,10 @@
-const Parser = require("../../lib/parser");
-const Expr = require("../../lib/parser/Expression");
-const { Lexeme } = require("../../lib/Lexeme");
-const BrsError = require("../../lib/Error");
+const Parser = require("../../../lib/parser");
+const Expr = require("../../../lib/parser/Expression");
+const Stmt = require("../../../lib/parser/Statement");
+const { Lexeme } = require("../../../lib/Lexeme");
+const BrsError = require("../../../lib/Error");
 
-const { token, EOF } = require("./ParserTests");
+const { token, EOF } = require("../ParserTests");
 
 describe("parser", () => {
     afterEach(() => BrsError.reset());
@@ -14,13 +15,21 @@ describe("parser", () => {
                 token(Lexeme.Integer, 5),
                 EOF
             ]);
-            expect(numeric).toEqual(new Expr.Literal(5));
+            expect(numeric).toEqual([
+                new Stmt.Expression(
+                    new Expr.Literal(5)
+                )
+            ]);
 
             let parsedString = Parser.parse([
                 token(Lexeme.String, "hello"),
                 EOF
             ]);
-            expect(parsedString).toEqual(new Expr.Literal("hello"));
+            expect(parsedString).toEqual([
+                new Stmt.Expression(
+                    new Expr.Literal("hello")
+                )
+            ]);
         });
 
         it("parses identifiers");

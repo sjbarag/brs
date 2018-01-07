@@ -1,5 +1,7 @@
 import * as Expr from "./Expression";
 type Expression = Expr.Expression;
+import * as Stmt from "./Statement";
+type Statement = Stmt.Statement;
 import { Lexeme } from "../Lexeme";
 import { Token } from "../Token"
 import * as ParseError from "./ParseError";
@@ -11,11 +13,38 @@ export function parse(toParse: ReadonlyArray<Token>) {
     current = 0;
     tokens = toParse;
 
+    let statements = [];
+
     try {
-        return expression();
+        while (!isAtEnd()) {
+            statements.push(statement());
+        }
+
+        return statements;
     } catch (parseError) {
         return;
     }
+}
+
+function statement(): Statement {
+    if (match(Lexeme.Print)) {
+        return printStatement();
+    }
+
+    // TODO: support multi-statements
+    return expressionStatement();
+}
+
+function printStatement(): Statement {
+    let value = expression();
+    consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    return new Stmt.Print(value);
+}
+
+function expressionStatement(): Statement {
+    let expr = expression();
+    consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    return new Stmt.Expression(expr);
 }
 
 function expression(): Expression {
@@ -118,7 +147,7 @@ function primary(): Expression {
             return lit;
         case match(Lexeme.LeftParen):
             let expr = expression();
-            consume(Lexeme.RightParen, "Unmatched '(' - expected ')' after expression");
+            consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
             return new Expr.Grouping(expr);
         default:
             throw ParseError.make(peek(), `Found unexpected token '${peek().text}'`);
@@ -136,8 +165,14 @@ function match(...lexemes: Lexeme[]) {
     return false;
 }
 
-function consume(lexeme: Lexeme, message: string): Token {
-    if (check(lexeme)) { return advance(); }
+function consume(message: string, ...lexemes: Lexeme[]): Token {
+    let foundLexeme = lexemes.map(lexeme => peek().kind === lexeme)
+        .reduce(
+            (foundAny, foundCurrent) => foundAny || foundCurrent,
+            false
+        );
+
+    if (foundLexeme) { return advance(); }
     throw ParseError.make(peek(), message);
 }
 

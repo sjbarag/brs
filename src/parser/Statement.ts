@@ -22,7 +22,7 @@ export class Expression implements Statement {
     constructor(readonly expression: Expr.Expression) {}
 
     accept<R>(visitor: Visitor<R>): R {
-        throw new Error("Method not implemented.");
+        return visitor.visitExpression(this);
     }
 }
 
@@ -56,7 +56,7 @@ export class Print implements Statement {
     ) {}
 
     accept<R>(visitor: Visitor<R>): R {
-        throw new Error("Method not implemented.");
+        return visitor.visitPrint(this);
     }
 }
 

@@ -1,8 +1,10 @@
 import Long = require("long");
 
 import * as Expr from "../parser/Expression";
+import * as Stmt from "../parser/Statement";
 import { Literal as TokenLiteral } from "../Token";
 import { Lexeme } from "../Lexeme";
+import { stringify } from "../Stringify";
 import * as BrsError from "../Error";
 
 export function isLong(arg: TokenLiteral): arg is Long {
@@ -17,14 +19,25 @@ function isString(arg: TokenLiteral): arg is string {
     return typeof arg === "string";
 }
 
-export class Executioner implements Expr.Visitor<TokenLiteral> {
-    exec(expression: Expr.Expression) {
-        return this.evaluate(expression);
+export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<TokenLiteral> {
+    exec(statements: Stmt.Statement[]) {
+        return statements.map((statement) => this.execute(statement));
+    }
+
+    visitExpression(statement: Stmt.Expression): TokenLiteral {
+        return this.evaluate(statement.expression);
+    }
+
+    visitPrint(statement: Stmt.Print): TokenLiteral {
+        let result = this.evaluate(statement.expression);
+        console.log(stringify(result));
+        return;
     }
 
     visitAssign(expression: Expr.Assign) {
         return undefined;
     }
+
     visitBinary(expression: Expr.Binary) {
         let lexeme = expression.token.kind;
         let left = this.evaluate(expression.left);
@@ -377,5 +390,9 @@ export class Executioner implements Expr.Visitor<TokenLiteral> {
 
     evaluate(expression: Expr.Expression): TokenLiteral {
         return expression.accept<TokenLiteral>(this);
+    }
+
+    execute(statement: Stmt.Statement): TokenLiteral {
+        return statement.accept<TokenLiteral>(this);
     }
 }

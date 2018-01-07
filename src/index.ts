@@ -28,7 +28,7 @@ export function repl() {
 
     rl.on("line", (line) => {
         let result = run(line);
-        console.log(stringify(result));
+        //console.log(stringify(result));
 
         BrsError.reset();
         rl.prompt();
@@ -39,14 +39,20 @@ export function repl() {
 
 function run(contents: string) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
-    const expr = Parser.parse(tokens);
+    const statements = Parser.parse(tokens);
+
+    console.dir(statements);
 
     if (BrsError.found()) {
         return;
     }
 
     const executioner = new Executioner();
-    return executioner.exec(expr!);
+    if (!statements) { return; }
+
+    statements.forEach(stmt => {
+        // executioner.exec(stmt);
+    });
 }
 
 function stringify(value: TokenLiteral) {

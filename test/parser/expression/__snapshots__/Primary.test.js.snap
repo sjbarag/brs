@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser primary expressions parses expressions in parentheses 1`] = `
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Literal {
+        "value": 1,
+      },
+      "right": Grouping {
+        "expression": Binary {
+          "left": Literal {
+            "value": 2,
+          },
+          "right": Literal {
+            "value": 3,
+          },
+          "token": Object {
+            "kind": 9,
+            "line": 1,
+            "literal": undefined,
+          },
+        },
+      },
+      "token": Object {
+        "kind": 8,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
+  },
+]
+`;

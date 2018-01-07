@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser print statements parses print statements 1`] = `
+Array [
+  Print {
+    "expression": Literal {
+      "value": "Hello, world",
+    },
+  },
+]
+`;

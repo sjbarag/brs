@@ -27,10 +27,18 @@ export class Executioner implements Visitor<TokenLiteral> {
         return undefined;
     }
     visitBinary(expression: Expr.Binary) {
+        let lexeme = expression.token.kind;
         let left = this.evaluate(expression.left);
-        let right = this.evaluate(expression.right);
+        let right: TokenLiteral;
 
-        switch (expression.token.kind) {
+        if (lexeme !== Lexeme.And && lexeme !== Lexeme.Or) {
+            // don't evaluate right-hand-side of boolean expressions, to preserve short-circuiting
+            // behavior found in other languages. e.g. `foo() && bar()` won't execute `bar()` if
+            // `foo()` returns `false`.
+            right = this.evaluate(expression.right);
+        }
+
+        switch (lexeme) {
             case Lexeme.Minus:
                 if (isLong(left) && isLong(right)) {
                     return left.subtract(right);
@@ -215,6 +223,91 @@ export class Executioner implements Visitor<TokenLiteral> {
                     BrsError.make(
                         `Attempting to compare unexpected objects.
                         left: ${typeof left}
+                        right: ${typeof right}`,
+                        expression.token.line
+                    );
+                    return;
+                }
+            case Lexeme.And:
+                if (left === false) {
+                    // short-circuit ANDs - don't evaluate RHS if LHS is false
+                    return false;
+                } else if (left === true) {
+                    right = this.evaluate(expression.right);
+                    if (typeof right === "boolean") {
+                        return left && right;
+                    }
+
+                    BrsError.make(
+                        `Attempting to 'and' boolean with non-boolean expression
+                        right: ${typeof right}`,
+                        expression.token.line
+                    );
+                    return;
+                } else if (isNumber(left) || isLong(left)) {
+                    right = this.evaluate(expression.right);
+                    if (isNumber(left) && isNumber(right)) {
+                        return left & right;
+                    }
+
+                    if (isLong(left) && isLong(right)) {
+                        return left.and(right);
+                    }
+
+                    // TODO: figure out how to handle 32-bit int AND 64-bit int
+                    BrsError.make(
+                        `Attempting to bitwise 'and' number with non-numeric expression
+                        right: ${typeof right}`,
+                        expression.token.line
+                    );
+                    return;
+                } else {
+                    BrsError.make(
+                        `Attempting to 'and' unexpected expressions
+                        left: ${typeof left},
+                        right: ${typeof this.evaluate(expression.right)}`,
+                        expression.token.line
+                    );
+                    return;
+                }
+            case Lexeme.Or:
+                if (left === true) {
+                    // short-circuit ORs - don't evaluate RHS if LHS is true
+                    return true;
+                } else if (left === false) {
+                    right = this.evaluate(expression.right);
+                    if (typeof right === "boolean") {
+                        return left || right;
+                    } else {
+                        BrsError.make(
+                            `Attempting to 'or' boolean with non-boolean expression
+                            right: ${typeof right}`,
+                            expression.token.line
+                        );
+                        return;
+                    }
+                } else if (isNumber(left) || isLong(left)) {
+                    right = this.evaluate(expression.right);
+                    if (isNumber(left) && isNumber(right)) {
+                        // numbers use bitwise OR
+                        return left | right;
+                    }
+
+                    if (isLong(left) && isLong(right)) {
+                        return left.or(right);
+                    }
+
+                    // TODO: figure out how to handle 32-bit int OR 64-bit int
+                    BrsError.make(
+                        `Attempting to bitwise 'or' number with non-numeric expression
+                        right: ${typeof right}`,
+                        expression.token.line
+                    );
+                    return;
+                } else {
+                    BrsError.make(
+                        `Attempting to 'or' unexpected objects
+                        left: ${typeof left},
                         right: ${typeof right}`,
                         expression.token.line
                     );

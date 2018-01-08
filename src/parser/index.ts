@@ -19,7 +19,19 @@ export function parse(toParse: ReadonlyArray<Token>) {
 }
 
 function expression(): Expression {
-    return relational();
+    return boolean();
+}
+
+function boolean(): Expression {
+    let expr = relational();
+
+    while (match(Lexeme.And, Lexeme.Or)) {
+        let operator = previous();
+        let right = relational();
+        expr = new Expr.Binary(expr, operator, right);
+    }
+
+    return expr;
 }
 
 function relational(): Expression {

@@ -24,6 +24,15 @@ describe("lexer", () => {
         ]);
     });
 
+    it("aliases '?' to 'print'", () => {
+        let tokens = Lexer.scan("?2");
+        expect(tokens.map(t => t.kind)).toEqual([
+            Lexeme.Print,
+            Lexeme.Integer,
+            Lexeme.Eof
+        ]);
+    });
+
     describe("comments", () => {
         it("ignores everything after `'`", () => {
             let tokens = Lexer.scan("= ' (");

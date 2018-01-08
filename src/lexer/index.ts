@@ -77,6 +77,7 @@ function scanToken(): void {
         case "^": addToken(Lexeme.Caret); break;
         case "\\": addToken(Lexeme.Backslash); break;
         case ":": addToken(Lexeme.Colon); break;
+        case "?": addToken(Lexeme.Print); break;
         case "<":
             switch (peek()) {
                 case "=":

@@ -152,26 +152,30 @@ describe("executioner", () => {
     it("bitwise ANDs integers", () => {
         // 110 AND 101 = 100
         // (6)     (5) = (4)
-        let ast = new Expr.Binary(
-            new Expr.Literal(6),
-            token(Lexeme.And),
-            new Expr.Literal(5)
+        let ast = new Stmt.Expression(
+            new Expr.Binary(
+                new Expr.Literal(6),
+                token(Lexeme.And),
+                new Expr.Literal(5)
+            )
         );
 
-        let result = executioner.exec(ast);
-        expect(result).toBe(4);
+        let result = executioner.exec([ast]);
+        expect(result).toEqual([4]);
     });
 
     it("bitwise ORs integers", () => {
         // 110 OR 011 = 111
         // (6)    (3) = (7)
-        let ast = new Expr.Binary(
-            new Expr.Literal(6),
-            token(Lexeme.Or),
-            new Expr.Literal(3)
+        let ast = new Stmt.Expression(
+            new Expr.Binary(
+                new Expr.Literal(6),
+                token(Lexeme.Or),
+                new Expr.Literal(3)
+            )
         );
 
-        let result = executioner.exec(ast);
-        expect(result).toBe(7);
+        let result = executioner.exec([ast]);
+        expect(result).toEqual([7]);
     });
 });

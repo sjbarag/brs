@@ -1,9 +1,8 @@
 import * as Expr from "../parser/Expression";
-import { Visitor } from "./";
 import { Literal as TokenLiteral, Invalid } from "../Token";
 
 /** Creates a pretty-printed representation of an expression to ease debugging. */
-export class AstPrinter implements Visitor<string> {
+export class AstPrinter implements Expr.Visitor<string> {
     private indent: number;
     /**
      * Pretty-prints an expression for debugging purposes.

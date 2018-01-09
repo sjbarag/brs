@@ -6,8 +6,8 @@ import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./visitor/AstPrinter";
 import { Executioner, isLong } from "./visitor/Executioner";
+import { stringify } from "./Stringify";
 import * as BrsError from "./Error";
-
 
 export function execute(filename: string) {
     fs.readFile(filename, "utf-8", (err, contents) => {
@@ -27,8 +27,10 @@ export function repl() {
     rl.setPrompt("brs> ");
 
     rl.on("line", (line) => {
-        let result = run(line);
-        console.log(stringify(result));
+        let results = run(line);
+        if (results) {
+            results.map(result => console.log(stringify(result)));
+        }
 
         BrsError.reset();
         rl.prompt();
@@ -39,22 +41,14 @@ export function repl() {
 
 function run(contents: string) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
-    const expr = Parser.parse(tokens);
+    const statements = Parser.parse(tokens);
 
     if (BrsError.found()) {
         return;
     }
 
     const executioner = new Executioner();
-    return executioner.exec(expr!);
-}
+    if (!statements) { return; }
 
-function stringify(value: TokenLiteral) {
-    if (value === undefined) {
-        return "invalid";
-    } else if (isLong(value)) {
-        return value.toString();
-    } else {
-        return JSON.stringify(value);
-    }
+    return executioner.exec(statements);
 }

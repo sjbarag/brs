@@ -1,5 +1,18 @@
-import { Visitor } from "../visitor";
 import { Token, Literal as TokenLiteral } from "../Token";
+
+export interface Visitor<T> {
+    visitAssign(expression: Assign): T;
+    visitBinary(expression: Binary): T;
+    visitCall(expression: Call): T;
+    visitGet(expression: Get): T;
+    visitGrouping(expression: Grouping): T;
+    visitLiteral(expression: Literal): T;
+    visitLogical(expression: Logical): T;
+    visitM(expression: M): T;
+    visitSet(expression: Set): T;
+    visitUnary(expression: Unary): T;
+    visitVariable(expression: Variable): T;
+}
 
 export interface Expression {
     accept <R> (visitor: Visitor<R>): R;

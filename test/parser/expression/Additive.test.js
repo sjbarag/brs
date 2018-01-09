@@ -1,9 +1,9 @@
-const Parser = require("../../lib/parser");
-const Expr = require("../../lib/parser/Expression");
-const { Lexeme } = require("../../lib/Lexeme");
-const BrsError = require("../../lib/Error");
+const Parser = require("../../../lib/parser");
+const Expr = require("../../../lib/parser/Expression");
+const { Lexeme } = require("../../../lib/Lexeme");
+const BrsError = require("../../../lib/Error");
 
-const { token, EOF } = require("./ParserTests");
+const { token, EOF } = require("../ParserTests");
 
 describe("parser", () => {
     afterEach(() => BrsError.reset());

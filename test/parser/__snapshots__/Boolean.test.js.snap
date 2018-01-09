@@ -1,33 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`parser boolean expressions parses boolean ANDs 1`] = `
-Binary {
-  "left": Literal {
-    "value": true,
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Literal {
+        "value": true,
+      },
+      "right": Literal {
+        "value": false,
+      },
+      "token": Object {
+        "kind": 31,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
   },
-  "right": Literal {
-    "value": false,
-  },
-  "token": Object {
-    "kind": 31,
-    "line": 1,
-    "literal": undefined,
-  },
-}
+]
 `;
 
 exports[`parser boolean expressions parses boolean ORs 1`] = `
-Binary {
-  "left": Literal {
-    "value": true,
+Array [
+  Expression {
+    "expression": Binary {
+      "left": Literal {
+        "value": true,
+      },
+      "right": Literal {
+        "value": false,
+      },
+      "token": Object {
+        "kind": 60,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
   },
-  "right": Literal {
-    "value": false,
-  },
-  "token": Object {
-    "kind": 60,
-    "line": 1,
-    "literal": undefined,
-  },
-}
+]
 `;

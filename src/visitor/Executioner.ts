@@ -24,6 +24,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
         return statements.map((statement) => this.execute(statement));
     }
 
+    visitAssignment(statement: Stmt.Assignment): TokenLiteral {
+        return undefined;
+    }
+
     visitExpression(statement: Stmt.Expression): TokenLiteral {
         return this.evaluate(statement.expression);
     }

@@ -13,17 +13,41 @@ export function parse(toParse: ReadonlyArray<Token>) {
     current = 0;
     tokens = toParse;
 
-    let statements = [];
+    let statements: Statement[] = [];
 
     try {
         while (!isAtEnd()) {
-            statements.push(statement());
+            let dec = declaration();
+            if (dec) {
+                statements.push(dec);
+            }
         }
 
         return statements;
     } catch (parseError) {
         return;
     }
+}
+
+function declaration(): Statement | undefined {
+    try {
+        if (match(Lexeme.Identifier)) {
+            return assignment();
+        }
+
+        return statement();
+    } catch (error) {
+        return;
+    }
+}
+
+function assignment(): Statement {
+    let name = previous();
+    consume("Expected '=' after idenfifier", Lexeme.Equal);
+    // TODO: support +=, -=, >>=, etc.
+
+    let value = expression();
+    return new Stmt.Assignment(name, value);
 }
 
 function statement(): Statement {
@@ -145,6 +169,8 @@ function primary(): Expression {
             let p = previous();
             let lit = new Expr.Literal(p.literal);
             return lit;
+        case match(Lexeme.Identifier):
+            return new Expr.Variable(previous());
         case match(Lexeme.LeftParen):
             let expr = expression();
             consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);

@@ -31,7 +31,7 @@ export function parse(toParse: ReadonlyArray<Token>) {
 
 function declaration(): Statement | undefined {
     try {
-        if (match(Lexeme.Identifier)) {
+        if (check(Lexeme.Identifier) && checkNext(Lexeme.Equal)) {
             return assignment();
         }
 
@@ -42,7 +42,7 @@ function declaration(): Statement | undefined {
 }
 
 function assignment(): Statement {
-    let name = previous();
+    let name = advance();
     consume("Expected '=' after idenfifier", Lexeme.Equal);
     // TODO: support +=, -=, >>=, etc.
 
@@ -212,8 +212,17 @@ function check(lexeme: Lexeme) {
     return peek().kind === lexeme;
 }
 
+function checkNext(lexeme: Lexeme) {
+    return peekNext().kind === lexeme;
+}
+
 function isAtEnd() {
     return peek().kind === Lexeme.Eof;
+}
+
+function peekNext() {
+    if (isAtEnd()) { return peek(); }
+    return tokens[current + 1];
 }
 
 function peek() {

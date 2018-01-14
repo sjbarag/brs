@@ -7,6 +7,8 @@ import { Lexeme } from "../Lexeme";
 import { stringify } from "../Stringify";
 import * as BrsError from "../Error";
 
+import Environment from "./Environment";
+
 export function isLong(arg: TokenLiteral): arg is Long {
     return Long.isLong(arg);
 }
@@ -20,11 +22,13 @@ function isString(arg: TokenLiteral): arg is string {
 }
 
 export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<TokenLiteral> {
+    private environment = new Environment();
+
     exec(statements: Stmt.Statement[]) {
         return statements.map((statement) => this.execute(statement));
     }
 
-    visitAssignment(statement: Stmt.Assignment): TokenLiteral {
+    visitAssign(statement: Expr.Assign): TokenLiteral {
         return undefined;
     }
 
@@ -38,8 +42,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
         return;
     }
 
-    visitAssign(expression: Expr.Assign) {
-        return undefined;
+    visitAssignment(statement: Stmt.Assignment): undefined {
+        let value = this.evaluate(statement.value);
+        this.environment.define(statement.name.text!, value);
+        return;
     }
 
     visitBinary(expression: Expr.Binary) {
@@ -389,7 +395,7 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
     }
 
     visitVariable(expression: Expr.Variable) {
-        return undefined;
+        return this.environment.get(expression.name);
     }
 
     evaluate(expression: Expr.Expression): TokenLiteral {

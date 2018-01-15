@@ -9,6 +9,19 @@ describe("parser", () => {
     afterEach(() => BrsError.reset());
 
     describe("variable declarations", () => {
+        it("allows newlines after assignments", () => {
+            let parsed = Parser.parse([
+                identifier("hasNewlines"),
+                token(Lexeme.Equal),
+                token(Lexeme.True),
+                token(Lexeme.Newline),
+                EOF
+            ]);
+
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+        });
+
         it("parses literal value assignments", () => {
             let parsed = Parser.parse([
                 identifier("foo"),

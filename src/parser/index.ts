@@ -31,6 +31,9 @@ export function parse(toParse: ReadonlyArray<Token>) {
 
 function declaration(): Statement | undefined {
     try {
+        // BrightScript is like python, in that variables can be declared without a `var`,
+        // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
+        // out what to do with it.
         if (check(Lexeme.Identifier) && checkNext(Lexeme.Equal)) {
             return assignment();
         }

@@ -16,5 +16,18 @@ exports.token = function(kind, literal) {
     };
 }
 
+/**
+ * Creates an Identifier token with the given `text`.
+ * @param {string} text
+ * @returns {object} a token with the provided `text`.
+ */
+exports.identifier = function(text) {
+    return {
+        kind: Lexeme.Identifier,
+        text: text,
+        line: 1
+    };
+}
+
 /** An end-of-file token. */
 exports.EOF = exports.token(Lexeme.Eof);

@@ -50,6 +50,7 @@ function assignment(): Statement {
     // TODO: support +=, -=, >>=, etc.
 
     let value = expression();
+    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
     return new Stmt.Assignment(name, value);
 }
 

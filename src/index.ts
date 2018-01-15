@@ -9,6 +9,8 @@ import { Executioner, isLong } from "./visitor/Executioner";
 import { stringify } from "./Stringify";
 import * as BrsError from "./Error";
 
+const executioner = new Executioner();
+
 export function execute(filename: string) {
     fs.readFile(filename, "utf-8", (err, contents) => {
         run(contents);
@@ -47,7 +49,6 @@ function run(contents: string) {
         return;
     }
 
-    const executioner = new Executioner();
     if (!statements) { return; }
 
     return executioner.exec(statements);

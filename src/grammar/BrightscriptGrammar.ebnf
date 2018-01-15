@@ -17,7 +17,29 @@
 
 (* Start from the top, a brightscript script will have a number of "statements" before reaching the end of the file *)
 program
-    : statementList? EOF
+    : declarationList? EOF
+    ;
+
+declarationList
+    : multiDeclaration+
+    ;
+
+(* brightscript supports multiple declarations on a line if they're separated bu ':' literals*)
+multiDeclaration
+    : singleAssignment (":" singleDeclaration)* NEWLINE
+    ;
+
+singleAssignment
+    : assignment
+    | statementList
+    ;
+
+assignment
+    : IDENTIFIER assignmentOperator expression
+    ;
+
+assignmentOperator
+    : ("=" | "*=" | "/=" | "\=" | "+=" | "-=" | "<<=" | ">>=")
     ;
 
 statementList
@@ -50,20 +72,7 @@ expressionStatement
     ;
 
 expression
-    : assignmentExpression
-    ;
-
-assignmentExpression
     : conditionalExpression
-    | assignment
-    ;
-
-assignment
-    : IDENTIFIER assignmentOperator expression
-    ;
-
-assignmentOperator
-    : ("=" | "*=" | "/=" | "\=" | "+=" | "-=" | "<<=" | ">>=")
     ;
 
 (*

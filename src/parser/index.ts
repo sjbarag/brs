@@ -13,17 +13,46 @@ export function parse(toParse: ReadonlyArray<Token>) {
     current = 0;
     tokens = toParse;
 
-    let statements = [];
+    let statements: Statement[] = [];
 
     try {
         while (!isAtEnd()) {
-            statements.push(statement());
+            let dec = declaration();
+            if (dec) {
+                statements.push(dec);
+            }
         }
 
         return statements;
     } catch (parseError) {
         return;
     }
+}
+
+function declaration(): Statement | undefined {
+    try {
+        // BrightScript is like python, in that variables can be declared without a `var`,
+        // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
+        // out what to do with it.
+        if (check(Lexeme.Identifier) && checkNext(Lexeme.Equal)) {
+            return assignment();
+        }
+
+        return statement();
+    } catch (error) {
+        synchronize();
+        return;
+    }
+}
+
+function assignment(): Statement {
+    let name = advance();
+    consume("Expected '=' after idenfifier", Lexeme.Equal);
+    // TODO: support +=, -=, >>=, etc.
+
+    let value = expression();
+    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    return new Stmt.Assignment(name, value);
 }
 
 function statement(): Statement {
@@ -145,6 +174,8 @@ function primary(): Expression {
             let p = previous();
             let lit = new Expr.Literal(p.literal);
             return lit;
+        case match(Lexeme.Identifier):
+            return new Expr.Variable(previous());
         case match(Lexeme.LeftParen):
             let expr = expression();
             consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
@@ -186,8 +217,17 @@ function check(lexeme: Lexeme) {
     return peek().kind === lexeme;
 }
 
+function checkNext(lexeme: Lexeme) {
+    return peekNext().kind === lexeme;
+}
+
 function isAtEnd() {
     return peek().kind === Lexeme.Eof;
+}
+
+function peekNext() {
+    if (isAtEnd()) { return peek(); }
+    return tokens[current + 1];
 }
 
 function peek() {

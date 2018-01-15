@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser variable declarations parses evaluated value assignments 1`] = `
+Array [
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "bar",
+    },
+    "value": Binary {
+      "left": Literal {
+        "value": 5,
+      },
+      "right": Literal {
+        "value": 3,
+      },
+      "token": Object {
+        "kind": 6,
+        "line": 1,
+        "literal": undefined,
+      },
+    },
+  },
+]
+`;
+
+exports[`parser variable declarations parses literal value assignments 1`] = `
+Array [
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "value": Literal {
+      "value": 5,
+    },
+  },
+]
+`;
+
+exports[`parser variable declarations parses variable aliasing 1`] = `
+Array [
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "baz",
+    },
+    "value": Variable {
+      "name": Object {
+        "kind": 21,
+        "line": 1,
+        "text": "foo",
+      },
+    },
+  },
+]
+`;

@@ -157,88 +157,64 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     return;
                 }
             case Lexeme.Greater:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.greaterThan(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).greaterThan(right);
                 } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
                     return left > right;
                 } else {
-                    BrsError.make(
-                        `Attempting to compare unexpected objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                    return false;
                 }
             case Lexeme.GreaterEqual:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.greaterThanOrEqual(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).greaterThanOrEqual(right);
                 } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
                     return left >= right;
                 } else {
-                    BrsError.make(
-                        `Attempting to compare unexpected objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                    return false;
                 }
             case Lexeme.Less:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.lessThan(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).lessThan(right);
                 } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
                     return left < right;
                 } else {
-                    BrsError.make(
-                        `Attempting to compare unexpected objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                    return false;
                 }
             case Lexeme.LessEqual:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.lessThanOrEqual(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).lessThanOrEqual(right);
                 } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
                     return left <= right;
                 } else {
-                    BrsError.make(
-                        `Attempting to compare unexpected objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                    return false;
                 }
             case Lexeme.Equal:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.equals(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).equals(right);
                 } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
                     return left === right;
                 } else {
-                    BrsError.make(
-                        `Attempting to compare unexpected objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                    return false;
                 }
             case Lexeme.LessGreater:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.notEquals(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).notEquals(right);
                 } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
                     return left !== right;
                 } else {
-                    BrsError.make(
-                        `Attempting to compare unexpected objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                    return true;
                 }
             case Lexeme.And:
                 if (left === false) {
@@ -258,11 +234,15 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     return;
                 } else if (isNumber(left) || isLong(left)) {
                     right = this.evaluate(expression.right);
-                    if (isNumber(left) && isNumber(right)) {
-                        return left & right;
+                    if (isNumber(left)) {
+                        if (isNumber(right)) {
+                            return left & right;
+                        } else if (isLong(right)) {
+                            return Long.fromNumber(left).and(right);
+                        }
                     }
 
-                    if (isLong(left) && isLong(right)) {
+                    if (isLong(left) && (isLong(right) || isNumber(right))) {
                         return left.and(right);
                     }
 
@@ -300,12 +280,16 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     }
                 } else if (isNumber(left) || isLong(left)) {
                     right = this.evaluate(expression.right);
-                    if (isNumber(left) && isNumber(right)) {
-                        // numbers use bitwise OR
-                        return left | right;
+                    // numbers use bitwise OR
+                    if (isNumber(left)) {
+                        if (isNumber(right)) {
+                            return left | right;
+                        } else if (isLong(right)) {
+                            return Long.fromNumber(left).or(right);
+                        }
                     }
 
-                    if (isLong(left) && isLong(right)) {
+                    if (isLong(left) && (isLong(right) || isNumber(right))) {
                         return left.or(right);
                     }
 

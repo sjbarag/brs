@@ -52,8 +52,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
 
         switch (lexeme) {
             case Lexeme.Minus:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.subtract(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).subtract(right);
                 } else if (isNumber(left) && isNumber(right)) {
                     return left - right;
                 } else {
@@ -66,8 +68,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     return;
                 }
             case Lexeme.Star:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.multiply(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).multiply(right);
                 } else if (isNumber(left) && isNumber(right)) {
                     return left * right;
                 } else {
@@ -83,8 +87,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                 if (isLong(left) && (isLong(right) || isNumber(right))) {
                     // TODO: Figure out how to exponentiate Longs
                     return;
-                } else if (isNumber(left) && isNumber(right)) {
+                } else if (isNumber(left) && isLong(right)) {
                     // TODO: See if we can use a Long as an exponent
+                    return;
+                } else if (isNumber(left) && isNumber(right)) {
                     return Math.pow(left, right);
                 } else {
                     BrsError.make(
@@ -96,24 +102,31 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     return;
                 }
             case Lexeme.Slash:
-                if (isLong(left) && isLong(right)) {
-                    return left.divide(right);
-                } else if (isNumber(left) && isNumber(right)) {
-                    // TODO: Figure out how to handle type promotion
-                    // https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types#Expressions,Variables,andTypes-TypeConversion(Promotion)
-                    return left / right;
-                } else {
-                    BrsError.make(
-                        `Attempting to divide non-numeric objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
-                        expression.token.line
-                    );
-                    return;
+                if (isLong(left)) {
+                    if (isLong(right)) {
+                        return left.toNumber() / right.toNumber();;
+                    } else if (isNumber(right)) {
+                        return left.toNumber() / right;
+                    }
+                } else if (isNumber(left)) {
+                    if (isLong(right)) {
+                        return left / right.toNumber();
+                    } else if (isNumber(right)) {
+                        return left / right;
+                    }
                 }
+                BrsError.make(
+                    `Attempting to divide non-numeric objects.
+                    left: ${typeof left}
+                    right: ${typeof right}`,
+                    expression.token.line
+                );
+                return;
             case Lexeme.Mod:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.modulo(right)
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).modulo(right);
                 } else if (isNumber(left) && isNumber(right)) {
                     return left % right;
                 } else {
@@ -126,9 +139,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     return;
                 }
             case Lexeme.Backslash:
-                if (isLong(left) && isLong(right)) {
-                    // TODO: Figure out if this is actually safe for integer division
-                    return left.divide(right).toInt();
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
+                    return left.divide(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Math.floor(left / right.toNumber());
                 } else if (isNumber(left) && isNumber(right)) {
                     return Math.floor(left / right);
                 } else {
@@ -141,8 +155,10 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
                     return;
                 }
             case Lexeme.Plus:
-                if (isLong(left) && isLong(right)) {
+                if (isLong(left) && (isLong(right) || isNumber(right))) {
                     return left.add(right);
+                } else if (isNumber(left) && isLong(right)) {
+                    return Long.fromNumber(left).add(right);
                 } else if (isNumber(left) && isNumber(right)) {
                     return left + right;
                 } else if (isString(left) && isString(right)) {

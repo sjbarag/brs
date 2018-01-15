@@ -2,12 +2,21 @@ import * as Expr from "./Expression";
 import { Token } from "../Token";
 
 export interface Visitor<T> {
+    visitAssignment(statement: Assignment): T;
     visitExpression(statement: Expression): T;
     visitPrint(statement: Print): T;
 }
 
 export interface Statement {
     accept <R> (visitor: Visitor<R>): R;
+}
+
+export class Assignment implements Statement {
+    constructor(readonly name: Token, readonly value: Expr.Expression) {}
+
+    accept<R>(visitor: Visitor<R>): R {
+        return visitor.visitAssignment(this);
+    }
 }
 
 export class Block implements Statement {

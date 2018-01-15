@@ -40,6 +40,7 @@ function declaration(): Statement | undefined {
 
         return statement();
     } catch (error) {
+        synchronize();
         return;
     }
 }

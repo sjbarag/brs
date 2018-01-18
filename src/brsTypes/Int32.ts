@@ -13,18 +13,18 @@ export class Int32 implements IInt32 {
 
     /**
      * Creates a new BrightScript 32-bit integer value representing the provided `value`.
-     * @param value the value to store in the BrightScript number, truncated to 32-bit integer
-     *              precision.
+     * @param value the value to store in the BrightScript number, rounded to the nearest 32-bit
+     *              integer.
      */
     constructor(initialValue: number) {
-        this.value = Math.trunc(initialValue);
+        this.value = Math.round(initialValue);
     }
 
     /**
      * Creates a new BrightScript 32-bit integer value representing the integer contained in
      * `asString`.
      * @param asString the string representation of the value to store in the BrightScript 32-bit
-     *                 int. Will be truncated to a 32-bit integer.
+     *                 int. Will be rounded to the nearest 32-bit integer.
      * @returns a BrightScript 32-bit integer value representing `asString`.
      */
     static fromString(asString: string): Int32 {

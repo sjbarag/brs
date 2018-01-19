@@ -47,9 +47,9 @@ export interface Numeric {
     /**
      * Divides the current number by `rhs` and returns the result.
      * @param rhs The right-hand side value to divide the current value by.
-     * @returns The current value / `rhs`, with precision matching `max(current, rhs)`.
+     * @returns The current value / `rhs`, with floating-point precision matching `max(current, rhs)`.
      */
-    divide(rhs: BrsNumber): BrsNumber;
+    divide(rhs: BrsNumber): IFloat | IDouble;
 
     /**
      * Modulos the current number by `rhs`. I.e. divides the current number by `rhs` and returns

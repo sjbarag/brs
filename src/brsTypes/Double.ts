@@ -1,4 +1,4 @@
-import { NumberKind, BrsNumber, IDouble } from "./BrsNumber";
+import { NumberKind, BrsNumber, IDouble, IInt32, IInt64, IFloat } from "./BrsNumber";
 import { Int32 } from "./Int32";
 import { Float } from "./Float";
 
@@ -66,7 +66,7 @@ export class Double implements IDouble {
         }
     }
 
-    divide(rhs: BrsNumber): BrsNumber {
+    divide(rhs: BrsNumber): IFloat | IDouble {
         switch (rhs.kind) {
             case NumberKind.Int64:
                 // TODO: Confirm that (double) - (int64) -> (double)

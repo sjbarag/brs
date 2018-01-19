@@ -29,19 +29,48 @@ export class Int64 implements IInt64 {
             case NumberKind.Int64:
                 return new Int64(this.getValue().add(rhs.getValue()));
             case NumberKind.Float:
-            case NumberKind.Double:
                 return new Float(this.getValue().toNumber() + rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue().toNumber() + rhs.getValue());
         }
     }
+
     subtract(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Int64:
+                return new Int64(this.getValue().subtract(rhs.getValue()));
+            case NumberKind.Float:
+                return new Float(this.getValue().toNumber() - rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue().toNumber() - rhs.getValue());
+        }
     }
+
     multiply(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Int64:
+                return new Int64(this.getValue().multiply(rhs.getValue()));
+            case NumberKind.Float:
+                return new Float(this.getValue().toNumber() * rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue().toNumber() * rhs.getValue());
+        }
     }
+
     divide(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Int64:
+                return new Int64(this.getValue().divide(rhs.getValue()));
+            case NumberKind.Float:
+                return new Float(this.getValue().toNumber() / rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue().toNumber() / rhs.getValue());
+        }
     }
+
     modulo(rhs: BrsNumber): BrsNumber {
         throw new Error("Method not implemented.");
     }

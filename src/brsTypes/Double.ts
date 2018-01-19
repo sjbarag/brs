@@ -1,4 +1,4 @@
-import { NumberKind, BrsNumber, IDouble } from "./BrsType";
+import { NumberKind, BrsNumber, IDouble } from "./BrsNumber";
 import { Int32 } from "./Int32";
 import { Float } from "./Float";
 

@@ -85,15 +85,50 @@ export class Int32 implements IInt32 {
         }
     }
 
-    modulo(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+    modulo(rhs: BrsNumber): IInt32 | IInt64 {
+        switch (rhs.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Float:
+            case NumberKind.Double:
+                // TODO: Is 32-bit precision enough here?
+                return new Int32(this.getValue() % rhs.getValue());
+            case NumberKind.Int64:
+                return new Int64(rhs.getValue().modulo(this.getValue()));
+        }
     }
 
-    intDivide(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+    intDivide(rhs: BrsNumber): IInt32 | IInt64 {
+        switch (rhs.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Float:
+            case NumberKind.Double:
+                // TODO: Is 32-bit precision enough here?
+                return new Int32(
+                    Math.trunc(this.getValue() / rhs.getValue())
+                );
+            case NumberKind.Int64:
+                return new Int64(
+                    Math.trunc(this.getValue()  / rhs.getValue().toNumber())
+                );
+        }
     }
 
     pow(exponent: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (exponent.kind) {
+            case NumberKind.Int32:
+                return new Float(
+                    Math.pow(this.getValue(), exponent.getValue())
+                );
+            case NumberKind.Int64:
+                return new Int64(this.getValue()).pow(exponent);
+            case NumberKind.Float:
+                return new Float(
+                    Math.pow(this.getValue(), exponent.getValue())
+                );
+            case NumberKind.Double:
+                return new Double(
+                    Math.pow(this.getValue(), exponent.getValue())
+                );
+        }
     }
 }

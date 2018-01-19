@@ -2,6 +2,7 @@ import * as Long from "long";
 import { NumberKind, BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
 import { Float } from "./Float";
 import { Double } from "./Double";
+import { Int32 } from "./Int32";
 
 export class Int64 implements IInt64 {
     readonly kind = NumberKind.Int64;
@@ -71,13 +72,34 @@ export class Int64 implements IInt64 {
         }
     }
 
-    modulo(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+    modulo(rhs: BrsNumber): IInt32 | IInt64 {
+        switch (rhs.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Int64:
+                return new Int64(this.getValue().modulo(rhs.getValue()));
+            case NumberKind.Float:
+                return new Int32(this.getValue().toNumber() % rhs.getValue());
+            case NumberKind.Double:
+                return new Int32(this.getValue().toNumber() % rhs.getValue());
+        }
     }
-    intDivide(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+
+    intDivide(rhs: BrsNumber): IInt32 | IInt64 {
+        return new Int64(this.getValue().divide(rhs.getValue()));
     }
+
     pow(exponent: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (exponent.kind) {
+            case NumberKind.Int32:
+            case NumberKind.Float:
+            case NumberKind.Double:
+                return new Int64(
+                    Math.pow(this.getValue().toNumber(), exponent.getValue())
+                );
+            case NumberKind.Int64:
+                return new Int64(
+                    Math.pow(this.getValue().toNumber(), exponent.getValue().toNumber())
+                );
+        }
     }
 }

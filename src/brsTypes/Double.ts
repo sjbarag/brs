@@ -43,15 +43,39 @@ export class Double implements IDouble {
     }
 
     subtract(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int64:
+                // TODO: Confirm that (double) - (int64) -> (double)
+                return new Double(this.getValue() - rhs.getValue().toNumber());
+            case NumberKind.Int32:
+            case NumberKind.Float:
+            case NumberKind.Double:
+                return new Double(this.getValue() - rhs.getValue());
+        }
     }
 
     multiply(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int64:
+                // TODO: Confirm that (double) - (int64) -> (double)
+                return new Double(this.getValue() * rhs.getValue().toNumber());
+            case NumberKind.Int32:
+            case NumberKind.Float:
+            case NumberKind.Double:
+                return new Double(this.getValue() * rhs.getValue());
+        }
     }
 
     divide(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int64:
+                // TODO: Confirm that (double) - (int64) -> (double)
+                return new Double(this.getValue() / rhs.getValue().toNumber());
+            case NumberKind.Int32:
+            case NumberKind.Float:
+            case NumberKind.Double:
+                return new Double(this.getValue() / rhs.getValue());
+        }
     }
 
     modulo(rhs: BrsNumber): BrsNumber {

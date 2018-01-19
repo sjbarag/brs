@@ -42,14 +42,43 @@ export class Float implements IFloat {
                 return new Double(this.getValue() + rhs.getValue());
         }
     }
+
     subtract(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int64:
+                // TODO: Confirm that (float) - (int64) -> (float)
+                return new Float(this.getValue() - rhs.getValue().toNumber());
+            case NumberKind.Int32:
+            case NumberKind.Float:
+                return new Float(this.getValue() - rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue() - rhs.getValue());
+        }
     }
+
     multiply(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int64:
+                // TODO: Confirm that (float) * (int64) -> (float)
+                return new Float(this.getValue() * rhs.getValue().toNumber());
+            case NumberKind.Int32:
+            case NumberKind.Float:
+                return new Float(this.getValue() * rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue() * rhs.getValue());
+        }
     }
     divide(rhs: BrsNumber): BrsNumber {
-        throw new Error("Method not implemented.");
+        switch (rhs.kind) {
+            case NumberKind.Int64:
+                // TODO: Confirm that (float) / (int64) -> (float)
+                return new Float(this.getValue() / rhs.getValue().toNumber());
+            case NumberKind.Int32:
+            case NumberKind.Float:
+                return new Float(this.getValue() / rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue() / rhs.getValue());
+        }
     }
     modulo(rhs: BrsNumber): BrsNumber {
         throw new Error("Method not implemented.");

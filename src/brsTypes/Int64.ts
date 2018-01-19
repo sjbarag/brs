@@ -1,5 +1,5 @@
 import Long = require("long");
-import { NumberKind, BrsNumber, IInt64 } from "./BrsType";
+import { NumberKind, BrsNumber, IInt64 } from "./BrsNumber";
 import { Float } from "./Float";
 import { Double } from "./Double";
 

@@ -1,5 +1,5 @@
-import Long = require("long");
-import { NumberKind, BrsNumber, IInt64 } from "./BrsNumber";
+import * as Long from "long";
+import { NumberKind, BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
 import { Float } from "./Float";
 import { Double } from "./Double";
 
@@ -59,11 +59,11 @@ export class Int64 implements IInt64 {
         }
     }
 
-    divide(rhs: BrsNumber): BrsNumber {
+    divide(rhs: BrsNumber): IFloat | IDouble {
         switch (rhs.kind) {
             case NumberKind.Int32:
             case NumberKind.Int64:
-                return new Int64(this.getValue().divide(rhs.getValue()));
+                return new Float(this.getValue().divide(rhs.getValue()).toNumber());
             case NumberKind.Float:
                 return new Float(this.getValue().toNumber() / rhs.getValue());
             case NumberKind.Double:

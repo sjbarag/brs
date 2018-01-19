@@ -1,4 +1,4 @@
-import { NumberKind, BrsNumber, IFloat } from "./BrsNumber";
+import { NumberKind, BrsNumber, IFloat, IDouble, IInt32, IInt64 } from "./BrsNumber";
 import { Int32 } from "./Int32";
 import { Double } from "./Double";
 
@@ -68,7 +68,8 @@ export class Float implements IFloat {
                 return new Double(this.getValue() * rhs.getValue());
         }
     }
-    divide(rhs: BrsNumber): BrsNumber {
+
+    divide(rhs: BrsNumber): IFloat | IDouble {
         switch (rhs.kind) {
             case NumberKind.Int64:
                 // TODO: Confirm that (float) / (int64) -> (float)

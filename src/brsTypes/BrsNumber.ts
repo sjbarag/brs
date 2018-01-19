@@ -53,19 +53,21 @@ export interface Numeric {
 
     /**
      * Modulos the current number by `rhs`. I.e. divides the current number by `rhs` and returns
-     * the *integral part* of the result.
-     * @param rhs The right-hand side value to integer-divide the current value by.
-     * @returns The current value \ `rhs`, with precision matching `max(current, rhs)`.
+     * the *whole-number remainder* of the result.
+     * @param rhs The right-hand side value to modulo the current value by.
+     * @returns The current value MOD `rhs` with 64-bit integer precision if `rhs` is an Int64,
+     *          otherwise 32-bit integer precision.
      */
-    modulo(rhs: BrsNumber): BrsNumber;
+    modulo(rhs: BrsNumber): IInt32 | IInt64;
 
     /**
      * Integer-divides the current number by `rhs`. I.e. divides the current number by `rhs` and
-     * returns the of the result.
-     * @param rhs The right-hand side value to modulo the current value by.
-     * @returns The current value MOD `rhs`, with precision matching `max(current, rhs)`.
+     * returns the *integral part* of the result.
+     * @param rhs The right-hand side value to integer-divide the current value by.
+     * @returns The current value \ `rhs` with 64-bit integer precision if `rhs` is an Int64,
+     *          otherwise 32-bit integer precision.
      */
-    intDivide(rhs: BrsNumber): BrsNumber;
+    intDivide(rhs: BrsNumber): IInt32 | IInt64;
 
     /**
      * Calculates the current value to the power of `exponent`.

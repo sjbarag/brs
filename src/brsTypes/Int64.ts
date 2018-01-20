@@ -20,9 +20,32 @@ export class Int64 implements IInt64 {
         if (value instanceof Long) {
             this.value = value;
         } else {
-            this.value = Long.fromNumber(value);
+            this.value = Long.fromNumber(
+                Math.round(value)
+            );
         }
     }
+
+    /**
+     * Creates a new BrightScript 64-bit integer value representing the integer contained in
+     * `asString`.
+     * @param asString the string representation of the value to store in the BrightScript 64-bit
+     *                 int. Will be rounded to the nearest 64-bit integer.
+     * @returns a BrightScript 64-bit integer value representing `asString`.
+     */
+    static fromString(asString: string): Int64 {
+        let i64 = new Int64(Long.fromString(asString));
+        const decimalLocation = asString.indexOf(".");
+        if (decimalLocation > -1 && (decimalLocation + 1) < asString.length) {
+            // Long.fromString truncates to integers instead of rounding, so manually add one to
+            // compensate if necessary
+            if (asString[decimalLocation + 1] >= "5" && asString[decimalLocation + 1] <= "9") {
+                i64 = new Int64(i64.getValue().add(Long.ONE));
+            }
+        }
+        return i64;
+    }
+
 
     add(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
@@ -85,15 +108,21 @@ export class Int64 implements IInt64 {
     }
 
     intDivide(rhs: BrsNumber): IInt32 | IInt64 {
-        return new Int64(this.getValue().divide(rhs.getValue()));
+        return new Double(this.getValue().toNumber()).intDivide(rhs);
     }
 
     pow(exponent: BrsNumber): BrsNumber {
         switch (exponent.kind) {
             case NumberKind.Int32:
-            case NumberKind.Float:
-            case NumberKind.Double:
                 return new Int64(
+                    Math.pow(this.getValue().toNumber(), exponent.getValue())
+                );
+            case NumberKind.Float:
+                return new Float(
+                    Math.pow(this.getValue().toNumber(), exponent.getValue())
+                );
+            case NumberKind.Double:
+                return new Double(
                     Math.pow(this.getValue().toNumber(), exponent.getValue())
                 );
             case NumberKind.Int64:

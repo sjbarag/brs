@@ -28,7 +28,7 @@ export class Int32 implements IInt32 {
      * @returns a BrightScript 32-bit integer value representing `asString`.
      */
     static fromString(asString: string): Int32 {
-        return new Int32(Number.parseInt(asString));
+        return new Int32(Number.parseFloat(asString));
     }
 
     add(rhs: BrsNumber): BrsNumber {
@@ -49,7 +49,7 @@ export class Int32 implements IInt32 {
             case NumberKind.Int32:
                 return new Int32(this.getValue() - rhs.getValue());
             case NumberKind.Int64:
-                return new Int64(rhs.getValue().subtract(this.getValue()));
+                return new Int64(this.getValue()).subtract(rhs);
             case NumberKind.Float:
                 return new Float(this.getValue() - rhs.getValue());
             case NumberKind.Double:
@@ -93,7 +93,7 @@ export class Int32 implements IInt32 {
                 // TODO: Is 32-bit precision enough here?
                 return new Int32(this.getValue() % rhs.getValue());
             case NumberKind.Int64:
-                return new Int64(rhs.getValue().modulo(this.getValue()));
+                return new Int64(this.getValue()).modulo(rhs);
         }
     }
 

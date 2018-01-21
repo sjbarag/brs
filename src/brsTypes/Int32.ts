@@ -85,13 +85,14 @@ export class Int32 implements IInt32 {
         }
     }
 
-    modulo(rhs: BrsNumber): IInt32 | IInt64 {
+    modulo(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
             case NumberKind.Int32:
-            case NumberKind.Float:
-            case NumberKind.Double:
-                // TODO: Is 32-bit precision enough here?
                 return new Int32(this.getValue() % rhs.getValue());
+            case NumberKind.Float:
+                return new Float(this.getValue() % rhs.getValue());
+            case NumberKind.Double:
+                return new Double(this.getValue() % rhs.getValue());
             case NumberKind.Int64:
                 return new Int64(this.getValue()).modulo(rhs);
         }

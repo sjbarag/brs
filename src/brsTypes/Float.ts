@@ -83,19 +83,15 @@ export class Float implements IFloat {
         }
     }
 
-    modulo(rhs: BrsNumber): IInt32 | IInt64 {
+    modulo(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
             case NumberKind.Int32:
             case NumberKind.Float:
+                return new Float(this.getValue() % rhs.getValue());
             case NumberKind.Double:
-                // TODO: Is 32-bit precision enough here?
-                return new Int32(this.getValue() % rhs.getValue());
+                return new Double(this.getValue() % rhs.getValue());
             case NumberKind.Int64:
-                return new Int64(
-                    new Int64(this.getValue())
-                        .getValue()
-                        .mod(rhs.getValue())
-                );
+                return new Float(this.getValue() % rhs.getValue().toNumber());
         }
     }
 
@@ -121,7 +117,9 @@ export class Float implements IFloat {
                     Math.pow(this.getValue(), exponent.getValue())
                 );
             case NumberKind.Int64:
-                return new Int64(this.getValue()).pow(exponent);
+                return new Float(
+                    Math.pow(this.getValue(), exponent.getValue().toNumber())
+                );
             case NumberKind.Float:
                 return new Float(
                     Math.pow(this.getValue(), exponent.getValue())

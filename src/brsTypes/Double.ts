@@ -79,19 +79,14 @@ export class Double implements IDouble {
         }
     }
 
-    modulo(rhs: BrsNumber): IInt32 | IInt64 {
+    modulo(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
             case NumberKind.Int32:
             case NumberKind.Float:
             case NumberKind.Double:
-                // TODO: Is 32-bit precision enough here?
-                return new Int32(this.getValue() % rhs.getValue());
+                return new Double(this.getValue() % rhs.getValue());
             case NumberKind.Int64:
-                return new Int64(
-                    new Int64(this.getValue())
-                        .getValue()
-                        .mod(rhs.getValue())
-                );
+                return new Double(this.getValue() % rhs.getValue().toNumber());
         }
     }
 

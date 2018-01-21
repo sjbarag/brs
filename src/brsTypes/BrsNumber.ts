@@ -58,7 +58,7 @@ export interface Numeric {
      * @returns The current value MOD `rhs` with 64-bit integer precision if `rhs` is an Int64,
      *          otherwise 32-bit integer precision.
      */
-    modulo(rhs: BrsNumber): IInt32 | IInt64;
+    modulo(rhs: BrsNumber): BrsNumber;
 
     /**
      * Integer-divides the current number by `rhs`. I.e. divides the current number by `rhs` and

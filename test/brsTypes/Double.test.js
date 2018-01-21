@@ -1,207 +1,207 @@
 const BrsTypes = require("../../lib/brsTypes");
 
-describe("Int32", () => {
-    it("rounds initial values to integers", () => {
-        let three = new BrsTypes.Int32(3.4);
-        let four = new BrsTypes.Int32(3.5);
-        expect(three.getValue()).toBe(3);
-        expect(four.getValue()).toBe(4);
+describe("Double", () => {
+    it("doesn't rounds initial values", () => {
+        let threePointFour = new BrsTypes.Double(3.4);
+        let threePointFive = new BrsTypes.Double(3.5);
+        expect(threePointFour.getValue()).toBeCloseTo(3.4, 5);
+        expect(threePointFive.getValue()).toBeCloseTo(3.5, 5);
     });
 
-    it("creates integers from strings", () => {
-        let three = BrsTypes.Int32.fromString("3.4");
-        let four = BrsTypes.Int32.fromString("3.5");
-        expect(three.getValue()).toBe(3);
-        expect(four.getValue()).toBe(4);
+    it("creates floats from strings", () => {
+        let threePointFour = BrsTypes.Double.fromString("3.4");
+        let threePointFive = BrsTypes.Double.fromString("3.5");
+        expect(threePointFour.getValue()).toBeCloseTo(3.4, 5);
+        expect(threePointFive.getValue()).toBeCloseTo(3.5, 5);
     });
 
     describe("addition", () => {
-        let five = new BrsTypes.Int32(5);
+        let fivePointFive = new BrsTypes.Double(5.5);
 
         it("adds Int32 right-hand sides", () => {
             let four = new BrsTypes.Int32(4);
-            let result = five.add(four);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
-            expect(result.getValue()).toBe(9);
+            let result = fivePointFive.add(four);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(9.5);
         });
 
         it("adds Int64 right-hand sides", () => {
             let four = new BrsTypes.Int64(4);
-            let result = five.add(four);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int64);
-            expect(result.getValue().toNumber()).toBe(9);
+            let result = fivePointFive.add(four);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(9.5);
         });
 
         it("adds Float right-hand sides", () => {
             let fourPointFive = new BrsTypes.Float(4.5);
-            let result = five.add(fourPointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(9.5);
+            let result = fivePointFive.add(fourPointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(10);
         });
 
         it("adds Double right-hand sides", () => {
             let fourPointFive = new BrsTypes.Double(4.5);
-            let result = five.add(fourPointFive);
+            let result = fivePointFive.add(fourPointFive);
             expect(result.kind).toBe(BrsTypes.NumberKind.Double);
-            expect(result.getValue()).toBe(9.5);
+            expect(result.getValue()).toBe(10);
         });
     });
 
     describe("subtraction", () => {
-        let five = new BrsTypes.Int32(5);
+        let fivePointFive = new BrsTypes.Double(5.5);
 
         it("subtracts Int32 right-hand sides", () => {
             let four = new BrsTypes.Int32(4);
-            let result = five.subtract(four);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
-            expect(result.getValue()).toBe(1);
+            let result = fivePointFive.subtract(four);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(1.5);
         });
 
         it("subtracts Int64 right-hand sides", () => {
             let four = new BrsTypes.Int64(4);
-            let result = five.subtract(four);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int64);
-            expect(result.getValue().toNumber()).toBe(1);
+            let result = fivePointFive.subtract(four);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(1.5);
         });
 
         it("subtracts Float right-hand sides", () => {
             let fourPointFive = new BrsTypes.Float(4.5);
-            let result = five.subtract(fourPointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(0.5);
+            let result = fivePointFive.subtract(fourPointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(1.0);
         });
 
         it("subtracts Double right-hand sides", () => {
             let fourPointFive = new BrsTypes.Double(4.5);
-            let result = five.subtract(fourPointFive);
+            let result = fivePointFive.subtract(fourPointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(1.0);
+        });
+    });
+
+    describe("multiplication", () => {
+        let fivePointFive = new BrsTypes.Double(5.5);
+
+        it("multiplies by Int32 right-hand sides", () => {
+            let two = new BrsTypes.Int32(2);
+            let result = fivePointFive.multiply(two);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(11);
+        });
+
+        it("multiplies by Int64 right-hand sides", () => {
+            let two = new BrsTypes.Int64(2);
+            let result = fivePointFive.multiply(two);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(11);
+        });
+
+        it("multiplies by Float right-hand sides", () => {
+            let twoPointFive = new BrsTypes.Float(2.5);
+            let result = fivePointFive.multiply(twoPointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(13.75);
+        });
+
+        it("multiplies by Double right-hand sides", () => {
+            let twoPointFive = new BrsTypes.Double(2.5);
+            let result = fivePointFive.multiply(twoPointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(13.75);
+        });
+    });
+
+    describe("division", () => {
+        let tenPointFive = new BrsTypes.Double(10.5);
+
+        it("divides by Int32 right-hand sides", () => {
+            let two = new BrsTypes.Int32(-2);
+            let result = tenPointFive.divide(two);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(-5.25);
+        });
+
+        it("divides by Int64 right-hand sides", () => {
+            let two = new BrsTypes.Int64(-2);
+            let result = tenPointFive.divide(two);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(-5.25);
+        });
+
+        it("divides by Float right-hand sides", () => {
+            let pointFive = new BrsTypes.Float(-0.5);
+            let result = tenPointFive.divide(pointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(-21);
+        });
+
+        it("divides by Double right-hand sides", () => {
+            let pointFive = new BrsTypes.Double(-0.5);
+            let result = tenPointFive.divide(pointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(-21);
+        });
+    });
+
+    describe("modulo", () => {
+        let tenPointFive = new BrsTypes.Double(10.5);
+
+        it("modulos Int32 right-hand sides", () => {
+            let two = new BrsTypes.Int32(2);
+            let result = tenPointFive.modulo(two);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(0.5);
+        });
+
+        it("modulos Int64 right-hand sides", () => {
+            let three = new BrsTypes.Int64(3);
+            let result = tenPointFive.modulo(three);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(1.5);
+        });
+
+        it("modulos Float right-hand sides", () => {
+            let threePointFive = new BrsTypes.Float(3.5);
+            let result = tenPointFive.modulo(threePointFive);
+            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
+            expect(result.getValue()).toBe(0);
+        });
+
+        it("modulos Double right-hand sides", () => {
+            let twoPointFive = new BrsTypes.Double(2.5);
+            let result = tenPointFive.modulo(twoPointFive);
             expect(result.kind).toBe(BrsTypes.NumberKind.Double);
             expect(result.getValue()).toBe(0.5);
         });
     });
 
-    describe("multiplication", () => {
-        let five = new BrsTypes.Int32(5);
-
-        it("multiplies by Int32 right-hand sides", () => {
-            let four = new BrsTypes.Int32(4);
-            let result = five.multiply(four);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
-            expect(result.getValue()).toBe(20);
-        });
-
-        it("multiplies by Int64 right-hand sides", () => {
-            let four = new BrsTypes.Int64(4);
-            let result = five.multiply(four);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int64);
-            expect(result.getValue().toNumber()).toBe(20);
-        });
-
-        it("multiplies by Float right-hand sides", () => {
-            let twoPointFive = new BrsTypes.Float(2.5);
-            let result = five.multiply(twoPointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(12.5);
-        });
-
-        it("multiplies by Double right-hand sides", () => {
-            let twoPointFive = new BrsTypes.Double(2.5);
-            let result = five.multiply(twoPointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
-            expect(result.getValue()).toBe(12.5);
-        });
-    });
-
-    describe("division", () => {
-        let ten = new BrsTypes.Int32(10);
-
-        it("divides by Int32 right-hand sides", () => {
-            let two = new BrsTypes.Int32(-2);
-            let result = ten.divide(two);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(-5);
-        });
-
-        it("divides by Int64 right-hand sides", () => {
-            let two = new BrsTypes.Int64(-2);
-            let result = ten.divide(two);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(-5);
-        });
-
-        it("divides by Float right-hand sides", () => {
-            let pointFive = new BrsTypes.Float(-0.5);
-            let result = ten.divide(pointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(-20);
-        });
-
-        it("divides by Double right-hand sides", () => {
-            let pointFive = new BrsTypes.Double(-0.5);
-            let result = ten.divide(pointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
-            expect(result.getValue()).toBe(-20);
-        });
-    });
-
-    describe("modulo", () => {
-        let ten = new BrsTypes.Int32(10);
-
-        it("modulos Int32 right-hand sides", () => {
-            let two = new BrsTypes.Int32(2);
-            let result = ten.modulo(two);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
-            expect(result.getValue()).toBe(0);
-        });
-
-        it("modulos Int64 right-hand sides", () => {
-            let three = new BrsTypes.Int64(3);
-            let result = ten.modulo(three);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Int64);
-            expect(result.getValue().toNumber()).toBe(1);
-        });
-
-        it("modulos Float right-hand sides", () => {
-            let threePointFive = new BrsTypes.Float(3.25);
-            let result = ten.modulo(threePointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Float);
-            expect(result.getValue()).toBe(0.25);
-        });
-
-        it("modulos Double right-hand sides", () => {
-            let twoPointFive = new BrsTypes.Double(2.75);
-            let result = ten.modulo(twoPointFive);
-            expect(result.kind).toBe(BrsTypes.NumberKind.Double);
-            expect(result.getValue()).toBe(1.75);
-        });
-    });
-
     describe("integer-division", () => {
-        let ten = new BrsTypes.Int32(10);
+        let tenPointFive = new BrsTypes.Double(10.5);
 
         it("integer-divides by Int32 right-hand sides", () => {
             let three = new BrsTypes.Int32(3);
-            let result = ten.intDivide(three);
+            let result = tenPointFive.intDivide(three);
             expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
             expect(result.getValue()).toBe(3);
         });
 
         it("integer-divides by Int64 right-hand sides", () => {
             let three = new BrsTypes.Int64(3);
-            let result = ten.intDivide(three);
+            let result = tenPointFive.intDivide(three);
             expect(result.kind).toBe(BrsTypes.NumberKind.Int64);
             expect(result.getValue().toNumber()).toBe(3);
         });
 
         it("integer-divides by Float right-hand sides", () => {
             let threePointFive = new BrsTypes.Float(3.5);
-            let result = ten.intDivide(threePointFive);
+            let result = tenPointFive.intDivide(threePointFive);
             expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
-            expect(result.getValue()).toBe(2);
+            expect(result.getValue()).toBe(3);
         });
 
         it("integer-divides by Double right-hand sides", () => {
             let twoPointFive = new BrsTypes.Double(2.5);
-            let result = ten.intDivide(twoPointFive);
+            let result = tenPointFive.intDivide(twoPointFive);
             expect(result.kind).toBe(BrsTypes.NumberKind.Int32);
             expect(result.getValue()).toBe(4);
         });

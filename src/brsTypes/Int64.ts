@@ -1,11 +1,13 @@
 import * as Long from "long";
-import { NumberKind, BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
+import { BrsType } from "./";
+import { BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
+import { BrsValue, ValueKind } from "./BrsType";
 import { Float } from "./Float";
 import { Double } from "./Double";
 import { Int32 } from "./Int32";
 
 export class Int64 implements IInt64 {
-    readonly kind = NumberKind.Int64;
+    readonly kind = ValueKind.Int64;
     private readonly value: Long;
 
     getValue(): Long {
@@ -49,60 +51,60 @@ export class Int64 implements IInt64 {
 
     add(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
-            case NumberKind.Int32:
-            case NumberKind.Int64:
+            case ValueKind.Int32:
+            case ValueKind.Int64:
                 return new Int64(this.getValue().add(rhs.getValue()));
-            case NumberKind.Float:
+            case ValueKind.Float:
                 return new Float(this.getValue().toNumber() + rhs.getValue());
-            case NumberKind.Double:
+            case ValueKind.Double:
                 return new Double(this.getValue().toNumber() + rhs.getValue());
         }
     }
 
     subtract(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
-            case NumberKind.Int32:
-            case NumberKind.Int64:
+            case ValueKind.Int32:
+            case ValueKind.Int64:
                 return new Int64(this.getValue().subtract(rhs.getValue()));
-            case NumberKind.Float:
+            case ValueKind.Float:
                 return new Float(this.getValue().toNumber() - rhs.getValue());
-            case NumberKind.Double:
+            case ValueKind.Double:
                 return new Double(this.getValue().toNumber() - rhs.getValue());
         }
     }
 
     multiply(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
-            case NumberKind.Int32:
-            case NumberKind.Int64:
+            case ValueKind.Int32:
+            case ValueKind.Int64:
                 return new Int64(this.getValue().multiply(rhs.getValue()));
-            case NumberKind.Float:
+            case ValueKind.Float:
                 return new Float(this.getValue().toNumber() * rhs.getValue());
-            case NumberKind.Double:
+            case ValueKind.Double:
                 return new Double(this.getValue().toNumber() * rhs.getValue());
         }
     }
 
     divide(rhs: BrsNumber): IFloat | IDouble {
         switch (rhs.kind) {
-            case NumberKind.Int32:
-            case NumberKind.Int64:
+            case ValueKind.Int32:
+            case ValueKind.Int64:
                 return new Float(this.getValue().divide(rhs.getValue()).toNumber());
-            case NumberKind.Float:
+            case ValueKind.Float:
                 return new Float(this.getValue().toNumber() / rhs.getValue());
-            case NumberKind.Double:
+            case ValueKind.Double:
                 return new Double(this.getValue().toNumber() / rhs.getValue());
         }
     }
 
     modulo(rhs: BrsNumber): IInt32 | IInt64 {
         switch (rhs.kind) {
-            case NumberKind.Int32:
-            case NumberKind.Int64:
+            case ValueKind.Int32:
+            case ValueKind.Int64:
                 return new Int64(this.getValue().modulo(rhs.getValue()));
-            case NumberKind.Float:
+            case ValueKind.Float:
                 return new Int32(this.getValue().toNumber() % rhs.getValue());
-            case NumberKind.Double:
+            case ValueKind.Double:
                 return new Int32(this.getValue().toNumber() % rhs.getValue());
         }
     }
@@ -113,22 +115,68 @@ export class Int64 implements IInt64 {
 
     pow(exponent: BrsNumber): BrsNumber {
         switch (exponent.kind) {
-            case NumberKind.Int32:
+            case ValueKind.Int32:
                 return new Int64(
                     Math.pow(this.getValue().toNumber(), exponent.getValue())
                 );
-            case NumberKind.Float:
+            case ValueKind.Float:
                 return new Float(
                     Math.pow(this.getValue().toNumber(), exponent.getValue())
                 );
-            case NumberKind.Double:
+            case ValueKind.Double:
                 return new Double(
                     Math.pow(this.getValue().toNumber(), exponent.getValue())
                 );
-            case NumberKind.Int64:
+            case ValueKind.Int64:
                 return new Int64(
                     Math.pow(this.getValue().toNumber(), exponent.getValue().toNumber())
                 );
         }
+    }
+
+    lessThan(other: BrsType): boolean {
+        switch (other.kind) {
+            case ValueKind.Int32:
+            case ValueKind.Int64:
+                return this.getValue().lessThan(other.getValue());
+            case ValueKind.Float:
+                return new Float(this.getValue().toNumber()).lessThan(other);
+            case ValueKind.Double:
+                return new Double(this.getValue().toNumber()).lessThan(other);
+            default:
+                return false;
+        }
+    }
+
+    greaterThan(other: BrsType): boolean {
+        switch (other.kind) {
+            case ValueKind.Int32:
+            case ValueKind.Int64:
+                return this.getValue().greaterThan(other.getValue());
+            case ValueKind.Float:
+                return new Float(this.getValue().toNumber()).greaterThan(other);
+            case ValueKind.Double:
+                return new Double(this.getValue().toNumber()).greaterThan(other);
+            default:
+                return false;
+        }
+    }
+
+    equalTo(other: BrsType): boolean {
+        switch (other.kind) {
+            case ValueKind.Int32:
+            case ValueKind.Int64:
+                return this.getValue().equals(other.getValue());
+            case ValueKind.Float:
+                return new Float(this.getValue().toNumber()).equalTo(other);
+            case ValueKind.Double:
+                return new Double(this.getValue().toNumber()).equalTo(other);
+            default:
+                return false;
+        }
+    }
+
+    toString(): string {
+        return this.value.toString();
     }
 }

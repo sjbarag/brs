@@ -1,22 +1,8 @@
 import Long = require("long");
-
-/** The types of numbers supported in BrightScript. */
-export enum NumberKind {
-    /** A 32-bit integer. */
-    Int32,
-    /** A 64-bit integer. */
-    Int64,
-    /** A 32-bit floating point number. */
-    Float,
-    /** A 64-bit floating point number, or "double" in most languages. */
-    Double
-}
+import { ValueKind, BrsValue } from "./BrsType";
 
 /** The set of operations available on a BrightScript numeric variable. */
-export interface Numeric {
-    /** Type differentiator for all numeric types. */
-    readonly kind: NumberKind;
-
+export interface Numeric extends BrsValue {
     /**
      * Returns the current value this instance represents.
      * @returns the current value contained in this instance.
@@ -78,22 +64,22 @@ export interface Numeric {
 }
 
 export interface IInt32 extends Numeric {
-    readonly kind: NumberKind.Int32;
+    readonly kind: ValueKind.Int32;
     getValue(): number;
 }
 
 export interface IInt64 extends Numeric {
-    readonly kind: NumberKind.Int64;
+    readonly kind: ValueKind.Int64;
     getValue(): Long;
 }
 
 export interface IFloat extends Numeric {
-    readonly kind: NumberKind.Float;
+    readonly kind: ValueKind.Float;
     getValue(): number;
 }
 
 export interface IDouble extends Numeric {
-    readonly kind: NumberKind.Double;
+    readonly kind: ValueKind.Double;
     getValue(): number;
 }
 

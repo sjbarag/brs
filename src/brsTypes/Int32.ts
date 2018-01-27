@@ -1,4 +1,4 @@
-import { ValueKind } from "./BrsType";
+import { ValueKind, BrsBoolean, BrsString } from "./BrsType";
 import { BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
 import { BrsType } from "./";
 import { Float } from "./Float";
@@ -135,10 +135,10 @@ export class Int32 implements IInt32 {
         }
     }
 
-    lessThan(other: BrsType): boolean {
+    lessThan(other: BrsType): BrsBoolean {
         switch (other.kind) {
             case ValueKind.Int32:
-                return this.getValue() < other.getValue();
+                return BrsBoolean.from(this.getValue() < other.getValue());
             case ValueKind.Int64:
                 return new Int64(this.getValue()).lessThan(other);
             case ValueKind.Float:
@@ -146,14 +146,14 @@ export class Int32 implements IInt32 {
             case ValueKind.Double:
                 return new Double(this.getValue()).lessThan(other);
             default:
-                return false;
+                return BrsBoolean.False;
         }
     }
 
-    greaterThan(other: BrsType): boolean {
+    greaterThan(other: BrsType): BrsBoolean {
         switch (other.kind) {
             case ValueKind.Int32:
-                return this.getValue() > other.getValue();
+                return BrsBoolean.from(this.getValue() > other.getValue());
             case ValueKind.Int64:
                 return new Int64(this.getValue()).greaterThan(other);
             case ValueKind.Float:
@@ -161,14 +161,14 @@ export class Int32 implements IInt32 {
             case ValueKind.Double:
                 return new Double(this.getValue()).greaterThan(other);
             default:
-                return false;
+                return BrsBoolean.False;
         }
     }
 
-    equalTo(other: BrsType): boolean {
+    equalTo(other: BrsType): BrsBoolean {
         switch (other.kind) {
             case ValueKind.Int32:
-                return this.getValue() === other.getValue();
+                return BrsBoolean.from(this.getValue() === other.getValue());
             case ValueKind.Int64:
                 return new Int64(this.getValue()).equalTo(other);
             case ValueKind.Float:
@@ -176,7 +176,7 @@ export class Int32 implements IInt32 {
             case ValueKind.Double:
                 return new Double(this.getValue()).equalTo(other);
             default:
-                return false;
+                return BrsBoolean.False;
         }
     }
 

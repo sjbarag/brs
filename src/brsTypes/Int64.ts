@@ -1,5 +1,5 @@
 import * as Long from "long";
-import { BrsType } from "./";
+import { BrsType, BrsBoolean } from "./";
 import { BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
 import { BrsValue, ValueKind } from "./BrsType";
 import { Float } from "./Float";
@@ -134,45 +134,45 @@ export class Int64 implements IInt64 {
         }
     }
 
-    lessThan(other: BrsType): boolean {
+    lessThan(other: BrsType): BrsBoolean {
         switch (other.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
-                return this.getValue().lessThan(other.getValue());
+                return BrsBoolean.from(this.getValue().lessThan(other.getValue()));
             case ValueKind.Float:
                 return new Float(this.getValue().toNumber()).lessThan(other);
             case ValueKind.Double:
                 return new Double(this.getValue().toNumber()).lessThan(other);
             default:
-                return false;
+                return BrsBoolean.False;
         }
     }
 
-    greaterThan(other: BrsType): boolean {
+    greaterThan(other: BrsType): BrsBoolean {
         switch (other.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
-                return this.getValue().greaterThan(other.getValue());
+                return BrsBoolean.from(this.getValue().greaterThan(other.getValue()));
             case ValueKind.Float:
                 return new Float(this.getValue().toNumber()).greaterThan(other);
             case ValueKind.Double:
                 return new Double(this.getValue().toNumber()).greaterThan(other);
             default:
-                return false;
+                return BrsBoolean.False;
         }
     }
 
-    equalTo(other: BrsType): boolean {
+    equalTo(other: BrsType): BrsBoolean {
         switch (other.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
-                return this.getValue().equals(other.getValue());
+                return BrsBoolean.from(this.getValue().equals(other.getValue()));
             case ValueKind.Float:
                 return new Float(this.getValue().toNumber()).equalTo(other);
             case ValueKind.Double:
                 return new Double(this.getValue().toNumber()).equalTo(other);
             default:
-                return false;
+                return BrsBoolean.False;
         }
     }
 

@@ -1,3 +1,5 @@
+import { BrsType } from "./";
+
 /** Set of values supported in BrightScript. */
 export enum ValueKind {
     Invalid,
@@ -19,21 +21,21 @@ export interface BrsValue {
      * @param other The value to compare this value to.
      * @returns `true` if this value is less than the `other` value, otherwise `false`.
      */
-    lessThan(other: BrsValue): boolean;
+    lessThan(other: BrsType): BrsBoolean;
 
     /**
      * Determines whether or not this value is greater than some `other` value.
      * @param other The value to compare this value to.
      * @returns `true` if this value is greater than the `other` value, otherwise `false`.
      */
-    greaterThan(other: BrsValue): boolean;
+    greaterThan(other: BrsType): BrsBoolean;
 
     /**
      * Determines whether or not this value is equal to some `other` value.
      * @param other The value to compare this value to.
      * @returns `true` if this value is strictly equal to the `other` value, otherwise `false`.
      */
-    equalTo(other: BrsValue): boolean;
+    equalTo(other: BrsType): BrsBoolean;
 
     /**
      * Converts the current value to a human-readable string.
@@ -44,61 +46,67 @@ export interface BrsValue {
 
 /** Internal representation of a string in BrightScript. */
 export class BrsString implements BrsValue {
-    readonly kind: ValueKind.String
-    private readonly value: string;
+    readonly kind = ValueKind.String;
+    constructor(private readonly value: string) {}
 
-    lessThan(other: BrsValue): boolean {
-        if (other instanceof BrsString) {
-            return this.value < other.value;
+    lessThan(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.String) {
+            return BrsBoolean.from(this.value < other.value);
         }
-        return false;
+        return BrsBoolean.False;
     }
 
-    greaterThan(other: BrsValue): boolean {
-        if (other instanceof BrsString) {
-            return this.value > other.value;
+    greaterThan(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.String) {
+            return BrsBoolean.from(this.value > other.value);
         }
-        return false;
+        return BrsBoolean.False;
     }
 
-    equalTo(other: BrsValue): boolean {
-        if (other instanceof BrsString) {
-            return this.value === other.value;
+    equalTo(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.String) {
+            return BrsBoolean.from(this.value === other.value);
         }
-        return false;
+        return BrsBoolean.False;
     }
 
     toString() {
         return this.value;
     }
-}
 
-export interface IBrsBoolean extends BrsValue {
-    readonly kind: ValueKind.Boolean;
+    concat(other: BrsString) {
+        return new BrsString(this.value + other.value);
+    }
 }
 
 /** Internal representation of a boolean in BrightScript. */
 export class BrsBoolean implements BrsValue {
-    readonly kind: ValueKind.Boolean;
-    private readonly value: boolean;
+    readonly kind = ValueKind.Boolean;
+    private constructor(private readonly value: boolean) {}
 
-    lessThan(other: BrsValue): boolean {
+    static False = new BrsBoolean(false);
+    static True = new BrsBoolean(true);
+    static from(value: boolean) {
+        return value ? BrsBoolean.True : BrsBoolean.False;
+    }
+
+    lessThan(other: BrsType): BrsBoolean {
         // booleans aren't less than anything
         // TODO: Validate on a Roku
-        return false;
+        return BrsBoolean.False;
     }
 
-    greaterThan(other: BrsValue): boolean {
+    greaterThan(other: BrsType): BrsBoolean {
         // but isn't greater than anything either
         // TODO: Validate on a Roku
-        return false;
+        return BrsBoolean.False;
     }
 
-    equalTo(other: BrsValue): boolean {
-        if (other instanceof BrsBoolean) {
-            return this.value === other.value;
+    equalTo(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.Boolean) {
+            return BrsBoolean.from(this === other);
         }
-        return false;
+        return BrsBoolean.False;
     }
 
     toString() {
@@ -106,30 +114,28 @@ export class BrsBoolean implements BrsValue {
     }
 }
 
-export interface IBrsInvalid extends BrsValue {
-    readonly kind: ValueKind.Invalid;
-}
-
 /** Internal representation of the BrightScript `invalid` value. */
 export class BrsInvalid implements BrsValue {
-    readonly kind: ValueKind.Invalid;
-    lessThan(other: BrsValue): boolean {
+    readonly kind = ValueKind.Invalid;
+    static Instance = new BrsInvalid();
+
+    lessThan(other: BrsType): BrsBoolean {
         // invalid isn't less than anything
         // TODO: Validate on a Roku
-        return false;
+        return BrsBoolean.False;
     }
 
-    greaterThan(other: BrsValue): boolean {
+    greaterThan(other: BrsType): BrsBoolean {
         // but isn't greater than anything either
         // TODO: Validate on a Roku
-        return false;
+        return BrsBoolean.False;
     }
 
-    equalTo(other: BrsValue): boolean {
-        if (other instanceof BrsInvalid) {
-            return true;
+    equalTo(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.Invalid) {
+            return BrsBoolean.True;
         }
-        return false;
+        return BrsBoolean.False;
     }
 
     toString() {

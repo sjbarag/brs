@@ -15,7 +15,7 @@ export * from "./Double";
  * @param value the BrightScript value in question.
  * @returns `true` if `value` is a numeric value, otherwise `false`.
  */
-export function isNumeric(value: BrsType): value is BrsNumber {
+export function isBrsNumber(value: BrsType): value is BrsNumber {
     switch (value.kind) {
         case ValueKind.Int32:
         case ValueKind.Int64:
@@ -25,6 +25,24 @@ export function isNumeric(value: BrsType): value is BrsNumber {
         default:
             return false;
     }
+}
+
+/**
+ * Determines whether or not the given value is a string.
+ * @param value the BrightScript value in question.
+ * @returns `true` if `value` is a string, otherwise `false`.
+ */
+export function isBrsString(value: BrsType): value is BrsString {
+    return value.kind === ValueKind.String;
+}
+
+/**
+ * Determines whether or not the given value is a boolean.
+ * @param value the BrightScript value in question.
+ * @returns `true` if `value` if a boolean, otherwise `false`.
+ */
+export function isBrsBoolean(value: BrsType): value is BrsBoolean {
+    return value.kind === ValueKind.Boolean;
 }
 
 /** The set of BrightScript numeric types. */

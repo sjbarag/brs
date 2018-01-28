@@ -1,5 +1,9 @@
 import Long = require("long");
 import { ValueKind, BrsValue } from "./BrsType";
+import { Int32 } from "./Int32";
+import { Int64 } from "./Int64";
+import { Float } from "./Float";
+import { Double } from "./Double";
 
 /** The set of operations available on a BrightScript numeric variable. */
 export interface Numeric extends BrsValue {
@@ -35,7 +39,7 @@ export interface Numeric extends BrsValue {
      * @param rhs The right-hand side value to divide the current value by.
      * @returns The current value / `rhs`, with floating-point precision matching `max(current, rhs)`.
      */
-    divide(rhs: BrsNumber): IFloat | IDouble;
+    divide(rhs: BrsNumber): Float | Double;
 
     /**
      * Modulos the current number by `rhs`. I.e. divides the current number by `rhs` and returns
@@ -53,7 +57,7 @@ export interface Numeric extends BrsValue {
      * @returns The current value \ `rhs` with 64-bit integer precision if `rhs` is an Int64,
      *          otherwise 32-bit integer precision.
      */
-    intDivide(rhs: BrsNumber): IInt32 | IInt64;
+    intDivide(rhs: BrsNumber): Int32 | Int64;
 
     /**
      * Calculates the current value to the power of `exponent`.
@@ -61,27 +65,21 @@ export interface Numeric extends BrsValue {
      * @returns The current value ^ `exponent`, with precision matching `max(current, rhs)`.
      */
     pow(exponent: BrsNumber): BrsNumber;
-}
 
-export interface IInt32 extends Numeric {
-    readonly kind: ValueKind.Int32;
-    getValue(): number;
-}
+    /**
+     * Bitwise ANDs the current value with `rhs`.
+     * @param rhs The right-hand side value to bitwise AND the current value with.
+     * @returns The current value ANDed with `rhs`.
+     */
+    and(rhs: BrsNumber): BrsNumber;
 
-export interface IInt64 extends Numeric {
-    readonly kind: ValueKind.Int64;
-    getValue(): Long;
-}
-
-export interface IFloat extends Numeric {
-    readonly kind: ValueKind.Float;
-    getValue(): number;
-}
-
-export interface IDouble extends Numeric {
-    readonly kind: ValueKind.Double;
-    getValue(): number;
+    /**
+     * Bitwise ORs the current value with `rhs`.
+     * @param rhs The right-hand side value to bitwise OR the current value with.
+     * @returns The current value ORed with `rhs`.
+     */
+    or(rhs: BrsNumber): BrsNumber;
 }
 
 /** The union of all supported BrightScript number types. */
-export type BrsNumber = IInt32 | IInt64 | IFloat | IDouble;
+export type BrsNumber = Int32 | Int64 | Float | Double;

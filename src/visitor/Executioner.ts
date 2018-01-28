@@ -1,6 +1,20 @@
 import Long = require("long");
 
-import { BrsType, ValueKind, BrsInvalid, isNumeric } from "../brsTypes";
+import {
+    BrsType,
+    BrsString,
+    ValueKind,
+    BrsInvalid,
+    isBrsNumber,
+    isBrsString,
+    BrsBoolean,
+    isBrsBoolean,
+    Int32,
+    Int64,
+    Float,
+    Double
+} from "../brsTypes";
+
 import * as Expr from "../parser/Expression";
 import * as Stmt from "../parser/Statement";
 import { Lexeme } from "../Lexeme";
@@ -39,7 +53,7 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     visitBinary(expression: Expr.Binary) {
         let lexeme = expression.token.kind;
         let left = this.evaluate(expression.left);
-        let right: BrsType;
+        let right: BrsType = BrsInvalid.Instance;
 
         if (lexeme !== Lexeme.And && lexeme !== Lexeme.Or) {
             // don't evaluate right-hand-side of boolean expressions, to preserve short-circuiting
@@ -50,7 +64,7 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         switch (lexeme) {
             case Lexeme.Minus:
-                if (isNumeric(left) && isNumeric(right)) {
+                if (isBrsNumber(left) && isBrsNumber(right)) {
                     return left.subtract(right);
                 } else {
                     BrsError.make(
@@ -59,15 +73,11 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Star:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
+                if (isBrsNumber(left) && isBrsNumber(right)) {
                     return left.multiply(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).multiply(right);
-                } else if (isNumber(left) && isNumber(right)) {
-                    return left * right;
                 } else {
                     BrsError.make(
                         `Attempting to multiply non-numeric objects.
@@ -75,17 +85,11 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Caret:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    // TODO: Figure out how to exponentiate Longs
-                    return;
-                } else if (isNumber(left) && isLong(right)) {
-                    // TODO: See if we can use a Long as an exponent
-                    return;
-                } else if (isNumber(left) && isNumber(right)) {
-                    return Math.pow(left, right);
+                if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return left.pow(right);
                 } else {
                     BrsError.make(
                         `Attempting to exponentiate non-numeric objects.
@@ -93,21 +97,11 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Slash:
-                if (isLong(left)) {
-                    if (isLong(right)) {
-                        return left.toNumber() / right.toNumber();;
-                    } else if (isNumber(right)) {
-                        return left.toNumber() / right;
-                    }
-                } else if (isNumber(left)) {
-                    if (isLong(right)) {
-                        return left / right.toNumber();
-                    } else if (isNumber(right)) {
-                        return left / right;
-                    }
+                if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return left.divide(right);
                 }
                 BrsError.make(
                     `Attempting to divide non-numeric objects.
@@ -115,14 +109,10 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     right: ${typeof right}`,
                     expression.token.line
                 );
-                return;
+                return BrsInvalid.Instance;
             case Lexeme.Mod:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.modulo(right)
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).modulo(right);
-                } else if (isNumber(left) && isNumber(right)) {
-                    return left % right;
+                if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return left.modulo(right);
                 } else {
                     BrsError.make(
                         `Attempting to modulo non-numeric objects.
@@ -130,15 +120,11 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Backslash:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.divide(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Math.floor(left / right.toNumber());
-                } else if (isNumber(left) && isNumber(right)) {
-                    return Math.floor(left / right);
+                if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return left.intDivide(right);
                 } else {
                     BrsError.make(
                         `Attempting to integer-divide non-numeric objects.
@@ -146,17 +132,13 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Plus:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.add(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).add(right);
-                } else if (isNumber(left) && isNumber(right)) {
-                    return left + right;
-                } else if (isString(left) && isString(right)) {
-                    return left + right;
+                if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return left.intDivide(right);
+                } else if (isBrsString(left) && isBrsString(right)) {
+                    return left.concat(right);
                 } else {
                     BrsError.make(
                         `Attempting to add non-homogeneous objects.
@@ -164,76 +146,28 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Greater:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.greaterThan(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).greaterThan(right);
-                } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
-                    return left > right;
-                } else {
-                    return false;
-                }
+                return left.greaterThan(right);
             case Lexeme.GreaterEqual:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.greaterThanOrEqual(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).greaterThanOrEqual(right);
-                } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
-                    return left >= right;
-                } else {
-                    return false;
-                }
+                return left.greaterThan(right).or(left.equalTo(right));
             case Lexeme.Less:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.lessThan(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).lessThan(right);
-                } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
-                    return left < right;
-                } else {
-                    return false;
-                }
+                return left.lessThan(right);
             case Lexeme.LessEqual:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.lessThanOrEqual(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).lessThanOrEqual(right);
-                } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
-                    return left <= right;
-                } else {
-                    return false;
-                }
+                return left.lessThan(right).or(left.equalTo(right));
             case Lexeme.Equal:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.equals(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).equals(right);
-                } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
-                    return left === right;
-                } else {
-                    return false;
-                }
+                return left.equalTo(right);
             case Lexeme.LessGreater:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
-                    return left.notEquals(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).notEquals(right);
-                } else if ((isNumber(left) && isNumber(right)) || isString(left) && isString(right)) {
-                    return left !== right;
-                } else {
-                    return true;
-                }
+                return left.equalTo(right).not();
             case Lexeme.And:
-                if (left === false) {
+                if (left.equalTo(BrsBoolean.False)) {
                     // short-circuit ANDs - don't evaluate RHS if LHS is false
-                    return false;
-                } else if (left === true) {
+                    return BrsBoolean.False;
+                } else if (left.equalTo(BrsBoolean.True)) {
                     right = this.evaluate(expression.right);
-                    if (typeof right === "boolean") {
-                        return left && right;
+                    if (isBrsBoolean(right)) {
+                        return (left as BrsBoolean).and(right);
                     }
 
                     BrsError.make(
@@ -241,18 +175,12 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
-                } else if (isNumber(left) || isLong(left)) {
+                    return BrsInvalid.Instance;
+                } else if (isBrsNumber(left)) {
                     right = this.evaluate(expression.right);
-                    if (isNumber(left)) {
-                        if (isNumber(right)) {
-                            return left & right;
-                        } else if (isLong(right)) {
-                            return Long.fromNumber(left).and(right);
-                        }
-                    }
 
-                    if (isLong(left) && (isLong(right) || isNumber(right))) {
+                    if (isBrsNumber(right)) {
+                        // TODO: support boolean AND with numbers
                         return left.and(right);
                     }
 
@@ -262,7 +190,7 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 } else {
                     BrsError.make(
                         `Attempting to 'and' unexpected expressions
@@ -270,36 +198,27 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof this.evaluate(expression.right)}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Or:
-                if (left === true) {
+                if (left.equalTo(BrsBoolean.True)) {
                     // short-circuit ORs - don't evaluate RHS if LHS is true
-                    return true;
-                } else if (left === false) {
+                    return BrsBoolean.True;
+                } else if (left.equalTo(BrsBoolean.False)) {
                     right = this.evaluate(expression.right);
-                    if (typeof right === "boolean") {
-                        return left || right;
+                    if (isBrsBoolean(right)) {
+                        return (left as BrsBoolean).or(right);
                     } else {
                         BrsError.make(
                             `Attempting to 'or' boolean with non-boolean expression
                             right: ${typeof right}`,
                             expression.token.line
                         );
-                        return;
+                        return BrsInvalid.Instance;
                     }
-                } else if (isNumber(left) || isLong(left)) {
+                } else if (isBrsNumber(left)) {
                     right = this.evaluate(expression.right);
-                    // numbers use bitwise OR
-                    if (isNumber(left)) {
-                        if (isNumber(right)) {
-                            return left | right;
-                        } else if (isLong(right)) {
-                            return Long.fromNumber(left).or(right);
-                        }
-                    }
-
-                    if (isLong(left) && (isLong(right) || isNumber(right))) {
+                    if (isBrsNumber(right)) {
                         return left.or(right);
                     }
 
@@ -309,7 +228,7 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 } else {
                     BrsError.make(
                         `Attempting to 'or' unexpected objects
@@ -317,21 +236,21 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         right: ${typeof right}`,
                         expression.token.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             default:
                 BrsError.make(
                     `Received unexpected token kind '${expression.token.kind}'`,
                     expression.token.line
                 );
-                return;
+                return BrsInvalid.Instance;
         }
     }
     visitCall(expression: Expr.Call) {
-        return undefined;
+        return BrsInvalid.Instance;
     }
     visitGet(expression: Expr.Get) {
-        return undefined;
+        return BrsInvalid.Instance;
     }
 
     visitGrouping(expr: Expr.Grouping) {
@@ -339,20 +258,17 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitLiteral(expression: Expr.Literal): BrsType {
-        if (expression.value === undefined) {
-            return "invalid";
-        } else {
-            return expression.value;
-        }
+        return expression.value;
     }
+
     visitLogical(expression: Expr.Logical) {
-        return undefined;
+        return BrsInvalid.Instance;
     }
     visitM(expression: Expr.M) {
-        return undefined;
+        return BrsInvalid.Instance;
     }
     visitSet(expression: Expr.Set) {
-        return undefined;
+        return BrsInvalid.Instance;
     }
 
     visitUnary(expression: Expr.Unary) {
@@ -360,22 +276,30 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         switch (expression.operator.kind) {
             case Lexeme.Minus:
-                if (isLong(right) || isNumber(right)) {
-                    return -(right!);
+                if (isBrsNumber(right)) {
+                    return right.multiply(new Int32(-1));
                 } else {
                     BrsError.make(
                         `Attempting to negate non-numeric value.
                         value type: ${typeof right}`,
                         expression.operator.line
                     );
-                    return;
+                    return BrsInvalid.Instance;
                 }
             case Lexeme.Not:
-                // TODO: protect against inverting numbers or strings
-                return !right;
+                if (isBrsBoolean(right)) {
+                    return right.not();
+                } else {
+                    BrsError.make(
+                        `Attempting to NOT non-boolean value.
+                        value type: ${typeof right}`,
+                        expression.operator.line
+                    );
+                    return BrsInvalid.Instance;
+                }
         }
 
-        return undefined;
+        return BrsInvalid.Instance;
     }
 
     visitVariable(expression: Expr.Variable) {

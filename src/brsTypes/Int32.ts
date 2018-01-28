@@ -1,11 +1,11 @@
 import { ValueKind, BrsBoolean, BrsString } from "./BrsType";
-import { BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
+import { BrsNumber, Numeric } from "./BrsNumber";
 import { BrsType } from "./";
 import { Float } from "./Float";
 import { Double } from "./Double";
 import { Int64 } from "./Int64";
 
-export class Int32 implements IInt32 {
+export class Int32 implements Numeric {
     readonly kind = ValueKind.Int32;
     private readonly value: number;
 
@@ -72,7 +72,7 @@ export class Int32 implements IInt32 {
         }
     }
 
-    divide(rhs: BrsNumber): IFloat | IDouble {
+    divide(rhs: BrsNumber): Float | Double {
         switch (rhs.kind) {
             case ValueKind.Int32:
                 return new Float(this.getValue() / rhs.getValue());
@@ -100,7 +100,7 @@ export class Int32 implements IInt32 {
         }
     }
 
-    intDivide(rhs: BrsNumber): IInt32 | IInt64 {
+    intDivide(rhs: BrsNumber): Int32 | Int64 {
         switch (rhs.kind) {
             case ValueKind.Int32:
             case ValueKind.Float:
@@ -132,6 +132,32 @@ export class Int32 implements IInt32 {
                 return new Double(
                     Math.pow(this.getValue(), exponent.getValue())
                 );
+        }
+    }
+
+    and(rhs: BrsNumber): BrsNumber {
+        switch (rhs.kind) {
+            case ValueKind.Int32:
+                return new Int32(this.getValue() & rhs.getValue());
+            case ValueKind.Int64:
+                return new Int64(this.getValue()).and(rhs);
+            case ValueKind.Float:
+                return new Float(this.getValue() & rhs.getValue());
+            case ValueKind.Double:
+                return new Double(this.getValue() & rhs.getValue());
+        }
+    }
+
+    or(rhs: BrsNumber): BrsNumber {
+        switch (rhs.kind) {
+            case ValueKind.Int32:
+                return new Int32(this.getValue() | rhs.getValue());
+            case ValueKind.Int64:
+                return new Int64(this.getValue()).or(rhs);
+            case ValueKind.Float:
+                return new Float(this.getValue() | rhs.getValue());
+            case ValueKind.Double:
+                return new Double(this.getValue() | rhs.getValue());
         }
     }
 

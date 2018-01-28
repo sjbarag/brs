@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import { Token, Literal as TokenLiteral } from "./Token";
+import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./visitor/AstPrinter";
-import { Executioner, isLong } from "./visitor/Executioner";
+import { Executioner } from "./visitor/Executioner";
 import { stringify } from "./Stringify";
 import * as BrsError from "./Error";
 

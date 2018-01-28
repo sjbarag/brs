@@ -1,5 +1,5 @@
 import * as Expr from "../parser/Expression";
-import { Literal as TokenLiteral, Invalid } from "../Token";
+import { BrsType } from "../brsTypes";
 
 /** Creates a pretty-printed representation of an expression to ease debugging. */
 export class AstPrinter implements Expr.Visitor<string> {

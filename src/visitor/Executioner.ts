@@ -1,57 +1,45 @@
 import Long = require("long");
 
+import { BrsType, ValueKind, BrsInvalid } from "../brsTypes";
 import * as Expr from "../parser/Expression";
 import * as Stmt from "../parser/Statement";
-import { Literal as TokenLiteral } from "../Token";
 import { Lexeme } from "../Lexeme";
 import { stringify } from "../Stringify";
 import * as BrsError from "../Error";
 
 import Environment from "./Environment";
 
-export function isLong(arg: TokenLiteral): arg is Long {
-    return Long.isLong(arg);
-}
-
-function isNumber(arg: TokenLiteral): arg is number {
-    return typeof arg === "number";
-}
-
-function isString(arg: TokenLiteral): arg is string {
-    return typeof arg === "string";
-}
-
-export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<TokenLiteral> {
+export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private environment = new Environment();
 
     exec(statements: Stmt.Statement[]) {
         return statements.map((statement) => this.execute(statement));
     }
 
-    visitAssign(statement: Expr.Assign): TokenLiteral {
-        return undefined;
+    visitAssign(statement: Expr.Assign): BrsType {
+        return BrsInvalid.Instance;
     }
 
-    visitExpression(statement: Stmt.Expression): TokenLiteral {
+    visitExpression(statement: Stmt.Expression): BrsType {
         return this.evaluate(statement.expression);
     }
 
-    visitPrint(statement: Stmt.Print): TokenLiteral {
+    visitPrint(statement: Stmt.Print): BrsType {
         let result = this.evaluate(statement.expression);
         console.log(stringify(result));
-        return;
+        return BrsInvalid.Instance;
     }
 
-    visitAssignment(statement: Stmt.Assignment): undefined {
+    visitAssignment(statement: Stmt.Assignment): BrsInvalid {
         let value = this.evaluate(statement.value);
         this.environment.define(statement.name.text!, value);
-        return;
+        return BrsInvalid.Instance;
     }
 
     visitBinary(expression: Expr.Binary) {
         let lexeme = expression.token.kind;
         let left = this.evaluate(expression.left);
-        let right: TokenLiteral;
+        let right: BrsType;
 
         if (lexeme !== Lexeme.And && lexeme !== Lexeme.Or) {
             // don't evaluate right-hand-side of boolean expressions, to preserve short-circuiting
@@ -354,7 +342,7 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
         return this.evaluate(expr.expression);
     }
 
-    visitLiteral(expression: Expr.Literal): TokenLiteral {
+    visitLiteral(expression: Expr.Literal): BrsType {
         if (expression.value === undefined) {
             return "invalid";
         } else {
@@ -398,11 +386,11 @@ export class Executioner implements Expr.Visitor<TokenLiteral>, Stmt.Visitor<Tok
         return this.environment.get(expression.name);
     }
 
-    evaluate(expression: Expr.Expression): TokenLiteral {
-        return expression.accept<TokenLiteral>(this);
+    evaluate(expression: Expr.Expression): BrsType {
+        return expression.accept<BrsType>(this);
     }
 
-    execute(statement: Stmt.Statement): TokenLiteral {
-        return statement.accept<TokenLiteral>(this);
+    execute(statement: Stmt.Statement): BrsType {
+        return statement.accept<BrsType>(this);
     }
 }

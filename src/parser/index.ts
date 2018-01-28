@@ -6,6 +6,12 @@ import { Lexeme } from "../Lexeme";
 import { Token } from "../Token"
 import * as ParseError from "./ParseError";
 
+import {
+    BrsInvalid,
+    BrsBoolean,
+    BrsString
+} from "../brsTypes";
+
 let current: number;
 let tokens: ReadonlyArray<Token>;
 
@@ -161,9 +167,9 @@ function unary(): Expression {
 
 function primary(): Expression {
     switch (true) {
-        case match(Lexeme.False): return new Expr.Literal(false);
-        case match(Lexeme.True): return new Expr.Literal(true);
-        case match(Lexeme.Invalid): return new Expr.Literal(undefined);
+        case match(Lexeme.False): return new Expr.Literal(BrsBoolean.False);
+        case match(Lexeme.True): return new Expr.Literal(BrsBoolean.True);
+        case match(Lexeme.Invalid): return new Expr.Literal(BrsInvalid.Instance);
         case match(
             Lexeme.Integer,
             Lexeme.LongInteger,
@@ -172,7 +178,7 @@ function primary(): Expression {
             Lexeme.String
         ):
             let p = previous();
-            let lit = new Expr.Literal(p.literal);
+            let lit = new Expr.Literal(p.literal!);
             return lit;
         case match(Lexeme.Identifier):
             return new Expr.Variable(previous());

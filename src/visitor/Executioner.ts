@@ -1,6 +1,6 @@
 import Long = require("long");
 
-import { BrsType, ValueKind, BrsInvalid } from "../brsTypes";
+import { BrsType, ValueKind, BrsInvalid, isNumeric } from "../brsTypes";
 import * as Expr from "../parser/Expression";
 import * as Stmt from "../parser/Statement";
 import { Lexeme } from "../Lexeme";
@@ -50,12 +50,8 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         switch (lexeme) {
             case Lexeme.Minus:
-                if (isLong(left) && (isLong(right) || isNumber(right))) {
+                if (isNumeric(left) && isNumeric(right)) {
                     return left.subtract(right);
-                } else if (isNumber(left) && isLong(right)) {
-                    return Long.fromNumber(left).subtract(right);
-                } else if (isNumber(left) && isNumber(right)) {
-                    return left - right;
                 } else {
                     BrsError.make(
                         `Attempting to subtract non-numeric objects.

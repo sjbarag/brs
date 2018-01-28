@@ -1,11 +1,11 @@
 import { BrsType, BrsBoolean } from "./";
 import { ValueKind } from "./BrsType";
-import { BrsNumber, IDouble, IInt32, IInt64, IFloat } from "./BrsNumber";
+import { BrsNumber, Numeric } from "./BrsNumber";
 import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
 
-export class Double implements IDouble {
+export class Double implements Numeric {
     readonly kind = ValueKind.Double;
     private readonly value: number;
 
@@ -69,7 +69,7 @@ export class Double implements IDouble {
         }
     }
 
-    divide(rhs: BrsNumber): IFloat | IDouble {
+    divide(rhs: BrsNumber): Float | Double {
         switch (rhs.kind) {
             case ValueKind.Int64:
                 // TODO: Confirm that (double) - (int64) -> (double)
@@ -92,7 +92,7 @@ export class Double implements IDouble {
         }
     }
 
-    intDivide(rhs: BrsNumber): IInt32 | IInt64 {
+    intDivide(rhs: BrsNumber): Int32 | Int64 {
         switch (rhs.kind) {
             case ValueKind.Int64:
                 return new Int64(
@@ -123,6 +123,28 @@ export class Double implements IDouble {
                 return new Double(
                     Math.pow(this.getValue(), exponent.getValue())
                 );
+        }
+    }
+
+    and(rhs: BrsNumber): BrsNumber {
+        switch (rhs.kind) {
+            case ValueKind.Int64:
+                return new Int64(this.getValue()).and(rhs);
+            case ValueKind.Int32:
+            case ValueKind.Float:
+            case ValueKind.Double:
+                return new Double(this.getValue() & rhs.getValue());
+        }
+    }
+
+    or(rhs: BrsNumber): BrsNumber {
+        switch (rhs.kind) {
+            case ValueKind.Int64:
+                return new Int64(this.getValue()).or(rhs);
+            case ValueKind.Int32:
+            case ValueKind.Float:
+            case ValueKind.Double:
+                return new Double(this.getValue() | rhs.getValue());
         }
     }
 

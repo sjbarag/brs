@@ -1,12 +1,12 @@
 import * as Long from "long";
 import { BrsType, BrsBoolean } from "./";
-import { BrsNumber, IInt32, IInt64, IFloat, IDouble } from "./BrsNumber";
+import { BrsNumber, Numeric } from "./BrsNumber";
 import { BrsValue, ValueKind } from "./BrsType";
 import { Float } from "./Float";
 import { Double } from "./Double";
 import { Int32 } from "./Int32";
 
-export class Int64 implements IInt64 {
+export class Int64 implements Numeric {
     readonly kind = ValueKind.Int64;
     private readonly value: Long;
 
@@ -85,7 +85,7 @@ export class Int64 implements IInt64 {
         }
     }
 
-    divide(rhs: BrsNumber): IFloat | IDouble {
+    divide(rhs: BrsNumber): Float | Double {
         switch (rhs.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
@@ -97,20 +97,20 @@ export class Int64 implements IInt64 {
         }
     }
 
-    modulo(rhs: BrsNumber): IInt32 | IInt64 {
+    modulo(rhs: BrsNumber): Int64 {
         switch (rhs.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
                 return new Int64(this.getValue().modulo(rhs.getValue()));
             case ValueKind.Float:
-                return new Int32(this.getValue().toNumber() % rhs.getValue());
+                return new Int64(this.getValue().toNumber() % rhs.getValue());
             case ValueKind.Double:
-                return new Int32(this.getValue().toNumber() % rhs.getValue());
+                return new Int64(this.getValue().toNumber() % rhs.getValue());
         }
     }
 
-    intDivide(rhs: BrsNumber): IInt32 | IInt64 {
-        return new Double(this.getValue().toNumber()).intDivide(rhs);
+    intDivide(rhs: BrsNumber): Int64 {
+        return new Int64(this.getValue().divide(rhs.getValue()));
     }
 
     pow(exponent: BrsNumber): BrsNumber {
@@ -131,6 +131,30 @@ export class Int64 implements IInt64 {
                 return new Int64(
                     Math.pow(this.getValue().toNumber(), exponent.getValue().toNumber())
                 );
+        }
+    }
+
+    and(rhs: BrsNumber): BrsNumber {
+        switch (rhs.kind) {
+            case ValueKind.Int32:
+            case ValueKind.Int64:
+                return new Int64(this.getValue().and(rhs.getValue()));
+            case ValueKind.Float:
+                return new Float(this.getValue().and(rhs.getValue()).toNumber());
+            case ValueKind.Double:
+                return new Double(this.getValue().and(rhs.getValue()).toNumber());
+        }
+    }
+
+    or(rhs: BrsNumber): BrsNumber {
+        switch (rhs.kind) {
+            case ValueKind.Int32:
+            case ValueKind.Int64:
+                return new Int64(this.getValue().or(rhs.getValue()));
+            case ValueKind.Float:
+                return new Float(this.getValue().or(rhs.getValue()).toNumber());
+            case ValueKind.Double:
+                return new Double(this.getValue().or(rhs.getValue()).toNumber());
         }
     }
 

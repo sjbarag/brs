@@ -112,6 +112,35 @@ export class BrsBoolean implements BrsValue {
     toString() {
         return this.value.toString();
     }
+
+    /**
+     * Returns the boolean AND of this value with another value.
+     * @param other the other value to AND with this one.
+     * @returns `BrsBoolean.True` if both this value and the other are true, otherwise
+     *          `BrsBoolean.False`.
+     */
+    and(other: BrsBoolean): BrsBoolean {
+        return BrsBoolean.from(this.value && other.value);
+    }
+
+    /**
+     * Returns the boolean OR of this value with another value.
+     * @param other the other value to AND with this one.
+     * @returns `BrsBoolean.True` if either this value or the other are true, otherwise
+     *          `BrsBoolean.False`.
+     */
+    or(other: BrsBoolean): BrsBoolean {
+        return BrsBoolean.from(this.value || other.value);
+    }
+
+    /**
+     * Returns the boolean negation of this value with another value.
+     * @returns `BrsBoolean.True` if either this value is false, otherwise
+     *          `BrsBoolean.False`.
+     */
+    not(): BrsBoolean {
+        return BrsBoolean.from(!this.value);
+    }
 }
 
 /** Internal representation of the BrightScript `invalid` value. */

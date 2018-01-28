@@ -1,4 +1,5 @@
-import { Token, Literal as TokenLiteral } from "../Token";
+import { Token } from "../Token";
+import { BrsType } from "../brsTypes";
 
 export interface Visitor<T> {
     visitAssign(expression: Assign): T;
@@ -77,7 +78,7 @@ export class Grouping implements Expression {
 }
 
 export class Literal implements Expression {
-    constructor(readonly value: TokenLiteral) {}
+    constructor(readonly value: BrsType) {}
 
     accept <R> (visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);

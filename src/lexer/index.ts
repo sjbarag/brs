@@ -1,10 +1,22 @@
 import Long = require("long");
 
 import { Lexeme } from "../Lexeme";
-import { Token, Literal } from "../Token";
+import { Token } from "../Token";
 import { ReservedWords } from "../ReservedWords";
 import * as BrsError from "../Error";
 import { isAlpha, isDigit, isAlphaNumeric } from "./Characters";
+
+
+import {
+    BrsType,
+    BrsInvalid,
+    BrsBoolean,
+    BrsString,
+    Int32,
+    Int64,
+    Float,
+    Double
+} from "../brsTypes";
 
 /** The zero-indexed position at which the token under consideration begins. */
 let start: number;
@@ -228,7 +240,7 @@ function string() {
 
     // trim the surrounding quotes, and replace the double-" literal with a single
     let value = source.slice(start + 1, current - 1).replace(/""/g, "\"");
-    addToken(Lexeme.String, value);
+    addToken(Lexeme.String, new BrsString(value));
 }
 
 /**
@@ -258,13 +270,13 @@ function number() {
 
     if (numberOfDigits >= 10) {
         // numeric literals over 10 digits are automatically Doubles
-        addToken(Lexeme.Double, Number.parseFloat(asString));
+        addToken(Lexeme.Double, Double.fromString(asString));
         return;
     } else if (peek() === "#") {
         // numeric literals ending with "#" are forced to Doubles
         advance();
         asString = source.slice(start, current);
-        addToken(Lexeme.Double, Number.parseFloat(asString));
+        addToken(Lexeme.Double, Float.fromString(asString));
         return;
     } else if (peek().toLowerCase() === "d") {
         // literals that use "D" as the exponent are also automatic Doubles
@@ -282,7 +294,7 @@ function number() {
 
         // replace the exponential marker with a JavaScript-friendly "e"
         asString = source.slice(start, current).replace(/[dD]/, "e");
-        addToken(Lexeme.Double, Number.parseFloat(asString));
+        addToken(Lexeme.Double, Double.fromString(asString));
         return;
     }
 
@@ -292,7 +304,7 @@ function number() {
         asString = source.slice(start, current);
         addToken(
             Lexeme.Float,
-            Math.fround(Number.parseFloat(asString))
+            Float.fromString(asString)
         );
         return;
     } else if (peek().toLowerCase() === "e") {
@@ -312,14 +324,14 @@ function number() {
         asString = source.slice(start, current);
         addToken(
             Lexeme.Float,
-            Math.fround(Number.parseFloat(asString))
+            Float.fromString(asString)
         );
         return;
     } else if (containsDecimal) {
         // anything with a decimal but without matching Double rules is a Float
         addToken(
             Lexeme.Float,
-            Math.fround(Number.parseFloat(asString))
+            Float.fromString(asString)
         );
         return;
     }
@@ -328,11 +340,11 @@ function number() {
         // numeric literals ending with "&" are forced to LongIntegers
         advance();
         asString = source.slice(start, current);
-        addToken(Lexeme.LongInteger, Long.fromString(asString));
+        addToken(Lexeme.LongInteger, Int64.fromString(asString));
         return;
     } else {
         // otherwise, it's a regular integer
-        addToken(Lexeme.Integer, Number.parseInt(asString, 10));
+        addToken(Lexeme.Integer, Int32.fromString(asString));
         return;
     }
 }
@@ -365,7 +377,7 @@ function identifier() {
  * @param kind the type of token to produce.
  * @param literal an optional literal value to include in the token.
  */
-function addToken(kind: Lexeme, literal?: Literal): void {
+function addToken(kind: Lexeme, literal?: BrsType): void {
     tokens.push({
         kind: kind,
         text: source.slice(start, current),

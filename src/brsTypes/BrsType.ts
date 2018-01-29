@@ -84,6 +84,10 @@ export class BrsBoolean implements BrsValue {
     readonly kind = ValueKind.Boolean;
     private constructor(private readonly value: boolean) {}
 
+    toBoolean(): boolean {
+        return this.value;
+    }
+
     static False = new BrsBoolean(false);
     static True = new BrsBoolean(true);
     static from(value: boolean) {

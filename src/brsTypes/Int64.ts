@@ -110,7 +110,16 @@ export class Int64 implements Numeric {
     }
 
     intDivide(rhs: BrsNumber): Int64 {
-        return new Int64(this.getValue().divide(rhs.getValue()));
+        switch (rhs.kind) {
+            case ValueKind.Int32:
+            case ValueKind.Int64:
+                return new Int64(this.getValue().divide(rhs.getValue()));
+            case ValueKind.Float:
+            case ValueKind.Double:
+                return new Int64(
+                    Math.floor(this.getValue().toNumber() / rhs.getValue())
+                );
+        }
     }
 
     pow(exponent: BrsNumber): BrsNumber {

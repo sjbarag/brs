@@ -1,4 +1,5 @@
 const BrsTypes = require("../../lib/brsTypes");
+const Long = require("long");
 
 describe("Int64", () => {
     it("rounds initial values to integers", () => {
@@ -163,15 +164,15 @@ describe("Int64", () => {
         it("modulos Float right-hand sides", () => {
             let threePointFive = new BrsTypes.Float(3.5);
             let result = ten.modulo(threePointFive);
-            expect(result.kind).toBe(BrsTypes.ValueKind.Int32);
-            expect(result.getValue()).toBe(3);
+            expect(result.kind).toBe(BrsTypes.ValueKind.Int64);
+            expect(result.getValue()).toEqual(Long.fromNumber(3));
         });
 
         it("modulos Double right-hand sides", () => {
             let twoPointFive = new BrsTypes.Double(2.5);
             let result = ten.modulo(twoPointFive);
-            expect(result.kind).toBe(BrsTypes.ValueKind.Int32);
-            expect(result.getValue()).toBe(0);
+            expect(result.kind).toBe(BrsTypes.ValueKind.Int64);
+            expect(result.getValue()).toEqual(Long.ZERO);
         });
     });
 
@@ -181,29 +182,29 @@ describe("Int64", () => {
         it("integer-divides by Int32 right-hand sides", () => {
             let three = new BrsTypes.Int32(3);
             let result = ten.intDivide(three);
-            expect(result.kind).toBe(BrsTypes.ValueKind.Int32);
-            expect(result.getValue()).toBe(3);
+            expect(result.kind).toBe(BrsTypes.ValueKind.Int64);
+            expect(result.getValue()).toEqual(Long.fromNumber(3));
         });
 
         it("integer-divides by Int64 right-hand sides", () => {
             let three = new BrsTypes.Int64(3);
             let result = ten.intDivide(three);
             expect(result.kind).toBe(BrsTypes.ValueKind.Int64);
-            expect(result.getValue().toNumber()).toBe(3);
+            expect(result.getValue()).toEqual(Long.fromNumber(3));
         });
 
         it("integer-divides by Float right-hand sides", () => {
             let threePointFive = new BrsTypes.Float(3.5);
             let result = ten.intDivide(threePointFive);
-            expect(result.kind).toBe(BrsTypes.ValueKind.Int32);
-            expect(result.getValue()).toBe(2);
+            expect(result.kind).toBe(BrsTypes.ValueKind.Int64);
+            expect(result.getValue()).toEqual(Long.fromNumber(2));
         });
 
         it("integer-divides by Double right-hand sides", () => {
             let twoPointFive = new BrsTypes.Double(2.5);
             let result = ten.intDivide(twoPointFive);
-            expect(result.kind).toBe(BrsTypes.ValueKind.Int32);
-            expect(result.getValue()).toBe(4);
+            expect(result.kind).toBe(BrsTypes.ValueKind.Int64);
+            expect(result.getValue()).toEqual(Long.fromNumber(4));
         });
     });
 

@@ -136,7 +136,7 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 }
             case Lexeme.Plus:
                 if (isBrsNumber(left) && isBrsNumber(right)) {
-                    return left.intDivide(right);
+                    return left.add(right);
                 } else if (isBrsString(left) && isBrsString(right)) {
                     return left.concat(right);
                 } else {
@@ -161,10 +161,10 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             case Lexeme.LessGreater:
                 return left.equalTo(right).not();
             case Lexeme.And:
-                if (left.equalTo(BrsBoolean.False)) {
+                if (isBrsBoolean(left) && !left.toBoolean()) {
                     // short-circuit ANDs - don't evaluate RHS if LHS is false
                     return BrsBoolean.False;
-                } else if (left.equalTo(BrsBoolean.True)) {
+                } else if (isBrsBoolean(left)) {
                     right = this.evaluate(expression.right);
                     if (isBrsBoolean(right)) {
                         return (left as BrsBoolean).and(right);
@@ -201,10 +201,10 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     return BrsInvalid.Instance;
                 }
             case Lexeme.Or:
-                if (left.equalTo(BrsBoolean.True)) {
+                if (isBrsBoolean(left) && left.toBoolean()) {
                     // short-circuit ORs - don't evaluate RHS if LHS is true
                     return BrsBoolean.True;
-                } else if (left.equalTo(BrsBoolean.False)) {
+                } else if (isBrsBoolean(left)) {
                     right = this.evaluate(expression.right);
                     if (isBrsBoolean(right)) {
                         return (left as BrsBoolean).or(right);

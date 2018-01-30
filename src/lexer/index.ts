@@ -276,7 +276,7 @@ function number() {
         // numeric literals ending with "#" are forced to Doubles
         advance();
         asString = source.slice(start, current);
-        addToken(Lexeme.Double, Float.fromString(asString));
+        addToken(Lexeme.Double, Double.fromString(asString));
         return;
     } else if (peek().toLowerCase() === "d") {
         // literals that use "D" as the exponent are also automatic Doubles

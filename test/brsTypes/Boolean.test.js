@@ -76,4 +76,23 @@ describe.only("Boolean", () => {
             expect(BrsTypes.BrsBoolean.False.greaterThan(other)).toBe(BrsTypes.BrsBoolean.False);
         });
     });
+
+    test("boolean AND", () => {
+        expect(BrsTypes.BrsBoolean.False.and(BrsTypes.BrsBoolean.False)).toBe(BrsTypes.BrsBoolean.False);
+        expect(BrsTypes.BrsBoolean.False.and(BrsTypes.BrsBoolean.True)).toBe(BrsTypes.BrsBoolean.False);
+        expect(BrsTypes.BrsBoolean.True.and(BrsTypes.BrsBoolean.False)).toBe(BrsTypes.BrsBoolean.False);
+        expect(BrsTypes.BrsBoolean.True.and(BrsTypes.BrsBoolean.True)).toBe(BrsTypes.BrsBoolean.True);
+    });
+
+    test("boolean OR", () => {
+        expect(BrsTypes.BrsBoolean.False.or(BrsTypes.BrsBoolean.False)).toBe(BrsTypes.BrsBoolean.False);
+        expect(BrsTypes.BrsBoolean.False.or(BrsTypes.BrsBoolean.True)).toBe(BrsTypes.BrsBoolean.True);
+        expect(BrsTypes.BrsBoolean.True.or(BrsTypes.BrsBoolean.False)).toBe(BrsTypes.BrsBoolean.True);
+        expect(BrsTypes.BrsBoolean.True.or(BrsTypes.BrsBoolean.True)).toBe(BrsTypes.BrsBoolean.True);
+    });
+
+    test("boolean NOT", () => {
+        expect(BrsTypes.BrsBoolean.False.not()).toBe(BrsTypes.BrsBoolean.True);
+        expect(BrsTypes.BrsBoolean.True.not()).toBe(BrsTypes.BrsBoolean.False);
+    });
 });

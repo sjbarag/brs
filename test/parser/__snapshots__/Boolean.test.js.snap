@@ -5,10 +5,16 @@ Array [
   Expression {
     "expression": Binary {
       "left": Literal {
-        "value": true,
+        "value": BrsBoolean {
+          "kind": 1,
+          "value": true,
+        },
       },
       "right": Literal {
-        "value": false,
+        "value": BrsBoolean {
+          "kind": 1,
+          "value": false,
+        },
       },
       "token": Object {
         "kind": 31,
@@ -25,10 +31,16 @@ Array [
   Expression {
     "expression": Binary {
       "left": Literal {
-        "value": true,
+        "value": BrsBoolean {
+          "kind": 1,
+          "value": true,
+        },
       },
       "right": Literal {
-        "value": false,
+        "value": BrsBoolean {
+          "kind": 1,
+          "value": false,
+        },
       },
       "token": Object {
         "kind": 60,

@@ -2,6 +2,7 @@ const Long = require("long");
 
 const Lexer = require("../lib/lexer");
 const { Lexeme } = require("../lib/Lexeme");
+const { BrsString, Int32, Int64, Float, Double } = require("../lib/brsTypes");
 
 describe("lexer", () => {
     it("includes an end-of-file marker", () => {
@@ -118,13 +119,17 @@ describe("lexer", () => {
                 Lexeme.String,
                 Lexeme.Eof
             ])
-            expect(tokens[0].literal).toBe("hello world");
+            expect(tokens[0].literal).toEqual(
+                new BrsString("hello world")
+            );
         });
 
         it(`escapes safely escapes " literals`, () => {
             let tokens = Lexer.scan(`"the cat says ""meow"""`);
             expect(tokens[0].kind).toBe(Lexeme.String);
-            expect(tokens[0].literal).toBe(`the cat says "meow"`);
+            expect(tokens[0].literal).toEqual(
+                new BrsString(`the cat says "meow"`)
+            );
         });
 
         it("produces an error for unterminated strings");
@@ -135,19 +140,19 @@ describe("lexer", () => {
         it("respects '#' suffix", () => {
             let d = Lexer.scan("123#")[0];
             expect(d.kind).toBe(Lexeme.Double);
-            expect(d.literal).toBe(123);
+            expect(d.literal).toEqual(new Double(123));
         });
 
         it("forces literals >= 10 digits into doubles", () => {
             let d = Lexer.scan("0000000005")[0];
             expect(d.kind).toBe(Lexeme.Double);
-            expect(d.literal).toBe(5);
+            expect(d.literal).toEqual(new Double(5));
         });
 
         it("forces literals with 'D' in exponent into doubles", () => {
             let d = Lexer.scan("2.5d3")[0];
             expect(d.kind).toBe(Lexeme.Double);
-            expect(d.literal).toBe(2500);
+            expect(d.literal).toEqual(new Double(2500));
         });
     });
 
@@ -157,19 +162,19 @@ describe("lexer", () => {
             expect(f.kind).toBe(Lexeme.Float);
             // Floating precision will make this *not* equal
             expect(f.literal).not.toBe(8e-8);
-            expect(f.literal).toBe(Math.fround(0.00000008));
+            expect(f.literal).toEqual(new Float(0.00000008));
         });
 
         it("forces literals with a decimal into floats", () => {
             let f = Lexer.scan("1.0")[0];
             expect(f.kind).toBe(Lexeme.Float);
-            expect(f.literal).toBe(Math.fround(1000000000000e-12));
+            expect(f.literal).toEqual(new Float(1000000000000e-12));
         });
 
         it("forces literals with 'E' in exponent into floats", () => {
             let f = Lexer.scan("2.5e3")[0];
             expect(f.kind).toBe(Lexeme.Float);
-            expect(f.literal).toBe(2500);
+            expect(f.literal).toEqual(new Float(2500));
         });
     });
 
@@ -178,7 +183,7 @@ describe("lexer", () => {
         it("respects '&' suffix", () => {
             let li = Lexer.scan("123&")[0];
             expect(li.kind).toBe(Lexeme.LongInteger);
-            expect(li.literal).toEqual(Long.fromInt(123));
+            expect(li.literal).toEqual(new Int64(123));
         });
     });
 
@@ -187,8 +192,7 @@ describe("lexer", () => {
         it("falls back to a regular integer", () => {
             let i = Lexer.scan("123")[0];
             expect(i.kind).toBe(Lexeme.Integer);
-            expect(Number.isInteger(i.literal)).toBe(true);
-            expect(i.literal).toBe(123);
+            expect(i.literal).toEqual(new Int32(123));
         });
     });
 

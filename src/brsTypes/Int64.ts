@@ -147,11 +147,9 @@ export class Int64 implements Numeric {
         switch (rhs.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
-                return new Int64(this.getValue().and(rhs.getValue()));
             case ValueKind.Float:
-                return new Float(this.getValue().and(rhs.getValue()).toNumber());
             case ValueKind.Double:
-                return new Double(this.getValue().and(rhs.getValue()).toNumber());
+                return new Int64(this.getValue().and(rhs.getValue()));
         }
     }
 
@@ -159,11 +157,9 @@ export class Int64 implements Numeric {
         switch (rhs.kind) {
             case ValueKind.Int32:
             case ValueKind.Int64:
-                return new Int64(this.getValue().or(rhs.getValue()));
             case ValueKind.Float:
-                return new Float(this.getValue().or(rhs.getValue()).toNumber());
             case ValueKind.Double:
-                return new Double(this.getValue().or(rhs.getValue()).toNumber());
+                return new Int64(this.getValue().or(rhs.getValue()));
         }
     }
 

@@ -142,9 +142,9 @@ export class Int32 implements Numeric {
             case ValueKind.Int64:
                 return new Int64(this.getValue()).and(rhs);
             case ValueKind.Float:
-                return new Float(this.getValue() & rhs.getValue());
+                return new Int32(this.getValue() & rhs.getValue());
             case ValueKind.Double:
-                return new Double(this.getValue() & rhs.getValue());
+                return new Int32(this.getValue() & rhs.getValue());
         }
     }
 
@@ -155,9 +155,9 @@ export class Int32 implements Numeric {
             case ValueKind.Int64:
                 return new Int64(this.getValue()).or(rhs);
             case ValueKind.Float:
-                return new Float(this.getValue() | rhs.getValue());
+                return new Int32(this.getValue() | rhs.getValue());
             case ValueKind.Double:
-                return new Double(this.getValue() | rhs.getValue());
+                return new Int32(this.getValue() | rhs.getValue());
         }
     }
 

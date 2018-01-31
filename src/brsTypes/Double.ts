@@ -133,7 +133,7 @@ export class Double implements Numeric {
             case ValueKind.Int32:
             case ValueKind.Float:
             case ValueKind.Double:
-                return new Double(this.getValue() & rhs.getValue());
+                return new Int32(this.getValue() & rhs.getValue());
         }
     }
 
@@ -144,7 +144,7 @@ export class Double implements Numeric {
             case ValueKind.Int32:
             case ValueKind.Float:
             case ValueKind.Double:
-                return new Double(this.getValue() | rhs.getValue());
+                return new Int32(this.getValue() | rhs.getValue());
         }
     }
 

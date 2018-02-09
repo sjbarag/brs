@@ -362,6 +362,7 @@ function identifier() {
     while (isAlphaNumeric(peek())) { advance(); }
 
     let text = source.slice(start, current);
+    // TODO: check for "end" and read the next word as well
 
     // TODO: support type designators:
     // https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types

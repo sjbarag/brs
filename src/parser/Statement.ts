@@ -1,10 +1,13 @@
 import * as Expr from "./Expression";
 import { Token } from "../Token";
+import { BrsInvalid } from "../brsTypes/index";
 
 export interface Visitor<T> {
     visitAssignment(statement: Assignment): T;
     visitExpression(statement: Expression): T;
     visitPrint(statement: Print): T;
+    visitIf(statement: If): T;
+    visitBlock(block: Block): T;
 }
 
 export interface Statement {
@@ -23,7 +26,7 @@ export class Block implements Statement {
     constructor(readonly statements: ReadonlyArray<Statement>) {}
 
     accept<R>(visitor: Visitor<R>): R {
-        throw new Error("Method not implemented.");
+        return visitor.visitBlock(this);
     }
 }
 
@@ -47,15 +50,21 @@ export class Function implements Statement {
     }
 }
 
+export interface ElseIf {
+    condition: Expr.Expression,
+    thenBranch: Statement
+};
+
 export class If implements Statement {
     constructor(
         readonly condition: Expr.Expression,
-        readonly thenBranch?: Statement,
+        readonly thenBranch: Statement,
+        readonly elseIfs: ElseIf[],
         readonly elseBranch?: Statement
     ) {}
 
     accept<R>(visitor: Visitor<R>): R {
-        throw new Error("Method not implemented.");
+        return visitor.visitIf(this);
     }
 }
 

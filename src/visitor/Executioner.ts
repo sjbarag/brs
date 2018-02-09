@@ -246,6 +246,17 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 return BrsInvalid.Instance;
         }
     }
+
+    visitBlock(block: Stmt.Block): BrsInvalid {
+        for (const statement of block.statements) {
+            if (BrsError.found()) { break; }
+
+            this.execute(statement);
+        }
+
+        return BrsInvalid.Instance;
+    }
+
     visitCall(expression: Expr.Call) {
         return BrsInvalid.Instance;
     }
@@ -255,6 +266,25 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitGrouping(expr: Expr.Grouping) {
         return this.evaluate(expr.expression);
+    }
+
+    visitIf(statement: Stmt.If): BrsInvalid {
+        if (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
+            this.execute(statement.thenBranch);
+            return BrsInvalid.Instance;
+        } else {
+            for (const elseIf of statement.elseIfs) {
+                if (this.evaluate(elseIf.condition).equalTo(BrsBoolean.True).toBoolean()) {
+                    this.execute(elseIf.thenBranch);
+                    return BrsInvalid.Instance;
+                }
+            }
+
+            if (statement.elseBranch) {
+                this.execute(statement.elseBranch);
+            }
+            return BrsInvalid.Instance;
+        }
     }
 
     visitLiteral(expression: Expr.Literal): BrsType {

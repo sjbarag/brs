@@ -130,8 +130,13 @@ function scanToken(): void {
             // ignore whitespace; indentation isn't signficant in BrightScript
             break;
         case "\n":
-            // but newlines _are_ important
-            addToken(Lexeme.Newline);
+            // consecutive newlines aren't significant, because they're just blank lines
+            // so only add blank lines when they're not consecutive
+            let previous = lastToken();
+            if (previous && previous.kind !== Lexeme.Newline) {
+                addToken(Lexeme.Newline);
+            }
+            // but always advance the line counter
             line++;
             break;
         case "\"":
@@ -370,6 +375,14 @@ function identifier() {
     } else {
         addToken(tokenType);
     }
+}
+
+/**
+ * Retrieves the token that was most recently added.
+ * @returns the most recently added token.
+ */
+function lastToken(): Token | undefined {
+    return tokens[tokens.length - 1];
 }
 
 /**

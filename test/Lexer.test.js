@@ -14,11 +14,11 @@ describe("lexer", () => {
         expect(tokens.map(t => t.kind)).toEqual([ Lexeme.Eof ]);
     });
 
-    it("retains newlines", () => {
-        let tokens = Lexer.scan("\n\n\n");
+    it("retains one newline from consecutive newlines", () => {
+        let tokens = Lexer.scan("\n\n'foo\n\n\nprint 2\n\n");
         expect(tokens.map(t => t.kind)).toEqual([
-            Lexeme.Newline,
-            Lexeme.Newline,
+            Lexeme.Print,
+            Lexeme.Integer,
             Lexeme.Newline,
             Lexeme.Eof
         ]);

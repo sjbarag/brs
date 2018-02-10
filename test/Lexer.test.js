@@ -113,7 +113,7 @@ describe("lexer", () => {
     }); // non-literals
 
     describe("string literals", () => {
-        it("stores produces string literal tokens", () => {
+        it("produces string literal tokens", () => {
             let tokens = Lexer.scan(`"hello world"`);
             expect(tokens.map(t => t.kind)).toEqual([
                 Lexeme.String,
@@ -124,7 +124,7 @@ describe("lexer", () => {
             );
         });
 
-        it(`escapes safely escapes " literals`, () => {
+        it(`safely escapes " literals`, () => {
             let tokens = Lexer.scan(`"the cat says ""meow"""`);
             expect(tokens[0].kind).toBe(Lexeme.String);
             expect(tokens[0].literal).toEqual(
@@ -211,6 +211,19 @@ describe("lexer", () => {
                 Lexeme.Return,
                 Lexeme.True,
                 Lexeme.False,
+                Lexeme.Eof
+            ]);
+            expect(words.filter(w => !!w.literal).length).toBe(0);
+        });
+
+        it("matches multi-word reserved words", () => {
+            let words = Lexer.scan("else if end if end while end sub end function");
+            expect(words.map(w => w.kind)).toEqual([
+                Lexeme.ElseIf,
+                Lexeme.EndIf,
+                Lexeme.EndWhile,
+                Lexeme.EndSub,
+                Lexeme.EndFunction,
                 Lexeme.Eof
             ]);
             expect(words.filter(w => !!w.literal).length).toBe(0);

@@ -362,7 +362,24 @@ function identifier() {
     while (isAlphaNumeric(peek())) { advance(); }
 
     let text = source.slice(start, current);
-    // TODO: check for "end" and read the next word as well
+
+    // some identifiers can be split into two words, so check the "next" word and see what we get
+    if ((text === "end" || text === "else") && peek() === " ") {
+        let endOfFirstWord = current;
+
+        advance(); // skip past the space
+        while (isAlphaNumeric(peek())) { advance(); } // read the next word
+
+        let twoWords = source.slice(start, current);
+        let maybeTokenType = ReservedWords[twoWords.toLowerCase()];
+        if (maybeTokenType) {
+            addToken(maybeTokenType);
+            return;
+        } else {
+            // reset if the last word and the current word didn't form a multi-word Lexeme
+            current = endOfFirstWord;
+        }
+    }
 
     // TODO: support type designators:
     // https://sdkdocs.roku.com/display/sdkdoc/Expressions%2C+Variables%2C+and+Types

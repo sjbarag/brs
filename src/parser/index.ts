@@ -116,7 +116,6 @@ function ifStatement(): Statement {
             advance(); // skip past "end if"
             match(Lexeme.Newline);
         }
-
     } else {
         thenBranch = statement(Lexeme.Else);
         if (match(Lexeme.Else)) {

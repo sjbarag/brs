@@ -94,15 +94,15 @@ function ifStatement(): Statement {
         // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
         // a trailing "end if"
 
-        while (match(Lexeme.Newline)) {}
+        match(Lexeme.Newline);
         thenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
-        while (match(Lexeme.Newline)) {}
+        match(Lexeme.Newline);
 
         // attempt to read a bunch of "else if" clauses
         while (match(Lexeme.ElseIf)) {
             let elseIfCondition = expression();
             consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
-            while(match(Lexeme.Newline)) {}
+            match(Lexeme.Newline);
             let elseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
             elseIfBranches.push({
                 condition: elseIfCondition,
@@ -111,10 +111,10 @@ function ifStatement(): Statement {
         }
 
         if (match(Lexeme.Else)) {
-            while (match(Lexeme.Newline)) {}
+            match(Lexeme.Newline);
             elseBranch = block(Lexeme.EndIf);
             advance(); // skip past "end if"
-            while (match(Lexeme.Newline)) {}
+            match(Lexeme.Newline);
         }
 
     } else {

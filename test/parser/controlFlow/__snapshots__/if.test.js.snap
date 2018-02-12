@@ -1,5 +1,201 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parser if statements block if parses if only 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "kind": 15,
+        "text": "<",
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "statements": Array [
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "foo",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`parser if statements block if parses if-else 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "kind": 15,
+        "text": "<",
+      },
+    },
+    "elseBranch": Block {
+      "statements": Array [
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "foo",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": false,
+            },
+          },
+        },
+      ],
+    },
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "statements": Array [
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "foo",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`parser if statements block if parses if-elseif-else 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "kind": 15,
+        "text": "<",
+      },
+    },
+    "elseBranch": Block {
+      "statements": Array [
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "foo",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": false,
+            },
+          },
+        },
+      ],
+    },
+    "elseIfs": Array [
+      Object {
+        "condition": Binary {
+          "left": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 1,
+            },
+          },
+          "right": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 2,
+            },
+          },
+          "token": Object {
+            "kind": 17,
+            "text": ">",
+          },
+        },
+        "thenBranch": Block {
+          "statements": Array [
+            Assignment {
+              "name": Object {
+                "kind": 21,
+                "text": "foo",
+              },
+              "value": Literal {
+                "value": Int32 {
+                  "kind": 3,
+                  "value": 3,
+                },
+              },
+            },
+          ],
+        },
+      },
+    ],
+    "thenBranch": Block {
+      "statements": Array [
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "foo",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+  },
+]
+`;
+
 exports[`parser if statements single-line if parses if only 1`] = `
 Array [
   If {

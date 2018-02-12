@@ -84,6 +84,8 @@ function statement(...additionalterminators: BlockTerminator[]): Statement {
 }
 
 function ifStatement(): Statement {
+    let startingLine = previous().line;
+
     const condition = expression();
     let thenBranch: Statement;
     let elseIfBranches: Stmt.ElseIf[] = [];
@@ -94,7 +96,6 @@ function ifStatement(): Statement {
         // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
         // a trailing "end if"
 
-        match(Lexeme.Newline);
         thenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
         match(Lexeme.Newline);
 
@@ -115,6 +116,12 @@ function ifStatement(): Statement {
             elseBranch = block(Lexeme.EndIf);
             advance(); // skip past "end if"
             match(Lexeme.Newline);
+        } else {
+            match(Lexeme.Newline);
+            consume(
+                `Expected 'end if' to close 'if' statement started on line ${startingLine}`,
+                Lexeme.EndIf
+            );
         }
     } else {
         thenBranch = statement(Lexeme.Else);

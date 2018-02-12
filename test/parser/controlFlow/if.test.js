@@ -92,4 +92,95 @@ describe("parser if statements", () => {
             expect(parsed).toMatchSnapshot();
         });
     });
+
+    describe("block if", () => {
+        it("parses if only", () => {
+            let parsed = Parser.parse([
+                { kind: Lexeme.If, text: "if" },
+                { kind: Lexeme.Integer, literal: new Int32(1) },
+                { kind: Lexeme.Less, text: "<" },
+                { kind: Lexeme.Integer, literal: new Int32(2) },
+                { kind: Lexeme.Then, text: "then" },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "foo" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.True, literal: BrsBoolean.True },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.EndIf, text: "end if" },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBe(false);
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses if-else", () => {
+            let parsed = Parser.parse([
+                { kind: Lexeme.If, text: "if" },
+                { kind: Lexeme.Integer, literal: new Int32(1) },
+                { kind: Lexeme.Less, text: "<" },
+                { kind: Lexeme.Integer, literal: new Int32(2) },
+                { kind: Lexeme.Then, text: "then" },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "foo" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.True, literal: BrsBoolean.True },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Else, text: "else" },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "foo" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.False, literal: BrsBoolean.False },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.EndIf, text: "end if" },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBe(false);
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses if-elseif-else", () => {
+            console.log("starting");
+            let parsed = Parser.parse([
+                { kind: Lexeme.If, text: "if" },
+                { kind: Lexeme.Integer, literal: new Int32(1) },
+                { kind: Lexeme.Less, text: "<" },
+                { kind: Lexeme.Integer, literal: new Int32(2) },
+                { kind: Lexeme.Then, text: "then" },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "foo" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.True, literal: BrsBoolean.True },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.ElseIf, text: "else if" },
+                { kind: Lexeme.Integer, literal: new Int32(1) },
+                { kind: Lexeme.Greater, text: ">" },
+                { kind: Lexeme.Integer, literal: new Int32(2) },
+                { kind: Lexeme.Then, text: "then" },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "foo" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.Integer, literal: new Int32(3) },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Else, text: "else" },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "foo" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.False, literal: BrsBoolean.False },
+                { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.EndIf, text: "end if" },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBe(false);
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+    });
 });

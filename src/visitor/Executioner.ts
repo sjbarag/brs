@@ -249,9 +249,10 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitBlock(block: Stmt.Block): BrsInvalid {
         for (const statement of block.statements) {
-            if (BrsError.found()) { break; }
-
             this.execute(statement);
+
+            // this might need to actually throw
+            if (BrsError.found()) { break; }
         }
 
         return BrsInvalid.Instance;

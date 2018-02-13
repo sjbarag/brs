@@ -52,15 +52,15 @@ export class Function implements Statement {
 
 export interface ElseIf {
     condition: Expr.Expression,
-    thenBranch: Statement
+    thenBranch: Block
 };
 
 export class If implements Statement {
     constructor(
         readonly condition: Expr.Expression,
-        readonly thenBranch: Statement,
+        readonly thenBranch: Block,
         readonly elseIfs: ElseIf[],
-        readonly elseBranch?: Statement
+        readonly elseBranch?: Block
     ) {}
 
     accept<R>(visitor: Visitor<R>): R {

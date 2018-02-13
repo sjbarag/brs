@@ -106,6 +106,10 @@ describe("parser if statements", () => {
                 { kind: Lexeme.Equal, text: "=" },
                 { kind: Lexeme.True, literal: BrsBoolean.True },
                 { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "bar" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.True, literal: BrsBoolean.True },
+                { kind: Lexeme.Newline, text: "\n" },
                 { kind: Lexeme.EndIf, text: "end if" },
                 EOF
             ]);
@@ -134,6 +138,10 @@ describe("parser if statements", () => {
                 { kind: Lexeme.Equal, text: "=" },
                 { kind: Lexeme.False, literal: BrsBoolean.False },
                 { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "bar" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.True, literal: BrsBoolean.False },
+                { kind: Lexeme.Newline, text: "\n" },
                 { kind: Lexeme.EndIf, text: "end if" },
                 EOF
             ]);
@@ -145,7 +153,6 @@ describe("parser if statements", () => {
         });
 
         it("parses if-elseif-else", () => {
-            console.log("starting");
             let parsed = Parser.parse([
                 { kind: Lexeme.If, text: "if" },
                 { kind: Lexeme.Integer, literal: new Int32(1) },
@@ -167,6 +174,10 @@ describe("parser if statements", () => {
                 { kind: Lexeme.Equal, text: "=" },
                 { kind: Lexeme.Integer, literal: new Int32(3) },
                 { kind: Lexeme.Newline, text: "\n" },
+                { kind: Lexeme.Identifier, text: "bar" },
+                { kind: Lexeme.Equal, text: "=" },
+                { kind: Lexeme.True, literal: BrsBoolean.False },
+                { kind: Lexeme.Newline, text: "\n" },
                 { kind: Lexeme.Else, text: "else" },
                 { kind: Lexeme.Newline, text: "\n" },
                 { kind: Lexeme.Identifier, text: "foo" },
@@ -174,6 +185,7 @@ describe("parser if statements", () => {
                 { kind: Lexeme.False, literal: BrsBoolean.False },
                 { kind: Lexeme.Newline, text: "\n" },
                 { kind: Lexeme.EndIf, text: "end if" },
+                { kind: Lexeme.Newline, text: "\n" },
                 EOF
             ]);
 

@@ -87,9 +87,9 @@ function ifStatement(): Statement {
     let startingLine = previous().line;
 
     const condition = expression();
-    let thenBranch: Statement;
+    let thenBranch: Stmt.Block;
     let elseIfBranches: Stmt.ElseIf[] = [];
-    let elseBranch: Statement | undefined;
+    let elseBranch: Stmt.Block | undefined;
     consume("Expected 'then' after 'if ...condition...", Lexeme.Then);
 
     if (match(Lexeme.Newline)) {
@@ -122,11 +122,14 @@ function ifStatement(): Statement {
                 `Expected 'end if' to close 'if' statement started on line ${startingLine}`,
                 Lexeme.EndIf
             );
+            match(Lexeme.Newline);
         }
     } else {
-        thenBranch = statement(Lexeme.Else);
+        let thenStatement = statement(Lexeme.Else);
+        thenBranch = new Stmt.Block([thenStatement]);
         if (match(Lexeme.Else)) {
-            elseBranch = statement();
+            let elseStatement = statement();
+            elseBranch = new Stmt.Block([elseStatement]);
         }
     }
 
@@ -154,7 +157,7 @@ function printStatement(...additionalterminators: BlockTerminator[]): Statement 
  * @param terminators the token(s) that signifies the end of this block; all other terminators are
  *                    ignored.
  */
-function block(...terminators: BlockTerminator[]): Statement {
+function block(...terminators: BlockTerminator[]): Stmt.Block {
     const statements: Statement[] = [];
     while (!check(...terminators)) {
         const dec = declaration();

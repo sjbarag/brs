@@ -37,6 +37,18 @@ Array [
             },
           },
         },
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "bar",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
       ],
     },
   },
@@ -75,6 +87,18 @@ Array [
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
+            },
+          },
+        },
+        Assignment {
+          "name": Object {
+            "kind": 21,
+            "text": "bar",
+          },
+          "value": Literal {
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
             },
           },
         },
@@ -172,6 +196,18 @@ Array [
                 },
               },
             },
+            Assignment {
+              "name": Object {
+                "kind": 21,
+                "text": "bar",
+              },
+              "value": Literal {
+                "value": BrsBoolean {
+                  "kind": 1,
+                  "value": true,
+                },
+              },
+            },
           ],
         },
       },
@@ -220,27 +256,31 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
-    "thenBranch": Expression {
-      "expression": Binary {
-        "left": Variable {
-          "name": Object {
-            "kind": 21,
-            "line": 1,
-            "text": "foo",
+    "thenBranch": Block {
+      "statements": Array [
+        Expression {
+          "expression": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "foo",
+              },
+            },
+            "right": Literal {
+              "value": BrsBoolean {
+                "kind": 1,
+                "value": true,
+              },
+            },
+            "token": Object {
+              "kind": 19,
+              "line": 1,
+              "literal": undefined,
+            },
           },
         },
-        "right": Literal {
-          "value": BrsBoolean {
-            "kind": 1,
-            "value": true,
-          },
-        },
-        "token": Object {
-          "kind": 19,
-          "line": 1,
-          "literal": undefined,
-        },
-      },
+      ],
     },
   },
 ]
@@ -268,50 +308,58 @@ Array [
         "literal": undefined,
       },
     },
-    "elseBranch": Expression {
-      "expression": Binary {
-        "left": Variable {
-          "name": Object {
-            "kind": 21,
-            "line": 1,
-            "text": "foo",
+    "elseBranch": Block {
+      "statements": Array [
+        Expression {
+          "expression": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "foo",
+              },
+            },
+            "right": Literal {
+              "value": BrsBoolean {
+                "kind": 1,
+                "value": true,
+              },
+            },
+            "token": Object {
+              "kind": 19,
+              "line": 1,
+              "literal": undefined,
+            },
           },
         },
-        "right": Literal {
-          "value": BrsBoolean {
-            "kind": 1,
-            "value": true,
-          },
-        },
-        "token": Object {
-          "kind": 19,
-          "line": 1,
-          "literal": undefined,
-        },
-      },
+      ],
     },
     "elseIfs": Array [],
-    "thenBranch": Expression {
-      "expression": Binary {
-        "left": Variable {
-          "name": Object {
-            "kind": 21,
-            "line": 1,
-            "text": "foo",
+    "thenBranch": Block {
+      "statements": Array [
+        Expression {
+          "expression": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "foo",
+              },
+            },
+            "right": Literal {
+              "value": BrsBoolean {
+                "kind": 1,
+                "value": true,
+              },
+            },
+            "token": Object {
+              "kind": 19,
+              "line": 1,
+              "literal": undefined,
+            },
           },
         },
-        "right": Literal {
-          "value": BrsBoolean {
-            "kind": 1,
-            "value": true,
-          },
-        },
-        "token": Object {
-          "kind": 19,
-          "line": 1,
-          "literal": undefined,
-        },
-      },
+      ],
     },
   },
 ]

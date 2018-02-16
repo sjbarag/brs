@@ -1,11 +1,11 @@
 const Long = require("long");
 const BrsError = require("../../lib/Error");
-const { binary } = require("./ExecutionerTests");
+const { binary } = require("./InterpreterTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Executioner } = require("../../lib/visitor/Executioner");
+const { Interpreter } = require("../../lib/visitor/Interpreter");
 const { Int32, Int64, Float, Double, BrsString, BrsBoolean, BrsInvalid } = require("../../lib/brsTypes");
 
-let executioner;
+let interpreter;
 
 /**
  * Generates tests that compares all permutations of two values using all supported operators.
@@ -17,7 +17,7 @@ function verifyComparisons(small, large) {
         let smallLarge = binary(small, Lexeme.Less, large);
         let smallSmall = binary(small, Lexeme.Less, small);
         let largeSmall = binary(large, Lexeme.Less, small);
-        let results = executioner.exec([smallLarge, smallSmall, largeSmall]);
+        let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
         expect(results).toEqual([BrsBoolean.True, BrsBoolean.False, BrsBoolean.False]);
     });
 
@@ -25,7 +25,7 @@ function verifyComparisons(small, large) {
         let smallLarge = binary(small, Lexeme.LessEqual, large);
         let smallSmall = binary(small, Lexeme.LessEqual, small);
         let largeSmall = binary(large, Lexeme.LessEqual, small);
-        let results = executioner.exec([smallLarge, smallSmall, largeSmall]);
+        let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
         expect(results).toEqual([BrsBoolean.True, BrsBoolean.True, BrsBoolean.False]);
     });
 
@@ -33,7 +33,7 @@ function verifyComparisons(small, large) {
         let smallLarge = binary(small, Lexeme.Greater, large);
         let smallSmall = binary(small, Lexeme.Greater, small);
         let largeSmall = binary(large, Lexeme.Greater, small);
-        let results = executioner.exec([smallLarge, smallSmall, largeSmall]);
+        let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
         expect(results).toEqual([BrsBoolean.False, BrsBoolean.False, BrsBoolean.True]);
     });
 
@@ -41,7 +41,7 @@ function verifyComparisons(small, large) {
         let smallLarge = binary(small, Lexeme.GreaterEqual, large);
         let smallSmall = binary(small, Lexeme.GreaterEqual, small);
         let largeSmall = binary(large, Lexeme.GreaterEqual, small);
-        let results = executioner.exec([smallLarge, smallSmall, largeSmall]);
+        let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
         expect(results).toEqual([BrsBoolean.False, BrsBoolean.True, BrsBoolean.True]);
     });
 
@@ -49,7 +49,7 @@ function verifyComparisons(small, large) {
         let smallLarge = binary(small, Lexeme.Equal, large);
         let smallSmall = binary(small, Lexeme.Equal, small);
         let largeSmall = binary(large, Lexeme.Equal, small);
-        let results = executioner.exec([smallLarge, smallSmall, largeSmall]);
+        let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
         expect(results).toEqual([BrsBoolean.False, BrsBoolean.True, BrsBoolean.False]);
     });
 
@@ -57,15 +57,15 @@ function verifyComparisons(small, large) {
         let smallLarge = binary(small, Lexeme.LessGreater, large);
         let smallSmall = binary(small, Lexeme.LessGreater, small);
         let largeSmall = binary(large, Lexeme.LessGreater, small);
-        let results = executioner.exec([smallLarge, smallSmall, largeSmall]);
+        let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
         expect(results).toEqual([BrsBoolean.True, BrsBoolean.False, BrsBoolean.True]);
     });
 }
 
-describe("executioner comparisons", () => {
+describe("interpreter comparisons", () => {
     beforeEach(() => {
         BrsError.reset();
-        executioner = new Executioner();
+        interpreter = new Interpreter();
     });
 
     describe("32-bit integer comparisons", () => {
@@ -102,7 +102,7 @@ describe("executioner comparisons", () => {
             let greaterEqual = binary(int32, Lexeme.GreaterEqual, str);
             let equal = binary(int32, Lexeme.Equal, str);
             let notEqual = binary(int32, Lexeme.LessGreater, str);
-            let results = executioner.exec([less, lessEqual, greater, greaterEqual, equal, notEqual]);
+            let results = interpreter.exec([less, lessEqual, greater, greaterEqual, equal, notEqual]);
             expect(results).toEqual([
                 BrsBoolean.False,
                 BrsBoolean.False,
@@ -120,7 +120,7 @@ describe("executioner comparisons", () => {
             let greaterEqual = binary(str, Lexeme.GreaterEqual, int64);
             let equal = binary(str, Lexeme.Equal, int64);
             let notEqual = binary(str, Lexeme.LessGreater, int64);
-            let results = executioner.exec([less, lessEqual, greater, greaterEqual, equal, notEqual]);
+            let results = interpreter.exec([less, lessEqual, greater, greaterEqual, equal, notEqual]);
             expect(results).toEqual([
                 BrsBoolean.False,
                 BrsBoolean.False,

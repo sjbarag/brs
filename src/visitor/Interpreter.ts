@@ -23,7 +23,7 @@ import * as BrsError from "../Error";
 
 import Environment from "./Environment";
 
-export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
+export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private environment = new Environment();
 
     exec(statements: Stmt.Statement[]) {

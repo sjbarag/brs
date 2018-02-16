@@ -3,64 +3,64 @@ const BrsError = require("../../lib/Error");
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { token } = require("../parser/ParserTests");
-const { binary } = require("./ExecutionerTests");
+const { binary } = require("./InterpreterTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Executioner } = require("../../lib/visitor/Executioner");
+const { Interpreter } = require("../../lib/visitor/Interpreter");
 const BrsTypes = require("../../lib/brsTypes");
 
-let executioner;
+let interpreter;
 
-describe("executioner arithmetic", () => {
+describe("interpreter arithmetic", () => {
     beforeEach(() => {
         BrsError.reset();
-        executioner = new Executioner();
+        interpreter = new Interpreter();
     });
 
     it("adds numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Plus, new BrsTypes.Float(1.5));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(3.5);
     });
 
     it.only("concatenates strings", () => {
         let ast = binary(new BrsTypes.BrsString("judge "), Lexeme.Plus, new BrsTypes.BrsString("judy"));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.toString()).toBe("judge judy");
     });
 
     it("subtracts numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Minus, new BrsTypes.Float(1.5));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(0.5);
     });
 
     it("multiplies numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Star, new BrsTypes.Float(1.5));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(3);
     });
 
     it("divides numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Slash, new BrsTypes.Float(1.5));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBeCloseTo(1.33333, 5);
     });
 
     it("integer-divides numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Backslash, new BrsTypes.Float(1.5));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(1);
     });
 
     it("modulos numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Mod, new BrsTypes.Float(1.5));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(0);
     });
 
     it("exponentiates numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Mod, new BrsTypes.Float(3));
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(8);
     });
 
@@ -73,7 +73,7 @@ describe("executioner arithmetic", () => {
             )
         );
 
-        let result = executioner.exec([ast]);
+        let result = interpreter.exec([ast]);
         expect(result).toEqual([27]);
     });
 
@@ -101,7 +101,7 @@ describe("executioner arithmetic", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(35);
     });
 
@@ -113,7 +113,7 @@ describe("executioner arithmetic", () => {
             )
         );
 
-        let result = executioner.exec([ast]);
+        let result = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
         expect(result).toEqual([BrsTypes.BrsInvalid.Instance]);
     });
@@ -127,7 +127,7 @@ describe("executioner arithmetic", () => {
             )
         );
 
-        let result = executioner.exec([ast]);
+        let result = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
         expect(result).toEqual([BrsTypes.BrsInvalid.Instance]);
     });
@@ -143,7 +143,7 @@ describe("executioner arithmetic", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(4);
     });
 
@@ -158,7 +158,7 @@ describe("executioner arithmetic", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result.getValue()).toBe(7);
     });
 });

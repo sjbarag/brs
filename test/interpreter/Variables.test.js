@@ -3,15 +3,15 @@ const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { identifier, token } = require("../parser/ParserTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Executioner } = require("../../lib/visitor/Executioner");
+const { Interpreter } = require("../../lib/visitor/Interpreter");
 const { Int32, BrsString, BrsInvalid } = require("../../lib/brsTypes");
 
-let executioner;
+let interpreter;
 
-describe("executioner variables", () => {
+describe("interpreter variables", () => {
     beforeEach(() => {
         BrsError.reset();
-        executioner = new Executioner();
+        interpreter = new Interpreter();
     });
 
     it("returns 'invalid' for assignments", () => {
@@ -20,7 +20,7 @@ describe("executioner variables", () => {
             new Expr.Literal(new Int32(5))
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
     });
 
@@ -30,9 +30,9 @@ describe("executioner variables", () => {
             identifier("bar"),
             new Expr.Literal(six)
         );
-        executioner.exec([ast]);
+        interpreter.exec([ast]);
         expect(
-            executioner.environment.get(
+            interpreter.environment.get(
                 identifier("bar")
             )
         ).toBe(six);
@@ -49,7 +49,7 @@ describe("executioner variables", () => {
                 identifier("baz")
             )
         );
-        let results = executioner.exec([ assign, retrieve ]);
+        let results = interpreter.exec([ assign, retrieve ]);
         expect(results).toEqual([BrsInvalid.Instance, seven]);
     });
 });

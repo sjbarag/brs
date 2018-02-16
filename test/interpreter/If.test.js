@@ -2,14 +2,14 @@ const BrsError = require("../../lib/Error");
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { identifier, token } = require("../parser/ParserTests");
-const { binary } = require("./ExecutionerTests");
+const { binary } = require("./InterpreterTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Executioner } = require("../../lib/visitor/Executioner");
+const { Interpreter } = require("../../lib/visitor/Interpreter");
 const { Int32, BrsString, BrsBoolean, BrsInvalid } = require("../../lib/brsTypes");
 
-let executioner;
+let interpreter;
 
-describe("executioner if statements", () => {
+describe("interpreter if statements", () => {
     let assignTo;
 
     beforeEach(() => {
@@ -46,7 +46,7 @@ describe("executioner if statements", () => {
             )
         }
 
-        executioner = new Executioner();
+        interpreter = new Interpreter();
     });
 
     it("executes 'then' statements if 'condition' is 'true'", () => {
@@ -65,7 +65,7 @@ describe("executioner if statements", () => {
             )
         ];
 
-        let results = executioner.exec(statements);
+        let results = interpreter.exec(statements);
         expect(assignTo.bar.accept).toBeCalled();
     });
 
@@ -85,7 +85,7 @@ describe("executioner if statements", () => {
             )
         ];
 
-        let results = executioner.exec(statements);
+        let results = interpreter.exec(statements);
         expect(assignTo.foo.accept).not.toBeCalled();
     });
 
@@ -127,7 +127,7 @@ describe("executioner if statements", () => {
             )
         ];
 
-        let results = executioner.exec(statements);
+        let results = interpreter.exec(statements);
         expect(shouldNotExecute).not.toBeCalled();
         expect(shouldExecute).toHaveBeenCalledTimes(2);
     })
@@ -168,7 +168,7 @@ describe("executioner if statements", () => {
             )
         ];
 
-        let results = executioner.exec(statements);
+        let results = interpreter.exec(statements);
         expect(shouldNotExecute).not.toBeCalled();
         expect(shouldExecute).toBeCalled();
     });

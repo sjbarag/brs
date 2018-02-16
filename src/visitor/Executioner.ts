@@ -274,7 +274,7 @@ export class Executioner implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             this.execute(statement.thenBranch);
             return BrsInvalid.Instance;
         } else {
-            for (const elseIf of statement.elseIfs) {
+            for (const elseIf of statement.elseIfs || []) {
                 if (this.evaluate(elseIf.condition).equalTo(BrsBoolean.True).toBoolean()) {
                     this.execute(elseIf.thenBranch);
                     return BrsInvalid.Instance;

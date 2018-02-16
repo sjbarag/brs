@@ -12,6 +12,15 @@ import {
     BrsString
 } from "../brsTypes";
 
+/** Set of all keywords that end blocks. */
+type BlockTerminator =
+    Lexeme.ElseIf |
+    Lexeme.Else |
+    Lexeme.EndIf |
+    Lexeme.EndWhile |
+    Lexeme.EndSub|
+    Lexeme.EndFunction;
+
 let current: number;
 let tokens: ReadonlyArray<Token>;
 
@@ -61,25 +70,102 @@ function assignment(): Statement {
     return new Stmt.Assignment(name, value);
 }
 
-function statement(): Statement {
+function statement(...additionalterminators: BlockTerminator[]): Statement {
+    if (match(Lexeme.If)) {
+        return ifStatement(...additionalterminators);
+    }
+
     if (match(Lexeme.Print)) {
-        return printStatement();
+        return printStatement(...additionalterminators);
     }
 
     // TODO: support multi-statements
-    return expressionStatement();
+    return expressionStatement(...additionalterminators);
 }
 
-function printStatement(): Statement {
+function ifStatement(): Statement {
+    let startingLine = previous().line;
+
+    const condition = expression();
+    let thenBranch: Stmt.Block;
+    let elseIfBranches: Stmt.ElseIf[] = [];
+    let elseBranch: Stmt.Block | undefined;
+    consume("Expected 'then' after 'if ...condition...", Lexeme.Then);
+
+    if (match(Lexeme.Newline)) {
+        // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
+        // a trailing "end if"
+
+        thenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+        match(Lexeme.Newline);
+
+        // attempt to read a bunch of "else if" clauses
+        while (match(Lexeme.ElseIf)) {
+            let elseIfCondition = expression();
+            consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
+            match(Lexeme.Newline);
+            let elseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+            elseIfBranches.push({
+                condition: elseIfCondition,
+                thenBranch: elseIfThen
+            });
+        }
+
+        if (match(Lexeme.Else)) {
+            match(Lexeme.Newline);
+            elseBranch = block(Lexeme.EndIf);
+            advance(); // skip past "end if"
+            match(Lexeme.Newline);
+        } else {
+            match(Lexeme.Newline);
+            consume(
+                `Expected 'end if' to close 'if' statement started on line ${startingLine}`,
+                Lexeme.EndIf
+            );
+            match(Lexeme.Newline);
+        }
+    } else {
+        let thenStatement = statement(Lexeme.Else);
+        thenBranch = new Stmt.Block([thenStatement]);
+        if (match(Lexeme.Else)) {
+            let elseStatement = statement();
+            elseBranch = new Stmt.Block([elseStatement]);
+        }
+    }
+
+    return new Stmt.If(condition, thenBranch, elseIfBranches, elseBranch);
+}
+
+function expressionStatement(...additionalterminators: BlockTerminator[]): Statement {
+    let expr = expression();
+    if (!check(...additionalterminators)) {
+        consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    }
+    return new Stmt.Expression(expr);
+}
+
+function printStatement(...additionalterminators: BlockTerminator[]): Statement {
     let value = expression();
-    consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    if (!check(...additionalterminators)) {
+        consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    }
     return new Stmt.Print(value);
 }
 
-function expressionStatement(): Statement {
-    let expr = expression();
-    consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
-    return new Stmt.Expression(expr);
+/**
+ * Parses a block, looking for a specific terminating Lexeme to denote completion.
+ * @param terminators the token(s) that signifies the end of this block; all other terminators are
+ *                    ignored.
+ */
+function block(...terminators: BlockTerminator[]): Stmt.Block {
+    const statements: Statement[] = [];
+    while (!check(...terminators)) {
+        const dec = declaration();
+        if (dec) {
+            statements.push(dec);
+        }
+    }
+    return new Stmt.Block(statements);
 }
 
 function expression(): Expression {
@@ -218,9 +304,10 @@ function advance(): Token {
     return previous();
 }
 
-function check(lexeme: Lexeme) {
+function check(...lexemes: Lexeme[]) {
     if (isAtEnd()) { return false; }
-    return peek().kind === lexeme;
+
+    return lexemes.some(lexeme => peek().kind === lexeme);
 }
 
 function checkNext(lexeme: Lexeme) {

@@ -5,11 +5,11 @@ import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./visitor/AstPrinter";
-import { Executioner } from "./visitor/Executioner";
+import { Interpreter } from "./visitor/Interpreter";
 import { stringify } from "./Stringify";
 import * as BrsError from "./Error";
 
-const executioner = new Executioner();
+const interpreter = new Interpreter();
 
 export function execute(filename: string) {
     fs.readFile(filename, "utf-8", (err, contents) => {
@@ -51,5 +51,5 @@ function run(contents: string) {
 
     if (!statements) { return; }
 
-    return executioner.exec(statements);
+    return interpreter.exec(statements);
 }

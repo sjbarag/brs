@@ -3,15 +3,15 @@ const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { token } = require("../parser/ParserTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Executioner } = require("../../lib/visitor/Executioner");
+const { Interpreter } = require("../../lib/visitor/Interpreter");
 const BrsTypes = require("../../lib/brsTypes");
 
-let executioner;
+let interpreter;
 
-describe.only("executioner boolean algebra", () => {
+describe.only("interpreter boolean algebra", () => {
     beforeEach(() => {
         BrsError.reset();
-        executioner = new Executioner();
+        interpreter = new Interpreter();
     });
 
     it("ANDs booleans", () => {
@@ -23,7 +23,7 @@ describe.only("executioner boolean algebra", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result).toEqual(BrsTypes.BrsBoolean.False);
     });
 
@@ -36,7 +36,7 @@ describe.only("executioner boolean algebra", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(result).toEqual(BrsTypes.BrsBoolean.True);
     });
 
@@ -49,7 +49,7 @@ describe.only("executioner boolean algebra", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
         expect(result).toEqual(BrsTypes.BrsInvalid.Instance);
     });
@@ -63,7 +63,7 @@ describe.only("executioner boolean algebra", () => {
             )
         );
 
-        let [result] = executioner.exec([ast]);
+        let [result] = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
         expect(result).toEqual(BrsTypes.BrsInvalid.Instance);
     });

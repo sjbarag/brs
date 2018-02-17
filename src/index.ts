@@ -1,8 +1,6 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-import * as pify from "pify";
-
 import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";

@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
+import * as pify from "pify";
+
 import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
@@ -12,12 +14,23 @@ import * as BrsError from "./Error";
 const interpreter = new Interpreter();
 
 export function execute(filename: string) {
-    fs.readFile(filename, "utf-8", (err, contents) => {
-        run(contents);
-        if (BrsError.found()) {
-            process.exit(1);
-        }
-        // TODO: Wire up runtime errors so we can use a second exit code
+    return new Promise((resolve, reject) => {
+        fs.readFile(filename, "utf-8", (err, contents) => {
+            if (err) {
+                reject(err);
+            }
+            run(contents);
+            if (BrsError.found()) {
+                reject("Error occurred");
+                if (process.env["NODE_ENV"] !== "test") {
+                    // eventually, this probably shouldn't even call process.exit -- it should
+                    // happen in cli.js since it's a property of the CLI
+                    process.exit(1);
+                }
+            }
+            resolve();
+            // TODO: Wire up runtime errors so we can use a second exit code
+        });
     });
 }
 

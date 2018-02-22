@@ -67,7 +67,7 @@ describe("end to end", () => {
     test("conditionals.brs", () => {
         return execute(resourceFile("conditionals.brs")).then(() => {
             expect(allArgs(stdout)).toEqual([
-                "1", "2", "3", "4", "5"
+                "1", "2", "3", "4", "5", "6"
             ]);
         });
     });

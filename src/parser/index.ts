@@ -125,8 +125,19 @@ function ifStatement(): Statement {
             match(Lexeme.Newline);
         }
     } else {
-        let thenStatement = statement(Lexeme.Else);
+        let thenStatement = statement(Lexeme.ElseIf, Lexeme.Else);
         thenBranch = new Stmt.Block([thenStatement]);
+
+        while(match(Lexeme.ElseIf)) {
+            let elseIfCondition = expression();
+            consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
+            let elseIfThen = statement(Lexeme.ElseIf, Lexeme.Else);
+            elseIfBranches.push({
+                condition: elseIfCondition,
+                thenBranch: new Stmt.Block([elseIfThen])
+            });
+        }
+
         if (match(Lexeme.Else)) {
             let elseStatement = statement();
             elseBranch = new Stmt.Block([elseStatement]);

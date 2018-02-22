@@ -55,13 +55,7 @@ describe("parser if statements", () => {
             expect(parsed).toMatchSnapshot();
         });
 
-        it.skip("parses if-elseif-else", () => {
-            // TODO: Figure out if
-            // ```
-            //     if a < b then foo = a else if a = b then foo = invalid else foo = b`
-            // ```
-            // is legal on a Roku device.  Specifically, is `else if` allowed in the single-line
-            // form of if/then?
+        it("parses if-elseif-else", () => {
             let parsed = Parser.parse([
                 token(Lexeme.If),
                 token(Lexeme.Integer, new Int32(1)),
@@ -75,6 +69,7 @@ describe("parser if statements", () => {
                 token(Lexeme.Integer, new Int32(1)),
                 token(Lexeme.Equal),
                 token(Lexeme.Integer, new Int32(2)),
+                token(Lexeme.Then),
                 identifier("same"),
                 token(Lexeme.Equal),
                 token(Lexeme.True, BrsBoolean.True),

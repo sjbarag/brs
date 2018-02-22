@@ -72,7 +72,7 @@ function assignment(): Statement {
 
 function statement(...additionalterminators: BlockTerminator[]): Statement {
     if (match(Lexeme.If)) {
-        return ifStatement(...additionalterminators);
+        return ifStatement();
     }
 
     if (match(Lexeme.Print)) {

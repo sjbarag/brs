@@ -1,4 +1,4 @@
-import Long = require("long");
+import Long from "long";
 import { ValueKind, BrsValue } from "./BrsType";
 import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";

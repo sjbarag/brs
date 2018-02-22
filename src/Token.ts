@@ -1,5 +1,5 @@
+import Long from "long";
 import { Lexeme } from "./Lexeme";
-import Long = require("long");
 import { BrsType } from "./brsTypes";
 
 export interface Token {

@@ -1,4 +1,4 @@
-import * as Long from "long";
+import Long from "long";
 import { BrsType, BrsBoolean } from "./";
 import { BrsNumber, Numeric } from "./BrsNumber";
 import { BrsValue, ValueKind } from "./BrsType";

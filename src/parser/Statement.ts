@@ -6,12 +6,12 @@ export interface Visitor<T> {
     visitAssignment(statement: Assignment): T;
     visitExpression(statement: Expression): T;
     visitPrint(statement: Print): T;
-    visitIf(statement: If): T;
-    visitBlock(block: Block): T;
+    visitIf(statement: If): BrsInvalid;
+    visitBlock(block: Block): BrsInvalid;
 }
 
 export interface Statement {
-    accept <R> (visitor: Visitor<R>): R;
+    accept <R> (visitor: Visitor<R>): R | BrsInvalid;
 }
 
 export class Assignment implements Statement {
@@ -25,7 +25,7 @@ export class Assignment implements Statement {
 export class Block implements Statement {
     constructor(readonly statements: ReadonlyArray<Statement>) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): BrsInvalid {
         return visitor.visitBlock(this);
     }
 }
@@ -63,7 +63,7 @@ export class If implements Statement {
         readonly elseBranch?: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): BrsInvalid {
         return visitor.visitIf(this);
     }
 }

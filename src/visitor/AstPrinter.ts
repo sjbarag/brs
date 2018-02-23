@@ -3,7 +3,7 @@ import { BrsType } from "../brsTypes";
 
 /** Creates a pretty-printed representation of an expression to ease debugging. */
 export class AstPrinter implements Expr.Visitor<string> {
-    private indent: number;
+    private indent = 0;
     /**
      * Pretty-prints an expression for debugging purposes.
      * @param expression the expression to pretty-print.

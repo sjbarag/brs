@@ -60,7 +60,7 @@ function declaration(): Statement | undefined {
     }
 }
 
-function assignment(): Statement {
+function assignment(): Stmt.Assignment {
     let name = advance();
     consume("Expected '=' after idenfifier", Lexeme.Equal);
     // TODO: support +=, -=, >>=, etc.
@@ -83,7 +83,7 @@ function statement(...additionalterminators: BlockTerminator[]): Statement {
     return expressionStatement(...additionalterminators);
 }
 
-function ifStatement(): Statement {
+function ifStatement(): Stmt.If {
     let startingLine = previous().line;
 
     const condition = expression();
@@ -147,7 +147,7 @@ function ifStatement(): Statement {
     return new Stmt.If(condition, thenBranch, elseIfBranches, elseBranch);
 }
 
-function expressionStatement(...additionalterminators: BlockTerminator[]): Statement {
+function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
     let expr = expression();
     if (!check(...additionalterminators)) {
         consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
@@ -155,7 +155,7 @@ function expressionStatement(...additionalterminators: BlockTerminator[]): State
     return new Stmt.Expression(expr);
 }
 
-function printStatement(...additionalterminators: BlockTerminator[]): Statement {
+function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
     let value = expression();
     if (!check(...additionalterminators)) {
         consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);

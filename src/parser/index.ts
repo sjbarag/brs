@@ -79,12 +79,34 @@ function statement(...additionalterminators: BlockTerminator[]): Statement {
         return printStatement(...additionalterminators);
     }
 
+    if (match(Lexeme.While)) {
+        return whileStatement();
+    }
+
+    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+
     // TODO: support multi-statements
     return expressionStatement(...additionalterminators);
 }
 
+function whileStatement(): Stmt.While {
+    const condition = expression();
+
+    consume("Expected newline after 'while ...condition...'", Lexeme.Newline);
+    const whileBlock = block(Lexeme.EndWhile);
+    advance();
+    while (match(Lexeme.Newline)) {}
+    return new Stmt.While(condition, whileBlock);
+}
+
+function exitWhile(): Stmt.ExitWhile {
+    consume("Expected newline after 'exit while'", Lexeme.Newline);
+    while (match(Lexeme.Newline)) {}
+    return new Stmt.ExitWhile();
+}
+
 function ifStatement(): Stmt.If {
-    let startingLine = previous().line;
+    const startingLine = previous().line;
 
     const condition = expression();
     let thenBranch: Stmt.Block;

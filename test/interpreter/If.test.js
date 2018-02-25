@@ -9,6 +9,11 @@ const { Int32, BrsString, BrsBoolean, BrsInvalid } = require("../../lib/brsTypes
 
 let interpreter;
 
+const END_INVALID = {
+    value: BrsInvalid.Instance,
+    reason: Stmt.StopReason.End
+};
+
 describe("interpreter if statements", () => {
     let assignTo;
 
@@ -50,13 +55,13 @@ describe("interpreter if statements", () => {
     });
 
     it("executes 'then' statements if 'condition' is 'true'", () => {
-        assignTo.bar.accept = jest.fn();
+        assignTo.bar.accept = jest.fn().mockReturnValue(END_INVALID);
         let statements = [
             new Stmt.If(
-                binary(
-                    new Int32(1),
-                    Lexeme.Less,
-                    new Int32(2)
+                new Expr.Binary(
+                    new Expr.Literal(new Int32(1)),
+                    token(Lexeme.Less),
+                    new Expr.Literal(new Int32(2))
                 ),
                 new Stmt.Block([
                     assignTo.foo,
@@ -70,13 +75,13 @@ describe("interpreter if statements", () => {
     });
 
     it("skips 'then' statements if 'condition' is 'false'", () => {
-        assignTo.foo.accept = jest.fn();
+        assignTo.foo.accept = jest.fn().mockReturnValue(END_INVALID);
         let statements = [
             new Stmt.If(
-                binary(
-                    new Int32(2),
-                    Lexeme.Less,
-                    new Int32(1)
+                new Expr.Binary(
+                    new Expr.Literal(new Int32(2)),
+                    token(Lexeme.Less),
+                    new Expr.Literal(new Int32(1))
                 ),
                 new Stmt.Block([
                     assignTo.foo,
@@ -90,8 +95,8 @@ describe("interpreter if statements", () => {
     });
 
     it("only executes one valid 'else if' that evaluates to 'true'", () => {
-        let shouldExecute = jest.fn();
-        let shouldNotExecute = jest.fn();
+        let shouldExecute = jest.fn().mockReturnValue(END_INVALID);
+        let shouldNotExecute = jest.fn().mockReturnValue(END_INVALID);
 
         [assignTo.foo, assignTo.bar, assignTo.dolor, assignTo.sit, assignTo.amet].forEach(
             assignment => assignment.accept = shouldNotExecute
@@ -102,10 +107,10 @@ describe("interpreter if statements", () => {
 
         let statements = [
             new Stmt.If(
-                binary(
-                    new Int32(2),
-                    Lexeme.Less,
-                    new Int32(1)
+                new Expr.Binary(
+                    new Expr.Literal(new Int32(2)),
+                    token(Lexeme.Less),
+                    new Expr.Literal(new Int32(1))
                 ),
                 new Stmt.Block([
                     assignTo.foo,
@@ -113,11 +118,11 @@ describe("interpreter if statements", () => {
                 ]),
                 [
                     {
-                        condition: new Stmt.Expression(new Expr.Literal(BrsBoolean.True)),
+                        condition: new Expr.Literal(BrsBoolean.True),
                         thenBranch: new Stmt.Block([assignTo.lorem, assignTo.ipsum])
                     },
                     {
-                        condition: new Stmt.Expression(new Expr.Literal(BrsBoolean.True)),
+                        condition: new Expr.Literal(BrsBoolean.True),
                         thenBranch: new Stmt.Block([assignTo.dolor, assignTo.sit])
                     }
                 ],
@@ -133,8 +138,8 @@ describe("interpreter if statements", () => {
     })
 
     it("executes 'else' statements if nothing else matches", () => {
-        let shouldExecute = jest.fn();
-        let shouldNotExecute = jest.fn();
+        let shouldExecute = jest.fn().mockReturnValue(END_INVALID);
+        let shouldNotExecute = jest.fn().mockReturnValue(END_INVALID);
 
         [assignTo.foo, assignTo.bar, assignTo.lorem, assignTo.ipsum, assignTo.dolor, assignTo.sit].forEach(
             assignment => assignment.accept = shouldNotExecute
@@ -143,10 +148,10 @@ describe("interpreter if statements", () => {
 
         let statements = [
             new Stmt.If(
-                binary(
-                    new Int32(2),
-                    Lexeme.Less,
-                    new Int32(1)
+                new Expr.Binary(
+                    new Expr.Literal(new Int32(2)),
+                    token(Lexeme.Less),
+                    new Expr.Literal(new Int32(1))
                 ),
                 new Stmt.Block([
                     assignTo.foo,
@@ -154,11 +159,11 @@ describe("interpreter if statements", () => {
                 ]),
                 [
                     {
-                        condition: new Stmt.Expression(new Expr.Literal(BrsBoolean.False)),
+                        condition: new Expr.Literal(BrsBoolean.False),
                         thenBranch: new Stmt.Block([assignTo.lorem, assignTo.ipsum])
                     },
                     {
-                        condition: new Stmt.Expression(new Expr.Literal(BrsBoolean.False)),
+                        condition: new Expr.Literal(BrsBoolean.False),
                         thenBranch: new Stmt.Block([assignTo.dolor, assignTo.sit])
                     }
                 ],

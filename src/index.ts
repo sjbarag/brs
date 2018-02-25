@@ -42,7 +42,7 @@ export function repl() {
     rl.on("line", (line) => {
         let results = run(line);
         if (results) {
-            results.map(result => console.log(stringify(result)));
+            results.map(result => console.log(stringify(result.value)));
         }
 
         BrsError.reset();

@@ -1,23 +1,46 @@
 import * as Expr from "./Expression";
 import { Token } from "../Token";
-import { BrsInvalid } from "../brsTypes/index";
+import { BrsType, BrsInvalid } from "../brsTypes/index";
+
+/** A set of reasons why a `Block` stopped executing. */
+export enum StopReason {
+    /** Execution reached the end of a block. */
+    End,
+    /** A runtime error occurred. */
+    Error,
+    /** An `exit for` statement was encountered. */
+    ExitFor,
+    /** An `exit while` statement was encountered. */
+    ExitWhile
+}
+
+/** The output of a statement's execution. */
+export interface Result {
+    /** The value produced by executing the statement. */
+    value: BrsType,
+    /** Why the statement stopped executing. */
+    reason: StopReason
+}
 
 export interface Visitor<T> {
-    visitAssignment(statement: Assignment): T;
-    visitExpression(statement: Expression): T;
-    visitPrint(statement: Print): T;
-    visitIf(statement: If): T;
-    visitBlock(block: Block): T;
+    visitAssignment(statement: Assignment): Result;
+    visitExpression(statement: Expression): Result;
+    visitExitFor(statement: ExitFor): Result;
+    visitExitWhile(statement: ExitWhile): Result;
+    visitPrint(statement: Print): Result;
+    visitIf(statement: If): Result;
+    visitBlock(block: Block): Result;
+    visitWhile(statement: While): Result;
 }
 
 export interface Statement {
-    accept <R> (visitor: Visitor<R>): R;
+    accept <R> (visitor: Visitor<R>): Result;
 }
 
 export class Assignment implements Statement {
     constructor(readonly name: Token, readonly value: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Result {
         return visitor.visitAssignment(this);
     }
 }
@@ -25,7 +48,7 @@ export class Assignment implements Statement {
 export class Block implements Statement {
     constructor(readonly statements: ReadonlyArray<Statement>) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Result {
         return visitor.visitBlock(this);
     }
 }
@@ -33,10 +56,23 @@ export class Block implements Statement {
 export class Expression implements Statement {
     constructor(readonly expression: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Result {
         return visitor.visitExpression(this);
     }
 }
+
+export class ExitFor implements Statement {
+    accept<R>(visitor: Visitor<R>): Result {
+        return visitor.visitExitFor(this);
+    }
+}
+
+export class ExitWhile implements Statement {
+    accept<R>(visitor: Visitor<R>): Result {
+        return visitor.visitExitWhile(this);
+    }
+}
+
 
 export class Function implements Statement {
     constructor(
@@ -45,7 +81,9 @@ export class Function implements Statement {
         readonly body: ReadonlyArray<Statement>
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    // this might have to return a real value once we start to add anonymous functions
+    // WAIT NO - anonymous functions are an `assign` with the RHS of a `function` expression I think?
+    accept<R>(visitor: Visitor<R>): Result {
         throw new Error("Method not implemented.");
     }
 }
@@ -63,7 +101,7 @@ export class If implements Statement {
         readonly elseBranch?: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Result {
         return visitor.visitIf(this);
     }
 }
@@ -73,7 +111,7 @@ export class Print implements Statement {
         readonly expression: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Result {
         return visitor.visitPrint(this);
     }
 }
@@ -84,7 +122,7 @@ export class Return implements Statement {
         readonly value?: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Result {
         throw new Error("Method not implemented.");
     }
 }
@@ -92,10 +130,10 @@ export class Return implements Statement {
 export class While implements Statement {
     constructor(
         readonly condition: Expr.Expression,
-        readonly body: Statement
+        readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
-        throw new Error("Method not implemented.");
+    accept<R>(visitor: Visitor<R>): Result {
+        return visitor.visitWhile(this);
     }
 }

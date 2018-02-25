@@ -58,6 +58,9 @@ export enum Lexeme {
     EndWhile,
     Eval,
     Exit,
+    // ExitFor isn't listed as a reserved word, but it seems like it'd match 'exitwhile'.
+    // TODO: Verify its reservedness on-device.
+    ExitFor,
     ExitWhile,
     False,
     For,

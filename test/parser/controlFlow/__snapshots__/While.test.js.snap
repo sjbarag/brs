@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser while statements while with exit 1`] = `
+Array [
+  While {
+    "body": Block {
+      "statements": Array [
+        Print {
+          "expression": Literal {
+            "value": BrsString {
+              "kind": 2,
+              "value": "looping",
+            },
+          },
+        },
+        ExitWhile {},
+      ],
+    },
+    "condition": Literal {
+      "value": BrsBoolean {
+        "kind": 1,
+        "value": true,
+      },
+    },
+  },
+]
+`;
+
+exports[`parser while statements while without exit 1`] = `
+Array [
+  While {
+    "body": Block {
+      "statements": Array [
+        Print {
+          "expression": Literal {
+            "value": BrsString {
+              "kind": 2,
+              "value": "looping",
+            },
+          },
+        },
+      ],
+    },
+    "condition": Literal {
+      "value": BrsBoolean {
+        "kind": 1,
+        "value": true,
+      },
+    },
+  },
+]
+`;

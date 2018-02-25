@@ -60,7 +60,7 @@ function declaration(): Statement | undefined {
     }
 }
 
-function assignment(): Statement {
+function assignment(): Stmt.Assignment {
     let name = advance();
     consume("Expected '=' after idenfifier", Lexeme.Equal);
     // TODO: support +=, -=, >>=, etc.
@@ -79,12 +79,34 @@ function statement(...additionalterminators: BlockTerminator[]): Statement {
         return printStatement(...additionalterminators);
     }
 
+    if (match(Lexeme.While)) {
+        return whileStatement();
+    }
+
+    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+
     // TODO: support multi-statements
     return expressionStatement(...additionalterminators);
 }
 
-function ifStatement(): Statement {
-    let startingLine = previous().line;
+function whileStatement(): Stmt.While {
+    const condition = expression();
+
+    consume("Expected newline after 'while ...condition...'", Lexeme.Newline);
+    const whileBlock = block(Lexeme.EndWhile);
+    advance();
+    while (match(Lexeme.Newline)) {}
+    return new Stmt.While(condition, whileBlock);
+}
+
+function exitWhile(): Stmt.ExitWhile {
+    consume("Expected newline after 'exit while'", Lexeme.Newline);
+    while (match(Lexeme.Newline)) {}
+    return new Stmt.ExitWhile();
+}
+
+function ifStatement(): Stmt.If {
+    const startingLine = previous().line;
 
     const condition = expression();
     let thenBranch: Stmt.Block;
@@ -147,7 +169,7 @@ function ifStatement(): Statement {
     return new Stmt.If(condition, thenBranch, elseIfBranches, elseBranch);
 }
 
-function expressionStatement(...additionalterminators: BlockTerminator[]): Statement {
+function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
     let expr = expression();
     if (!check(...additionalterminators)) {
         consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
@@ -155,7 +177,7 @@ function expressionStatement(...additionalterminators: BlockTerminator[]): State
     return new Stmt.Expression(expr);
 }
 
-function printStatement(...additionalterminators: BlockTerminator[]): Statement {
+function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
     let value = expression();
     if (!check(...additionalterminators)) {
         consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);

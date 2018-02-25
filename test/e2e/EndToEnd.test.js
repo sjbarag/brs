@@ -71,4 +71,13 @@ describe("end to end", () => {
             ]);
         });
     });
+
+    test("while-loops.brs", () => {
+        return execute(resourceFile("while-loops.brs")).then(() => {
+            expect(allArgs(stdout)).toEqual([
+                "0", "1", "2", "3", "4", // count up
+                "5", "4"                 // count down with exit
+            ])
+        });
+    });
 });

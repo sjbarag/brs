@@ -34,20 +34,29 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return BrsInvalid.Instance;
     }
 
-    visitExpression(statement: Stmt.Expression): BrsType {
-        return this.evaluate(statement.expression);
+    visitExpression(statement: Stmt.Expression): Stmt.Result {
+        return {
+            value: this.evaluate(statement.expression),
+            reason: Stmt.StopReason.End
+        };
     }
 
-    visitPrint(statement: Stmt.Print): BrsType {
+    visitPrint(statement: Stmt.Print): Stmt.Result {
         let result = this.evaluate(statement.expression);
         console.log(stringify(result));
-        return BrsInvalid.Instance;
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.End
+        };
     }
 
-    visitAssignment(statement: Stmt.Assignment): BrsInvalid {
+    visitAssignment(statement: Stmt.Assignment): Stmt.Result {
         let value = this.evaluate(statement.value);
         this.environment.define(statement.name.text!, value);
-        return BrsInvalid.Instance;
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.End
+        }
     }
 
     visitBinary(expression: Expr.Binary) {
@@ -247,15 +256,47 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    visitBlock(block: Stmt.Block): BrsInvalid {
-        for (const statement of block.statements) {
-            this.execute(statement);
+    visitBlock(block: Stmt.Block): Stmt.Result {
+        let stopReason = Stmt.StopReason.End;
 
-            // this might need to actually throw
-            if (BrsError.found()) { break; }
+        eachStatement:
+        for (const statement of block.statements) {
+            const stmtResult = this.execute(statement);
+
+            if (BrsError.found()) {
+                // this might need to actually throw
+                stopReason = Stmt.StopReason.Error;
+                break;
+            } else {
+                switch (stmtResult.reason) {
+                    case Stmt.StopReason.ExitFor:
+                    case Stmt.StopReason.ExitWhile:
+                        stopReason = stmtResult.reason;
+                        break eachStatement;
+                    default:
+                        continue;
+                }
+            }
         }
 
-        return BrsInvalid.Instance;
+        return {
+            value: BrsInvalid.Instance,
+            reason: stopReason
+        };
+    }
+
+    visitExitFor(expression: Stmt.ExitFor) {
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.ExitFor
+        };
+    }
+
+    visitExitWhile(expression: Stmt.ExitWhile) {
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.ExitWhile
+        };
     }
 
     visitCall(expression: Expr.Call) {
@@ -269,22 +310,47 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this.evaluate(expr.expression);
     }
 
-    visitIf(statement: Stmt.If): BrsInvalid {
+    visitWhile(statement: Stmt.While): Stmt.Result {
+        while (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
+            const blockResult = this.execute(statement.body);
+            if (blockResult.reason !== Stmt.StopReason.End) {
+                break;
+            }
+        }
+
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.End
+        };
+    }
+
+    visitIf(statement: Stmt.If): Stmt.Result {
         if (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
-            this.execute(statement.thenBranch);
-            return BrsInvalid.Instance;
+            const thenResult = this.execute(statement.thenBranch);
+            return {
+                value: BrsInvalid.Instance,
+                reason: thenResult.reason
+            };
         } else {
             for (const elseIf of statement.elseIfs || []) {
                 if (this.evaluate(elseIf.condition).equalTo(BrsBoolean.True).toBoolean()) {
-                    this.execute(elseIf.thenBranch);
-                    return BrsInvalid.Instance;
+                    const elseIfResult = this.execute(elseIf.thenBranch);
+                    return {
+                        value: BrsInvalid.Instance,
+                        reason: elseIfResult.reason
+                    };
                 }
             }
 
+            let stopReason = Stmt.StopReason.End;
             if (statement.elseBranch) {
-                this.execute(statement.elseBranch);
+                const elseResult = this.execute(statement.elseBranch);
+                stopReason = elseResult.reason;
             }
-            return BrsInvalid.Instance;
+            return {
+                value: BrsInvalid.Instance,
+                reason: stopReason
+            };
         }
     }
 
@@ -341,7 +407,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return expression.accept<BrsType>(this);
     }
 
-    execute(statement: Stmt.Statement): BrsType {
+    execute(statement: Stmt.Statement): Stmt.Result {
         return statement.accept<BrsType>(this);
     }
 }

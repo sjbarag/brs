@@ -310,6 +310,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this.evaluate(expr.expression);
     }
 
+    visitFor(statement: Stmt.For): Stmt.Result {
+        console.error("for loop interpreting not yet implemented!");
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.End
+        }
+    }
+
     visitWhile(statement: Stmt.While): Stmt.Result {
         while (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
             const blockResult = this.execute(statement.body);

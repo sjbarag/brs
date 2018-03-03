@@ -9,13 +9,15 @@ import * as ParseError from "./ParseError";
 import {
     BrsInvalid,
     BrsBoolean,
-    BrsString
+    BrsString,
+    Int32
 } from "../brsTypes";
 
 /** Set of all keywords that end blocks. */
 type BlockTerminator =
     Lexeme.ElseIf |
     Lexeme.Else |
+    Lexeme.EndFor |
     Lexeme.EndIf |
     Lexeme.EndWhile |
     Lexeme.EndSub|
@@ -103,6 +105,27 @@ function exitWhile(): Stmt.ExitWhile {
     consume("Expected newline after 'exit while'", Lexeme.Newline);
     while (match(Lexeme.Newline)) {}
     return new Stmt.ExitWhile();
+}
+
+function forStatement(): Stmt.For {
+    const initializer = assignment();
+    consume("Expected 'to' after for loop counter declaration", Lexeme.To);
+    const finalValue = expression();
+    let step: Expression | undefined;
+
+    if (match(Lexeme.Step)) {
+        step = expression();
+    } else {
+        // BrightScript for/to/step loops default to a step of 1 if no `step` is provided
+        step = new Expr.Literal(new Int32(1));
+    }
+    while(match(Lexeme.Newline)) {}
+
+    const body = block(Lexeme.EndFor);
+    advance();
+    while(match(Lexeme.Newline)) {}
+
+    return new Stmt.For(initializer, finalValue, step, body);
 }
 
 function ifStatement(): Stmt.If {

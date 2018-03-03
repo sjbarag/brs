@@ -20,6 +20,7 @@ export const ReservedWords: {[key: string]: L} = {
     "end while": L.EndWhile,
     eval: L.Eval,
     exit: L.Exit,
+    "exit for": L.ExitFor, // note: 'exitfor' (no space) is *not* a reserved word
     exitwhile: L.ExitWhile,
     "exit while": L.ExitWhile,
     false: L.False,

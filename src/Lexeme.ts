@@ -53,6 +53,7 @@ export enum Lexeme {
     ElseIf,
     End,
     EndFunction,
+    EndFor,
     EndIf,
     EndSub,
     EndWhile,

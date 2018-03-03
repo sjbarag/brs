@@ -230,6 +230,15 @@ describe("lexer", () => {
             expect(words.filter(w => !!w.literal).length).toBe(0);
         });
 
+        it("accepts 'exit for' but not 'exitfor'", () => {
+            let words = Lexer.scan("exit for exitfor");
+            expect(words.map(w => w.kind)).toEqual([
+                Lexeme.ExitFor,
+                Lexeme.Identifier,
+                Lexeme.Eof
+            ]);
+        });
+
         it("matches reserved words with silly capitalization", () => {
             let words = Lexer.scan("iF ELSE eNDIf FUncTioN");
             expect(words.map(w => w.kind)).toEqual([

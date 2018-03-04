@@ -36,7 +36,7 @@ export function parse(toParse: ReadonlyArray<Token>) {
         while (!isAtEnd()) {
             let dec = declaration();
             if (dec) {
-                statements.push(dec);
+                statements = statements.concat(dec);
             }
         }
 
@@ -46,13 +46,13 @@ export function parse(toParse: ReadonlyArray<Token>) {
     }
 }
 
-function declaration(): Statement | undefined {
+function declaration(): Statement[] | undefined {
     try {
         // BrightScript is like python, in that variables can be declared without a `var`,
         // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
         // out what to do with it.
         if (check(Lexeme.Identifier) && checkNext(Lexeme.Equal)) {
-            return assignment();
+            return [assignment()];
         }
 
         return statement();
@@ -62,33 +62,37 @@ function declaration(): Statement | undefined {
     }
 }
 
-function assignment(): Stmt.Assignment {
+function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
     let name = advance();
     consume("Expected '=' after idenfifier", Lexeme.Equal);
     // TODO: support +=, -=, >>=, etc.
 
     let value = expression();
-    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof, ...additionalterminators);
     return new Stmt.Assignment(name, value);
 }
 
-function statement(...additionalterminators: BlockTerminator[]): Statement {
+function statement(...additionalterminators: BlockTerminator[]): Statement[] {
     if (match(Lexeme.If)) {
-        return ifStatement();
+        return [ifStatement()];
     }
 
     if (match(Lexeme.Print)) {
-        return printStatement(...additionalterminators);
+        return [printStatement(...additionalterminators)];
     }
 
     if (match(Lexeme.While)) {
-        return whileStatement();
+        return [whileStatement()];
     }
 
-    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+    if (match(Lexeme.For)) {
+        return forStatement();
+    }
+
+    if (match(Lexeme.ExitWhile)) { return [exitWhile()]; }
 
     // TODO: support multi-statements
-    return expressionStatement(...additionalterminators);
+    return [expressionStatement(...additionalterminators)];
 }
 
 function whileStatement(): Stmt.While {
@@ -107,9 +111,8 @@ function exitWhile(): Stmt.ExitWhile {
     return new Stmt.ExitWhile();
 }
 
-function forStatement(): Stmt.For {
-    const initializer = assignment();
-    consume("Expected 'to' after for loop counter declaration", Lexeme.To);
+function forStatement(): [Stmt.Assignment, Stmt.While] {
+    const initializer = assignment(Lexeme.To);
     const finalValue = expression();
     let step: Expression | undefined;
 
@@ -121,11 +124,37 @@ function forStatement(): Stmt.For {
     }
     while(match(Lexeme.Newline)) {}
 
-    const body = block(Lexeme.EndFor);
+    let body = block(Lexeme.EndFor);
     advance();
     while(match(Lexeme.Newline)) {}
 
-    return new Stmt.For(initializer, finalValue, step, body);
+    // now that we've parsed everything, desugar a for loop into a while loop
+    const condition = new Expr.Binary(
+        new Expr.Variable(initializer.name),
+        {
+            kind: Lexeme.LessGreater,
+            line: initializer.name.line,
+            text: "<>"
+        },
+        finalValue
+    );
+
+    body = new Stmt.Block(body.statements.concat([
+        new Stmt.Assignment(
+            initializer.name,
+            new Expr.Binary(
+                new Expr.Variable(initializer.name),
+                {
+                    kind: Lexeme.Plus,
+                    line: initializer.name.line,
+                    text: "+"
+                },
+                step
+            )
+        )
+    ]));
+
+    return [initializer, new Stmt.While(condition, body)];
 }
 
 function ifStatement(): Stmt.If {
@@ -171,7 +200,7 @@ function ifStatement(): Stmt.If {
         }
     } else {
         let thenStatement = statement(Lexeme.ElseIf, Lexeme.Else);
-        thenBranch = new Stmt.Block([thenStatement]);
+        thenBranch = new Stmt.Block(thenStatement);
 
         while(match(Lexeme.ElseIf)) {
             let elseIfCondition = expression();
@@ -179,13 +208,13 @@ function ifStatement(): Stmt.If {
             let elseIfThen = statement(Lexeme.ElseIf, Lexeme.Else);
             elseIfBranches.push({
                 condition: elseIfCondition,
-                thenBranch: new Stmt.Block([elseIfThen])
+                thenBranch: new Stmt.Block(elseIfThen)
             });
         }
 
         if (match(Lexeme.Else)) {
             let elseStatement = statement();
-            elseBranch = new Stmt.Block([elseStatement]);
+            elseBranch = new Stmt.Block(elseStatement);
         }
     }
 
@@ -214,11 +243,11 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Expre
  *                    ignored.
  */
 function block(...terminators: BlockTerminator[]): Stmt.Block {
-    const statements: Statement[] = [];
+    let statements: Statement[] = [];
     while (!check(...terminators)) {
         const dec = declaration();
         if (dec) {
-            statements.push(dec);
+            statements = statements.concat(dec);
         }
     }
     return new Stmt.Block(statements);

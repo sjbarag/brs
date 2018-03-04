@@ -30,6 +30,7 @@ export interface Visitor<T> {
     visitPrint(statement: Print): Result;
     visitIf(statement: If): Result;
     visitBlock(block: Block): Result;
+    visitFor(statement: For): Result;
     visitWhile(statement: While): Result;
 }
 
@@ -124,6 +125,19 @@ export class Return implements Statement {
 
     accept<R>(visitor: Visitor<R>): Result {
         throw new Error("Method not implemented.");
+    }
+}
+
+export class For implements Statement {
+    constructor(
+        readonly counterDeclaration: Assignment,
+        readonly finalValue: Expr.Expression,
+        readonly increment: Expr.Expression,
+        readonly body: Block
+    ) {}
+
+    accept<R>(visitor: Visitor<R>): Result {
+        return visitor.visitFor(this);
     }
 }
 

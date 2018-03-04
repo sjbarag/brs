@@ -285,7 +285,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         };
     }
 
-    visitExitFor(expression: Stmt.ExitFor) {
+    visitExitFor(statement: Stmt.ExitFor) {
         return {
             value: BrsInvalid.Instance,
             reason: Stmt.StopReason.ExitFor
@@ -308,14 +308,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitGrouping(expr: Expr.Grouping) {
         return this.evaluate(expr.expression);
-    }
-
-    visitFor(statement: Stmt.For): Stmt.Result {
-        console.error("for loop interpreting not yet implemented!");
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        }
     }
 
     visitWhile(statement: Stmt.While): Stmt.Result {

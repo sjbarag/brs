@@ -56,6 +56,29 @@ describe("interpreter while loops", () => {
         expect(decrementSpy).toHaveBeenCalledTimes(5);
     });
 
+    it("evaluates 'condition' before every loop", () => {
+        const greaterThanZero = new Expr.Binary(
+            new Expr.Variable(identifier("foo")),
+            { kind: Lexeme.Greater, text: ">" },
+            new Expr.Literal(new Int32(0))
+        );
+        jest.spyOn(greaterThanZero, "accept");
+
+        const statements = [
+            initializeFoo,
+            new Stmt.While(
+                greaterThanZero,
+                new Stmt.Block([
+                    decrementFoo
+                ])
+            )
+        ];
+
+        let results = interpreter.exec(statements);
+        // body executes five times, but the condition is evaluated once more to know it should exit
+        expect(greaterThanZero.accept).toHaveBeenCalledTimes(6);
+    });
+
     it("exits early when it encounters 'exit while'", () => {
         const statements = [
             initializeFoo,

@@ -8,6 +8,11 @@ function resourceFile(filename) {
     return path.join(__dirname, "resources", filename);
 }
 
+/**
+ * Extracts all arguments from all calls to a Jest mock function.
+ * @param jestMock the mock to extract arguments from
+ * @returns an array containing every argument from every call to a Jest mock.
+ */
 function allArgs(jestMock) {
     return jestMock.mock.calls.reduce((allArgs, thisCall) => allArgs.concat(thisCall), []);
 }
@@ -77,7 +82,20 @@ describe("end to end", () => {
             expect(allArgs(stdout)).toEqual([
                 "0", "1", "2", "3", "4", // count up
                 "5", "4"                 // count down with exit
-            ])
+            ]);
+        });
+    });
+
+    test("for-loops.brs", () => {
+        return execute(resourceFile("for-loops.brs")).then(() => {
+            expect(allArgs(stdout)).toEqual([
+                "0", "2", "4", "6", // count up
+                "8",                // i after loop
+                "3", "2", "1", "0", // count down
+                "for loop exit",    // exit early
+                "0",                // e after loop
+                "initial = final"   // loop where initial equals final
+            ]);
         });
     });
 });

@@ -227,11 +227,11 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Expre
  *                    ignored.
  */
 function block(...terminators: BlockTerminator[]): Stmt.Block {
-    let statements: Statement[] = [];
+    const statements: Statement[] = [];
     while (!check(...terminators)) {
         const dec = declaration();
         if (dec) {
-            statements = statements.concat(dec);
+            statements.push(dec);
         }
     }
     return new Stmt.Block(statements);

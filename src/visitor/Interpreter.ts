@@ -285,7 +285,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         };
     }
 
-    visitExitFor(expression: Stmt.ExitFor) {
+    visitExitFor(statement: Stmt.ExitFor) {
         return {
             value: BrsInvalid.Instance,
             reason: Stmt.StopReason.ExitFor
@@ -308,6 +308,54 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitGrouping(expr: Expr.Grouping) {
         return this.evaluate(expr.expression);
+    }
+
+    visitFor(statement: Stmt.For): Stmt.Result {
+        // BrightScript for/to loops evaluate the counter initial value, final value, and increment
+        // values *only once*, at the top of the for/top loop.
+        this.execute(statement.counterDeclaration);
+        const finalValue = this.evaluate(statement.finalValue);
+        const increment = this.evaluate(statement.increment);
+
+        const counterName = statement.counterDeclaration.name;
+        const step = new Stmt.Assignment(
+            counterName,
+            new Expr.Binary(
+                new Expr.Variable(counterName),
+                { kind: Lexeme.Plus, text: "+", line: counterName.line },
+                new Expr.Literal(increment)
+            )
+        );
+
+        let blockResult: Stmt.Result = {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.End
+        };
+
+        while (
+            this.evaluate(new Expr.Variable(counterName))
+                .equalTo(finalValue)
+                .not()
+                .toBoolean()
+        ) {
+            // execute the block
+            blockResult = this.execute(statement.body);
+            if (blockResult.reason === Stmt.StopReason.ExitFor) {
+                break;
+            }
+
+            // then increment the counter
+            this.execute(step);
+        }
+
+        // BrightScript for/to loops execute the body one more time when initial === final
+        if (blockResult.reason === Stmt.StopReason.End) {
+            blockResult = this.execute(statement.body);
+            // they also increments the counter once more
+            this.execute(step);
+        }
+
+        return blockResult;
     }
 
     visitWhile(statement: Stmt.While): Stmt.Result {

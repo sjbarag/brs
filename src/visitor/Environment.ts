@@ -10,6 +10,10 @@ export default class Environment {
         this.values.set(name, value);
     }
 
+    public remove(name: string): void {
+        this.values.delete(name);
+    }
+
     public get(name: Token): BrsType {
         if (this.values.has(name.text!)) {
             return this.values.get(name.text!)!;

@@ -9,13 +9,15 @@ import * as ParseError from "./ParseError";
 import {
     BrsInvalid,
     BrsBoolean,
-    BrsString
+    BrsString,
+    Int32
 } from "../brsTypes";
 
 /** Set of all keywords that end blocks. */
 type BlockTerminator =
     Lexeme.ElseIf |
     Lexeme.Else |
+    Lexeme.EndFor |
     Lexeme.EndIf |
     Lexeme.EndWhile |
     Lexeme.EndSub|
@@ -60,13 +62,13 @@ function declaration(): Statement | undefined {
     }
 }
 
-function assignment(): Stmt.Assignment {
+function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
     let name = advance();
     consume("Expected '=' after idenfifier", Lexeme.Equal);
     // TODO: support +=, -=, >>=, etc.
 
     let value = expression();
-    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof, ...additionalterminators);
     return new Stmt.Assignment(name, value);
 }
 
@@ -82,6 +84,12 @@ function statement(...additionalterminators: BlockTerminator[]): Statement {
     if (match(Lexeme.While)) {
         return whileStatement();
     }
+
+    if (match(Lexeme.For)) {
+        return forStatement();
+    }
+
+    if (match(Lexeme.ExitFor)) { return exitFor(); }
 
     if (match(Lexeme.ExitWhile)) { return exitWhile(); }
 
@@ -103,6 +111,34 @@ function exitWhile(): Stmt.ExitWhile {
     consume("Expected newline after 'exit while'", Lexeme.Newline);
     while (match(Lexeme.Newline)) {}
     return new Stmt.ExitWhile();
+}
+
+function forStatement(): Stmt.For {
+    const initializer = assignment(Lexeme.To);
+    const finalValue = expression();
+    let increment: Expression | undefined;
+
+    if (match(Lexeme.Step)) {
+        increment = expression();
+    } else {
+        // BrightScript for/to/step loops default to a step of 1 if no `step` is provided
+        increment = new Expr.Literal(new Int32(1));
+    }
+    while(match(Lexeme.Newline)) {}
+
+    let body = block(Lexeme.EndFor);
+    advance();
+    while(match(Lexeme.Newline)) {}
+
+    // WARNING: BrightScript doesn't delete the loop initial value after a for/to loop! It just
+    // stays around in scope with whatever value it was when the loop exited.
+    return new Stmt.For(initializer, finalValue, increment, body);
+}
+
+function exitFor(): Stmt.ExitWhile {
+    consume("Expected newline after 'exit while'", Lexeme.Newline);
+    while (match(Lexeme.Newline)) {}
+    return new Stmt.ExitFor();
 }
 
 function ifStatement(): Stmt.If {

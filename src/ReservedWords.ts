@@ -10,6 +10,8 @@ export const ReservedWords: {[key: string]: L} = {
     elseif: L.ElseIf,
     "else if": L.ElseIf,
     end: L.End,
+    endfor: L.EndFor,
+    "end for": L.EndFor,
     endfunction: L.EndFunction,
     "end function": L.EndFunction,
     endif: L.EndIf,

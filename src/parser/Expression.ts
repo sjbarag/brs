@@ -44,9 +44,12 @@ export class Binary implements Expression {
 }
 
 export class Call implements Expression {
+    // TODO: Check against a Roku device (that'll be fun)
+    static MaximumArguments = 32;
+
     constructor(
         readonly callee: Expression,
-        readonly paren: Token,
+        readonly closingParen: Token,
         readonly args: Expression[]
     ) {}
 

@@ -300,6 +300,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitCall(expression: Expr.Call) {
+        // evaluate the function to call (it could be the result of another function call)
+        const callee = this.evaluate(expression.callee);
+        // evaluate all of the arguments as well (they could also be function calls)
+        const args = expression.args.map(this.evaluate);
+
         return BrsInvalid.Instance;
     }
     visitGet(expression: Expr.Get) {

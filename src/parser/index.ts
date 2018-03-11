@@ -317,7 +317,38 @@ function unary(): Expression {
         return new Expr.Unary(operator, right);
     }
 
-    return primary();
+    return call();
+}
+
+function call(): Expression {
+    let expr = primary();
+
+    while (true) {
+        if (match(Lexeme.LeftParen)) {
+            expr = finishCall(expr);
+        } else {
+            break;
+        }
+    }
+
+    return expr;
+}
+
+function finishCall(callee: Expression): Expression {
+    let args = [];
+    if (!check(Lexeme.RightParen)) {
+        // TODO: Add support for 'as $Type' suffix after each arg
+        do {
+            if (args.length >= Expr.Call.MaximumArguments) {
+                ParseError.make(peek(), `Cannot have more than ${Expr.Call.MaximumArguments} arguments`);
+            }
+            args.push(expression());
+        } while (match(Lexeme.Comma));
+    }
+
+    let closingParen = consume("Expected ')' after function call arguments", Lexeme.RightParen);
+
+    return new Expr.Call(callee, closingParen, args);
 }
 
 function primary(): Expression {

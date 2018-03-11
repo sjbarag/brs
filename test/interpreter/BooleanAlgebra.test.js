@@ -3,7 +3,7 @@ const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { token } = require("../parser/ParserTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Interpreter } = require("../../lib/visitor/Interpreter");
+const { Interpreter } = require("../../lib/interpreter");
 const BrsTypes = require("../../lib/brsTypes");
 
 let interpreter;

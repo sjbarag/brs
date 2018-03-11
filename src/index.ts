@@ -4,8 +4,8 @@ import * as readline from "readline";
 import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
-import { AstPrinter } from "./visitor/AstPrinter";
-import { Interpreter } from "./visitor/Interpreter";
+import { AstPrinter } from "./interpreter/AstPrinter";
+import { Interpreter } from "./interpreter";
 import { stringify } from "./Stringify";
 import * as BrsError from "./Error";
 

@@ -3,6 +3,7 @@ import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { Double } from "./Double";
+import { Callable } from "./Callable";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -56,4 +57,5 @@ export type BrsType =
     Int32 |
     Int64 |
     Float |
-    Double;
+    Double |
+    Callable;

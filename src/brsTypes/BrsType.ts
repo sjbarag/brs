@@ -8,7 +8,9 @@ export enum ValueKind {
     Int32,
     Int64,
     Float,
-    Double
+    Double,
+    // TODO: Add Object types (associative arrays, lists, etc.)
+    Callable
 };
 
 /** The base for all BrightScript types. */

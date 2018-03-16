@@ -15,19 +15,20 @@ export function execute(filename: string) {
     return new Promise((resolve, reject) => {
         fs.readFile(filename, "utf-8", (err, contents) => {
             if (err) {
-                reject(err);
-            }
-            run(contents);
-            if (BrsError.found()) {
-                reject("Error occurred");
-                if (process.env["NODE_ENV"] !== "test") {
-                    // eventually, this probably shouldn't even call process.exit -- it should
-                    // happen in cli.js since it's a property of the CLI
-                    process.exit(1);
+                reject({
+                    "message" : `brs: can't open file '${filename}': [Errno ${err.errno}]`
+                });
+            } else {
+                run(contents);
+                if (BrsError.found()) {
+                    reject({ 
+                        "message" : "Error occurred" 
+                    });
+                } else {
+                    resolve();
                 }
+                // TODO: Wire up runtime errors so we can use a second exit code
             }
-            resolve();
-            // TODO: Wire up runtime errors so we can use a second exit code
         });
     });
 }

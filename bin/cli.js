@@ -24,7 +24,10 @@ program
 let args = program.parse(process.argv);
 
 if (brsFile) {
-    brs.execute(brsFile);
+    brs.execute(brsFile).catch(err => {
+        console.error(err.message);
+        process.exit(1);
+    });
 } else {
     brs.repl();
 }

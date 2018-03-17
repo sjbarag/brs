@@ -46,6 +46,15 @@ export function isBrsBoolean(value: BrsType): value is BrsBoolean {
     return value.kind === ValueKind.Boolean;
 }
 
+/**
+ * Determines whether or not the given value is a BrightScript callable.
+ * @param value the BrightScript value in question.
+ * @returns `true` if `value` is a Callable value, otherwise `false`.
+ */
+export function isBrsCallable(value: BrsType): value is Callable {
+    return value.kind === ValueKind.Callable;
+}
+
 /** The set of BrightScript numeric types. */
 export type BrsNumber = Int32 | Int64 | Float | Double;
 

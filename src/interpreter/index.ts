@@ -12,7 +12,8 @@ import {
     Int32,
     Int64,
     Float,
-    Double
+    Double,
+    isBrsCallable
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -305,7 +306,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // evaluate all of the arguments as well (they could also be function calls)
         const args = expression.args.map(this.evaluate);
 
-        return BrsInvalid.Instance;
+        if (!isBrsCallable(callee)) {
+            throw BrsError.runtime(
+                `'${callee.toString()}' is not a function and cannot be called.`,
+                expression.closingParen.line
+            )
+        }
+
+        return callee.call(this, args);
     }
     visitGet(expression: Expr.Get) {
         return BrsInvalid.Instance;
@@ -317,7 +325,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitFor(statement: Stmt.For): Stmt.Result {
         // BrightScript for/to loops evaluate the counter initial value, final value, and increment
-        // values *only once*, at the top of the for/top loop.
+        // values *only once*, at the top of the for/to loop.
         this.execute(statement.counterDeclaration);
         const finalValue = this.evaluate(statement.finalValue);
         const increment = this.evaluate(statement.increment);

@@ -10,6 +10,7 @@ export * from "./Int32";
 export * from "./Int64";
 export * from "./Float"
 export * from "./Double";
+export * from "./Callable";
 
 /**
  * Determines whether or not the given value is a number.

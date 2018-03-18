@@ -22,10 +22,17 @@ import { Lexeme } from "../Lexeme";
 import { stringify } from "../Stringify";
 import * as BrsError from "../Error";
 
+import * as StdLib from "../stdlib";
+
 import Environment from "./Environment";
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
-    private environment = new Environment();
+    private readonly globals = new Environment();
+    private environment = this.globals;
+
+    constructor() {
+        this.globals.define("RebootSystem", StdLib.RebootSystem);
+    }
 
     exec(statements: Stmt.Statement[]) {
         return statements.map((statement) => this.execute(statement));
@@ -309,6 +316,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         if (!isBrsCallable(callee)) {
             throw BrsError.runtime(
                 `'${callee.toString()}' is not a function and cannot be called.`,
+                expression.closingParen.line
+            )
+        }
+
+        // ensure argument counts match
+        // TODO: support optional/default-value parameters
+        if (expression.args.length !== callee.arity) {
+            throw BrsError.runtime(
+                `'${callee.toString()}' accepts ${callee.arity} arguments, but received ${expression.args.length}.`,
                 expression.closingParen.line
             )
         }

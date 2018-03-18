@@ -337,16 +337,17 @@ function call(): Expression {
 function finishCall(callee: Expression): Expression {
     let args = [];
     if (!check(Lexeme.RightParen)) {
-        // TODO: Add support for 'as $Type' suffix after each arg
         do {
             if (args.length >= Expr.Call.MaximumArguments) {
                 ParseError.make(peek(), `Cannot have more than ${Expr.Call.MaximumArguments} arguments`);
+                break;
             }
             args.push(expression());
         } while (match(Lexeme.Comma));
     }
 
     let closingParen = consume("Expected ')' after function call arguments", Lexeme.RightParen);
+
 
     return new Expr.Call(callee, closingParen, args);
 }

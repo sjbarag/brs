@@ -322,15 +322,24 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         // ensure argument counts match
         // TODO: support optional/default-value parameters
-        if (expression.args.length !== callee.arity) {
+        const arity = callee.arity;
+        if (expression.args.length < arity.required) {
             throw BrsError.runtime(
-                `'${callee.toString()}' accepts ${callee.arity} arguments, but received ${expression.args.length}.`,
+                `'${callee.toString()}' requires at least ${arity.required} arguments, ` +
+                    `but received ${expression.args.length}.`,
+                expression.closingParen.line
+            )
+        } else if (expression.args.length > arity.required + arity.optional) {
+            throw BrsError.runtime(
+                `'${callee.toString()}' accepts at most ${arity.required + arity.optional} arguments, ` +
+                    `but received ${expression.args.length}.`,
                 expression.closingParen.line
             )
         }
 
         return callee.call(this, args);
     }
+
     visitGet(expression: Expr.Get) {
         return BrsInvalid.Instance;
     }

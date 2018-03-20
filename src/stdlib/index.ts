@@ -3,7 +3,10 @@ import { Interpreter } from "../interpreter";
 
 class RebootSystemCallable extends Callable {
     static WarningShown = false;
-    arity = 0;
+    arity = {
+        required: 0,
+        optional: 0
+    };
 
     call(interpreter: Interpreter, args: BrsType[]): BrsInvalid {
         if (!RebootSystemCallable.WarningShown) {

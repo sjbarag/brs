@@ -6,7 +6,16 @@ export abstract class Callable implements BrsValue {
     readonly kind = ValueKind.Callable;
 
     /** The number of arguments expected by this function. */
-    abstract readonly arity: number;
+    abstract readonly arity: {
+        /**
+         * The minimum number of arguments required for this function call. Is equal to `arity.max`
+         * when all arguments are required.
+         */
+        required: number;
+
+        /** The number of optional arguments accepted by this function. */
+        optional: number;
+    };
 
     /**
      * Calls the function this `Callable` represents with the provided `arg`uments using the

@@ -308,14 +308,21 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitCall(expression: Expr.Call) {
+        let functionName = "[anonymous function]";
+        if (expression.callee instanceof Expr.Variable) {
+            if (expression.callee.name.text) {
+                functionName = expression.callee.name.text;
+            }
+        }
+
         // evaluate the function to call (it could be the result of another function call)
         const callee = this.evaluate(expression.callee);
         // evaluate all of the arguments as well (they could also be function calls)
-        const args = expression.args.map(this.evaluate);
+        const args = expression.args.map(this.evaluate, this);
 
         if (!isBrsCallable(callee)) {
             throw BrsError.runtime(
-                `'${callee.toString()}' is not a function and cannot be called.`,
+                `'${functionName}' is not a function and cannot be called.`,
                 expression.closingParen.line
             )
         }
@@ -325,13 +332,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         const arity = callee.arity;
         if (expression.args.length < arity.required) {
             throw BrsError.runtime(
-                `'${callee.toString()}' requires at least ${arity.required} arguments, ` +
+                `'${functionName}' requires at least ${arity.required} arguments, ` +
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
             )
         } else if (expression.args.length > arity.required + arity.optional) {
             throw BrsError.runtime(
-                `'${callee.toString()}' accepts at most ${arity.required + arity.optional} arguments, ` +
+                `'${functionName}' accepts at most ${arity.required + arity.optional} arguments, ` +
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
             )

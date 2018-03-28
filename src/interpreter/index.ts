@@ -344,7 +344,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             )
         }
 
-        return callee.call(this, args);
+        return callee.call(this, ...args);
     }
 
     visitGet(expression: Expr.Get) {

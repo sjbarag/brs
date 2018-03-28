@@ -26,7 +26,7 @@ export abstract class Callable implements BrsValue {
      *
      * @returns the return value of the function, or `invalid` if nothing is explicitly returned.
      */
-    abstract call(interpreter: Interpreter, args: BrsType[]): BrsType;
+    abstract call(interpreter: Interpreter, ...args: BrsType[]): BrsType;
 
     lessThan(other: BrsType): BrsBoolean {
         return BrsBoolean.False;
@@ -41,6 +41,7 @@ export abstract class Callable implements BrsValue {
     }
 
     toString(): string {
+        // TODO: Add support for named functions
         return `[Function]`
     }
 }

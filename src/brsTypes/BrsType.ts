@@ -49,7 +49,7 @@ export interface BrsValue {
 /** Internal representation of a string in BrightScript. */
 export class BrsString implements BrsValue {
     readonly kind = ValueKind.String;
-    constructor(private readonly value: string) {}
+    constructor(readonly value: string) {}
 
     lessThan(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {

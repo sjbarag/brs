@@ -8,7 +8,7 @@ class RebootSystemCallable extends Callable {
         optional: 0
     };
 
-    call(interpreter: Interpreter, args: BrsType[]): BrsInvalid {
+    call(interpreter: Interpreter): BrsInvalid {
         if (!RebootSystemCallable.WarningShown) {
             console.warn("`RebootSystem` is not implemented in `brs`.");
             RebootSystemCallable.WarningShown = true;
@@ -19,3 +19,4 @@ class RebootSystemCallable extends Callable {
 };
 
 export const RebootSystem: Callable = new RebootSystemCallable();
+export * from "./String";

@@ -1,5 +1,5 @@
 const BrsTypes = require("../../lib/brsTypes");
-const { RebootSystem } = require("../../lib/stdlib");
+const { UCase, LCase } = require("../../lib/stdlib");
 
 describe.only("Callable", () => {
     it("is less than nothing", () => {
@@ -11,11 +11,11 @@ describe.only("Callable", () => {
             new BrsTypes.BrsString("i'm super valid"),
             BrsTypes.BrsBoolean.False,
             BrsTypes.BrsInvalid.Instance,
-            RebootSystem
+            LCase
         ];
 
         brsValues.forEach(other =>
-            expect(RebootSystem.lessThan(other)).toBe(BrsTypes.BrsBoolean.False)
+            expect(UCase.lessThan(other)).toBe(BrsTypes.BrsBoolean.False)
         );
     });
 
@@ -28,11 +28,11 @@ describe.only("Callable", () => {
             new BrsTypes.BrsString("i'm super valid"),
             BrsTypes.BrsBoolean.False,
             BrsTypes.BrsInvalid.Instance,
-            RebootSystem
+            LCase
         ];
 
         brsValues.forEach(other =>
-            expect(RebootSystem.greaterThan(other)).toBe(BrsTypes.BrsBoolean.False)
+            expect(UCase.greaterThan(other)).toBe(BrsTypes.BrsBoolean.False)
         );
     });
 
@@ -46,12 +46,13 @@ describe.only("Callable", () => {
             new BrsTypes.BrsString("i'm super valid"),
             BrsTypes.BrsBoolean.False,
             BrsTypes.BrsInvalid.Instance,
+            LCase
         ];
 
         notEqual.forEach(other =>
-            expect(RebootSystem.equalTo(other)).toBe(BrsTypes.BrsBoolean.False)
+            expect(UCase.equalTo(other)).toBe(BrsTypes.BrsBoolean.False)
         );
 
-        expect(RebootSystem.equalTo(RebootSystem)).toBe(BrsTypes.BrsBoolean.True);
+        expect(UCase.equalTo(UCase)).toBe(BrsTypes.BrsBoolean.True);
     });
 });

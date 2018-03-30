@@ -336,8 +336,12 @@ function call(): Expression {
 
 function finishCall(callee: Expression): Expression {
     let args = [];
+    while(match(Lexeme.Newline));
+
     if (!check(Lexeme.RightParen)) {
         do {
+            while (match(Lexeme.Newline));
+
             if (args.length >= Expr.Call.MaximumArguments) {
                 ParseError.make(peek(), `Cannot have more than ${Expr.Call.MaximumArguments} arguments`);
                 break;
@@ -346,7 +350,8 @@ function finishCall(callee: Expression): Expression {
         } while (match(Lexeme.Comma));
     }
 
-    let closingParen = consume("Expected ')' after function call arguments", Lexeme.RightParen);
+    while (match(Lexeme.Newline));
+    const closingParen = consume("Expected ')' after function call arguments", Lexeme.RightParen);
 
 
     return new Expr.Call(callee, closingParen, args);

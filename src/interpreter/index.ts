@@ -323,7 +323,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         const args = expression.args.map(this.evaluate, this);
 
         if (!isBrsCallable(callee)) {
-            throw BrsError.runtime(
+            throw BrsError.make(
                 `'${functionName}' is not a function and cannot be called.`,
                 expression.closingParen.line
             )
@@ -333,13 +333,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // TODO: support optional/default-value parameters
         const arity = callee.arity;
         if (expression.args.length < arity.required) {
-            throw BrsError.runtime(
+            throw BrsError.make(
                 `'${functionName}' requires at least ${arity.required} arguments, ` +
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
             )
         } else if (expression.args.length > arity.required + arity.optional) {
-            throw BrsError.runtime(
+            throw BrsError.make(
                 `'${functionName}' accepts at most ${arity.required + arity.optional} arguments, ` +
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
@@ -498,11 +498,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this.environment.get(expression.name);
     }
 
-    evaluate(expression: Expr.Expression): BrsType {
+    evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
         return expression.accept<BrsType>(this);
     }
 
-    execute(statement: Stmt.Statement): Stmt.Result {
+    execute(this: Interpreter, statement: Stmt.Statement): Stmt.Result {
         return statement.accept<BrsType>(this);
     }
 }

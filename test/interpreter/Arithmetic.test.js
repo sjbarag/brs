@@ -1,4 +1,3 @@
-const Long = require("long");
 const BrsError = require("../../lib/Error");
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");

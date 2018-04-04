@@ -2,7 +2,7 @@ const Long = require("long");
 const BrsError = require("../../lib/Error");
 const { binary } = require("./InterpreterTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Interpreter } = require("../../lib/visitor/Interpreter");
+const { Interpreter } = require("../../lib/interpreter");
 const { Int32, Int64, Float, Double, BrsString, BrsBoolean, BrsInvalid } = require("../../lib/brsTypes");
 
 let interpreter;

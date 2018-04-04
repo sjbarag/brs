@@ -12,7 +12,8 @@ import {
     Int32,
     Int64,
     Float,
-    Double
+    Double,
+    isBrsCallable
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -21,10 +22,19 @@ import { Lexeme } from "../Lexeme";
 import { stringify } from "../Stringify";
 import * as BrsError from "../Error";
 
+import * as StdLib from "../stdlib";
+
 import Environment from "./Environment";
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
-    private environment = new Environment();
+    private readonly globals = new Environment();
+    private environment = this.globals;
+
+    constructor() {
+        this.globals.define("RebootSystem", StdLib.RebootSystem);
+        this.globals.define("UCase", StdLib.UCase);
+        this.globals.define("LCase", StdLib.LCase);
+    }
 
     exec(statements: Stmt.Statement[]) {
         return statements.map((statement) => this.execute(statement));
@@ -300,8 +310,45 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitCall(expression: Expr.Call) {
-        return BrsInvalid.Instance;
+        let functionName = "[anonymous function]";
+        if (expression.callee instanceof Expr.Variable) {
+            if (expression.callee.name.text) {
+                functionName = expression.callee.name.text;
+            }
+        }
+
+        // evaluate the function to call (it could be the result of another function call)
+        const callee = this.evaluate(expression.callee);
+        // evaluate all of the arguments as well (they could also be function calls)
+        const args = expression.args.map(this.evaluate, this);
+
+        if (!isBrsCallable(callee)) {
+            throw BrsError.make(
+                `'${functionName}' is not a function and cannot be called.`,
+                expression.closingParen.line
+            )
+        }
+
+        // ensure argument counts match
+        // TODO: support optional/default-value parameters
+        const arity = callee.arity;
+        if (expression.args.length < arity.required) {
+            throw BrsError.make(
+                `'${functionName}' requires at least ${arity.required} arguments, ` +
+                    `but received ${expression.args.length}.`,
+                expression.closingParen.line
+            )
+        } else if (expression.args.length > arity.required + arity.optional) {
+            throw BrsError.make(
+                `'${functionName}' accepts at most ${arity.required + arity.optional} arguments, ` +
+                    `but received ${expression.args.length}.`,
+                expression.closingParen.line
+            )
+        }
+
+        return callee.call(this, ...args);
     }
+
     visitGet(expression: Expr.Get) {
         return BrsInvalid.Instance;
     }
@@ -312,7 +359,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitFor(statement: Stmt.For): Stmt.Result {
         // BrightScript for/to loops evaluate the counter initial value, final value, and increment
-        // values *only once*, at the top of the for/top loop.
+        // values *only once*, at the top of the for/to loop.
         this.execute(statement.counterDeclaration);
         const finalValue = this.evaluate(statement.finalValue);
         const increment = this.evaluate(statement.increment);
@@ -451,11 +498,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this.environment.get(expression.name);
     }
 
-    evaluate(expression: Expr.Expression): BrsType {
+    evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
         return expression.accept<BrsType>(this);
     }
 
-    execute(statement: Stmt.Statement): Stmt.Result {
+    execute(this: Interpreter, statement: Stmt.Statement): Stmt.Result {
         return statement.accept<BrsType>(this);
     }
 }

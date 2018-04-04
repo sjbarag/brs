@@ -4,7 +4,7 @@ const Stmt = require("../../lib/parser/Statement");
 const { identifier, token } = require("../parser/ParserTests");
 const { binary } = require("./InterpreterTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Interpreter } = require("../../lib/visitor/Interpreter");
+const { Interpreter } = require("../../lib/interpreter");
 const { Int32, BrsString, BrsBoolean, BrsInvalid } = require("../../lib/brsTypes");
 
 let interpreter;

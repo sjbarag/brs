@@ -1,11 +1,10 @@
-const Long = require("long");
 const BrsError = require("../../lib/Error");
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { token } = require("../parser/ParserTests");
 const { binary } = require("./InterpreterTests");
 const { Lexeme } = require("../../lib/Lexeme");
-const { Interpreter } = require("../../lib/visitor/Interpreter");
+const { Interpreter } = require("../../lib/interpreter");
 const BrsTypes = require("../../lib/brsTypes");
 
 let interpreter;

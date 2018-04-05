@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf ./lib ./types",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm-run-all --serial clean build test"
   },
   "files": [
     "./bin/",
@@ -28,6 +29,7 @@
     "@types/long": "^3.0.32",
     "@types/node": "^8.5.2",
     "jest": "^22.0.4",
+    "npm-run-all": "^4.1.2",
     "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   },

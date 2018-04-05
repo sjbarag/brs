@@ -331,9 +331,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             )
         }
 
+        if (callee.signature.name) {
+            functionName = callee.signature.name;
+        }
+
         // ensure argument counts match
-        // TODO: support optional/default-value parameters
-        const arity = callee.arity;
+        const arity = callee.arity();
         if (expression.args.length < arity.required) {
             throw BrsError.make(
                 `'${functionName}' requires at least ${arity.required} arguments, ` +
@@ -346,6 +349,24 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
             )
+        }
+
+        // ensure argument types match
+        let typeMismatchFound = false;
+        for (const index in args) {
+            const signatureArg = callee.signature.args[index];
+            if (signatureArg.type !== args[index].kind) {
+                BrsError.make(
+                    `Type mismatch in '${functionName}': argument '${signatureArg.name}' must be ` +
+                        `of type ${ValueKind.toString(signatureArg.type)}, but received ` +
+                        `${ValueKind.toString(args[index].kind)}.`,
+                    expression.closingParen.line
+                );
+            }
+        }
+
+        if (typeMismatchFound) {
+            throw new Error("Type mismatch(es) detected.");
         }
 
         return callee.call(this, ...args);

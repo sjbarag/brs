@@ -34,6 +34,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.globals.define("RebootSystem", StdLib.RebootSystem);
         this.globals.define("UCase", StdLib.UCase);
         this.globals.define("LCase", StdLib.LCase);
+        this.globals.define("Asc", StdLib.Asc);
+        this.globals.define("Chr", StdLib.Chr);
     }
 
     exec(statements: Stmt.Statement[]) {

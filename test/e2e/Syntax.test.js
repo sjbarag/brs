@@ -1,32 +1,18 @@
-const path = require("path");
-
 const { execute } = require("../../lib/");
 const BrsError = require("../../lib/Error");
 
-/** Returns the path to a file in `resources/`. */
-function resourceFile(filename) {
-    return path.join(__dirname, "resources", filename);
-}
+const { resourceFile, allArgs } = require("./E2ETests");
 
-/**
- * Extracts all arguments from all calls to a Jest mock function.
- * @param jestMock the mock to extract arguments from
- * @returns an array containing every argument from every call to a Jest mock.
- */
-function allArgs(jestMock) {
-    return jestMock.mock.calls.reduce((allArgs, thisCall) => allArgs.concat(thisCall), []);
-}
+describe("end to end syntax", () => {
+    let stdout;
 
-describe("end to end", () => {
-    const stdout = jest.spyOn(console, "log");
-
-    afterEach(() => {
-        stdout.mockReset();
+    beforeAll(() => {
+        stdout = jest.spyOn(console, "log").mockImplementation(() => {});
     });
 
-    afterAll(() => {
-        stdout.mockRestore();
-    });
+    afterEach(() => stdout.mockReset());
+
+    afterAll(() => stdout.mockRestore());
 
     test("comments.brs", () => {
         return execute(resourceFile("comments.brs")).then(() => {

@@ -8,7 +8,9 @@ export enum ValueKind {
     Int32,
     Int64,
     Float,
-    Double
+    Double,
+    // TODO: Add Object types (associative arrays, lists, etc.)
+    Callable
 };
 
 /** The base for all BrightScript types. */
@@ -47,7 +49,7 @@ export interface BrsValue {
 /** Internal representation of a string in BrightScript. */
 export class BrsString implements BrsValue {
     readonly kind = ValueKind.String;
-    constructor(private readonly value: string) {}
+    constructor(readonly value: string) {}
 
     lessThan(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {

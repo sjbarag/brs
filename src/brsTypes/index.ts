@@ -3,12 +3,14 @@ import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { Double } from "./Double";
+import { Callable } from "./Callable";
 
 export * from "./BrsType";
 export * from "./Int32";
 export * from "./Int64";
 export * from "./Float"
 export * from "./Double";
+export * from "./Callable";
 
 /**
  * Determines whether or not the given value is a number.
@@ -45,6 +47,15 @@ export function isBrsBoolean(value: BrsType): value is BrsBoolean {
     return value.kind === ValueKind.Boolean;
 }
 
+/**
+ * Determines whether or not the given value is a BrightScript callable.
+ * @param value the BrightScript value in question.
+ * @returns `true` if `value` is a Callable value, otherwise `false`.
+ */
+export function isBrsCallable(value: BrsType): value is Callable {
+    return value.kind === ValueKind.Callable;
+}
+
 /** The set of BrightScript numeric types. */
 export type BrsNumber = Int32 | Int64 | Float | Double;
 
@@ -56,4 +67,5 @@ export type BrsType =
     Int32 |
     Int64 |
     Float |
-    Double;
+    Double |
+    Callable;

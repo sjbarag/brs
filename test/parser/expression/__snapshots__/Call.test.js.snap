@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser call expressions accepts arguments 1`] = `
+Array [
+  Expression {
+    "expression": Call {
+      "args": Array [
+        Literal {
+          "value": Int32 {
+            "kind": 3,
+            "value": 1,
+          },
+        },
+        Literal {
+          "value": Int32 {
+            "kind": 3,
+            "value": 2,
+          },
+        },
+      ],
+      "callee": Variable {
+        "name": Object {
+          "kind": 21,
+          "line": 1,
+          "text": "add",
+        },
+      },
+      "closingParen": Object {
+        "kind": 1,
+        "line": 1,
+        "text": ")",
+      },
+    },
+  },
+]
+`;
+
+exports[`parser call expressions allows closing parentheses on separate line 1`] = `
+Array [
+  Expression {
+    "expression": Call {
+      "args": Array [],
+      "callee": Variable {
+        "name": Object {
+          "kind": 21,
+          "line": 1,
+          "text": "RebootSystem",
+        },
+      },
+      "closingParen": Object {
+        "kind": 1,
+        "line": 3,
+        "text": ")",
+      },
+    },
+  },
+]
+`;
+
+exports[`parser call expressions parses named function calls 1`] = `
+Array [
+  Expression {
+    "expression": Call {
+      "args": Array [],
+      "callee": Variable {
+        "name": Object {
+          "kind": 21,
+          "line": 1,
+          "text": "RebootSystem",
+        },
+      },
+      "closingParen": Object {
+        "kind": 1,
+        "line": 1,
+        "text": ")",
+      },
+    },
+  },
+]
+`;

@@ -317,7 +317,44 @@ function unary(): Expression {
         return new Expr.Unary(operator, right);
     }
 
-    return primary();
+    return call();
+}
+
+function call(): Expression {
+    let expr = primary();
+
+    while (true) {
+        if (match(Lexeme.LeftParen)) {
+            expr = finishCall(expr);
+        } else {
+            break;
+        }
+    }
+
+    return expr;
+}
+
+function finishCall(callee: Expression): Expression {
+    let args = [];
+    while(match(Lexeme.Newline));
+
+    if (!check(Lexeme.RightParen)) {
+        do {
+            while (match(Lexeme.Newline));
+
+            if (args.length >= Expr.Call.MaximumArguments) {
+                ParseError.make(peek(), `Cannot have more than ${Expr.Call.MaximumArguments} arguments`);
+                break;
+            }
+            args.push(expression());
+        } while (match(Lexeme.Comma));
+    }
+
+    while (match(Lexeme.Newline));
+    const closingParen = consume("Expected ')' after function call arguments", Lexeme.RightParen);
+
+
+    return new Expr.Call(callee, closingParen, args);
 }
 
 function primary(): Expression {

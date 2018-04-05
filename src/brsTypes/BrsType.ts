@@ -10,8 +10,29 @@ export enum ValueKind {
     Float,
     Double,
     // TODO: Add Object types (associative arrays, lists, etc.)
-    Callable
+    Callable,
+    Dynamic
 };
+
+export namespace ValueKind {
+    /**
+     * Converts a `ValueKind` enum member to a human-readable string representation.
+     * @returns a textual representation of the provided value kind.
+     */
+    export function toString(kind: ValueKind): string {
+        switch (kind) {
+            case ValueKind.Invalid: return "Invalid";
+            case ValueKind.Boolean: return "Boolean";
+            case ValueKind.String: return "String";
+            case ValueKind.Int32: return "Integer";
+            case ValueKind.Int64: return "LongInteger";
+            case ValueKind.Float: return "Float";
+            case ValueKind.Double: return "Double";
+            case ValueKind.Callable: return "Function";
+            case ValueKind.Dynamic: return "Dynamic";
+        }
+    }
+}
 
 /** The base for all BrightScript types. */
 export interface BrsValue {

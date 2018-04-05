@@ -3,9 +3,10 @@ import { Interpreter } from "../interpreter";
 
 class RebootSystemCallable extends Callable {
     static WarningShown = false;
-    arity = {
-        required: 0,
-        optional: 0
+
+    signature = {
+        name: "RebootSystem",
+        args: []
     };
 
     call(interpreter: Interpreter): BrsInvalid {

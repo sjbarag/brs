@@ -2,22 +2,21 @@ import { BrsType, Callable, ValueKind, BrsString, BrsNumber, Int32, Int64 } from
 import { Interpreter } from "../interpreter";
 
 class UCaseCallable extends Callable {
-    arity = {
-        required: 1,
-        optional: 0
-    };
+    signature = {
+        name: "UCase",
+        args: [{ name: "s", type: ValueKind.String }]
+    }
 
     call(interpreter: Interpreter, str: BrsString): BrsType {
-        // TODO: Figure out how to handle type checking centrally
         return new BrsString(str.value.toUpperCase());
     }
 }
 
 class LCaseCallable extends Callable {
-    arity = {
-        required: 1,
-        optional: 0
-    };
+    signature = {
+        name: "LCase",
+        args: [{ name: "s", type: ValueKind.String }]
+    }
 
     call(interpreter: Interpreter, str: BrsString): BrsType {
         return new BrsString(str.value.toLowerCase());
@@ -25,9 +24,9 @@ class LCaseCallable extends Callable {
 }
 
 class AscCallable extends Callable {
-    arity = {
-        required: 1,
-        optional: 0
+    signature = {
+        name: "Asc",
+        args: [{ name: "letter", type: ValueKind.String }]
     }
 
     call(interpreter: Interpreter, str: BrsString): BrsType {
@@ -36,25 +35,36 @@ class AscCallable extends Callable {
 }
 
 class ChrCallable extends Callable {
-    arity = {
-        required: 1,
-        optional: 0
+    signature = {
+        name: "Chr",
+        args: [{ name: "ch", type: ValueKind.Int32 }]
     }
 
-    call(interpreter: Interpreter, value: BrsType): BrsType {
-        if (value.kind === ValueKind.Int32) {
-            const num = value.getValue();
-            if (num <= 0)
-                return new BrsString("");
-            else
-                return new BrsString(String.fromCharCode(num));
-        } else {
+    call(interpreter: Interpreter, value: Int32): BrsType {
+        const num = value.getValue();
+        if (num <= 0)
             return new BrsString("");
-        }
+        else
+            return new BrsString(String.fromCharCode(num));
     }
 }
 
+/** Converts the string to all uppercase. */
 export const UCase: Callable = new UCaseCallable();
+
+/** Converts the string to all lowercase. */
 export const LCase: Callable = new LCaseCallable();
+
+/**
+ * Returns the Unicode ("ASCII") value for the first character of the specified string.
+ * An empty string argument will return `0`.
+ */
 export const Asc: Callable = new AscCallable();
+
+/**
+ * Performs the inverse of the `Asc` function: returns a one-character string whose character has
+ * the specified Unicode value.
+ *
+ * Returns empty string (`""`) if the specified value is `0` or an invalid Unicode value.
+ */
 export const Chr: Callable = new ChrCallable();

@@ -4,7 +4,7 @@
   "description": "An interpreter for the BrightScript language that runs on non-Roku platforms.",
   "author": "Sean Barag <sean@barag.org>",
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "typings": "./types/index.d.ts",
   "bin": {
     "brs": "./bin/cli.js"

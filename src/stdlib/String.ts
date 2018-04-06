@@ -47,7 +47,7 @@ class ChrCallable extends Callable {
     call(interpreter: Interpreter, value: BrsType): BrsType {
         if (value instanceof Int32) {
             const num = value.getValue();
-            if (num === 0)
+            if (num <= 0)
                 return new BrsString("");
             else
                 return new BrsString(String.fromCharCode(num));

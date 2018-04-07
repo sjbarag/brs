@@ -31,10 +31,7 @@ class AscCallable extends Callable {
     }
 
     call(interpreter: Interpreter, str: BrsString): BrsType {
-        if (str.value.length == 0)
-            return new Int32(0);
-        else
-            return new Int32(str.value[0].charCodeAt(0));
+        return new Int32(str.value.charCodeAt(0) || 0);
     }
 }
 
@@ -45,7 +42,7 @@ class ChrCallable extends Callable {
     }
 
     call(interpreter: Interpreter, value: BrsType): BrsType {
-        if (value instanceof Int32) {
+        if (value.kind === ValueKind.Int32) {
             const num = value.getValue();
             if (num <= 0)
                 return new BrsString("");

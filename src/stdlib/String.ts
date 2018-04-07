@@ -1,4 +1,4 @@
-import { BrsType, Callable, ValueKind, BrsString } from "../brsTypes";
+import { BrsType, Callable, ValueKind, BrsString, BrsNumber, Int32, Int64 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
 class UCaseCallable extends Callable {
@@ -24,5 +24,37 @@ class LCaseCallable extends Callable {
     }
 }
 
+class AscCallable extends Callable {
+    arity = {
+        required: 1,
+        optional: 0
+    }
+
+    call(interpreter: Interpreter, str: BrsString): BrsType {
+        return new Int32(str.value.charCodeAt(0) || 0);
+    }
+}
+
+class ChrCallable extends Callable {
+    arity = {
+        required: 1,
+        optional: 0
+    }
+
+    call(interpreter: Interpreter, value: BrsType): BrsType {
+        if (value.kind === ValueKind.Int32) {
+            const num = value.getValue();
+            if (num <= 0)
+                return new BrsString("");
+            else
+                return new BrsString(String.fromCharCode(num));
+        } else {
+            return new BrsString("");
+        }
+    }
+}
+
 export const UCase: Callable = new UCaseCallable();
 export const LCase: Callable = new LCaseCallable();
+export const Asc: Callable = new AscCallable();
+export const Chr: Callable = new ChrCallable();

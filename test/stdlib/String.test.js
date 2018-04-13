@@ -28,7 +28,8 @@ describe("global string functions", () => {
             expect(
                 Asc.call(interpreter, new BrsString(""))
             ).toEqual(new Int32(0));
-        })
+        });
+
         it("converts a character to a UTF-16 representation", () => {
             expect(
                 Asc.call(interpreter, new BrsString("for"))
@@ -37,15 +38,15 @@ describe("global string functions", () => {
             expect(
                 Asc.call(interpreter, new BrsString("ぇ"))
             ).toEqual(new Int32(12359));
-        })
-    })
+        });
+    });
 
     describe("Chr", () => {
         it("converts a non-integer to an empty string", () => {
             expect(
                 Chr.call(interpreter, new BrsString("some string"))
             ).toEqual(new BrsString(""));
-        })
+        });
 
         it("converts a negative or zero to an empty string", () => {
             expect(
@@ -55,9 +56,9 @@ describe("global string functions", () => {
             expect(
                 Chr.call(interpreter, new Int32(0))
             ).toEqual(new BrsString(""));
-        })
+        });
 
-        it("converts an UTF-18 integer to character", () => {
+        it("converts an UTF-16 integer to character", () => {
             expect(
                 Chr.call(interpreter, new Int32(34))
             ).toEqual(new BrsString("\""));
@@ -65,8 +66,6 @@ describe("global string functions", () => {
             expect(
                 Chr.call(interpreter, new Int32(12359))
             ).toEqual(new BrsString("ぇ"));
-        })
-
-        
-    })
-})
+        });
+    });
+});

@@ -20,7 +20,9 @@ describe("end to end standard libary", () => {
         return execute(resourceFile(path.join("stdlib", "strings.brs"))).then(() => {
             expect(allArgs(stdout)).toEqual([
                 "MIXED CASE",
-                "mixed case"
+                "mixed case",
+                "12359",
+                "ぇ"
             ]);
         });
     });

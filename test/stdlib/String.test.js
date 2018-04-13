@@ -42,12 +42,6 @@ describe("global string functions", () => {
     });
 
     describe("Chr", () => {
-        it("converts a non-integer to an empty string", () => {
-            expect(
-                Chr.call(interpreter, new BrsString("some string"))
-            ).toEqual(new BrsString(""));
-        });
-
         it("converts a negative or zero to an empty string", () => {
             expect(
                 Chr.call(interpreter, new Int32(-1))

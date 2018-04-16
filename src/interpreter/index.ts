@@ -336,7 +336,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         // ensure argument counts match
-        const arity = callee.arity();
+        const arity = callee.arity;
         if (expression.args.length < arity.required) {
             throw BrsError.make(
                 `'${functionName}' requires at least ${arity.required} arguments, ` +

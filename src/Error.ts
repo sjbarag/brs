@@ -9,7 +9,7 @@ export function runtime(message: string, line: number, file?: string) {
     let location = file ? `${file}: ${line}` : `line ${line}`;
     let error = new Error(`[${location}] ${message}`);
     if (process.env.NODE_ENV !== "test") {
-        console.error(error);
+        console.error(error.message);
     }
     return error;
 }

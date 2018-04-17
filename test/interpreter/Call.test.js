@@ -56,4 +56,19 @@ describe("interpreter calls", () => {
         expect(() => interpreter.exec([call])).toThrow(/UCase.*arguments/);
         expect(BrsError.found()).toBe(true);
     });
+
+    it("errors when argument types are incorrect", () => {
+        const call = new Stmt.Expression(
+            new Expr.Call(
+                new Expr.Variable(identifier("UCase")),
+                { kind: Lexeme.RightParen, text: ")", line: 1 },
+                [
+                    new Expr.Literal(new BrsTypes.Int32(5)),
+                ]
+            )
+        );
+
+        expect(() => interpreter.exec([call])).toThrow(/Type mismatch/);
+        expect(BrsError.found()).toBe(true);
+    });
 });

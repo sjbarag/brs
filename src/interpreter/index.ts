@@ -367,7 +367,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         if (typeMismatchFound) {
-            throw new Error("Type mismatch(es) detected.");
+            throw new Error(
+                `[Line ${expression.closingParen.line}] Type mismatch(es) detected.`
+            );
         }
 
         return callee.call(this, ...args);

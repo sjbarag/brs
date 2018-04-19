@@ -103,7 +103,7 @@ describe.only("Callable", () => {
             });
         });
 
-        it("allows funtions with both required and optional args", () => {
+        it("allows functions with both required and optional args", () => {
             const required = new BrsTypes.Callable(
                 {
                     name: "requiredAndOptional",

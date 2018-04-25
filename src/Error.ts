@@ -6,10 +6,10 @@ export function make(message: string, line: number, file?: string) {
 }
 
 export function runtime(message: string, line: number, file?: string) {
-    let location = file ? `${file}: ${line}` : `line ${line}`;
+    let location = file ? `${file}: ${line}` : `Line ${line}`;
     let error = new Error(`[${location}] ${message}`);
     if (process.env.NODE_ENV !== "test") {
-        console.error(error);
+        console.error(error.message);
     }
     return error;
 }

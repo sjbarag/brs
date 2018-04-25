@@ -55,4 +55,68 @@ describe.only("Callable", () => {
 
         expect(UCase.equalTo(UCase)).toBe(BrsTypes.BrsBoolean.True);
     });
+
+    describe("arity", () => {
+        it("allows no-args functions", () => {
+            const noArgs = new BrsTypes.Callable(
+                {
+                    name: "acceptsNoArgs",
+                    args: []
+                },
+                () => {}
+            );
+            expect(noArgs.arity).toEqual({
+                required: 0,
+                optional: 0
+            });
+        });
+
+        it("allows functions with only required args", () => {
+            const required = new BrsTypes.Callable(
+                {
+                    name: "requiredOnly",
+                    args: [
+                        { name: "foo", type: BrsTypes.ValueKind.String },
+                        { name: "bar", type: BrsTypes.ValueKind.Int32 },
+                    ]
+                }
+            );
+            expect(required.arity).toEqual({
+                required: 2,
+                optional: 0
+            });
+        });
+
+        it("allows functions with only optional args", () => {
+            const required = new BrsTypes.Callable(
+                {
+                    name: "optionalOnly",
+                    args: [
+                        { name: "foo", type: BrsTypes.ValueKind.String, defaultValue: new BrsTypes.BrsString("okay") },
+                        { name: "bar", type: BrsTypes.ValueKind.Int32, defaultValue: new BrsTypes.Int32(-1) },
+                    ]
+                }
+            );
+            expect(required.arity).toEqual({
+                required: 0,
+                optional: 2
+            });
+        });
+
+        it("allows functions with both required and optional args", () => {
+            const required = new BrsTypes.Callable(
+                {
+                    name: "requiredAndOptional",
+                    args: [
+                        { name: "foo", type: BrsTypes.ValueKind.String },
+                        { name: "bar", type: BrsTypes.ValueKind.Int32, defaultValue: new BrsTypes.Int32(-1) },
+                    ]
+                }
+            );
+            expect(required.arity).toEqual({
+                required: 1,
+                optional: 1
+            });
+        });
+    });
 });

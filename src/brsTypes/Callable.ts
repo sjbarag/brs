@@ -1,47 +1,95 @@
 import { Interpreter } from "../interpreter";
-import { BrsType, BrsValue, ValueKind, BrsBoolean } from "./";
+import * as Brs from "./";
+import { Token } from "../Token";
+
+/** An argument to a BrightScript `function` or `sub`. */
+export interface Argument {
+    /** The argument's name. */
+    readonly name: string,
+    /** The type of the argument expected by the BrightScript runtime. */
+    readonly type: Brs.ValueKind,
+    /** The default value to use for the argument if none is provided. */
+    readonly defaultValue?: Brs.BrsType
+}
+
+/** A BrightScript `function` or `sub`'s signature. */
+export interface Signature {
+    /** The name of a function, if it has one. */
+    name?: string,
+    /** The set of arguments a function accepts. */
+    args: Argument[]
+}
+
+/** Describes the number of required and optional arguments for a `Callable`. */
+export interface Arity {
+    /** The minimum number of arguments required for this function call. */
+    required: number,
+    /** The number of optional arguments accepted by this function. */
+    optional: number
+}
+
+/*
+ * Note that TypeScript's `--strictFunctionTypes` compiler argument prevents the `args` parameter
+ * from being typed as `...args: Brs.BrsType[]` here. See
+ * https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance for a wonderful
+ * description of why.
+ */
+/** The function type required for all concrete Callables to provide. */
+export type CallableImplementation = (interpreter: Interpreter, ...args: any[]) => Brs.BrsType;
 
 /** A `function` or `sub` (either "native" or implemented in BrightScript) that can be called in a BrightScript file. */
-export abstract class Callable implements BrsValue {
-    readonly kind = ValueKind.Callable;
+export class Callable implements Brs.BrsValue {
+    readonly kind = Brs.ValueKind.Callable;
 
-    /** The number of arguments expected by this function. */
-    abstract readonly arity: {
-        /**
-         * The minimum number of arguments required for this function call. Is equal to `arity.max`
-         * when all arguments are required.
-         */
-        required: number;
+    /** The signature of this callable within the BrightScript runtime. */
+    readonly signature: Signature;
 
-        /** The number of optional arguments accepted by this function. */
-        optional: number;
-    };
+    /**
+     * Calculates and returns the number of arguments expected by this function.
+     * @returns an object containing the number of required and optional arguments.
+     */
+    readonly arity: Arity;
 
     /**
      * Calls the function this `Callable` represents with the provided `arg`uments using the
      * provided `Interpreter` instance.
      *
-     * @param interpret the interpreter to execute this callable in.
+     * @param interpreter the interpreter to execute this callable in.
      * @param args the arguments to pass to the callable routine.
      *
      * @returns the return value of the function, or `invalid` if nothing is explicitly returned.
      */
-    abstract call(interpreter: Interpreter, ...args: BrsType[]): BrsType;
-
-    lessThan(other: BrsType): BrsBoolean {
-        return BrsBoolean.False;
+    call(interpreter: Interpreter, ...args: Brs.BrsType[]) {
+        return this.impl(interpreter, ...args);
     }
 
-    greaterThan(other: BrsType): BrsBoolean {
-        return BrsBoolean.False;
+    /**
+     * Creates a new BrightScript `function` or `sub`.
+     * @param signature the signature this callable should have within the BrightScript runtime.
+     * @param impl the (JavaScript) function to call when this `callable` is executed.
+     */
+    constructor(signature: Signature, private readonly impl: CallableImplementation) {
+        this.signature = signature;
+        this.arity = {
+            required: this.signature.args.filter(a => !a.defaultValue).length,
+            optional: this.signature.args.filter(a => !!a.defaultValue).length
+        };
     }
 
-    equalTo(other: BrsType): BrsBoolean {
-        return BrsBoolean.from(this === other);
+    lessThan(other: Brs.BrsType): Brs.BrsBoolean {
+        return Brs.BrsBoolean.False;
+    }
+
+    greaterThan(other: Brs.BrsType): Brs.BrsBoolean {
+        return Brs.BrsBoolean.False;
+    }
+
+    equalTo(other: Brs.BrsType): Brs.BrsBoolean {
+        return Brs.BrsBoolean.from(this === other);
     }
 
     toString(): string {
         // TODO: Add support for named functions
-        return `[Function]`
+        return `[Function ${this.signature.name}]`
     }
 }

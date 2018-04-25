@@ -3,7 +3,7 @@ import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { Double } from "./Double";
-import { Callable } from "./Callable";
+import { Callable, CallableImplementation } from "./Callable";
 
 export * from "./BrsType";
 export * from "./Int32";

@@ -21,8 +21,8 @@ export function execute(filename: string) {
             } else {
                 run(contents);
                 if (BrsError.found()) {
-                    reject({ 
-                        "message" : "Error occurred" 
+                    reject({
+                        "message" : "Error occurred"
                     });
                 } else {
                     resolve();
@@ -63,5 +63,10 @@ function run(contents: string) {
 
     if (!statements) { return; }
 
-    return interpreter.exec(statements);
+    try {
+        return interpreter.exec(statements);
+    } catch (e) {
+        console.error(e.message);
+        return;
+    }
 }

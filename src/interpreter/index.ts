@@ -54,8 +54,26 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitPrint(statement: Stmt.Print): Stmt.Result {
-        let result = this.evaluate(statement.expression);
-        console.log(stringify(result));
+        for (const printable of statement.expressions) {
+            switch (printable) {
+                case Stmt.PrintSeparator.Comma:
+                    // TODO: Figure out a good way to limit this to 16-char increments
+                    process.stdout.write(" ".repeat(16));
+                    break;
+                case Stmt.PrintSeparator.Semicolon:
+                    process.stdout.write(" ");
+                    break;
+                default:
+                    let result = this.evaluate(printable);
+                    process.stdout.write(stringify(result));
+                    break;
+            }
+        }
+
+        if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Semicolon) {
+            process.stdout.write("\n");
+        }
+
         return {
             value: BrsInvalid.Instance,
             reason: Stmt.StopReason.End

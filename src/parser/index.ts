@@ -213,12 +213,25 @@ function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.
     return new Stmt.Expression(expr);
 }
 
-function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
-    let value = expression();
-    if (!check(...additionalterminators)) {
-        consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print {
+    let values: (Expr.Expression | Stmt.PrintSeparator)[] = [];
+    values.push(expression());
+
+    while (!check(Lexeme.Newline, Lexeme.Colon) && !isAtEnd()) {
+        if (match(Lexeme.Semicolon)) {
+            values.push(Stmt.PrintSeparator.Semicolon);
+        }
+
+        if (match(Lexeme.Comma)) {
+            values.push(Stmt.PrintSeparator.Comma);
+        }
+
+        if (!check(Lexeme.Newline, Lexeme.Colon) && !isAtEnd()) {
+            values.push(expression());
+        }
     }
-    return new Stmt.Print(value);
+
+    return new Stmt.Print(values);
 }
 
 /**

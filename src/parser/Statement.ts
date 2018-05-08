@@ -107,9 +107,14 @@ export class If implements Statement {
     }
 }
 
+export enum PrintSeparator {
+    Comma,
+    Semicolon
+}
+
 export class Print implements Statement {
     constructor(
-        readonly expression: Expr.Expression
+        readonly expressions: (Expr.Expression | PrintSeparator)[]
     ) {}
 
     accept<R>(visitor: Visitor<R>): Result {

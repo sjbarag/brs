@@ -41,7 +41,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * Creates a new Interpreter, including any global properties and functions.
      * @param outputStreams the WriteStreams to use for `stdout` and `stderr`.
      */
-    constructor(outputStreams: OutputStreams) {
+    constructor(outputStreams: OutputStreams = process) {
         this.stdout = outputStreams.stdout;
         this.stderr = outputStreams.stderr;
 

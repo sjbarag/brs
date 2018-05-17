@@ -26,11 +26,25 @@ import * as StdLib from "../stdlib";
 
 import Environment from "./Environment";
 
+export interface OutputStreams {
+    stdout: NodeJS.WriteStream,
+    stderr: NodeJS.WriteStream
+}
+
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private readonly globals = new Environment();
     private environment = this.globals;
+    private stdout: NodeJS.WriteStream;
+    private stderr: NodeJS.WriteStream;
 
-    constructor() {
+    /**
+     * Creates a new Interpreter, including any global properties and functions.
+     * @param outputStreams the WriteStreams to use for `stdout` and `stderr`.
+     */
+    constructor(outputStreams: OutputStreams) {
+        this.stdout = outputStreams.stdout;
+        this.stderr = outputStreams.stderr;
+
         this.globals.define("RebootSystem", StdLib.RebootSystem);
         this.globals.define("UCase", StdLib.UCase);
         this.globals.define("LCase", StdLib.LCase);
@@ -54,25 +68,24 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitPrint(statement: Stmt.Print): Stmt.Result {
-        for (const printable of statement.expressions) {
+        let output = statement.expressions.map(printable => {
             switch (printable) {
                 case Stmt.PrintSeparator.Comma:
                     // TODO: Figure out a good way to limit this to 16-char increments
-                    process.stdout.write(" ".repeat(16));
-                    break;
+                    return " ".repeat(16);
                 case Stmt.PrintSeparator.Semicolon:
-                    process.stdout.write(" ");
-                    break;
+                    return " ";
                 default:
                     let result = this.evaluate(printable);
-                    process.stdout.write(stringify(result));
-                    break;
+                    return stringify(result);
             }
-        }
+        }).join("");
 
         if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Semicolon) {
-            process.stdout.write("\n");
+            output += "\n";
         }
+
+        this.stdout.write(output);
 
         return {
             value: BrsInvalid.Instance,

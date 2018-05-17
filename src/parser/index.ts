@@ -217,7 +217,7 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print
     let values: (Expr.Expression | Stmt.PrintSeparator)[] = [];
     values.push(expression());
 
-    while (!check(Lexeme.Newline, Lexeme.Colon) && !isAtEnd()) {
+    while (!check(Lexeme.Newline, Lexeme.Colon, ...additionalterminators) && !isAtEnd()) {
         if (match(Lexeme.Semicolon)) {
             values.push(Stmt.PrintSeparator.Semicolon);
         }
@@ -229,6 +229,10 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print
         if (!check(Lexeme.Newline, Lexeme.Colon) && !isAtEnd()) {
             values.push(expression());
         }
+    }
+
+    if (!check(...additionalterminators)) {
+        consume("Expected newline or ':' after printed values", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
     }
 
     return new Stmt.Print(values);

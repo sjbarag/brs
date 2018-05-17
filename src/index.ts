@@ -5,13 +5,17 @@ import { Token } from "./Token";
 import * as Lexer from "./lexer";
 import * as Parser from "./parser";
 import { AstPrinter } from "./interpreter/AstPrinter";
-import { Interpreter } from "./interpreter";
+import { Interpreter, OutputStreams } from "./interpreter";
 import { stringify } from "./Stringify";
 import * as BrsError from "./Error";
 
-const interpreter = new Interpreter();
+/** The `stdout`/`stderr` pair from the process that invoked `brs`. */
+const processOutput: OutputStreams = {
+    stdout: process.stdout,
+    stderr: process.stderr
+};
 
-export function execute(filename: string) {
+export function execute(filename: string, options: OutputStreams = processOutput) {
     return new Promise((resolve, reject) => {
         fs.readFile(filename, "utf-8", (err, contents) => {
             if (err) {
@@ -19,7 +23,7 @@ export function execute(filename: string) {
                     "message" : `brs: can't open file '${filename}': [Errno ${err.errno}]`
                 });
             } else {
-                run(contents);
+                run(contents, options);
                 if (BrsError.found()) {
                     reject({
                         "message" : "Error occurred"
@@ -53,7 +57,7 @@ export function repl() {
     rl.prompt();
 }
 
-function run(contents: string) {
+function run(contents: string, options: OutputStreams = processOutput) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
     const statements = Parser.parse(tokens);
 
@@ -64,9 +68,9 @@ function run(contents: string) {
     if (!statements) { return; }
 
     try {
-        return interpreter.exec(statements);
+        return new Interpreter(options).exec(statements);
     } catch (e) {
-        console.error(e.message);
+        options.stderr.write(e.message);
         return;
     }
 }

@@ -3,9 +3,11 @@
 exports[`parser print statements parses print statements 1`] = `
 Array [
   Print {
-    "expression": Literal {
-      "value": "Hello, world",
-    },
+    "expressions": Array [
+      Literal {
+        "value": "Hello, world",
+      },
+    ],
   },
 ]
 `;

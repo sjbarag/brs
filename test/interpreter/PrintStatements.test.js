@@ -78,4 +78,20 @@ describe("interperter print statements", () => {
             "foo             barbara         baz\n"
         ]);
     });
+
+    it("skips cursor-return with a trailing semicolon", () => {
+        const ast = new Stmt.Print([
+            new Expr.Literal(new BrsString("foo")),
+            Stmt.PrintSeparator.Space,
+            new Expr.Literal(new BrsString("bar")),
+            Stmt.PrintSeparator.Space,
+            new Expr.Literal(new BrsString("baz")),
+            Stmt.PrintSeparator.Space,
+        ]);
+
+        const [ result ] = interpreter.exec([ast]);
+        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(stdout.write).toHaveBeenCalledTimes(1);
+        expect(stdout.write).toHaveBeenCalledWith("foo bar baz");
+    });
 });

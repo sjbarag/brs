@@ -69,11 +69,17 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitPrint(statement: Stmt.Print): Stmt.Result {
         let output = statement.expressions.reduce(
-            (combined: string, printable: Expr.Expression | Stmt.PrintSeparator) => {
+            (combined: string, printable: Expr.Expression | Stmt.PrintSeparator, index: number) => {
                 switch (printable) {
                     case Stmt.PrintSeparator.Tab:
                         return combined + " ".repeat(16 - (combined.length % 16));
                     case Stmt.PrintSeparator.Space:
+                        if (index === statement.expressions.length - 1) {
+                            // Don't append an extra space for trailing `;` in print lists.
+                            // They're used to suppress trailing newlines in `print` statements
+                            return combined;
+                        }
+
                         return combined + " ";
                     default:
                         return combined + stringify(this.evaluate(printable));

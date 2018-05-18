@@ -108,8 +108,8 @@ export class If implements Statement {
 }
 
 export enum PrintSeparator {
-    Comma,
-    Semicolon
+    Tab,
+    Space
 }
 
 export class Print implements Statement {

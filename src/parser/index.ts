@@ -219,11 +219,11 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print
 
     while (!check(Lexeme.Newline, Lexeme.Colon, ...additionalterminators) && !isAtEnd()) {
         if (match(Lexeme.Semicolon)) {
-            values.push(Stmt.PrintSeparator.Semicolon);
+            values.push(Stmt.PrintSeparator.Space);
         }
 
         if (match(Lexeme.Comma)) {
-            values.push(Stmt.PrintSeparator.Comma);
+            values.push(Stmt.PrintSeparator.Tab);
         }
 
         if (!check(Lexeme.Newline, Lexeme.Colon) && !isAtEnd()) {

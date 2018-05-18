@@ -68,20 +68,21 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitPrint(statement: Stmt.Print): Stmt.Result {
-        let output = statement.expressions.map(printable => {
-            switch (printable) {
-                case Stmt.PrintSeparator.Comma:
-                    // TODO: Figure out a good way to limit this to 16-char increments
-                    return " ".repeat(16);
-                case Stmt.PrintSeparator.Semicolon:
-                    return " ";
-                default:
-                    let result = this.evaluate(printable);
-                    return stringify(result);
-            }
-        }).join("");
+        let output = statement.expressions.reduce(
+            (combined: string, printable: Expr.Expression | Stmt.PrintSeparator) => {
+                switch (printable) {
+                    case Stmt.PrintSeparator.Tab:
+                        return combined + " ".repeat(16 - (combined.length % 16));
+                    case Stmt.PrintSeparator.Space:
+                        return combined + " ";
+                    default:
+                        return combined + stringify(this.evaluate(printable));
+                }
+            },
+            ""
+        );
 
-        if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Semicolon) {
+        if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Space) {
             output += "\n";
         }
 

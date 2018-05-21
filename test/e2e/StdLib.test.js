@@ -22,7 +22,9 @@ describe("end to end standard libary", () => {
 
     test("stdlib/strings.brs", () => {
         return execute(resourceFile(path.join("stdlib", "strings.brs")), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "MIXED CASE",
                 "mixed case",
                 "12359",

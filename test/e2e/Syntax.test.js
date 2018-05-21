@@ -27,7 +27,9 @@ describe("end to end syntax", () => {
 
     test("printLiterals.brs", () => {
         return execute(resourceFile("printLiterals.brs"), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "invalid",
                 "true",
                 "false",
@@ -42,7 +44,9 @@ describe("end to end syntax", () => {
 
     test("arithmetic.brs", () => {
         return execute(resourceFile("arithmetic.brs"), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "3", "3", "3", "3",       // addition
                 "5", "5", "5", "5",       // subtraction
                 "15", "15", "15", "15",   // multiplication
@@ -54,7 +58,9 @@ describe("end to end syntax", () => {
 
     test("assignment.brs", () => {
         return execute(resourceFile("assignment.brs"), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "new value"
             ]);
         });
@@ -62,7 +68,9 @@ describe("end to end syntax", () => {
 
     test("conditionals.brs", () => {
         return execute(resourceFile("conditionals.brs"), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "1", "2", "3", "4", "5", "6"
             ]);
         });
@@ -70,7 +78,9 @@ describe("end to end syntax", () => {
 
     test("while-loops.brs", () => {
         return execute(resourceFile("while-loops.brs"), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "0", "1", "2", "3", "4", // count up
                 "5", "4"                 // count down with exit
             ]);
@@ -79,7 +89,9 @@ describe("end to end syntax", () => {
 
     test("for-loops.brs", () => {
         return execute(resourceFile("for-loops.brs"), outputStreams).then(() => {
-            expect(allArgs(outputStreams.stdout.write)).toEqual([
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "0", "2", "4", "6", // count up
                 "8",                // i after loop
                 "3", "2", "1", "0", // count down

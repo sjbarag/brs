@@ -13,8 +13,6 @@ exports.resourceFile = function(filename) {
  */
 exports.allArgs = function(jestMock) {
     return jestMock.mock.calls
-            // remove trailing newlines from final argument
-            .map(args => args.map((a, i) => i + 1=== args.length ? a.replace(/\n$/, "") : a))
             // flatten arguments to `stdout.write` into a single array
             .reduce((allArgs, thisCall) => allArgs.concat(thisCall), []);
 }

@@ -25,6 +25,7 @@ import * as BrsError from "../Error";
 import * as StdLib from "../stdlib";
 
 import Environment from "./Environment";
+import { OutputProxy } from "./OutputProxy";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -34,22 +35,23 @@ export interface OutputStreams {
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private readonly globals = new Environment();
     private environment = this.globals;
-    private stdout: NodeJS.WriteStream;
-    private stderr: NodeJS.WriteStream;
+    readonly stdout: OutputProxy;
+    readonly stderr: OutputProxy;
 
     /**
      * Creates a new Interpreter, including any global properties and functions.
      * @param outputStreams the WriteStreams to use for `stdout` and `stderr`.
      */
     constructor(outputStreams: OutputStreams = process) {
-        this.stdout = outputStreams.stdout;
-        this.stderr = outputStreams.stderr;
+        this.stdout = new OutputProxy(outputStreams.stdout);
+        this.stderr = new OutputProxy(outputStreams.stderr);
 
         this.globals.define("RebootSystem", StdLib.RebootSystem);
         this.globals.define("UCase", StdLib.UCase);
         this.globals.define("LCase", StdLib.LCase);
         this.globals.define("Asc", StdLib.Asc);
         this.globals.define("Chr", StdLib.Chr);
+        this.globals.define("Pos", StdLib.Pos);
     }
 
     exec(statements: Stmt.Statement[]) {
@@ -68,31 +70,39 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitPrint(statement: Stmt.Print): Stmt.Result {
-        let output = statement.expressions.reduce(
-            (combined: string, printable: Expr.Expression | Stmt.PrintSeparator, index: number) => {
-                switch (printable) {
-                    case Stmt.PrintSeparator.Tab:
-                        return combined + " ".repeat(16 - (combined.length % 16));
-                    case Stmt.PrintSeparator.Space:
-                        if (index === statement.expressions.length - 1) {
-                            // Don't append an extra space for trailing `;` in print lists.
-                            // They're used to suppress trailing newlines in `print` statements
-                            return combined;
-                        }
+        // the `tab` function is only in-scope while executing print statements
+        this.environment.define("Tab", StdLib.Tab);
 
-                        return combined + " ";
-                    default:
-                        return combined + stringify(this.evaluate(printable));
-                }
-            },
-            ""
-        );
+        statement.expressions.forEach( (printable, index) => {
+            switch (printable) {
+                case Stmt.PrintSeparator.Tab:
+                    this.stdout.write(
+                        " ".repeat(16 - (this.stdout.position() % 16))
+                    );
+                    break;
+                case Stmt.PrintSeparator.Space:
+                    if (index === statement.expressions.length - 1) {
+                        // Don't write an extra space for trailing `;` in print lists.
+                        // They're used to suppress trailing newlines in `print` statements
+                        break;
+                    }
+
+                    this.stdout.write(" ");
+                    break;
+                default:
+                    this.stdout.write(
+                        stringify(this.evaluate(printable))
+                    );
+                    break;
+            }
+        });
 
         if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Space) {
-            output += "\n";
+            this.stdout.write("\n");
         }
 
-        this.stdout.write(output);
+        // `tab` is only in-scope when executing print statements, so remove it before we leave
+        this.environment.remove("Tab");
 
         return {
             value: BrsInvalid.Instance,

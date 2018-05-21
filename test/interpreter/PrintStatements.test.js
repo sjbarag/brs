@@ -6,7 +6,7 @@ const { Lexeme } = require("../../lib/Lexeme");
 const { Interpreter } = require("../../lib/interpreter");
 const { Int32, BrsString, BrsInvalid } = require("../../lib/brsTypes");
 
-const { createMockStreams } = require("../e2e/E2ETests");
+const { createMockStreams, allArgs } = require("../e2e/E2ETests");
 
 describe("interperter print statements", () => {
     let stdout, stderr, interpreter;
@@ -28,8 +28,9 @@ describe("interperter print statements", () => {
 
         const [ result ] = interpreter.exec([ast]);
         expect(result.value).toEqual(BrsInvalid.Instance);
-        expect(stdout.write).toHaveBeenCalledTimes(1);
-        expect(stdout.write).toHaveBeenCalledWith("foo\n");
+        expect(allArgs(stdout.write).join("")).toEqual(
+            "foo\n"
+        );
     });
 
     it("prints multiple values with no separators", () => {
@@ -41,8 +42,9 @@ describe("interperter print statements", () => {
 
         const [ result ] = interpreter.exec([ast]);
         expect(result.value).toEqual(BrsInvalid.Instance);
-        expect(stdout.write).toHaveBeenCalledTimes(1);
-        expect(stdout.write).toHaveBeenCalledWith("foobarbaz\n");
+        expect(allArgs(stdout.write).join("")).toEqual(
+            "foobarbaz\n"
+        );
     });
 
     it("prints multiple values with space separators", () => {
@@ -52,12 +54,14 @@ describe("interperter print statements", () => {
             new Expr.Literal(new BrsString("bar")),
             Stmt.PrintSeparator.Space,
             new Expr.Literal(new BrsString("baz")),
+
         ]);
 
         const [ result ] = interpreter.exec([ast]);
         expect(result.value).toEqual(BrsInvalid.Instance);
-        expect(stdout.write).toHaveBeenCalledTimes(1);
-        expect(stdout.write).toHaveBeenCalledWith("foo bar baz\n");
+        expect(allArgs(stdout.write).join("")).toEqual(
+            "foo bar baz\n"
+        );
     });
 
     it("aligns values to 16-charcater tab stops", () => {
@@ -71,12 +75,11 @@ describe("interperter print statements", () => {
 
         const [ result ] = interpreter.exec([ast]);
         expect(result.value).toEqual(BrsInvalid.Instance);
-        expect(stdout.write).toHaveBeenCalledTimes(1);
-        expect(stdout.write.mock.calls[0]).toEqual([
+        expect(allArgs(stdout.write).join("")).toEqual(
         //   0   0   0   1   1   2   2   2   3
         //   0   4   8   2   6   0   4   8   2
             "foo             barbara         baz\n"
-        ]);
+        );
     });
 
     it("skips cursor-return with a trailing semicolon", () => {
@@ -91,7 +94,8 @@ describe("interperter print statements", () => {
 
         const [ result ] = interpreter.exec([ast]);
         expect(result.value).toEqual(BrsInvalid.Instance);
-        expect(stdout.write).toHaveBeenCalledTimes(1);
-        expect(stdout.write).toHaveBeenCalledWith("foo bar baz");
+        expect(allArgs(stdout.write).join("")).toEqual(
+            "foo bar baz"
+        );
     });
 });

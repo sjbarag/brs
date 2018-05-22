@@ -20,7 +20,7 @@ export const Tab = new Callable(
 
 export const Pos = new Callable(
     {
-        name: "Tab",
+        name: "Pos",
         // `pos` expects an argument and doesn't use it. The refreence
         // implementation's documentation even says it must be provided but
         // isn't used: https://sdkdocs.roku.com/display/sdkdoc/Program+Statements#ProgramStatements-PRINTitemlist

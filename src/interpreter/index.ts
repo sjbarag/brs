@@ -403,7 +403,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let typeMismatchFound = false;
         for (const index in args) {
             const signatureArg = callee.signature.args[index];
-            if (signatureArg.type !== args[index].kind) {
+            if (signatureArg.type !== ValueKind.Dynamic && signatureArg.type !== args[index].kind) {
                 typeMismatchFound = true;
                 BrsError.make(
                     `Type mismatch in '${functionName}': argument '${signatureArg.name}' must be ` +

@@ -386,8 +386,7 @@ function primary(): Expression {
             Lexeme.Double,
             Lexeme.String
         ):
-            let p = previous();
-            let lit = new Expr.Literal(p.literal!);
+            let lit = new Expr.Literal(previous().literal!);
             return lit;
         case match(Lexeme.Identifier):
             return new Expr.Variable(previous());
@@ -395,6 +394,9 @@ function primary(): Expression {
             let expr = expression();
             consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
             return new Expr.Grouping(expr);
+        case match(Lexeme.Pos, Lexeme.Tab):
+            let token = Object.assign(previous(), { kind: Lexeme.Identifier });
+            return new Expr.Variable(token);
         default:
             throw ParseError.make(peek(), `Found unexpected token '${peek().text}'`);
     }

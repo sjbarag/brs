@@ -38,6 +38,7 @@ export function execute(filename: string, options: OutputStreams = processOutput
 }
 
 export function repl() {
+    const replInterpreter = new Interpreter();
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -45,7 +46,7 @@ export function repl() {
     rl.setPrompt("brs> ");
 
     rl.on("line", (line) => {
-        let results = run(line);
+        let results = run(line, processOutput, replInterpreter);
         if (results) {
             results.map(result => console.log(stringify(result.value)));
         }
@@ -57,7 +58,7 @@ export function repl() {
     rl.prompt();
 }
 
-function run(contents: string, options: OutputStreams = processOutput) {
+function run(contents: string, options: OutputStreams = processOutput, interpreter?: Interpreter) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
     const statements = Parser.parse(tokens);
 
@@ -68,7 +69,7 @@ function run(contents: string, options: OutputStreams = processOutput) {
     if (!statements) { return; }
 
     try {
-        return new Interpreter(options).exec(statements);
+        return (interpreter || new Interpreter(options)).exec(statements);
     } catch (e) {
         options.stderr.write(e.message);
         return;

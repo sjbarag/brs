@@ -101,4 +101,22 @@ describe("end to end syntax", () => {
             ]);
         });
     });
+
+    test("print.brs", () => {
+        return execute(resourceFile("print.brs"), outputStreams).then(() => {
+            expect(allArgs(outputStreams.stdout.write).join("")).toEqual(
+                "lorem 1psum\n" +
+                "9  is equal to 9\n" +
+            //   0   0   0   1   1   2   2   2   3   3   4   4   4   5   5
+            //   0   4   8   2   6   0   4   8   2   6   0   4   8   2   6
+                "column a        column b        column c        column d\n" +
+            //   0   0   0   1   1   2   2   2   3   3   4   4   4   5   5
+            //   0   4   8   2   6   0   4   8   2   6   0   4   8   2   6
+                "   I started at col 3    I started at col 25\n" +
+                "01234\n" +
+                "lorem    ipsum    dolor    sit    amet\n" +
+                "no newline"
+            );
+        });
+    });
 });

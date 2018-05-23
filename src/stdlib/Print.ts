@@ -1,6 +1,12 @@
 import { Callable, ValueKind, BrsString, Int32 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
+/**
+ * Moves the cursor to the specified position on the current line. If the
+ * provided position is greater than the current console width and the output
+ * is a TTY, the resulting position is modulo'd by the current console width.
+ * May be used several times in a `print` list.
+ */
 export const Tab = new Callable(
     {
         name: "Tab",
@@ -18,6 +24,11 @@ export const Tab = new Callable(
     }
 );
 
+/**
+ * Returns a number from 0 to the current console width, indicating the
+ * position of the output cursor. Requires a "dummy argument" of any type, as
+ * it's completely ignored.
+ */
 export const Pos = new Callable(
     {
         name: "Pos",

@@ -15,6 +15,17 @@ const processOutput: OutputStreams = {
     stderr: process.stderr
 };
 
+/**
+ * Executes a BrightScript file by path and writes its output to the streams
+ * provided in `options`.
+ *
+ * @param filename the absolute path to the `.brs` file to be executed
+ * @param options the streams to use for `stdout` and `stderr`. Mostly used for
+ *                testing.
+ *
+ * @returns a `Promise` that will be resolve if `filename` is successfully
+ *          executed, or be rejected if an error occurs.
+ */
 export function execute(filename: string, options: OutputStreams = processOutput) {
     return new Promise((resolve, reject) => {
         fs.readFile(filename, "utf-8", (err, contents) => {
@@ -37,6 +48,12 @@ export function execute(filename: string, options: OutputStreams = processOutput
     });
 }
 
+/**
+ * Launches an interactive read-execute-print loop, which reads input from
+ * `stdin` and executes it.
+ *
+ * **NOTE:** Currently limited to single-line inputs :(
+ */
 export function repl() {
     const replInterpreter = new Interpreter();
     const rl = readline.createInterface({
@@ -58,6 +75,17 @@ export function repl() {
     rl.prompt();
 }
 
+/**
+ * Runs an arbitrary string of BrightScript code.
+ * @param contents the BrightScript code to lex, parse, and interpret.
+ * @param options the streams to use for `stdout` and `stderr`. Mostly used for
+ *                testing.
+ * @param interpreter an interpreter to use when executing `contents`. Required
+ *                    for `repl` to have persistent state between user inputs.
+ * @returns an array of statement execution results, indicating why each
+ *          statement exited and what its return value was, or `undefined` if
+ *          `interpreter` threw an Error.
+ */
 function run(contents: string, options: OutputStreams = processOutput, interpreter?: Interpreter) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
     const statements = Parser.parse(tokens);

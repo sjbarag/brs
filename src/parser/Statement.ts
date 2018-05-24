@@ -34,7 +34,14 @@ export interface Visitor<T> {
     visitWhile(statement: While): Result;
 }
 
+/** A BrightScript statement */
 export interface Statement {
+    /**
+     * Handles the enclosing `Statement` with `visitor`.
+     * @param visitor the `Visitor` that will handle the enclosing `Statement`
+     * @returns a BrightScript value (typically `invalid`) and the reason why
+     *          the statement exited (typically `StopReason.End`)
+     */
     accept <R> (visitor: Visitor<R>): Result;
 }
 
@@ -107,12 +114,26 @@ export class If implements Statement {
     }
 }
 
+/** The set of all accepted `print` statement separators. */
 export enum PrintSeparator {
+    /**
+     * Used to indent the current `print` position to the next
+     * 16-character-width output zone.
+     */
     Tab,
+    /** Used to insert a single whitespace character at the current `print` position. */
     Space
 }
 
+/**
+ * Represents a `print` statement within BrightScript.
+ */
 export class Print implements Statement {
+    /**
+     * Creates a new internal representation of a BrightScript `print` statement.
+     * @param expressions an array of expressions or `PrintSeparator`s to be
+     *                    evaluated and printed.
+     */
     constructor(
         readonly expressions: (Expr.Expression | PrintSeparator)[]
     ) {}

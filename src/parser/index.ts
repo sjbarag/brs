@@ -213,12 +213,29 @@ function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.
     return new Stmt.Expression(expr);
 }
 
-function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
-    let value = expression();
-    if (!check(...additionalterminators)) {
-        consume("Expected newline or ':' after printed value", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print {
+    let values: (Expr.Expression | Stmt.PrintSeparator)[] = [];
+    values.push(expression());
+
+    while (!check(Lexeme.Newline, Lexeme.Colon, ...additionalterminators) && !isAtEnd()) {
+        if (match(Lexeme.Semicolon)) {
+            values.push(Stmt.PrintSeparator.Space);
+        }
+
+        if (match(Lexeme.Comma)) {
+            values.push(Stmt.PrintSeparator.Tab);
+        }
+
+        if (!check(Lexeme.Newline, Lexeme.Colon) && !isAtEnd()) {
+            values.push(expression());
+        }
     }
-    return new Stmt.Print(value);
+
+    if (!check(...additionalterminators)) {
+        consume("Expected newline or ':' after printed values", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+    }
+
+    return new Stmt.Print(values);
 }
 
 /**
@@ -369,8 +386,7 @@ function primary(): Expression {
             Lexeme.Double,
             Lexeme.String
         ):
-            let p = previous();
-            let lit = new Expr.Literal(p.literal!);
+            let lit = new Expr.Literal(previous().literal!);
             return lit;
         case match(Lexeme.Identifier):
             return new Expr.Variable(previous());
@@ -378,6 +394,9 @@ function primary(): Expression {
             let expr = expression();
             consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
             return new Expr.Grouping(expr);
+        case match(Lexeme.Pos, Lexeme.Tab):
+            let token = Object.assign(previous(), { kind: Lexeme.Identifier });
+            return new Expr.Variable(token);
         default:
             throw ParseError.make(peek(), `Found unexpected token '${peek().text}'`);
     }

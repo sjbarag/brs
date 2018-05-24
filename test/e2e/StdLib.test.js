@@ -3,22 +3,28 @@ const path = require("path");
 const { execute } = require("../../lib/");
 const BrsError = require("../../lib/Error");
 
-const { resourceFile, allArgs } = require("./E2ETests");
+const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 
 describe("end to end standard libary", () => {
-    let stdout;
+    let outputStreams;
 
     beforeAll(() => {
-        stdout = jest.spyOn(console, "log").mockImplementation(() => {});
+        outputStreams = createMockStreams();
     });
 
-    afterEach(() => stdout.mockReset());
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
 
-    afterAll(() => stdout.mockRestore());
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
 
     test("stdlib/strings.brs", () => {
-        return execute(resourceFile(path.join("stdlib", "strings.brs"))).then(() => {
-            expect(allArgs(stdout)).toEqual([
+        return execute(resourceFile(path.join("stdlib", "strings.brs")), outputStreams).then(() => {
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
                 "MIXED CASE",
                 "mixed case",
                 "12359",

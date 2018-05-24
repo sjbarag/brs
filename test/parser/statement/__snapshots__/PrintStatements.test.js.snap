@@ -1,11 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser print statements parses print statements 1`] = `
+exports[`parser print statements parses print lists with no separator 1`] = `
 Array [
   Print {
-    "expression": Literal {
-      "value": "Hello, world",
-    },
+    "expressions": Array [
+      Literal {
+        "value": "Foo",
+      },
+      Literal {
+        "value": "bar",
+      },
+      Literal {
+        "value": "baz",
+      },
+    ],
+  },
+]
+`;
+
+exports[`parser print statements parses print lists with separators 1`] = `
+Array [
+  Print {
+    "expressions": Array [
+      Literal {
+        "value": "Foo",
+      },
+      1,
+      Literal {
+        "value": "bar",
+      },
+      0,
+      Literal {
+        "value": "baz",
+      },
+    ],
+  },
+]
+`;
+
+exports[`parser print statements parses singular print statements 1`] = `
+Array [
+  Print {
+    "expressions": Array [
+      Literal {
+        "value": "Hello, world",
+      },
+    ],
   },
 ]
 `;

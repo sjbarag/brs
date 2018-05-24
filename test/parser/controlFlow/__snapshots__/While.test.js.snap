@@ -6,12 +6,14 @@ Array [
     "body": Block {
       "statements": Array [
         Print {
-          "expression": Literal {
-            "value": BrsString {
-              "kind": 2,
-              "value": "looping",
+          "expressions": Array [
+            Literal {
+              "value": BrsString {
+                "kind": 2,
+                "value": "looping",
+              },
             },
-          },
+          ],
         },
         ExitWhile {},
       ],
@@ -32,12 +34,14 @@ Array [
     "body": Block {
       "statements": Array [
         Print {
-          "expression": Literal {
-            "value": BrsString {
-              "kind": 2,
-              "value": "looping",
+          "expressions": Array [
+            Literal {
+              "value": BrsString {
+                "kind": 2,
+                "value": "looping",
+              },
             },
-          },
+          ],
         },
       ],
     },

@@ -1,6 +1,6 @@
 import * as Expr from "./Expression";
 import { Token } from "../Token";
-import { BrsType, BrsInvalid } from "../brsTypes/index";
+import { BrsType, BrsInvalid, Argument } from "../brsTypes/index";
 
 /** A set of reasons why a `Block` stopped executing. */
 export enum StopReason {
@@ -85,14 +85,14 @@ export class ExitWhile implements Statement {
 export class Function implements Statement {
     constructor(
         readonly name: Token,
-        readonly parameters: ReadonlyArray<Token>,
-        readonly body: ReadonlyArray<Statement>
+        readonly parameters: ReadonlyArray<Argument>,
+        readonly body: Block
     ) {}
 
     // this might have to return a real value once we start to add anonymous functions
     // WAIT NO - anonymous functions are an `assign` with the RHS of a `function` expression I think?
     accept<R>(visitor: Visitor<R>): Result {
-        throw new Error("Method not implemented.");
+        throw new Error("Functions haven't been implemented yet.  But they parse!");
     }
 }
 

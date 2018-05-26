@@ -10,7 +10,9 @@ import {
     BrsInvalid,
     BrsBoolean,
     BrsString,
-    Int32
+    Int32,
+    ValueKind,
+    Argument
 } from "../brsTypes";
 
 /** Set of all keywords that end blocks. */
@@ -48,6 +50,10 @@ export function parse(toParse: ReadonlyArray<Token>) {
 
 function declaration(): Statement | undefined {
     try {
+        if (check(Lexeme.Sub, Lexeme.Function)) {
+            return functionDeclaration();
+        }
+
         // BrightScript is like python, in that variables can be declared without a `var`,
         // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
         // out what to do with it.
@@ -60,6 +66,87 @@ function declaration(): Statement | undefined {
         synchronize();
         return;
     }
+}
+
+function functionDeclaration() {
+    let isSub = check(Lexeme.Sub);
+    let functionType = isSub ? "sub" : "function";
+    advance();
+
+    let name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier);
+    consume(`Expected '(' after ${functionType} name`, Lexeme.LeftParen);
+
+    function signatureArgument(): Argument {
+        if (!check(Lexeme.Identifier)) {
+            throw ParseError.make(peek(), `Expected argument name, but received '${peek().text || ""}'`);
+        }
+
+        let name = advance();
+        let type: ValueKind = ValueKind.Dynamic;
+        let defaultValue;
+
+        // parse argument default value
+        if (match(Lexeme.Equal)) {
+            // it seems any expression is allowed here -- including ones that operate on other arguments!
+            defaultValue = expression();
+        }
+
+        // parse argument type hint
+        if (match(Lexeme.As)) {
+            let typeToken = advance();
+            let typeString = typeToken.text || "";
+            let typeValueKind = ValueKind.fromString(typeString);
+
+            if (!typeValueKind) {
+                throw ParseError.make(typeToken, `Function parameter ${name} is of invalid type '${typeString}'`);
+            }
+
+            type = typeValueKind;
+        }
+
+
+        return {
+            name: name.text || "",
+            type: type,
+            defaultValue: defaultValue
+        };
+    }
+
+    let args: Argument[] = [];
+    if (!check(Lexeme.RightParen)) {
+        do {
+            if (args.length >= Expr.Call.MaximumArguments) {
+                ParseError.make(peek(), `Cannot have more than ${Expr.Call.MaximumArguments} arguments`);
+                break;
+            }
+
+            args.push(signatureArgument());
+        } while (match(Lexeme.Comma));
+    }
+    advance(); // move past ')'
+
+    // TODO: do something with the return type
+    if (match(Lexeme.As)) {
+        let typeToken = advance();
+        let typeString = typeToken.text || "";
+        let typeValueKind = ValueKind.fromString(typeString);
+
+        if (!typeValueKind) {
+            throw ParseError.make(typeToken, `Function parameter ${name} is of invalid type '${typeString}'`);
+        }
+    }
+
+    // TODO: check for non-default params after default params
+    consume(`Expected newline after ${functionType} signature`, Lexeme.Newline);
+    let body = block(isSub ? Lexeme.EndSub : Lexeme.EndFunction);
+    if (!body) {
+        throw ParseError.make(peek(), `Expected 'end ${functionType}' to terminate ${functionType} block`);
+    }
+    advance(); // consume 'end sub' or 'end function'
+
+    while(match(Lexeme.Newline)) {}
+
+    return new Stmt.Function(name, args, body);
 }
 
 function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
@@ -102,6 +189,9 @@ function whileStatement(): Stmt.While {
 
     consume("Expected newline after 'while ...condition...'", Lexeme.Newline);
     const whileBlock = block(Lexeme.EndWhile);
+    if (!whileBlock) {
+        throw ParseError.make(peek(), "Expected 'end while' to terminate while-loop block");
+    }
     advance();
     while (match(Lexeme.Newline)) {}
     return new Stmt.While(condition, whileBlock);
@@ -127,6 +217,9 @@ function forStatement(): Stmt.For {
     while(match(Lexeme.Newline)) {}
 
     let body = block(Lexeme.EndFor);
+    if (!body) {
+        throw ParseError.make(peek(), "Expected 'end for' to terminate for-loop block");
+    }
     advance();
     while(match(Lexeme.Newline)) {}
 
@@ -135,8 +228,8 @@ function forStatement(): Stmt.For {
     return new Stmt.For(initializer, finalValue, increment, body);
 }
 
-function exitFor(): Stmt.ExitWhile {
-    consume("Expected newline after 'exit while'", Lexeme.Newline);
+function exitFor(): Stmt.ExitFor {
+    consume("Expected newline after 'exit for'", Lexeme.Newline);
     while (match(Lexeme.Newline)) {}
     return new Stmt.ExitFor();
 }
@@ -154,7 +247,12 @@ function ifStatement(): Stmt.If {
         // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
         // a trailing "end if"
 
-        thenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+        let maybeThenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+        if (!maybeThenBranch) {
+            throw ParseError.make(peek(), "Expected 'end if', 'else if', or 'else' to terminate 'then' block");
+        }
+
+        thenBranch = maybeThenBranch;
         match(Lexeme.Newline);
 
         // attempt to read a bunch of "else if" clauses
@@ -163,6 +261,10 @@ function ifStatement(): Stmt.If {
             consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
             match(Lexeme.Newline);
             let elseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+            if (!elseIfThen) {
+                throw ParseError.make(peek(), "Expected 'end if', 'else if', or 'else' to terminate 'then' block");
+            }
+
             elseIfBranches.push({
                 condition: elseIfCondition,
                 thenBranch: elseIfThen
@@ -243,14 +345,20 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print
  * @param terminators the token(s) that signifies the end of this block; all other terminators are
  *                    ignored.
  */
-function block(...terminators: BlockTerminator[]): Stmt.Block {
+function block(...terminators: BlockTerminator[]): Stmt.Block | undefined {
     const statements: Statement[] = [];
-    while (!check(...terminators)) {
+    while (!check(...terminators) && !isAtEnd()) {
         const dec = declaration();
         if (dec) {
             statements.push(dec);
         }
     }
+
+    if (isAtEnd()) {
+        return undefined;
+        // TODO: Figure out how to handle unterminated blocks well
+    }
+
     return new Stmt.Block(statements);
 }
 

@@ -1,6 +1,7 @@
 import { Interpreter } from "../interpreter";
 import * as Brs from "./";
 import { Token } from "../Token";
+import * as Expr from "../parser/Expression";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
@@ -9,7 +10,7 @@ export interface Argument {
     /** The type of the argument expected by the BrightScript runtime. */
     readonly type: Brs.ValueKind,
     /** The default value to use for the argument if none is provided. */
-    readonly defaultValue?: Brs.BrsType
+    readonly defaultValue?: Expr.Expression
 }
 
 /** A BrightScript `function` or `sub`'s signature. */

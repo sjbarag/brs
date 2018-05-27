@@ -131,6 +131,33 @@ Array [
 ]
 `;
 
+exports[`parser function declarations parses non-empty function declarations 1`] = `
+Array [
+  Function {
+    "body": Block {
+      "statements": Array [
+        Print {
+          "expressions": Array [
+            Literal {
+              "value": BrsString {
+                "kind": 2,
+                "value": "Lorem ipsum",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "parameters": Array [],
+  },
+]
+`;
+
 exports[`parser sub declarations parses minimal sub declarations 1`] = `
 Array [
   Function {
@@ -141,6 +168,33 @@ Array [
       "kind": 21,
       "line": 1,
       "text": "bar",
+    },
+    "parameters": Array [],
+  },
+]
+`;
+
+exports[`parser sub declarations parses non-empty sub declarations 1`] = `
+Array [
+  Function {
+    "body": Block {
+      "statements": Array [
+        Print {
+          "expressions": Array [
+            Literal {
+              "value": BrsString {
+                "kind": 2,
+                "value": "Lorem ipsum",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
     },
     "parameters": Array [],
   },

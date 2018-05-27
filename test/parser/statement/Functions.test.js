@@ -123,6 +123,39 @@ describe("parser", () => {
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
         });
+
+        it("parses functions with typed arguments and default expressions", () => {
+             let parsed = Parser.parse([
+                { kind: Lexeme.Function, text: "function", line: 1 },
+                { kind: Lexeme.Identifier, text: "add", line: 1 },
+                { kind: Lexeme.LeftParen, text: "(", line: 1 },
+
+                { kind: Lexeme.Identifier, text: "a", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "integer", line: 1 },
+                { kind: Lexeme.Comma, text: ",", line: 1 },
+
+                { kind: Lexeme.Identifier, text: "b", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Identifier, text: "a", line: 1 },
+                { kind: Lexeme.Plus, text: "+", line: 1 },
+                { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "integer", line: 1 },
+                { kind: Lexeme.RightParen, text: ")", line: 1 },
+
+                { kind: Lexeme.Newline, text: "\\n", line: 1 },
+                { kind: Lexeme.EndFunction, text: "end function", line: 2 },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBeFalsy();
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
     });
 
     describe("sub declarations", () => {
@@ -228,6 +261,39 @@ describe("parser", () => {
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Plus, text: "+", line: 1 },
                 { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                { kind: Lexeme.RightParen, text: ")", line: 1 },
+
+                { kind: Lexeme.Newline, text: "\\n", line: 1 },
+                { kind: Lexeme.EndSub, text: "end sub", line: 2 },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBeFalsy();
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
+
+        it("parses subs with typed arguments and default expressions", () => {
+             let parsed = Parser.parse([
+                { kind: Lexeme.Sub, text: "sub", line: 1 },
+                { kind: Lexeme.Identifier, text: "add", line: 1 },
+                { kind: Lexeme.LeftParen, text: "(", line: 1 },
+
+                { kind: Lexeme.Identifier, text: "a", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "integer", line: 1 },
+                { kind: Lexeme.Comma, text: ",", line: 1 },
+
+                { kind: Lexeme.Identifier, text: "b", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Identifier, text: "a", line: 1 },
+                { kind: Lexeme.Plus, text: "+", line: 1 },
+                { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "integer", line: 1 },
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
 
                 { kind: Lexeme.Newline, text: "\\n", line: 1 },

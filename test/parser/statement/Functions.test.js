@@ -156,6 +156,25 @@ describe("parser", () => {
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
         });
+
+        it("parses return types", () => {
+            let parsed = Parser.parse([
+                { kind: Lexeme.Function, text: "function", line: 1 },
+                { kind: Lexeme.Identifier, text: "foo", line: 1 },
+                { kind: Lexeme.LeftParen, text: "(", line: 1 },
+                { kind: Lexeme.RightParen, text: ")", line: 1 },
+                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "void", line: 1 },
+                { kind: Lexeme.Newline, text: "\\n", line: 1 },
+                { kind: Lexeme.EndFunction, text: "end function", line: 2 },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBeFalsy();
+            expect(parsed).toBeDefined();
+            expect(parsed).not.toBeNull();
+            expect(parsed).toMatchSnapshot();
+        });
     });
 
     describe("sub declarations", () => {
@@ -305,6 +324,22 @@ describe("parser", () => {
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
+        });
+
+        it("doesn't allow return types", () => {
+            let parsed = Parser.parse([
+                { kind: Lexeme.Sub, text: "sub", line: 1 },
+                { kind: Lexeme.Identifier, text: "foo", line: 1 },
+                { kind: Lexeme.LeftParen, text: "(", line: 1 },
+                { kind: Lexeme.RightParen, text: ")", line: 1 },
+                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "integer", line: 1 },
+                { kind: Lexeme.Newline, text: "\\n", line: 1 },
+                { kind: Lexeme.EndSub, text: "end sub", line: 2 },
+                EOF
+            ]);
+
+            expect(BrsError.found()).toBeTruthy();
         });
     });
 });

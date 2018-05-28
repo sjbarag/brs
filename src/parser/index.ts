@@ -104,7 +104,6 @@ function functionDeclaration() {
             type = typeValueKind;
         }
 
-
         return {
             name: name.text || "",
             type: type,
@@ -127,6 +126,10 @@ function functionDeclaration() {
 
     // TODO: do something with the return type
     if (match(Lexeme.As)) {
+        if (isSub) {
+            throw ParseError.make(previous(), "'Sub' functions are always void returns, and can't have 'as' clauses");
+        }
+
         let typeToken = advance();
         let typeString = typeToken.text || "";
         let typeValueKind = ValueKind.fromString(typeString);

@@ -209,6 +209,22 @@ Array [
 ]
 `;
 
+exports[`parser function declarations parses return types 1`] = `
+Array [
+  Function {
+    "body": Block {
+      "statements": Array [],
+    },
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "parameters": Array [],
+  },
+]
+`;
+
 exports[`parser sub declarations parses minimal sub declarations 1`] = `
 Array [
   Function {

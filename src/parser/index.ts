@@ -51,7 +51,7 @@ export function parse(toParse: ReadonlyArray<Token>) {
 function declaration(): Statement | undefined {
     try {
         if (check(Lexeme.Sub, Lexeme.Function)) {
-            return functionDeclaration();
+            return functionDeclaration(false);
         }
 
         // BrightScript is like python, in that variables can be declared without a `var`,
@@ -68,47 +68,17 @@ function declaration(): Statement | undefined {
     }
 }
 
-function functionDeclaration() {
+function functionDeclaration(isAnonymous: boolean) {
     let isSub = check(Lexeme.Sub);
     let functionType = isSub ? "sub" : "function";
+    let name;
     advance();
 
-    let name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier);
-    consume(`Expected '(' after ${functionType} name`, Lexeme.LeftParen);
-
-    function signatureArgument(): Argument {
-        if (!check(Lexeme.Identifier)) {
-            throw ParseError.make(peek(), `Expected argument name, but received '${peek().text || ""}'`);
-        }
-
-        let name = advance();
-        let type: ValueKind = ValueKind.Dynamic;
-        let defaultValue;
-
-        // parse argument default value
-        if (match(Lexeme.Equal)) {
-            // it seems any expression is allowed here -- including ones that operate on other arguments!
-            defaultValue = expression();
-        }
-
-        // parse argument type hint
-        if (match(Lexeme.As)) {
-            let typeToken = advance();
-            let typeString = typeToken.text || "";
-            let typeValueKind = ValueKind.fromString(typeString);
-
-            if (!typeValueKind) {
-                throw ParseError.make(typeToken, `Function parameter ${name} is of invalid type '${typeString}'`);
-            }
-
-            type = typeValueKind;
-        }
-
-        return {
-            name: name.text || "",
-            type: type,
-            defaultValue: defaultValue
-        };
+    if (isAnonymous) {
+        throw ParseError.make(peek(), "Anonymous functions are a WIP");
+    } else {
+        name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier);
+        consume(`Expected '(' after ${functionType} name`, Lexeme.LeftParen);
     }
 
     let args: Argument[] = [];
@@ -150,6 +120,46 @@ function functionDeclaration() {
     while(match(Lexeme.Newline)) {}
 
     return new Stmt.Function(name, args, body);
+}
+
+function signatureArgument(): Argument {
+    if (!check(Lexeme.Identifier)) {
+        throw ParseError.make(peek(), `Expected argument name, but received '${peek().text || ""}'`);
+    }
+
+    let name = advance();
+    let type: ValueKind = ValueKind.Dynamic;
+    let defaultValue;
+
+    // parse argument default value
+    if (match(Lexeme.Equal)) {
+        // it seems any expression is allowed here -- including ones that operate on other arguments!
+        defaultValue = expression();
+    }
+
+    let next = peek();
+    if (check(Lexeme.Identifier) && next.text && next.text.toLowerCase() === "as") {
+        // 'as' isn't a reserved word, so it can't be lexed into an As token without the lexer
+        // understanding language context.  That's less than ideal, so we'll have to do some
+        // more intelligent comparisons to detect the 'as' sometimes-keyword here.
+        advance();
+
+        let typeToken = advance();
+        let typeString = typeToken.text || "";
+        let typeValueKind = ValueKind.fromString(typeString);
+
+        if (!typeValueKind) {
+            throw ParseError.make(typeToken, `Function parameter ${name} is of invalid type '${typeString}'`);
+        }
+
+        type = typeValueKind;
+    }
+
+    return {
+        name: name.text || "",
+        type: type,
+        defaultValue: defaultValue
+    };
 }
 
 function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {

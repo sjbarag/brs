@@ -26,6 +26,7 @@ import * as StdLib from "../stdlib";
 
 import Environment from "./Environment";
 import { OutputProxy } from "./OutputProxy";
+import { toCallable } from "../parser/BrsFunction";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -34,9 +35,13 @@ export interface OutputStreams {
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private readonly globals = new Environment();
-    private environment = this.globals;
+    private _environment = this.globals;
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
+
+    get environment() {
+        return this._environment;
+    }
 
     /**
      * Creates a new Interpreter, including any global properties and functions.
@@ -54,12 +59,44 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.globals.define("Pos", StdLib.Pos);
     }
 
-    exec(statements: Stmt.Statement[]) {
+    exec(statements: ReadonlyArray<Stmt.Statement>) {
         return statements.map((statement) => this.execute(statement));
+    }
+
+    execWith(statements: ReadonlyArray<Stmt.Statement>, environment: Environment) {
+        let originalEnvironment = this.environment;
+        try {
+            this._environment = environment;
+            return this.exec(statements);
+        } finally {
+            this._environment = originalEnvironment;
+        }
     }
 
     visitAssign(statement: Expr.Assign): BrsType {
         return BrsInvalid.Instance;
+    }
+
+    visitNamedFunction(statement: Stmt.Function): Stmt.Result {
+        if (this.environment.has(statement.name)) {
+            // TODO: Figure out how to determine where the original version was declared
+            // Maybe `Environment.define` records the location along with the value?
+            BrsError.make(
+                `Attempting to declare function '${statement.name.text}', but ` +
+                `a property of that name already exists.`,
+                statement.name.line
+            );
+            return {
+                value: BrsInvalid.Instance,
+                reason: Stmt.StopReason.Error
+            }
+        }
+
+        this.environment.define(statement.name.text!, toCallable(statement));
+        return {
+            value: BrsInvalid.Instance,
+            reason: Stmt.StopReason.End
+        };
     }
 
     visitExpression(statement: Stmt.Expression): Stmt.Result {

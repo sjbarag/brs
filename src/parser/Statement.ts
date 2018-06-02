@@ -32,6 +32,7 @@ export interface Visitor<T> {
     visitBlock(block: Block): Result;
     visitFor(statement: For): Result;
     visitWhile(statement: While): Result;
+    visitNamedFunction(statement: Function): Result;
 }
 
 /** A BrightScript statement */
@@ -92,7 +93,7 @@ export class Function implements Statement {
     // this might have to return a real value once we start to add anonymous functions
     // WAIT NO - anonymous functions are an `assign` with the RHS of a `function` expression I think?
     accept<R>(visitor: Visitor<R>): Result {
-        throw new Error("Functions haven't been implemented yet.  But they parse!");
+        return visitor.visitNamedFunction(this);
     }
 }
 

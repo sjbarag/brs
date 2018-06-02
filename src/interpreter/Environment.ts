@@ -21,4 +21,14 @@ export default class Environment {
 
         throw BrsError.runtime(`Undefined variable '${name.text}'`, name.line);
     }
+
+    public has(name: Token): boolean {
+        return this.values.has((name.text || "").toLowerCase());
+    }
+
+    static from(original: Environment) {
+        let newEnvironment = new Environment()
+        newEnvironment.values = new Map<string, BrsType>(original.values);
+        return newEnvironment;
+    }
 }

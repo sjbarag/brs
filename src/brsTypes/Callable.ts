@@ -18,7 +18,7 @@ export interface Signature {
     /** The name of a function, if it has one. */
     name?: string,
     /** The set of arguments a function accepts. */
-    args: Argument[]
+    args: ReadonlyArray<Argument>
 }
 
 /** Describes the number of required and optional arguments for a `Callable`. */

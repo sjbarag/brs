@@ -26,7 +26,7 @@ import * as StdLib from "../stdlib";
 
 import Environment from "./Environment";
 import { OutputProxy } from "./OutputProxy";
-import { toCallable } from "../parser/BrsFunction";
+import { toCallable } from "./BrsFunction";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,

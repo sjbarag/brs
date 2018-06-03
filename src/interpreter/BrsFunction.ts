@@ -4,6 +4,13 @@ import { Interpreter } from "../interpreter";
 import { Expression } from "../parser/Expression";
 import Environment from "../interpreter/Environment";
 
+/**
+ * Converts a Function declaration to a BrightScript callable representation so
+ * that it can be executed.
+ *
+ * @param declaration the function declaration to convert
+ * @returns a `Callable` version of that function
+ */
 export function toCallable(declaration: Stmt.Function) {
     return new Callable(
         {

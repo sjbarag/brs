@@ -63,6 +63,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return statements.map((statement) => this.execute(statement));
     }
 
+    /**
+     * Executes a set of statements in the context of the provided environment.
+     * The original environment will be restored after execution finishes --
+     * even if an error occurs.
+     *
+     * @param statements an array of statements to execute
+     * @param environment the environment in which those statements will be executed
+     * @returns an array of `Result`s, one for each executed statement
+     */
     execWith(statements: ReadonlyArray<Stmt.Statement>, environment: Environment) {
         let originalEnvironment = this.environment;
         try {

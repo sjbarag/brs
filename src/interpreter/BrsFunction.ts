@@ -30,11 +30,9 @@ export function toCallable(declaration: Stmt.Function) {
                 environment.define(param.name, args[index])
             });
 
-            let result = interpreter.execWith(declaration.body.statements, environment);
-
             // then return whatever BrightScript returned
             // TODO: Add support for return statements
-            return BrsInvalid.Instance;
+            return interpreter.executeBlock(declaration.body, environment);
         }
     );
 }

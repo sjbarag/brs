@@ -64,7 +64,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     /**
-     * Executes a set of statements in the context of the provided environment.
+     * Executes a block in the context of the provided environment.
      * The original environment will be restored after execution finishes --
      * even if an error occurs.
      *
@@ -72,11 +72,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * @param environment the environment in which those statements will be executed
      * @returns an array of `Result`s, one for each executed statement
      */
-    execWith(statements: ReadonlyArray<Stmt.Statement>, environment: Environment) {
+    executeBlock(block: Stmt.Block, environment: Environment) {
         let originalEnvironment = this.environment;
         try {
             this._environment = environment;
-            return this.exec(statements);
+            return this.visitBlock(block);
         } finally {
             this._environment = originalEnvironment;
         }

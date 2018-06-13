@@ -13,7 +13,8 @@ import {
     Int64,
     Float,
     Double,
-    isBrsCallable
+    isBrsCallable,
+    BrsValue
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -27,6 +28,7 @@ import * as StdLib from "../stdlib";
 import Environment from "./Environment";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
+import { BlockEnd } from "../parser/Statement";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -86,7 +88,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return BrsInvalid.Instance;
     }
 
-    visitNamedFunction(statement: Stmt.Function): Stmt.Result {
+    visitNamedFunction(statement: Stmt.Function): BrsType {
         if (this.environment.has(statement.name)) {
             // TODO: Figure out how to determine where the original version was declared
             // Maybe `Environment.define` records the location along with the value?
@@ -95,27 +97,18 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 `a property of that name already exists.`,
                 statement.name.line
             );
-            return {
-                value: BrsInvalid.Instance,
-                reason: Stmt.StopReason.Error
-            }
+            return BrsInvalid.Instance;
         }
 
         this.environment.define(statement.name.text!, toCallable(statement));
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        return BrsInvalid.Instance;
     }
 
-    visitExpression(statement: Stmt.Expression): Stmt.Result {
-        return {
-            value: this.evaluate(statement.expression),
-            reason: Stmt.StopReason.End
-        };
+    visitExpression(statement: Stmt.Expression): BrsType {
+        return this.evaluate(statement.expression);
     }
 
-    visitPrint(statement: Stmt.Print): Stmt.Result {
+    visitPrint(statement: Stmt.Print): BrsType {
         // the `tab` function is only in-scope while executing print statements
         this.environment.define("Tab", StdLib.Tab);
 
@@ -150,19 +143,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // `tab` is only in-scope when executing print statements, so remove it before we leave
         this.environment.remove("Tab");
 
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        return BrsInvalid.Instance;
     }
 
-    visitAssignment(statement: Stmt.Assignment): Stmt.Result {
+    visitAssignment(statement: Stmt.Assignment): BrsType {
         let value = this.evaluate(statement.value);
         this.environment.define(statement.name.text!, value);
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        }
+        return BrsInvalid.Instance;
     }
 
     visitBinary(expression: Expr.Binary) {
@@ -362,47 +349,37 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    visitBlock(block: Stmt.Block): Stmt.Result {
-        let stopReason = Stmt.StopReason.End;
+    visitBlock(block: Stmt.Block): BrsType {
+            eachStatement:
+            for (const statement of block.statements) {
+                try {
+                    this.execute(statement);
+                } catch (reason) {
+                    if (!reason.kind) {
+                        throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
+                    }
 
-        eachStatement:
-        for (const statement of block.statements) {
-            const stmtResult = this.execute(statement);
-
-            if (BrsError.found()) {
-                // this might need to actually throw
-                stopReason = Stmt.StopReason.Error;
-                break;
-            } else {
-                switch (stmtResult.reason) {
-                    case Stmt.StopReason.ExitFor:
-                    case Stmt.StopReason.ExitWhile:
-                        stopReason = stmtResult.reason;
-                        break eachStatement;
-                    default:
-                        continue;
+                    switch (reason.kind) {
+                        case Stmt.StopReason.ExitFor:
+                        case Stmt.StopReason.ExitWhile:
+                            break eachStatement;
+                        case Stmt.StopReason.Return:
+                            return (reason as Stmt.ReturnValue).value;
+                        case Stmt.StopReason.RuntimeError:
+                            throw reason;
+                    }
                 }
             }
-        }
 
-        return {
-            value: BrsInvalid.Instance,
-            reason: stopReason
-        };
+        return BrsInvalid.Instance;
     }
 
-    visitExitFor(statement: Stmt.ExitFor) {
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.ExitFor
-        };
+    visitExitFor(statement: Stmt.ExitFor): never {
+        throw new Stmt.ExitFor();
     }
 
-    visitExitWhile(expression: Stmt.ExitWhile) {
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.ExitWhile
-        };
+    visitExitWhile(expression: Stmt.ExitWhile): never {
+        throw new Stmt.ExitWhile();
     }
 
     visitCall(expression: Expr.Call) {
@@ -477,7 +454,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this.evaluate(expr.expression);
     }
 
-    visitFor(statement: Stmt.For): Stmt.Result {
+    visitFor(statement: Stmt.For): BrsType {
         // BrightScript for/to loops evaluate the counter initial value, final value, and increment
         // values *only once*, at the top of the for/to loop.
         this.execute(statement.counterDeclaration);
@@ -494,10 +471,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             )
         );
 
-        let blockResult: Stmt.Result = {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        let loopExitReason: Stmt.BlockEnd | undefined;
 
         while (
             this.evaluate(new Expr.Variable(counterName))
@@ -506,9 +480,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 .toBoolean()
         ) {
             // execute the block
-            blockResult = this.execute(statement.body);
-            if (blockResult.reason === Stmt.StopReason.ExitFor) {
-                break;
+            try {
+                this.execute(statement.body);
+            } catch (reason) {
+                if (reason.kind && reason.kind === Stmt.StopReason.ExitFor) {
+                    loopExitReason = reason as BlockEnd;
+                } else {
+                    // re-throw returns, runtime errors, etc.
+                    throw reason;
+                }
             }
 
             // then increment the counter
@@ -516,56 +496,49 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         // BrightScript for/to loops execute the body one more time when initial === final
-        if (blockResult.reason === Stmt.StopReason.End) {
-            blockResult = this.execute(statement.body);
+        if (loopExitReason === undefined) {
+            this.execute(statement.body);
             // they also increments the counter once more
             this.execute(step);
         }
 
-        return blockResult;
+        return BrsInvalid.Instance;
     }
 
-    visitWhile(statement: Stmt.While): Stmt.Result {
+    visitWhile(statement: Stmt.While): BrsType {
         while (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
-            const blockResult = this.execute(statement.body);
-            if (blockResult.reason !== Stmt.StopReason.End) {
-                break;
+            try {
+                this.execute(statement.body);
+            } catch (reason) {
+                if (reason.kind && reason.kind === Stmt.StopReason.ExitWhile) {
+                    break;
+                } else {
+                    // re-throw returns, runtime errors, etc.
+                    throw reason;
+                }
             }
         }
 
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        return BrsInvalid.Instance;
     }
 
-    visitIf(statement: Stmt.If): Stmt.Result {
+    visitIf(statement: Stmt.If): BrsType {
         if (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
-            const thenResult = this.execute(statement.thenBranch);
-            return {
-                value: BrsInvalid.Instance,
-                reason: thenResult.reason
-            };
+            this.execute(statement.thenBranch);
+            return BrsInvalid.Instance;
         } else {
             for (const elseIf of statement.elseIfs || []) {
                 if (this.evaluate(elseIf.condition).equalTo(BrsBoolean.True).toBoolean()) {
-                    const elseIfResult = this.execute(elseIf.thenBranch);
-                    return {
-                        value: BrsInvalid.Instance,
-                        reason: elseIfResult.reason
-                    };
+                    this.execute(elseIf.thenBranch);
+                    return BrsInvalid.Instance;
                 }
             }
 
-            let stopReason = Stmt.StopReason.End;
             if (statement.elseBranch) {
-                const elseResult = this.execute(statement.elseBranch);
-                stopReason = elseResult.reason;
+                this.execute(statement.elseBranch);
             }
-            return {
-                value: BrsInvalid.Instance,
-                reason: stopReason
-            };
+
+            return BrsInvalid.Instance;
         }
     }
 
@@ -622,7 +595,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return expression.accept<BrsType>(this);
     }
 
-    execute(this: Interpreter, statement: Stmt.Statement): Stmt.Result {
+    execute(this: Interpreter, statement: Stmt.Statement): BrsType {
         return statement.accept<BrsType>(this);
     }
 }

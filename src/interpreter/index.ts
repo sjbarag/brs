@@ -350,36 +350,36 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitBlock(block: Stmt.Block): BrsType {
-            eachStatement:
+            // eachStatement:
             for (const statement of block.statements) {
-                try {
-                    this.execute(statement);
-                } catch (reason) {
-                    if (!reason.kind) {
-                        throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
-                    }
+                // try {
+                this.execute(statement);
+                // } catch (reason) {
+                //     if (reason.kind == null) {
+                //         throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
+                //     }
 
-                    switch (reason.kind) {
-                        case Stmt.StopReason.ExitFor:
-                        case Stmt.StopReason.ExitWhile:
-                            break eachStatement;
-                        case Stmt.StopReason.Return:
-                            return (reason as Stmt.ReturnValue).value;
-                        case Stmt.StopReason.RuntimeError:
-                            throw reason;
-                    }
-                }
+                //     switch (reason.kind) {
+                //         case Stmt.StopReason.ExitFor:
+                //         case Stmt.StopReason.ExitWhile:
+                //             break eachStatement;
+                //         case Stmt.StopReason.Return:
+                //             return (reason as Stmt.ReturnValue).value;
+                //         case Stmt.StopReason.RuntimeError:
+                //             throw reason;
+                //     }
+                // }
             }
 
         return BrsInvalid.Instance;
     }
 
     visitExitFor(statement: Stmt.ExitFor): never {
-        throw new Stmt.ExitFor();
+        throw new Stmt.ExitForReason();
     }
 
     visitExitWhile(expression: Stmt.ExitWhile): never {
-        throw new Stmt.ExitWhile();
+        throw new Stmt.ExitWhileReason();
     }
 
     visitCall(expression: Expr.Call) {
@@ -483,8 +483,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             try {
                 this.execute(statement.body);
             } catch (reason) {
-                if (reason.kind && reason.kind === Stmt.StopReason.ExitFor) {
+                if (reason.kind === Stmt.StopReason.ExitFor) {
                     loopExitReason = reason as BlockEnd;
+                    break;
                 } else {
                     // re-throw returns, runtime errors, etc.
                     throw reason;

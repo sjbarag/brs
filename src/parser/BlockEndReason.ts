@@ -12,20 +12,20 @@ export enum StopReason {
     RuntimeError
 }
 
-export class ExitFor implements BlockEnd {
-    kind = StopReason.ExitFor;
+export class ExitForReason implements BlockEnd {
+    readonly kind = StopReason.ExitFor;
 }
 
-export class ExitWhile implements BlockEnd {
-    kind = StopReason.ExitWhile
+export class ExitWhileReason implements BlockEnd {
+    readonly kind = StopReason.ExitWhile
 }
 
 export class ReturnValue implements BlockEnd {
-    kind = StopReason.ExitWhile;
+    readonly kind = StopReason.ExitWhile;
 
     constructor(readonly value: BrsType) {}
 }
 
 export class Runtime implements BlockEnd {
-    kind = StopReason.RuntimeError;
+    readonly kind = StopReason.RuntimeError;
 }

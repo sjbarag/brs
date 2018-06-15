@@ -21,7 +21,7 @@ export class ExitWhileReason implements BlockEnd {
 }
 
 export class ReturnValue implements BlockEnd {
-    readonly kind = StopReason.ExitWhile;
+    readonly kind = StopReason.Return;
 
     constructor(readonly value: BrsType) {}
 }

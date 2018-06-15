@@ -173,25 +173,19 @@ function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
 }
 
 function statement(...additionalterminators: BlockTerminator[]): Statement {
-    if (match(Lexeme.If)) {
-        return ifStatement();
-    }
+    if (match(Lexeme.If)) { return ifStatement(); }
 
-    if (match(Lexeme.Print)) {
-        return printStatement(...additionalterminators);
-    }
+    if (match(Lexeme.Print)) { return printStatement(...additionalterminators); }
 
-    if (match(Lexeme.While)) {
-        return whileStatement();
-    }
+    if (match(Lexeme.While)) { return whileStatement(); }
 
-    if (match(Lexeme.For)) {
-        return forStatement();
-    }
+    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+
+    if (match(Lexeme.For)) { return forStatement(); }
 
     if (match(Lexeme.ExitFor)) { return exitFor(); }
 
-    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+    if (match(Lexeme.Return)) { return returnStatement(); }
 
     // TODO: support multi-statements
     return expressionStatement(...additionalterminators);
@@ -351,6 +345,23 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print
     }
 
     return new Stmt.Print(values);
+}
+
+/**
+ * Parses a return statement with an optional return value.
+ * @returns an AST representation of a return statement.
+ */
+function returnStatement(): Stmt.Return {
+    let keyword = previous();
+
+    if (check(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof)) {
+        return new Stmt.Return(keyword);
+    }
+
+    let toReturn = expression();
+    while(match(Lexeme.Newline));
+
+    return new Stmt.Return(keyword, toReturn);
 }
 
 /**

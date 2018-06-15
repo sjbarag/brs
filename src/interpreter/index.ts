@@ -104,6 +104,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return BrsInvalid.Instance;
     }
 
+    visitReturn(statement: Stmt.Return): never {
+        if (!statement.value) {
+            throw new Stmt.ReturnValue(BrsInvalid.Instance);
+        }
+
+        let toReturn = this.evaluate(statement.value);
+        throw new Stmt.ReturnValue(toReturn);
+    }
+
     visitExpression(statement: Stmt.Expression): BrsType {
         return this.evaluate(statement.expression);
     }
@@ -352,12 +361,20 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     visitBlock(block: Stmt.Block): BrsType {
             // eachStatement:
             for (const statement of block.statements) {
-                // try {
-                this.execute(statement);
-                // } catch (reason) {
-                //     if (reason.kind == null) {
-                //         throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
-                //     }
+                try {
+                    this.execute(statement);
+                } catch (reason) {
+                    if (reason.kind == null) {
+                        throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
+                    }
+
+                    switch (reason.kind) {
+                        case Stmt.StopReason.Return:
+                            return (reason as Stmt.ReturnValue).value;
+                        default:
+                            throw reason;
+                    }
+                }
 
                 //     switch (reason.kind) {
                 //         case Stmt.StopReason.ExitFor:

@@ -16,6 +16,7 @@ export interface Visitor<T> {
     visitFor(statement: For): BrsType;
     visitWhile(statement: While): BrsType;
     visitNamedFunction(statement: Function): BrsType;
+    visitReturn(statement: Return): never;
 }
 
 /** A BrightScript statement */
@@ -134,7 +135,7 @@ export class Return implements Statement {
     ) {}
 
     accept<R>(visitor: Visitor<R>): BrsType {
-        throw new Error("Method not implemented.");
+        return visitor.visitReturn(this);
     }
 }
 

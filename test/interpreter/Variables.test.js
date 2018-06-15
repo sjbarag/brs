@@ -21,7 +21,7 @@ describe("interpreter variables", () => {
         );
 
         let [result] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
     });
 
     it("stores assigned values in global scope", () => {
@@ -50,6 +50,6 @@ describe("interpreter variables", () => {
             )
         );
         let results = interpreter.exec([ assign, retrieve ]);
-        expect(results.map(r => r.value)).toEqual([BrsInvalid.Instance, seven]);
+        expect(results).toEqual([BrsInvalid.Instance, seven]);
     });
 });

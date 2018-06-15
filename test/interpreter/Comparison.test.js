@@ -18,7 +18,7 @@ function verifyComparisons(small, large) {
         let smallSmall = binary(small, Lexeme.Less, small);
         let largeSmall = binary(large, Lexeme.Less, small);
         let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
-        expect(results.map(r => r.value)).toEqual([BrsBoolean.True, BrsBoolean.False, BrsBoolean.False]);
+        expect(results).toEqual([BrsBoolean.True, BrsBoolean.False, BrsBoolean.False]);
     });
 
     test("less than or equal to", () => {
@@ -26,7 +26,7 @@ function verifyComparisons(small, large) {
         let smallSmall = binary(small, Lexeme.LessEqual, small);
         let largeSmall = binary(large, Lexeme.LessEqual, small);
         let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
-        expect(results.map(r => r.value)).toEqual([BrsBoolean.True, BrsBoolean.True, BrsBoolean.False]);
+        expect(results).toEqual([BrsBoolean.True, BrsBoolean.True, BrsBoolean.False]);
     });
 
     test("greater than", () => {
@@ -34,7 +34,7 @@ function verifyComparisons(small, large) {
         let smallSmall = binary(small, Lexeme.Greater, small);
         let largeSmall = binary(large, Lexeme.Greater, small);
         let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
-        expect(results.map(r => r.value)).toEqual([BrsBoolean.False, BrsBoolean.False, BrsBoolean.True]);
+        expect(results).toEqual([BrsBoolean.False, BrsBoolean.False, BrsBoolean.True]);
     });
 
     test("greater than or equal to", () => {
@@ -42,7 +42,7 @@ function verifyComparisons(small, large) {
         let smallSmall = binary(small, Lexeme.GreaterEqual, small);
         let largeSmall = binary(large, Lexeme.GreaterEqual, small);
         let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
-        expect(results.map(r => r.value)).toEqual([BrsBoolean.False, BrsBoolean.True, BrsBoolean.True]);
+        expect(results).toEqual([BrsBoolean.False, BrsBoolean.True, BrsBoolean.True]);
     });
 
     test("equal", () => {
@@ -50,7 +50,7 @@ function verifyComparisons(small, large) {
         let smallSmall = binary(small, Lexeme.Equal, small);
         let largeSmall = binary(large, Lexeme.Equal, small);
         let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
-        expect(results.map(r => r.value)).toEqual([BrsBoolean.False, BrsBoolean.True, BrsBoolean.False]);
+        expect(results).toEqual([BrsBoolean.False, BrsBoolean.True, BrsBoolean.False]);
     });
 
     test("not equal", () => {
@@ -58,7 +58,7 @@ function verifyComparisons(small, large) {
         let smallSmall = binary(small, Lexeme.LessGreater, small);
         let largeSmall = binary(large, Lexeme.LessGreater, small);
         let results = interpreter.exec([smallLarge, smallSmall, largeSmall]);
-        expect(results.map(r => r.value)).toEqual([BrsBoolean.True, BrsBoolean.False, BrsBoolean.True]);
+        expect(results).toEqual([BrsBoolean.True, BrsBoolean.False, BrsBoolean.True]);
     });
 }
 
@@ -103,7 +103,7 @@ describe("interpreter comparisons", () => {
             let equal = binary(int32, Lexeme.Equal, str);
             let notEqual = binary(int32, Lexeme.LessGreater, str);
             let results = interpreter.exec([less, lessEqual, greater, greaterEqual, equal, notEqual]);
-            expect(results.map(r => r.value)).toEqual([
+            expect(results).toEqual([
                 BrsBoolean.False,
                 BrsBoolean.False,
                 BrsBoolean.False,
@@ -121,7 +121,7 @@ describe("interpreter comparisons", () => {
             let equal = binary(str, Lexeme.Equal, int64);
             let notEqual = binary(str, Lexeme.LessGreater, int64);
             let results = interpreter.exec([less, lessEqual, greater, greaterEqual, equal, notEqual]);
-            expect(results.map(r => r.value)).toEqual([
+            expect(results).toEqual([
                 BrsBoolean.False,
                 BrsBoolean.False,
                 BrsBoolean.False,

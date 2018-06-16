@@ -9,11 +9,6 @@ const { Int32, BrsString, BrsBoolean, BrsInvalid } = require("../../lib/brsTypes
 
 let interpreter;
 
-const END_INVALID = {
-    value: BrsInvalid.Instance,
-    reason: Stmt.StopReason.End
-};
-
 describe("interpreter if statements", () => {
     let assignTo;
 
@@ -55,7 +50,7 @@ describe("interpreter if statements", () => {
     });
 
     it("executes 'then' statements if 'condition' is 'true'", () => {
-        assignTo.bar.accept = jest.fn().mockReturnValue(END_INVALID);
+        assignTo.bar.accept = jest.fn();
         let statements = [
             new Stmt.If(
                 new Expr.Binary(
@@ -75,7 +70,7 @@ describe("interpreter if statements", () => {
     });
 
     it("skips 'then' statements if 'condition' is 'false'", () => {
-        assignTo.foo.accept = jest.fn().mockReturnValue(END_INVALID);
+        assignTo.foo.accept = jest.fn();
         let statements = [
             new Stmt.If(
                 new Expr.Binary(
@@ -95,8 +90,8 @@ describe("interpreter if statements", () => {
     });
 
     it("only executes one valid 'else if' that evaluates to 'true'", () => {
-        let shouldExecute = jest.fn().mockReturnValue(END_INVALID);
-        let shouldNotExecute = jest.fn().mockReturnValue(END_INVALID);
+        let shouldExecute = jest.fn();
+        let shouldNotExecute = jest.fn();
 
         [assignTo.foo, assignTo.bar, assignTo.dolor, assignTo.sit, assignTo.amet].forEach(
             assignment => assignment.accept = shouldNotExecute
@@ -138,8 +133,8 @@ describe("interpreter if statements", () => {
     })
 
     it("executes 'else' statements if nothing else matches", () => {
-        let shouldExecute = jest.fn().mockReturnValue(END_INVALID);
-        let shouldNotExecute = jest.fn().mockReturnValue(END_INVALID);
+        let shouldExecute = jest.fn();
+        let shouldNotExecute = jest.fn();
 
         [assignTo.foo, assignTo.bar, assignTo.lorem, assignTo.ipsum, assignTo.dolor, assignTo.sit].forEach(
             assignment => assignment.accept = shouldNotExecute

@@ -8,7 +8,7 @@ const BrsTypes = require("../../lib/brsTypes");
 
 let interpreter;
 
-describe.only("interpreter boolean algebra", () => {
+describe("interpreter boolean algebra", () => {
     beforeEach(() => {
         BrsError.reset();
         interpreter = new Interpreter();

@@ -1,6 +1,6 @@
 const BrsTypes = require("../../lib/brsTypes");
 
-describe.only("Boolean", () => {
+describe("Boolean", () => {
     test("true equals true", () => {
         const notTrue = [
             new BrsTypes.Int32(1),

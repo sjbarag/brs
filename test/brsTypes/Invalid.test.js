@@ -1,6 +1,6 @@
 const BrsTypes = require("../../lib/brsTypes");
 
-describe.only("Invalid", () => {
+describe("Invalid", () => {
     it("is only equal to itself", () => {
         const notInvalid = [
             new BrsTypes.Int32(1),

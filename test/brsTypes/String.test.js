@@ -1,6 +1,6 @@
 const BrsTypes = require("../../lib/brsTypes");
 
-describe.only("String", () => {
+describe("String", () => {
     describe("lexical comparisons", () => {
         let a = new BrsTypes.BrsString("alpha");
         let b = new BrsTypes.BrsString("bravo");

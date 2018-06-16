@@ -1,7 +1,7 @@
 const BrsTypes = require("../../lib/brsTypes");
 const { UCase, LCase } = require("../../lib/stdlib");
 
-describe.only("Callable", () => {
+describe("Callable", () => {
     it("is less than nothing", () => {
         const brsValues = [
             new BrsTypes.Int32(1),

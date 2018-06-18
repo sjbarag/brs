@@ -78,7 +78,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let originalEnvironment = this.environment;
         try {
             this._environment = environment;
-            return this.visitBlock(block);
+            return block.accept(this);
         } finally {
             this._environment = originalEnvironment;
         }

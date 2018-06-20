@@ -71,7 +71,7 @@ function declaration(): Statement | undefined {
 function functionDeclaration(isAnonymous: boolean) {
     let isSub = check(Lexeme.Sub);
     let functionType = isSub ? "sub" : "function";
-    let name;
+    let name: Token;
     advance();
 
     if (isAnonymous) {
@@ -109,7 +109,17 @@ function functionDeclaration(isAnonymous: boolean) {
         }
     }
 
-    // TODO: check for non-default params after default params
+    args.reduce((haveFoundOptional: boolean, arg: Argument) => {
+        if (haveFoundOptional && !arg.defaultValue) {
+            throw ParseError.make(
+                { kind: Lexeme.Identifier, text: arg.name, line: name.line },
+                `Argument '${arg.name}' has no default value, but comes after arguments with default values`
+            );
+        }
+
+        return haveFoundOptional || !!arg.defaultValue;
+    }, false);
+
     consume(`Expected newline after ${functionType} signature`, Lexeme.Newline);
     let body = block(isSub ? Lexeme.EndSub : Lexeme.EndFunction);
     if (!body) {

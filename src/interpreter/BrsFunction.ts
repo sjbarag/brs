@@ -31,7 +31,7 @@ export function toCallable(declaration: Stmt.Function) {
             });
 
             // then return whatever BrightScript returned
-            // TODO: Add support for return statements
+            // TODO: prevent `sub`s from returning values?
             return interpreter.executeBlock(declaration.body, environment);
         }
     );

@@ -98,17 +98,13 @@ describe("interpreter function declarations", () => {
         expect(storedResult).toEqual(new BrsString("hello, world"));
     });
 
-    it("evaluates functions into their own scope", () => {
-        throw "TODO";
-    });
-
     it("evaluates default arguments", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "ident", line: 1 },
                 [{
                     name: "input",
-                    type: ValueKind.String,
+                    type: ValueKind.Int32,
                     defaultValue: new Expr.Literal(new Int32(-32))
                 }],
                 new Stmt.Block([

@@ -20,11 +20,17 @@ describe("end to end functions", () => {
         jest.restoreAllMocks();
     });
 
-    test("declarations.brs", async () => {
-        await execute(
-            resourceFile(path.join("function", "declarations.brs"), outputStreams)
-        );
-        expect(outputStreams.stdout.write).not.toHaveBeenCalled();
+    test("function/arguments.brs", async () => {
+        await execute( resourceFile(path.join("function", "arguments.brs")), outputStreams);
+
         expect(BrsError.found()).toBe(false);
+        expect(
+            allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+        ).toEqual([
+            "noArgsFunc",
+            "requiredArgsFunc:", "1", "2",
+            "typedArgsFunc:", "2.5", "3", "false",
+            "optionalArgsFunc:", "-5", "2", "-10"
+        ]);
     });
 });

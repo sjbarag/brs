@@ -20,19 +20,22 @@ export function toCallable(declaration: Stmt.Function) {
         (interpreter: Interpreter, ...args: BrsType[]) => {
             // first, we need to evaluate all of the parameter default values
             // and define them in a new environment
-            let environment = Environment.from(interpreter.environment);
-            declaration.parameters.forEach((param, index) => {
-                if (param.defaultValue) {
-                    environment.define(param.name, interpreter.evaluate(param.defaultValue));
-                    return;
-                }
+            let subEnvironment = Environment.from(interpreter.environment);
 
-                environment.define(param.name, args[index])
+            interpreter.inSubEnv(subEnvironment, (subInterpreter) => {
+                declaration.parameters.forEach((param, index) => {
+                    if (param.defaultValue) {
+                        subEnvironment.define(param.name, subInterpreter.evaluate(param.defaultValue));
+                        return;
+                    }
+
+                    subEnvironment.define(param.name, args[index])
+                });
             });
 
             // then return whatever BrightScript returned
             // TODO: prevent `sub`s from returning values?
-            return interpreter.executeBlock(declaration.body, environment);
+            return interpreter.executeBlock(declaration.body, subEnvironment);
         }
     );
 }

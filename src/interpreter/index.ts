@@ -61,6 +61,24 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.globals.define("Pos", StdLib.Pos);
     }
 
+    /**
+     * Temporarily sets an interpreter's environment to the provided one, then
+     * passes the sub-interpreter to the provided JavaScript function. Always
+     * reverts the current interpreter's environment to its original value.
+     * @param environment the sub-environment to use for the interpreter
+     *                    provided to `func`.
+     * @param func the JavaScript function to execute with the sub interpreter.
+     */
+    inSubEnv(environment: Environment, func: (interpreter: Interpreter) => void) {
+        let originalEnvironment = this._environment;
+        try {
+            this._environment = environment;
+            return func(this);
+        } finally {
+            this._environment = originalEnvironment
+        }
+    }
+
     exec(statements: ReadonlyArray<Stmt.Statement>) {
         return statements.map((statement) => this.execute(statement));
     }

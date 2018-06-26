@@ -40,12 +40,23 @@ describe("function argument type checking", () => {
         });
     });
 
-    it("errors when mismatched types are provided", () => {
+    it("errors when mismatched types are provided as arguments", () => {
         return execute(resourceFile("type-checking", "arg-type-mismatch.brs"), outputStreams).catch(() => {
             const output = allArgs(stderr);
             expect(output[0]).toMatch(
                 /\[Line .\] Type mismatch in 'LCase': argument 's' must be of type String, but received Boolean./
             );
         });
+    });
+
+
+    it("errors when returning a mismatched type from a function", () => {
+        return execute(resourceFile("type-checking", "mismatched-return-type.brs"), outputStreams).catch(() => {
+            const output = allArgs(stderr);
+            expect(output[0]).toMatch(
+                /\[Line .\] Attempting to return value of type Integer, but function returnsString declares return value of type String/
+            );
+        });
+
     });
 });

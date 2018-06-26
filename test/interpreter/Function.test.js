@@ -142,4 +142,79 @@ describe("interpreter function declarations", () => {
             { kind: Lexeme.Identifier, text: "input", line: 6 }
         )).toBe(false);
     });
+
+    it("enforces return value type checking", () => {
+        let statements = [
+            new Stmt.Function(
+                { kind: Lexeme.Identifier, text: "foo", line: 1 },
+                [],
+                ValueKind.Int32,
+                new Stmt.Block([
+                    new Stmt.Return(
+                        { kind: Lexeme.Return, text: "return", line: 2 },
+                        new Expr.Literal(
+                            new BrsString("not a number")
+                        )
+                    )
+                ])
+            ),
+            new Stmt.Assignment(
+                { kind: Lexeme.Identifier, text: "result", line: 4},
+                new Expr.Call(
+                    new Expr.Variable(
+                        { kind: Lexeme.Identifier, text: "foo", line: 4 }
+                    ),
+                    { kind: Lexeme.RightParen, text: ")", line: 4 },
+                    []
+                )
+            )
+        ];
+
+        expect(() => interpreter.exec(statements)).toThrow("Attempting to return value of type");
+        expect(BrsError.found()).toBe(true);
+    });
+
+    it("evaluates default arguments", () => {
+        let statements = [
+            new Stmt.Function(
+                { kind: Lexeme.Identifier, text: "ident", line: 1 },
+                [{
+                    name: "input",
+                    type: ValueKind.Int32,
+                    defaultValue: new Expr.Literal(new Int32(-32))
+                }],
+                ValueKind.Int32,
+                new Stmt.Block([
+                    new Stmt.Return(
+                        { kind: Lexeme.Return, text: "return", line: 2 },
+                        new Expr.Variable(
+                            { kind: Lexeme.Identifier, text: "input", line: 2 }
+                        )
+                    )
+                ])
+            ),
+            new Stmt.Assignment(
+                { kind: Lexeme.Identifier, text: "result", line: 4 },
+                new Expr.Call(
+                    new Expr.Variable(
+                        { kind: Lexeme.Identifier, text: "ident", line: 4 }
+                    ),
+                    { kind: Lexeme.RightParen, text: ")", line: 4 },
+                    []
+                )
+            )
+        ];
+
+        interpreter.exec(statements);
+        expect(BrsError.found()).toBe(false);
+
+        let storedResult = interpreter.environment.get(
+            { kind: Lexeme.Identifier, text: "result", line: 5 }
+        );
+        expect(storedResult).toEqual(new Int32(-32));
+
+        expect(interpreter.environment.has(
+            { kind: Lexeme.Identifier, text: "input", line: 6 }
+        )).toBe(false);
+    });
 });

@@ -10,7 +10,8 @@ import { Interpreter } from "../interpreter";
 export const Tab = new Callable(
     {
         name: "Tab",
-        args: [{ name: "position", type: ValueKind.Int32 }]
+        args: [{ name: "position", type: ValueKind.Int32 }],
+        returns: ValueKind.String,
     },
     (interpreter: Interpreter, position: Int32) => {
         let target = position.getValue();
@@ -35,7 +36,8 @@ export const Pos = new Callable(
         // `pos` expects an argument and doesn't use it. The refreence
         // implementation's documentation even says it must be provided but
         // isn't used: https://sdkdocs.roku.com/display/sdkdoc/Program+Statements#ProgramStatements-PRINTitemlist
-        args: [{ name: "dummy", type: ValueKind.Dynamic }]
+        args: [{ name: "dummy", type: ValueKind.Dynamic }],
+        returns: ValueKind.Int32
     },
     (interpreter: Interpreter) => {
         return new Int32(interpreter.stdout.position());

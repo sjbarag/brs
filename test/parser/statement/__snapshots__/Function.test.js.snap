@@ -57,6 +57,7 @@ Array [
         "type": 8,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -84,6 +85,7 @@ Array [
         "type": 8,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -111,6 +113,7 @@ Array [
         "type": 3,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -162,6 +165,7 @@ Array [
         "type": 3,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -178,6 +182,7 @@ Array [
       "text": "foo",
     },
     "parameters": Array [],
+    "returns": 8,
   },
 ]
 `;
@@ -205,6 +210,7 @@ Array [
       "text": "foo",
     },
     "parameters": Array [],
+    "returns": 8,
   },
 ]
 `;
@@ -221,6 +227,7 @@ Array [
       "text": "foo",
     },
     "parameters": Array [],
+    "returns": 9,
   },
 ]
 `;
@@ -237,6 +244,7 @@ Array [
       "text": "bar",
     },
     "parameters": Array [],
+    "returns": 8,
   },
 ]
 `;
@@ -264,6 +272,7 @@ Array [
       "text": "foo",
     },
     "parameters": Array [],
+    "returns": 8,
   },
 ]
 `;
@@ -325,6 +334,7 @@ Array [
         "type": 8,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -352,6 +362,7 @@ Array [
         "type": 8,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -379,6 +390,7 @@ Array [
         "type": 3,
       },
     ],
+    "returns": 8,
   },
 ]
 `;
@@ -430,6 +442,7 @@ Array [
         "type": 3,
       },
     ],
+    "returns": 8,
   },
 ]
 `;

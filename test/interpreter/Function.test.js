@@ -43,6 +43,7 @@ describe("interpreter function declarations", () => {
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 [],
+                ValueKind.Void,
                 emptyBlock
             ),
             new Stmt.Expression(
@@ -67,11 +68,11 @@ describe("interpreter function declarations", () => {
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 [],
+                ValueKind.String,
                 new Stmt.Block([
                     new Stmt.Return(
                         { kind: Lexeme.Return, text: "return", line: 2 },
                         new Expr.Literal(
-
                             new BrsString("hello, world")
                         )
                     )
@@ -107,6 +108,7 @@ describe("interpreter function declarations", () => {
                     type: ValueKind.Int32,
                     defaultValue: new Expr.Literal(new Int32(-32))
                 }],
+                ValueKind.Int32,
                 new Stmt.Block([
                     new Stmt.Return(
                         { kind: Lexeme.Return, text: "return", line: 2 },

@@ -28,7 +28,7 @@ import * as StdLib from "../stdlib";
 import Environment from "./Environment";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
-import { BlockEnd } from "../parser/Statement";
+import { BlockEnd, StopReason } from "../parser/Statement";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -377,35 +377,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitBlock(block: Stmt.Block): BrsType {
-            // eachStatement:
-            for (const statement of block.statements) {
-                try {
-                    this.execute(statement);
-                } catch (reason) {
-                    if (reason.kind == null) {
-                        throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
-                    }
-
-                    switch (reason.kind) {
-                        case Stmt.StopReason.Return:
-                            return (reason as Stmt.ReturnValue).value;
-                        default:
-                            throw reason;
-                    }
-                }
-
-                //     switch (reason.kind) {
-                //         case Stmt.StopReason.ExitFor:
-                //         case Stmt.StopReason.ExitWhile:
-                //             break eachStatement;
-                //         case Stmt.StopReason.Return:
-                //             return (reason as Stmt.ReturnValue).value;
-                //         case Stmt.StopReason.RuntimeError:
-                //             throw reason;
-                //     }
-                // }
-            }
-
+        block.statements.forEach((statement) => this.execute(statement));
         return BrsInvalid.Instance;
     }
 
@@ -478,7 +450,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             );
         }
 
-        return callee.call(this, ...args);
+        try {
+            return callee.call(this, ...args);
+        } catch (reason) {
+            if (reason.kind == null) {
+                throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
+            }
+
+            return (reason as Stmt.ReturnValue).value;
+        }
     }
 
     visitGet(expression: Expr.Get) {

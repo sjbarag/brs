@@ -20,32 +20,32 @@ describe("end to end functions", () => {
         jest.restoreAllMocks();
     });
 
-    test("function/arguments.brs", async () => {
-        await execute(resourceFile(path.join("function", "arguments.brs")), outputStreams);
-
-        expect(BrsError.found()).toBe(false);
-        expect(
-            allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
-        ).toEqual([
-            "noArgsFunc",
-            "requiredArgsFunc:", "1", "2",
-            "typedArgsFunc:", "2.5", "3", "false",
-            "optionalArgsFunc:", "-5", "2", "-10"
-        ]);
+    test("function/arguments.brs", () => {
+        return execute(resourceFile(path.join("function", "arguments.brs")), outputStreams).then(() => {
+            expect(BrsError.found()).toBe(false);
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
+                "noArgsFunc",
+                "requiredArgsFunc:", "1", "2",
+                "typedArgsFunc:", "2.5", "3", "false",
+                "optionalArgsFunc:", "-5", "2", "-10"
+            ]);
+        });
     });
 
-    test("function/return.brs", async() => {
-        await execute(resourceFile(path.join("function", "return.brs")), outputStreams);
-
-        expect(BrsError.found()).toBe(false);
-        expect(
-            allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
-        ).toEqual([
-            "staticReturn",
-            "conditionalReturn:", "5",
-            "conditionalReturn:", "invalid",
-            "forLoopReturn:", "2",
-            "whileLoopReturn:", "3"
-        ]);
+    test("function/return.brs", () => {
+        return execute(resourceFile(path.join("function", "return.brs")), outputStreams).then(() => {
+            expect(BrsError.found()).toBe(false);
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
+                "staticReturn",
+                "conditionalReturn:", "5",
+                "conditionalReturn:", "invalid",
+                "forLoopReturn:", "2",
+                "whileLoopReturn:", "3"
+            ]);
+        });
     });
 });

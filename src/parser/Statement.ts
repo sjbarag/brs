@@ -1,6 +1,6 @@
 import * as Expr from "./Expression";
 import { Token } from "../Token";
-import { BrsType, BrsInvalid, Argument, BrsValue } from "../brsTypes/index";
+import { BrsType, BrsInvalid, Argument, BrsValue, ValueKind } from "../brsTypes/index";
 
 /** A set of reasons why a `Block` stopped executing. */
 export * from "./BlockEndReason";
@@ -71,6 +71,7 @@ export class Function implements Statement {
     constructor(
         readonly name: Token,
         readonly parameters: ReadonlyArray<Argument>,
+        readonly returns: ValueKind,
         readonly body: Block
     ) {}
 

@@ -72,6 +72,8 @@ function functionDeclaration(isAnonymous: boolean) {
     let isSub = check(Lexeme.Sub);
     let functionType = isSub ? "sub" : "function";
     let name: Token;
+    let returnType: ValueKind | undefined = ValueKind.Dynamic;
+
     advance();
 
     if (isAnonymous) {
@@ -94,18 +96,19 @@ function functionDeclaration(isAnonymous: boolean) {
     }
     advance(); // move past ')'
 
-    // TODO: do something with the return type
-    if (match(Lexeme.As)) {
+    let maybeAs = peek();
+    if (check(Lexeme.Identifier) && maybeAs.text && maybeAs.text.toLowerCase() === "as") {
+        advance();
         if (isSub) {
             throw ParseError.make(previous(), "'Sub' functions are always void returns, and can't have 'as' clauses");
         }
 
         let typeToken = advance();
         let typeString = typeToken.text || "";
-        let typeValueKind = ValueKind.fromString(typeString);
+        returnType = ValueKind.fromString(typeString);
 
-        if (!typeValueKind) {
-            throw ParseError.make(typeToken, `Function parameter ${name} is of invalid type '${typeString}'`);
+        if (!returnType) {
+            throw ParseError.make(typeToken, `Function return type '${typeString}' is invalid`);
         }
     }
 
@@ -129,7 +132,7 @@ function functionDeclaration(isAnonymous: boolean) {
 
     while(match(Lexeme.Newline)) {}
 
-    return new Stmt.Function(name, args, body);
+    return new Stmt.Function(name, args, returnType, body);
 }
 
 function signatureArgument(): Argument {

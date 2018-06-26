@@ -163,7 +163,7 @@ describe("parser", () => {
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 { kind: Lexeme.LeftParen, text: "(", line: 1 },
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
-                { kind: Lexeme.As, text: "as", line: 1 },
+                { kind: Lexeme.Identifier, text: "as", line: 1 },
                 { kind: Lexeme.Identifier, text: "void", line: 1 },
                 { kind: Lexeme.Newline, text: "\\n", line: 1 },
                 { kind: Lexeme.EndFunction, text: "end function", line: 2 },

@@ -16,9 +16,11 @@ export interface Argument {
 /** A BrightScript `function` or `sub`'s signature. */
 export interface Signature {
     /** The name of a function, if it has one. */
-    name?: string,
+    readonly name?: string,
     /** The set of arguments a function accepts. */
-    args: ReadonlyArray<Argument>
+    readonly args: ReadonlyArray<Argument>,
+    /** The type of BrightScript value the function will return. `sub`s must use `ValueKind.Void`. */
+    readonly returns: Brs.ValueKind
 }
 
 /** Describes the number of required and optional arguments for a `Callable`. */

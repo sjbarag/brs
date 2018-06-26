@@ -15,7 +15,8 @@ export function toCallable(declaration: Stmt.Function) {
     return new Callable(
         {
             name: declaration.name.text,
-            args: declaration.parameters
+            args: declaration.parameters,
+            returns: declaration.returns
         },
         (interpreter: Interpreter, ...args: BrsType[]) => {
             // first, we need to evaluate all of the parameter default values

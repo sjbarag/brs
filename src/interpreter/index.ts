@@ -124,11 +124,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitReturn(statement: Stmt.Return): never {
         if (!statement.value) {
-            throw new Stmt.ReturnValue(BrsInvalid.Instance);
+            throw new Stmt.ReturnValue(statement.keyword, BrsInvalid.Instance);
         }
 
         let toReturn = this.evaluate(statement.value);
-        throw new Stmt.ReturnValue(toReturn);
+        throw new Stmt.ReturnValue(statement.keyword, toReturn);
     }
 
     visitExpression(statement: Stmt.Expression): BrsType {
@@ -457,7 +457,18 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
             }
 
-            return (reason as Stmt.ReturnValue).value;
+            let returnedValue = (reason as Stmt.ReturnValue).value;
+            let returnLocation = (reason as Stmt.ReturnValue).location;
+            if (callee.signature.returns !== ValueKind.Dynamic && callee.signature.returns !== returnedValue.kind) {
+                throw BrsError.make(
+                    `Attempting to return value of type ${ValueKind.toString(returnedValue.kind)}, `
+                    + `but function ${callee.signature.name} declares return value of type `
+                    + ValueKind.toString(callee.signature.returns),
+                    returnLocation.line
+                );
+            }
+
+            return returnedValue;
         }
     }
 

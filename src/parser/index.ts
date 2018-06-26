@@ -368,6 +368,7 @@ function returnStatement(): Stmt.Return {
     let keyword = previous();
 
     if (check(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof)) {
+        while(match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
         return new Stmt.Return(keyword);
     }
 

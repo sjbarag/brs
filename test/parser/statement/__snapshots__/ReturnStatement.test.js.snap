@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser return statements parses expression returns 1`] = `
+Array [
+  Function {
+    "body": Block {
+      "statements": Array [
+        Return {
+          "keyword": Object {
+            "kind": 66,
+            "line": 2,
+            "text": "return",
+          },
+          "value": Call {
+            "args": Array [],
+            "callee": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 2,
+                "text": "RebootSystem",
+              },
+            },
+            "closingParen": Object {
+              "kind": 1,
+              "line": 2,
+              "text": ")",
+            },
+          },
+        },
+      ],
+    },
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "parameters": Array [],
+    "returns": 8,
+  },
+]
+`;
+
+exports[`parser return statements parses literal returns 1`] = `
+Array [
+  Function {
+    "body": Block {
+      "statements": Array [
+        Return {
+          "keyword": Object {
+            "kind": 66,
+            "line": 2,
+            "text": "return",
+          },
+          "value": Literal {
+            "value": BrsString {
+              "kind": 2,
+              "value": "test",
+            },
+          },
+        },
+      ],
+    },
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "parameters": Array [],
+    "returns": 8,
+  },
+]
+`;
+
+exports[`parser return statements parses void returns 1`] = `
+Array [
+  Function {
+    "body": Block {
+      "statements": Array [
+        Return {
+          "keyword": Object {
+            "kind": 66,
+            "line": 2,
+            "text": "return",
+          },
+          "value": undefined,
+        },
+      ],
+    },
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "parameters": Array [],
+    "returns": 8,
+  },
+]
+`;

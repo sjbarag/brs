@@ -1,5 +1,3 @@
-const path = require("path");
-
 const { execute } = require("../../lib/");
 const BrsError = require("../../lib/Error");
 
@@ -21,7 +19,7 @@ describe("end to end standard libary", () => {
     });
 
     test("stdlib/strings.brs", () => {
-        return execute(resourceFile(path.join("stdlib", "strings.brs")), outputStreams).then(() => {
+        return execute(resourceFile("stdlib", "strings.brs"), outputStreams).then(() => {
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
             ).toEqual([

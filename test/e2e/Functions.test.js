@@ -1,5 +1,3 @@
-const path = require("path");
-
 const { execute } = require("../../lib/");
 const BrsError = require("../../lib/Error");
 
@@ -21,7 +19,7 @@ describe("end to end functions", () => {
     });
 
     test("function/arguments.brs", () => {
-        return execute(resourceFile(path.join("function", "arguments.brs")), outputStreams).then(() => {
+        return execute(resourceFile("function", "arguments.brs"), outputStreams).then(() => {
             expect(BrsError.found()).toBe(false);
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
@@ -35,7 +33,7 @@ describe("end to end functions", () => {
     });
 
     test("function/return.brs", () => {
-        return execute(resourceFile(path.join("function", "return.brs")), outputStreams).then(() => {
+        return execute(resourceFile("function", "return.brs"), outputStreams).then(() => {
             expect(BrsError.found()).toBe(false);
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")

@@ -25,7 +25,7 @@ describe("interpreter calls", () => {
             )
         );
         const [ result ] = interpreter.exec([call]);
-        expect(result.value.toString()).toBe("H@LL0");
+        expect(result.toString()).toBe("H@LL0");
     });
 
     it("errors when not enough arguments provided", () => {

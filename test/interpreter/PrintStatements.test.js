@@ -27,7 +27,7 @@ describe("interperter print statements", () => {
 
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo\n"
         );
@@ -41,7 +41,7 @@ describe("interperter print statements", () => {
         ]);
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foobarbaz\n"
         );
@@ -58,7 +58,7 @@ describe("interperter print statements", () => {
         ]);
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo bar baz\n"
         );
@@ -74,7 +74,7 @@ describe("interperter print statements", () => {
         ]);
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
         //   0   0   0   1   1   2   2   2   3
         //   0   4   8   2   6   0   4   8   2
@@ -93,7 +93,7 @@ describe("interperter print statements", () => {
         ]);
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo bar baz"
         );
@@ -111,7 +111,7 @@ describe("interperter print statements", () => {
         ]);
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo 4\n"
         );
@@ -129,7 +129,7 @@ describe("interperter print statements", () => {
         ]);
 
         const [ result ] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsInvalid.Instance);
+        expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo   bar\n"
         );

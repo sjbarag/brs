@@ -18,49 +18,49 @@ describe("interpreter arithmetic", () => {
     it("adds numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Plus, new BrsTypes.Float(1.5));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(3.5);
+        expect(result.getValue()).toBe(3.5);
     });
 
     it("concatenates strings", () => {
         let ast = binary(new BrsTypes.BrsString("judge "), Lexeme.Plus, new BrsTypes.BrsString("judy"));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.toString()).toBe("judge judy");
+        expect(result.toString()).toBe("judge judy");
     });
 
     it("subtracts numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Minus, new BrsTypes.Float(1.5));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(0.5);
+        expect(result.getValue()).toBe(0.5);
     });
 
     it("multiplies numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Star, new BrsTypes.Float(1.5));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(3);
+        expect(result.getValue()).toBe(3);
     });
 
     it("divides numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Slash, new BrsTypes.Float(1.5));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBeCloseTo(1.33333, 5);
+        expect(result.getValue()).toBeCloseTo(1.33333, 5);
     });
 
     it("integer-divides numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Backslash, new BrsTypes.Float(1.5));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(1);
+        expect(result.getValue()).toBe(1);
     });
 
     it("modulos numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Mod, new BrsTypes.Float(1.5));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(0.5);
+        expect(result.getValue()).toBe(0.5);
     });
 
     it("exponentiates numbers", () => {
         let ast = binary(new BrsTypes.Int32(2), Lexeme.Caret, new BrsTypes.Float(3));
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(8);
+        expect(result.getValue()).toBe(8);
     });
 
     it("follows arithmetic order-of-operations (PEMDAS)", () => {
@@ -88,7 +88,7 @@ describe("interpreter arithmetic", () => {
         );
 
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(35);
+        expect(result.getValue()).toBe(35);
     });
 
     it("doesn't allow non-numeric negation", () => {
@@ -99,9 +99,9 @@ describe("interpreter arithmetic", () => {
             )
         );
 
-        let results = interpreter.exec([ast]);
+        let [ result ] = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
-        expect(results.map(r => r.value)).toEqual([BrsTypes.BrsInvalid.Instance]);
+        expect(result).toBe(BrsTypes.BrsInvalid.Instance);
     });
 
     it("doesn't allow mixed-type arithmetic", () => {
@@ -113,9 +113,9 @@ describe("interpreter arithmetic", () => {
             )
         );
 
-        let results = interpreter.exec([ast]);
+        let [ result ] = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
-        expect(results.map(r => r.value)).toEqual([BrsTypes.BrsInvalid.Instance]);
+        expect(result).toBe(BrsTypes.BrsInvalid.Instance);
     });
 
     it("bitwise ANDs integers", () => {
@@ -130,7 +130,7 @@ describe("interpreter arithmetic", () => {
         );
 
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(4);
+        expect(result.getValue()).toBe(4);
     });
 
     it("bitwise ORs integers", () => {
@@ -145,6 +145,6 @@ describe("interpreter arithmetic", () => {
         );
 
         let [result] = interpreter.exec([ast]);
-        expect(result.value.getValue()).toBe(7);
+        expect(result.getValue()).toBe(7);
     });
 });

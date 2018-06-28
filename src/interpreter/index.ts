@@ -13,7 +13,8 @@ import {
     Int64,
     Float,
     Double,
-    isBrsCallable
+    isBrsCallable,
+    BrsValue
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -26,6 +27,8 @@ import * as StdLib from "../stdlib";
 
 import Environment from "./Environment";
 import { OutputProxy } from "./OutputProxy";
+import { toCallable } from "./BrsFunction";
+import { BlockEnd, StopReason } from "../parser/Statement";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -34,9 +37,13 @@ export interface OutputStreams {
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private readonly globals = new Environment();
-    private environment = this.globals;
+    private _environment = this.globals;
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
+
+    get environment() {
+        return this._environment;
+    }
 
     /**
      * Creates a new Interpreter, including any global properties and functions.
@@ -54,22 +61,81 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.globals.define("Pos", StdLib.Pos);
     }
 
-    exec(statements: Stmt.Statement[]) {
+    /**
+     * Temporarily sets an interpreter's environment to the provided one, then
+     * passes the sub-interpreter to the provided JavaScript function. Always
+     * reverts the current interpreter's environment to its original value.
+     * @param environment the sub-environment to use for the interpreter
+     *                    provided to `func`.
+     * @param func the JavaScript function to execute with the sub interpreter.
+     */
+    inSubEnv(environment: Environment, func: (interpreter: Interpreter) => void) {
+        let originalEnvironment = this._environment;
+        try {
+            this._environment = environment;
+            return func(this);
+        } finally {
+            this._environment = originalEnvironment
+        }
+    }
+
+    exec(statements: ReadonlyArray<Stmt.Statement>) {
         return statements.map((statement) => this.execute(statement));
+    }
+
+    /**
+     * Executes a block in the context of the provided environment.
+     * The original environment will be restored after execution finishes --
+     * even if an error occurs.
+     *
+     * @param statements an array of statements to execute
+     * @param environment the environment in which those statements will be executed
+     * @returns an array of `Result`s, one for each executed statement
+     */
+    executeBlock(block: Stmt.Block, environment: Environment) {
+        let originalEnvironment = this.environment;
+        try {
+            this._environment = environment;
+            return block.accept(this);
+        } finally {
+            this._environment = originalEnvironment;
+        }
     }
 
     visitAssign(statement: Expr.Assign): BrsType {
         return BrsInvalid.Instance;
     }
 
-    visitExpression(statement: Stmt.Expression): Stmt.Result {
-        return {
-            value: this.evaluate(statement.expression),
-            reason: Stmt.StopReason.End
-        };
+    visitNamedFunction(statement: Stmt.Function): BrsType {
+        if (this.environment.has(statement.name)) {
+            // TODO: Figure out how to determine where the original version was declared
+            // Maybe `Environment.define` records the location along with the value?
+            BrsError.make(
+                `Attempting to declare function '${statement.name.text}', but ` +
+                `a property of that name already exists.`,
+                statement.name.line
+            );
+            return BrsInvalid.Instance;
+        }
+
+        this.environment.define(statement.name.text!, toCallable(statement));
+        return BrsInvalid.Instance;
     }
 
-    visitPrint(statement: Stmt.Print): Stmt.Result {
+    visitReturn(statement: Stmt.Return): never {
+        if (!statement.value) {
+            throw new Stmt.ReturnValue(statement.keyword, BrsInvalid.Instance);
+        }
+
+        let toReturn = this.evaluate(statement.value);
+        throw new Stmt.ReturnValue(statement.keyword, toReturn);
+    }
+
+    visitExpression(statement: Stmt.Expression): BrsType {
+        return this.evaluate(statement.expression);
+    }
+
+    visitPrint(statement: Stmt.Print): BrsType {
         // the `tab` function is only in-scope while executing print statements
         this.environment.define("Tab", StdLib.Tab);
 
@@ -104,19 +170,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // `tab` is only in-scope when executing print statements, so remove it before we leave
         this.environment.remove("Tab");
 
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        return BrsInvalid.Instance;
     }
 
-    visitAssignment(statement: Stmt.Assignment): Stmt.Result {
+    visitAssignment(statement: Stmt.Assignment): BrsType {
         let value = this.evaluate(statement.value);
         this.environment.define(statement.name.text!, value);
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        }
+        return BrsInvalid.Instance;
     }
 
     visitBinary(expression: Expr.Binary) {
@@ -316,47 +376,17 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    visitBlock(block: Stmt.Block): Stmt.Result {
-        let stopReason = Stmt.StopReason.End;
-
-        eachStatement:
-        for (const statement of block.statements) {
-            const stmtResult = this.execute(statement);
-
-            if (BrsError.found()) {
-                // this might need to actually throw
-                stopReason = Stmt.StopReason.Error;
-                break;
-            } else {
-                switch (stmtResult.reason) {
-                    case Stmt.StopReason.ExitFor:
-                    case Stmt.StopReason.ExitWhile:
-                        stopReason = stmtResult.reason;
-                        break eachStatement;
-                    default:
-                        continue;
-                }
-            }
-        }
-
-        return {
-            value: BrsInvalid.Instance,
-            reason: stopReason
-        };
+    visitBlock(block: Stmt.Block): BrsType {
+        block.statements.forEach((statement) => this.execute(statement));
+        return BrsInvalid.Instance;
     }
 
-    visitExitFor(statement: Stmt.ExitFor) {
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.ExitFor
-        };
+    visitExitFor(statement: Stmt.ExitFor): never {
+        throw new Stmt.ExitForReason();
     }
 
-    visitExitWhile(expression: Stmt.ExitWhile) {
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.ExitWhile
-        };
+    visitExitWhile(expression: Stmt.ExitWhile): never {
+        throw new Stmt.ExitWhileReason();
     }
 
     visitCall(expression: Expr.Call) {
@@ -420,7 +450,26 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             );
         }
 
-        return callee.call(this, ...args);
+        try {
+            return callee.call(this, ...args);
+        } catch (reason) {
+            if (reason.kind == null) {
+                throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");
+            }
+
+            let returnedValue = (reason as Stmt.ReturnValue).value;
+            let returnLocation = (reason as Stmt.ReturnValue).location;
+            if (callee.signature.returns !== ValueKind.Dynamic && callee.signature.returns !== returnedValue.kind) {
+                throw BrsError.make(
+                    `Attempting to return value of type ${ValueKind.toString(returnedValue.kind)}, `
+                    + `but function ${callee.signature.name} declares return value of type `
+                    + ValueKind.toString(callee.signature.returns),
+                    returnLocation.line
+                );
+            }
+
+            return returnedValue;
+        }
     }
 
     visitGet(expression: Expr.Get) {
@@ -431,7 +480,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this.evaluate(expr.expression);
     }
 
-    visitFor(statement: Stmt.For): Stmt.Result {
+    visitFor(statement: Stmt.For): BrsType {
         // BrightScript for/to loops evaluate the counter initial value, final value, and increment
         // values *only once*, at the top of the for/to loop.
         this.execute(statement.counterDeclaration);
@@ -448,10 +497,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             )
         );
 
-        let blockResult: Stmt.Result = {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        let loopExitReason: Stmt.BlockEnd | undefined;
 
         while (
             this.evaluate(new Expr.Variable(counterName))
@@ -460,9 +506,16 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 .toBoolean()
         ) {
             // execute the block
-            blockResult = this.execute(statement.body);
-            if (blockResult.reason === Stmt.StopReason.ExitFor) {
-                break;
+            try {
+                this.execute(statement.body);
+            } catch (reason) {
+                if (reason.kind === Stmt.StopReason.ExitFor) {
+                    loopExitReason = reason as BlockEnd;
+                    break;
+                } else {
+                    // re-throw returns, runtime errors, etc.
+                    throw reason;
+                }
             }
 
             // then increment the counter
@@ -470,56 +523,49 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         // BrightScript for/to loops execute the body one more time when initial === final
-        if (blockResult.reason === Stmt.StopReason.End) {
-            blockResult = this.execute(statement.body);
+        if (loopExitReason === undefined) {
+            this.execute(statement.body);
             // they also increments the counter once more
             this.execute(step);
         }
 
-        return blockResult;
+        return BrsInvalid.Instance;
     }
 
-    visitWhile(statement: Stmt.While): Stmt.Result {
+    visitWhile(statement: Stmt.While): BrsType {
         while (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
-            const blockResult = this.execute(statement.body);
-            if (blockResult.reason !== Stmt.StopReason.End) {
-                break;
+            try {
+                this.execute(statement.body);
+            } catch (reason) {
+                if (reason.kind && reason.kind === Stmt.StopReason.ExitWhile) {
+                    break;
+                } else {
+                    // re-throw returns, runtime errors, etc.
+                    throw reason;
+                }
             }
         }
 
-        return {
-            value: BrsInvalid.Instance,
-            reason: Stmt.StopReason.End
-        };
+        return BrsInvalid.Instance;
     }
 
-    visitIf(statement: Stmt.If): Stmt.Result {
+    visitIf(statement: Stmt.If): BrsType {
         if (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
-            const thenResult = this.execute(statement.thenBranch);
-            return {
-                value: BrsInvalid.Instance,
-                reason: thenResult.reason
-            };
+            this.execute(statement.thenBranch);
+            return BrsInvalid.Instance;
         } else {
             for (const elseIf of statement.elseIfs || []) {
                 if (this.evaluate(elseIf.condition).equalTo(BrsBoolean.True).toBoolean()) {
-                    const elseIfResult = this.execute(elseIf.thenBranch);
-                    return {
-                        value: BrsInvalid.Instance,
-                        reason: elseIfResult.reason
-                    };
+                    this.execute(elseIf.thenBranch);
+                    return BrsInvalid.Instance;
                 }
             }
 
-            let stopReason = Stmt.StopReason.End;
             if (statement.elseBranch) {
-                const elseResult = this.execute(statement.elseBranch);
-                stopReason = elseResult.reason;
+                this.execute(statement.elseBranch);
             }
-            return {
-                value: BrsInvalid.Instance,
-                reason: stopReason
-            };
+
+            return BrsInvalid.Instance;
         }
     }
 
@@ -576,7 +622,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return expression.accept<BrsType>(this);
     }
 
-    execute(this: Interpreter, statement: Stmt.Statement): Stmt.Result {
+    execute(this: Interpreter, statement: Stmt.Statement): BrsType {
         return statement.accept<BrsType>(this);
     }
 }

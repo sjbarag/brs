@@ -5,7 +5,8 @@ import { Interpreter } from "../interpreter";
 export const UCase = new Callable(
     {
         name: "UCase",
-        args: [{ name: "s", type: ValueKind.String }]
+        args: [{ name: "s", type: ValueKind.String }],
+        returns: ValueKind.String,
     },
     (interpreter: Interpreter, s: BrsString) => new BrsString(s.value.toUpperCase())
 );
@@ -14,7 +15,8 @@ export const UCase = new Callable(
 export const LCase = new Callable(
     {
         name: "LCase",
-        args: [{ name: "s", type: ValueKind.String }]
+        args: [{ name: "s", type: ValueKind.String }],
+        returns: ValueKind.String,
     },
     (interpreter: Interpreter, s: BrsString) => new BrsString(s.value.toLowerCase())
 );
@@ -27,7 +29,8 @@ export const LCase = new Callable(
 export const Asc = new Callable(
     {
         name: "Asc",
-        args: [{ name: "letter", type: ValueKind.String }]
+        args: [{ name: "letter", type: ValueKind.String }],
+        returns: ValueKind.String,
     },
     (interpreter: Interpreter, str: BrsString) => new Int32(str.value.charCodeAt(0) || 0)
 );
@@ -41,7 +44,8 @@ export const Asc = new Callable(
 export const Chr = new Callable(
     {
         name: "Chr",
-        args: [{ name: "ch", type: ValueKind.Int32 }]
+        args: [{ name: "ch", type: ValueKind.Int32 }],
+        returns: ValueKind.String,
     },
     (interpreter: Interpreter, ch: Int32) => {
         const num = ch.getValue();

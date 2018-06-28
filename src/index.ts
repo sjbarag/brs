@@ -65,7 +65,7 @@ export function repl() {
     rl.on("line", (line) => {
         let results = run(line, processOutput, replInterpreter);
         if (results) {
-            results.map(result => console.log(stringify(result.value)));
+            results.map(result => console.log(stringify(result)));
         }
 
         BrsError.reset();

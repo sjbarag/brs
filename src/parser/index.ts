@@ -10,7 +10,9 @@ import {
     BrsInvalid,
     BrsBoolean,
     BrsString,
-    Int32
+    Int32,
+    ValueKind,
+    Argument
 } from "../brsTypes";
 
 /** Set of all keywords that end blocks. */
@@ -48,6 +50,10 @@ export function parse(toParse: ReadonlyArray<Token>) {
 
 function declaration(): Statement | undefined {
     try {
+        if (check(Lexeme.Sub, Lexeme.Function)) {
+            return functionDeclaration(false);
+        }
+
         // BrightScript is like python, in that variables can be declared without a `var`,
         // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
         // out what to do with it.
@@ -62,6 +68,113 @@ function declaration(): Statement | undefined {
     }
 }
 
+function functionDeclaration(isAnonymous: boolean) {
+    let isSub = check(Lexeme.Sub);
+    let functionType = isSub ? "sub" : "function";
+    let name: Token;
+    let returnType: ValueKind | undefined = ValueKind.Dynamic;
+
+    advance();
+
+    if (isAnonymous) {
+        throw ParseError.make(peek(), "Anonymous functions are a WIP");
+    } else {
+        name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier);
+        consume(`Expected '(' after ${functionType} name`, Lexeme.LeftParen);
+    }
+
+    let args: Argument[] = [];
+    if (!check(Lexeme.RightParen)) {
+        do {
+            if (args.length >= Expr.Call.MaximumArguments) {
+                ParseError.make(peek(), `Cannot have more than ${Expr.Call.MaximumArguments} arguments`);
+                break;
+            }
+
+            args.push(signatureArgument());
+        } while (match(Lexeme.Comma));
+    }
+    advance(); // move past ')'
+
+    let maybeAs = peek();
+    if (check(Lexeme.Identifier) && maybeAs.text && maybeAs.text.toLowerCase() === "as") {
+        advance();
+        if (isSub) {
+            throw ParseError.make(previous(), "'Sub' functions are always void returns, and can't have 'as' clauses");
+        }
+
+        let typeToken = advance();
+        let typeString = typeToken.text || "";
+        returnType = ValueKind.fromString(typeString);
+
+        if (!returnType) {
+            throw ParseError.make(typeToken, `Function return type '${typeString}' is invalid`);
+        }
+    }
+
+    args.reduce((haveFoundOptional: boolean, arg: Argument) => {
+        if (haveFoundOptional && !arg.defaultValue) {
+            throw ParseError.make(
+                { kind: Lexeme.Identifier, text: arg.name, line: name.line },
+                `Argument '${arg.name}' has no default value, but comes after arguments with default values`
+            );
+        }
+
+        return haveFoundOptional || !!arg.defaultValue;
+    }, false);
+
+    consume(`Expected newline after ${functionType} signature`, Lexeme.Newline);
+    let body = block(isSub ? Lexeme.EndSub : Lexeme.EndFunction);
+    if (!body) {
+        throw ParseError.make(peek(), `Expected 'end ${functionType}' to terminate ${functionType} block`);
+    }
+    advance(); // consume 'end sub' or 'end function'
+
+    while(match(Lexeme.Newline)) {}
+
+    return new Stmt.Function(name, args, returnType, body);
+}
+
+function signatureArgument(): Argument {
+    if (!check(Lexeme.Identifier)) {
+        throw ParseError.make(peek(), `Expected argument name, but received '${peek().text || ""}'`);
+    }
+
+    let name = advance();
+    let type: ValueKind = ValueKind.Dynamic;
+    let defaultValue;
+
+    // parse argument default value
+    if (match(Lexeme.Equal)) {
+        // it seems any expression is allowed here -- including ones that operate on other arguments!
+        defaultValue = expression();
+    }
+
+    let next = peek();
+    if (check(Lexeme.Identifier) && next.text && next.text.toLowerCase() === "as") {
+        // 'as' isn't a reserved word, so it can't be lexed into an As token without the lexer
+        // understanding language context.  That's less than ideal, so we'll have to do some
+        // more intelligent comparisons to detect the 'as' sometimes-keyword here.
+        advance();
+
+        let typeToken = advance();
+        let typeString = typeToken.text || "";
+        let typeValueKind = ValueKind.fromString(typeString);
+
+        if (!typeValueKind) {
+            throw ParseError.make(typeToken, `Function parameter ${name} is of invalid type '${typeString}'`);
+        }
+
+        type = typeValueKind;
+    }
+
+    return {
+        name: name.text || "",
+        type: type,
+        defaultValue: defaultValue
+    };
+}
+
 function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
     let name = advance();
     consume("Expected '=' after idenfifier", Lexeme.Equal);
@@ -73,25 +186,19 @@ function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
 }
 
 function statement(...additionalterminators: BlockTerminator[]): Statement {
-    if (match(Lexeme.If)) {
-        return ifStatement();
-    }
+    if (match(Lexeme.If)) { return ifStatement(); }
 
-    if (match(Lexeme.Print)) {
-        return printStatement(...additionalterminators);
-    }
+    if (match(Lexeme.Print)) { return printStatement(...additionalterminators); }
 
-    if (match(Lexeme.While)) {
-        return whileStatement();
-    }
+    if (match(Lexeme.While)) { return whileStatement(); }
 
-    if (match(Lexeme.For)) {
-        return forStatement();
-    }
+    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+
+    if (match(Lexeme.For)) { return forStatement(); }
 
     if (match(Lexeme.ExitFor)) { return exitFor(); }
 
-    if (match(Lexeme.ExitWhile)) { return exitWhile(); }
+    if (match(Lexeme.Return)) { return returnStatement(); }
 
     // TODO: support multi-statements
     return expressionStatement(...additionalterminators);
@@ -102,6 +209,9 @@ function whileStatement(): Stmt.While {
 
     consume("Expected newline after 'while ...condition...'", Lexeme.Newline);
     const whileBlock = block(Lexeme.EndWhile);
+    if (!whileBlock) {
+        throw ParseError.make(peek(), "Expected 'end while' to terminate while-loop block");
+    }
     advance();
     while (match(Lexeme.Newline)) {}
     return new Stmt.While(condition, whileBlock);
@@ -127,6 +237,9 @@ function forStatement(): Stmt.For {
     while(match(Lexeme.Newline)) {}
 
     let body = block(Lexeme.EndFor);
+    if (!body) {
+        throw ParseError.make(peek(), "Expected 'end for' to terminate for-loop block");
+    }
     advance();
     while(match(Lexeme.Newline)) {}
 
@@ -135,8 +248,8 @@ function forStatement(): Stmt.For {
     return new Stmt.For(initializer, finalValue, increment, body);
 }
 
-function exitFor(): Stmt.ExitWhile {
-    consume("Expected newline after 'exit while'", Lexeme.Newline);
+function exitFor(): Stmt.ExitFor {
+    consume("Expected newline after 'exit for'", Lexeme.Newline);
     while (match(Lexeme.Newline)) {}
     return new Stmt.ExitFor();
 }
@@ -154,7 +267,12 @@ function ifStatement(): Stmt.If {
         // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
         // a trailing "end if"
 
-        thenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+        let maybeThenBranch = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+        if (!maybeThenBranch) {
+            throw ParseError.make(peek(), "Expected 'end if', 'else if', or 'else' to terminate 'then' block");
+        }
+
+        thenBranch = maybeThenBranch;
         match(Lexeme.Newline);
 
         // attempt to read a bunch of "else if" clauses
@@ -163,6 +281,10 @@ function ifStatement(): Stmt.If {
             consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
             match(Lexeme.Newline);
             let elseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
+            if (!elseIfThen) {
+                throw ParseError.make(peek(), "Expected 'end if', 'else if', or 'else' to terminate 'then' block");
+            }
+
             elseIfBranches.push({
                 condition: elseIfCondition,
                 thenBranch: elseIfThen
@@ -239,18 +361,42 @@ function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print
 }
 
 /**
+ * Parses a return statement with an optional return value.
+ * @returns an AST representation of a return statement.
+ */
+function returnStatement(): Stmt.Return {
+    let keyword = previous();
+
+    if (check(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof)) {
+        while(match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
+        return new Stmt.Return(keyword);
+    }
+
+    let toReturn = expression();
+    while(match(Lexeme.Newline));
+
+    return new Stmt.Return(keyword, toReturn);
+}
+
+/**
  * Parses a block, looking for a specific terminating Lexeme to denote completion.
  * @param terminators the token(s) that signifies the end of this block; all other terminators are
  *                    ignored.
  */
-function block(...terminators: BlockTerminator[]): Stmt.Block {
+function block(...terminators: BlockTerminator[]): Stmt.Block | undefined {
     const statements: Statement[] = [];
-    while (!check(...terminators)) {
+    while (!check(...terminators) && !isAtEnd()) {
         const dec = declaration();
         if (dec) {
             statements.push(dec);
         }
     }
+
+    if (isAtEnd()) {
+        return undefined;
+        // TODO: Figure out how to handle unterminated blocks well
+    }
+
     return new Stmt.Block(statements);
 }
 

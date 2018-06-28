@@ -91,9 +91,6 @@ export enum Lexeme {
     Type,
     While,
 
-    // non-reserved but still meaningful
-    As,
-
     // structural
     Newline,
     Eof

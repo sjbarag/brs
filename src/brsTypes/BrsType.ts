@@ -11,7 +11,8 @@ export enum ValueKind {
     Double,
     // TODO: Add Object types (associative arrays, lists, etc.)
     Callable,
-    Dynamic
+    Dynamic,
+    Void
 };
 
 export namespace ValueKind {
@@ -30,6 +31,28 @@ export namespace ValueKind {
             case ValueKind.Double: return "Double";
             case ValueKind.Callable: return "Function";
             case ValueKind.Dynamic: return "Dynamic";
+            case ValueKind.Void: return "Void";
+        }
+    }
+
+    /**
+     * Fetches a `ValueKind` enum member by its string representation.
+     * @param kind the string representation of a `ValueKind`
+     * @returns the corresponding `ValueKind` if one exists, otherwise `undefined`.
+     */
+    export function fromString(kind: string): ValueKind | undefined {
+        switch (kind.toLowerCase()) {
+            case "invalid": return ValueKind.Invalid;
+            case "boolean": return ValueKind.Boolean;
+            case "string": return ValueKind.String;
+            case "integer": return ValueKind.Int32;
+            case "longinteger": return ValueKind.Int64;
+            case "float": return ValueKind.Float;
+            case "double": return ValueKind.Double;
+            case "callable": return ValueKind.Callable;
+            case "dynamic": return ValueKind.Dynamic;
+            case "void": return ValueKind.Void;
+            default: return undefined;
         }
     }
 }

@@ -24,7 +24,7 @@ describe("interpreter boolean algebra", () => {
         );
 
         let [result] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsTypes.BrsBoolean.False);
+        expect(result).toEqual(BrsTypes.BrsBoolean.False);
     });
 
     it("ORs booleans", () => {
@@ -37,7 +37,7 @@ describe("interpreter boolean algebra", () => {
         );
 
         let [result] = interpreter.exec([ast]);
-        expect(result.value).toEqual(BrsTypes.BrsBoolean.True);
+        expect(result).toEqual(BrsTypes.BrsBoolean.True);
     });
 
     it("doesn't allow mixed-type ANDs", () => {
@@ -51,7 +51,7 @@ describe("interpreter boolean algebra", () => {
 
         let [result] = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
-        expect(result.value).toEqual(BrsTypes.BrsInvalid.Instance);
+        expect(result).toEqual(BrsTypes.BrsInvalid.Instance);
     });
 
     it("doesn't allow mixed-type ORs", () => {
@@ -65,6 +65,6 @@ describe("interpreter boolean algebra", () => {
 
         let [result] = interpreter.exec([ast]);
         expect(BrsError.found()).toBe(true);
-        expect(result.value).toEqual(BrsTypes.BrsInvalid.Instance);
+        expect(result).toEqual(BrsTypes.BrsInvalid.Instance);
     });
 });

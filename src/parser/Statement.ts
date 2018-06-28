@@ -1,37 +1,22 @@
 import * as Expr from "./Expression";
 import { Token } from "../Token";
-import { BrsType, BrsInvalid } from "../brsTypes/index";
+import { BrsType, BrsInvalid, Argument, BrsValue, ValueKind } from "../brsTypes/index";
 
 /** A set of reasons why a `Block` stopped executing. */
-export enum StopReason {
-    /** Execution reached the end of a block. */
-    End,
-    /** A runtime error occurred. */
-    Error,
-    /** An `exit for` statement was encountered. */
-    ExitFor,
-    /** An `exit while` statement was encountered. */
-    ExitWhile
-}
-
-/** The output of a statement's execution. */
-export interface Result {
-    /** The value produced by executing the statement. */
-    value: BrsType,
-    /** Why the statement stopped executing. */
-    reason: StopReason
-}
+export * from "./BlockEndReason";
 
 export interface Visitor<T> {
-    visitAssignment(statement: Assignment): Result;
-    visitExpression(statement: Expression): Result;
-    visitExitFor(statement: ExitFor): Result;
-    visitExitWhile(statement: ExitWhile): Result;
-    visitPrint(statement: Print): Result;
-    visitIf(statement: If): Result;
-    visitBlock(block: Block): Result;
-    visitFor(statement: For): Result;
-    visitWhile(statement: While): Result;
+    visitAssignment(statement: Assignment): BrsType;
+    visitExpression(statement: Expression): BrsType;
+    visitExitFor(statement: ExitFor): never;
+    visitExitWhile(statement: ExitWhile): never;
+    visitPrint(statement: Print): BrsType;
+    visitIf(statement: If): BrsType;
+    visitBlock(block: Block): BrsType;
+    visitFor(statement: For): BrsType;
+    visitWhile(statement: While): BrsType;
+    visitNamedFunction(statement: Function): BrsType;
+    visitReturn(statement: Return): never;
 }
 
 /** A BrightScript statement */
@@ -42,13 +27,13 @@ export interface Statement {
      * @returns a BrightScript value (typically `invalid`) and the reason why
      *          the statement exited (typically `StopReason.End`)
      */
-    accept <R> (visitor: Visitor<R>): Result;
+    accept <R> (visitor: Visitor<R>): BrsType;
 }
 
 export class Assignment implements Statement {
     constructor(readonly name: Token, readonly value: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitAssignment(this);
     }
 }
@@ -56,7 +41,7 @@ export class Assignment implements Statement {
 export class Block implements Statement {
     constructor(readonly statements: ReadonlyArray<Statement>) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitBlock(this);
     }
 }
@@ -64,19 +49,19 @@ export class Block implements Statement {
 export class Expression implements Statement {
     constructor(readonly expression: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExpression(this);
     }
 }
 
 export class ExitFor implements Statement {
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExitFor(this);
     }
 }
 
 export class ExitWhile implements Statement {
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExitWhile(this);
     }
 }
@@ -85,14 +70,15 @@ export class ExitWhile implements Statement {
 export class Function implements Statement {
     constructor(
         readonly name: Token,
-        readonly parameters: ReadonlyArray<Token>,
-        readonly body: ReadonlyArray<Statement>
+        readonly parameters: ReadonlyArray<Argument>,
+        readonly returns: ValueKind,
+        readonly body: Block
     ) {}
 
     // this might have to return a real value once we start to add anonymous functions
     // WAIT NO - anonymous functions are an `assign` with the RHS of a `function` expression I think?
-    accept<R>(visitor: Visitor<R>): Result {
-        throw new Error("Method not implemented.");
+    accept<R>(visitor: Visitor<R>): BrsType {
+        return visitor.visitNamedFunction(this);
     }
 }
 
@@ -109,7 +95,7 @@ export class If implements Statement {
         readonly elseBranch?: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIf(this);
     }
 }
@@ -138,7 +124,7 @@ export class Print implements Statement {
         readonly expressions: (Expr.Expression | PrintSeparator)[]
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitPrint(this);
     }
 }
@@ -149,8 +135,8 @@ export class Return implements Statement {
         readonly value?: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
-        throw new Error("Method not implemented.");
+    accept<R>(visitor: Visitor<R>): BrsType {
+        return visitor.visitReturn(this);
     }
 }
 
@@ -162,7 +148,7 @@ export class For implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitFor(this);
     }
 }
@@ -173,7 +159,7 @@ export class While implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Result {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitWhile(this);
     }
 }

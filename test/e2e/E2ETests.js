@@ -2,8 +2,8 @@ const path = require("path");
 const stream = require("stream");
 
 /** Returns the path to a file in `resources/`. */
-exports.resourceFile = function(filename) {
-    return path.join(__dirname, "resources", filename);
+exports.resourceFile = function(...filenameParts) {
+    return path.join(__dirname, "resources", ...filenameParts);
 }
 
 /**

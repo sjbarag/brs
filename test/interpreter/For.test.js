@@ -110,10 +110,10 @@ describe("interpreter while loops", () => {
 
         const [forLoop, i] = interpreter.exec(statements);
         // counter must get incremented after last body iteration
-        expect(i.value).toEqual(new Int32(6));
+        expect(i).toEqual(new Int32(6));
     });
 
-    it("can be exited", () => {
+    it.only("can be exited", () => {
         const body = new Stmt.Block([
             new Stmt.ExitFor()
         ]);

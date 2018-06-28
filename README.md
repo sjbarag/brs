@@ -73,7 +73,7 @@ $ npm install -g yarn
     ```
 ### The build-test-clean dance
 #### Build
-Yarn's written in TypeScript, so it needs to be compiled before it can be executed.  `yarn build` compiles files in `src/` into JavaScript and TypeScript declarations, and puts them in `lib/` and `types/` respectively.
+This project is written in TypeScript, so it needs to be compiled before it can be executed.  `yarn build` compiles files in `src/` into JavaScript and TypeScript declarations, and puts them in `lib/` and `types/` respectively.
 
 ```shell
 $ yarn build
@@ -105,4 +105,11 @@ ls: cannot access 'lib': No such file or directory
 
 $ ls types/
 ls: cannot access 'types': No such file or directory
+```
+
+#### All Together
+Thanks to the [npm-run-all](https://www.npmjs.com/package/npm-run-all) package, it's trivially easy to combine these into a sequence of tasks without relying on shell semantics:
+
+```shell
+$ yarn run-s clean build test
 ```

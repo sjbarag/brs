@@ -17,6 +17,10 @@ export class AstPrinter implements Expr.Visitor<string> {
         return JSON.stringify(e, undefined, 2);
     }
 
+    visitAnonymousFunction(e: Expr.Function): string {
+        return JSON.stringify(e, undefined, 2);
+    }
+
     visitBinary(e: Expr.Binary): string {
         return this.parenthesize(e.token.text, e.left, e.right);
     }

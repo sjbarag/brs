@@ -68,6 +68,8 @@ function declaration(): Statement | undefined {
     }
 }
 
+function functionDeclaration(isAnonymous: true): Expr.Function;
+function functionDeclaration(isAnonymous: false): Stmt.Function;
 function functionDeclaration(isAnonymous: boolean) {
     let isSub = check(Lexeme.Sub);
     let functionType = isSub ? "sub" : "function";
@@ -77,7 +79,7 @@ function functionDeclaration(isAnonymous: boolean) {
     advance();
 
     if (isAnonymous) {
-        throw ParseError.make(peek(), "Anonymous functions are a WIP");
+        consume(`Expected '(' after ${functionType}`, Lexeme.LeftParen);
     } else {
         name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier);
         consume(`Expected '(' after ${functionType} name`, Lexeme.LeftParen);
@@ -130,9 +132,15 @@ function functionDeclaration(isAnonymous: boolean) {
     }
     advance(); // consume 'end sub' or 'end function'
 
-    while(match(Lexeme.Newline)) {}
 
-    return new Stmt.Function(name, args, returnType, body);
+    let func = new Expr.Function(args, returnType, body);
+
+    if (isAnonymous) {
+        return func;
+    } else {
+        while(match(Lexeme.Newline));
+        return new Stmt.Function(name!, func);
+    }
 }
 
 function signatureArgument(): Argument {
@@ -401,6 +409,14 @@ function block(...terminators: BlockTerminator[]): Stmt.Block | undefined {
 }
 
 function expression(): Expression {
+    return anonymousFunction();
+}
+
+function anonymousFunction(): Expression {
+    if (check(Lexeme.Sub, Lexeme.Function)) {
+        return functionDeclaration(true);
+    }
+
     return boolean();
 }
 

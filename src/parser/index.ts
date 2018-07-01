@@ -138,6 +138,8 @@ function functionDeclaration(isAnonymous: boolean) {
     if (isAnonymous) {
         return func;
     } else {
+        // only consume trailing newlines in the statement context; expressions
+        // expect to handle their own trailing whitespace
         while(match(Lexeme.Newline));
         return new Stmt.Function(name!, func);
     }

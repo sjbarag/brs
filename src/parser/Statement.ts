@@ -70,13 +70,9 @@ export class ExitWhile implements Statement {
 export class Function implements Statement {
     constructor(
         readonly name: Token,
-        readonly parameters: ReadonlyArray<Argument>,
-        readonly returns: ValueKind,
-        readonly body: Block
+        readonly func: Expr.Function
     ) {}
 
-    // this might have to return a real value once we start to add anonymous functions
-    // WAIT NO - anonymous functions are an `assign` with the RHS of a `function` expression I think?
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitNamedFunction(this);
     }

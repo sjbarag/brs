@@ -20,8 +20,10 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                [],
-                new Stmt.Block([])
+                new Expr.Function(
+                    [],
+                    new Stmt.Block([])
+                )
             )
         ];
 
@@ -42,9 +44,11 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                [],
-                ValueKind.Void,
-                emptyBlock
+                new Expr.Function(
+                    [],
+                    ValueKind.Void,
+                    emptyBlock
+                )
             ),
             new Stmt.Expression(
                 new Expr.Call(
@@ -67,16 +71,18 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                [],
-                ValueKind.String,
-                new Stmt.Block([
-                    new Stmt.Return(
-                        { kind: Lexeme.Return, text: "return", line: 2 },
-                        new Expr.Literal(
-                            new BrsString("hello, world")
+                new Expr.Function(
+                    [],
+                    ValueKind.String,
+                    new Stmt.Block([
+                        new Stmt.Return(
+                            { kind: Lexeme.Return, text: "return", line: 2 },
+                            new Expr.Literal(
+                                new BrsString("hello, world")
+                            )
                         )
-                    )
-                ])
+                    ])
+                )
             ),
             new Stmt.Assignment(
                 { kind: Lexeme.Identifier, text: "result", line: 4},
@@ -103,20 +109,22 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "ident", line: 1 },
-                [{
-                    name: "input",
-                    type: ValueKind.Int32,
-                    defaultValue: new Expr.Literal(new Int32(-32))
-                }],
-                ValueKind.Int32,
-                new Stmt.Block([
-                    new Stmt.Return(
-                        { kind: Lexeme.Return, text: "return", line: 2 },
-                        new Expr.Variable(
-                            { kind: Lexeme.Identifier, text: "input", line: 2 }
+                new Expr.Function(
+                    [{
+                        name: "input",
+                        type: ValueKind.Int32,
+                        defaultValue: new Expr.Literal(new Int32(-32))
+                    }],
+                    ValueKind.Int32,
+                    new Stmt.Block([
+                        new Stmt.Return(
+                            { kind: Lexeme.Return, text: "return", line: 2 },
+                            new Expr.Variable(
+                                { kind: Lexeme.Identifier, text: "input", line: 2 }
+                            )
                         )
-                    )
-                ])
+                    ])
+                )
             ),
             new Stmt.Assignment(
                 { kind: Lexeme.Identifier, text: "result", line: 4 },
@@ -147,16 +155,18 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                [],
-                ValueKind.Int32,
-                new Stmt.Block([
-                    new Stmt.Return(
-                        { kind: Lexeme.Return, text: "return", line: 2 },
-                        new Expr.Literal(
-                            new BrsString("not a number")
+                new Expr.Function(
+                    [],
+                    ValueKind.Int32,
+                    new Stmt.Block([
+                        new Stmt.Return(
+                            { kind: Lexeme.Return, text: "return", line: 2 },
+                            new Expr.Literal(
+                                new BrsString("not a number")
+                            )
                         )
-                    )
-                ])
+                    ])
+                )
             ),
             new Stmt.Assignment(
                 { kind: Lexeme.Identifier, text: "result", line: 4},
@@ -178,20 +188,22 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "ident", line: 1 },
-                [{
-                    name: "input",
-                    type: ValueKind.Int32,
-                    defaultValue: new Expr.Literal(new Int32(-32))
-                }],
-                ValueKind.Int32,
-                new Stmt.Block([
-                    new Stmt.Return(
-                        { kind: Lexeme.Return, text: "return", line: 2 },
-                        new Expr.Variable(
-                            { kind: Lexeme.Identifier, text: "input", line: 2 }
+                new Expr.Function(
+                    [{
+                        name: "input",
+                        type: ValueKind.Int32,
+                        defaultValue: new Expr.Literal(new Int32(-32))
+                    }],
+                    ValueKind.Int32,
+                    new Stmt.Block([
+                        new Stmt.Return(
+                            { kind: Lexeme.Return, text: "return", line: 2 },
+                            new Expr.Variable(
+                                { kind: Lexeme.Identifier, text: "input", line: 2 }
+                            )
                         )
-                    )
-                ])
+                    ])
+                )
             ),
             new Stmt.Assignment(
                 { kind: Lexeme.Identifier, text: "result", line: 4 },

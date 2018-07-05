@@ -22,6 +22,7 @@ describe("interpreter function declarations", () => {
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 new Expr.Function(
                     [],
+                    ValueKind.Void,
                     new Stmt.Block([])
                 )
             )

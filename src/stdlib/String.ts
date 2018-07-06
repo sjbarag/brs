@@ -55,3 +55,15 @@ export const Chr = new Callable(
             return new BrsString(String.fromCharCode(num));
     }
 );
+
+/**
+ * Returns the first n characters in a string
+ */
+export const Left = new Callable(
+    {
+        name: "Left",
+        args: [{ name: "s", type: ValueKind.String }, { name: "n", type: ValueKind.Int32 }],
+        returns: ValueKind.String,
+    },
+    (interpreter: Interpreter, s: BrsString, n: Int32) => new BrsString(s.value.substr(0, n.getValue()))
+);

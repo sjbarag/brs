@@ -59,6 +59,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.globals.define("Asc", StdLib.Asc);
         this.globals.define("Chr", StdLib.Chr);
         this.globals.define("Pos", StdLib.Pos);
+        this.globals.define("Left", StdLib.Left);
     }
 
     /**

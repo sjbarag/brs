@@ -62,15 +62,19 @@ describe("global string functions", () => {
     });
 
     describe("Left", () => {
-        it("get first n characters in a string", () => {
+        it("get first n characters in a string longer than n characters", () => {
             expect(
                 Left.call(interpreter, new BrsString("pineapple"), new Int32(4))
             ).toEqual(new BrsString("pine"));
+        });
 
+        it("get the original string back with n larger than string length", () => {
             expect(
                 Left.call(interpreter, new BrsString("boy"), new Int32(5))
             ).toEqual(new BrsString("boy"));
+        });
 
+        it("get back empty string when character length is 0 or negative", () => {
             expect(
                 Left.call(interpreter, new BrsString("apple"), new Int32(0))
             ).toEqual(new BrsString(""));

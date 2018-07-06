@@ -1,4 +1,4 @@
-const { UCase, LCase, Asc, Chr } = require("../../lib/stdlib/index");
+const { UCase, LCase, Asc, Chr, Left } = require("../../lib/stdlib/index");
 const { Interpreter } = require("../../lib/interpreter");
 const { BrsString, BrsBoolean, Int32 } = require("../../lib/brsTypes");
 
@@ -58,6 +58,26 @@ describe("global string functions", () => {
             expect(
                 Chr.call(interpreter, new Int32(12359))
             ).toEqual(new BrsString("ぇ"));
+        });
+    });
+
+    describe("Left", () => {
+        it("get first n characters in a string", () => {
+            expect(
+                Left.call(interpreter, new BrsString("pineapple"), new Int32(4))
+            ).toEqual(new BrsString("pine"));
+
+            expect(
+                Left.call(interpreter, new BrsString("boy"), new Int32(5))
+            ).toEqual(new BrsString("boy"));
+
+            expect(
+                Left.call(interpreter, new BrsString("apple"), new Int32(0))
+            ).toEqual(new BrsString(""));
+
+            expect(
+                Left.call(interpreter, new BrsString("apple"), new Int32(-5))
+            ).toEqual(new BrsString(""));
         });
     });
 });

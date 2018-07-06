@@ -5,3 +5,5 @@ print LCase(mixedCase)
 
 print Asc("ぇ")
 print Chr(12359) ' UTF-16 decimal for "ぇ"
+
+print Left(mixedCase, 5)

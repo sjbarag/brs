@@ -26,7 +26,8 @@ describe("end to end standard libary", () => {
                 "MIXED CASE",
                 "mixed case",
                 "12359",
-                "ぇ"
+                "ぇ",
+                "Mixed"
             ]);
         });
     });

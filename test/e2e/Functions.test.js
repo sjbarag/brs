@@ -46,4 +46,19 @@ describe("end to end functions", () => {
             ]);
         });
     });
+
+    test("function/expressions.brs", () => {
+        return execute(resourceFile("function", "expressions.brs"), outputStreams).then(() => {
+            expect(BrsError.found()).toBe(false);
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
+                "anonymous function",
+                "immediately-invoked function expression (IIFE)",
+                "pre-callback",
+                "callback:", "14",
+                "post-callback"
+            ]);
+        });
+    });
 });

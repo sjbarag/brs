@@ -1,10 +1,12 @@
 import { Token } from "../Token";
-import { BrsType } from "../brsTypes";
+import { BrsType, Argument, ValueKind } from "../brsTypes";
+import { Block } from "./Statement";
 
 export interface Visitor<T> {
     visitAssign(expression: Assign): T;
     visitBinary(expression: Binary): T;
     visitCall(expression: Call): T;
+    visitAnonymousFunction(func: Function): T;
     visitGet(expression: Get): T;
     visitGrouping(expression: Grouping): T;
     visitLiteral(expression: Literal): T;
@@ -44,7 +46,6 @@ export class Binary implements Expression {
 }
 
 export class Call implements Expression {
-    // TODO: Check against a Roku device (that'll be fun)
     static MaximumArguments = 32;
 
     constructor(
@@ -55,6 +56,18 @@ export class Call implements Expression {
 
     accept <R> (visitor: Visitor<R>): R {
         return visitor.visitCall(this);
+    }
+}
+
+export class Function implements Expression {
+    constructor(
+        readonly parameters: ReadonlyArray<Argument>,
+        readonly returns: ValueKind,
+        readonly body: Block
+    ) {}
+
+    accept <R> (visitor: Visitor<R>): R {
+        return visitor.visitAnonymousFunction(this);
     }
 }
 

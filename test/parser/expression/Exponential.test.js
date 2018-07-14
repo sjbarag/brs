@@ -1,6 +1,7 @@
 const Parser = require("../../../lib/parser");
 const { Lexeme } = require("../../../lib/Lexeme");
 const BrsError = require("../../../lib/Error");
+const { Int32 } = require("../../../lib/brsTypes");
 
 const { token, EOF } = require("../ParserTests");
 
@@ -10,11 +11,15 @@ describe("parser", () => {
     describe("exponential expressions", () => {
         it("parses exponential operators", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Integer, 2),
-                token(Lexeme.Caret),
-                token(Lexeme.Integer, 3),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                { kind: Lexeme.Caret, text: "^", line: 1 },
+                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -22,13 +27,17 @@ describe("parser", () => {
 
         it("parses repeated exponential operators as left-associative", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Integer, 2),
-                token(Lexeme.Caret),
-                token(Lexeme.Integer, 3),
-                token(Lexeme.Caret),
-                token(Lexeme.Integer, 4),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                { kind: Lexeme.Caret, text: "^", line: 1 },
+                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
+                { kind: Lexeme.Caret, text: "^", line: 1 },
+                { kind: Lexeme.Integer, text: "4", literal: new Int32(4), line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();

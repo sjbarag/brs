@@ -2,60 +2,63 @@
 
 exports[`parser function expressions parses functions with default argument expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [
-          Object {
-            "defaultValue": Literal {
-              "value": Int32 {
-                "kind": 3,
-                "value": 3,
-              },
-            },
-            "name": "a",
-            "type": 8,
-          },
-          Object {
-            "defaultValue": Literal {
-              "value": Int32 {
-                "kind": 3,
-                "value": 4,
-              },
-            },
-            "name": "b",
-            "type": 8,
-          },
-          Object {
-            "defaultValue": Binary {
-              "left": Variable {
-                "name": Object {
-                  "kind": 21,
-                  "line": 1,
-                  "text": "a",
-                },
-              },
-              "right": Literal {
-                "value": Int32 {
-                  "kind": 3,
-                  "value": 5,
-                },
-              },
-              "token": Object {
-                "kind": 8,
-                "line": 1,
-                "text": "+",
-              },
-            },
-            "name": "c",
-            "type": 8,
-          },
-        ],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [
+        Object {
+          "defaultValue": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 3,
+            },
+          },
+          "name": "a",
+          "type": 8,
+        },
+        Object {
+          "defaultValue": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 4,
+            },
+          },
+          "name": "b",
+          "type": 8,
+        },
+        Object {
+          "defaultValue": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "a",
+              },
+            },
+            "right": Literal {
+              "value": Int32 {
+                "kind": 3,
+                "value": 5,
+              },
+            },
+            "token": Object {
+              "kind": 8,
+              "line": 1,
+              "text": "+",
+            },
+          },
+          "name": "c",
+          "type": 8,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -63,26 +66,29 @@ Array [
 
 exports[`parser function expressions parses functions with implicit-dynamic arguments 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [
-          Object {
-            "defaultValue": undefined,
-            "name": "a",
-            "type": 8,
-          },
-          Object {
-            "defaultValue": undefined,
-            "name": "b",
-            "type": 8,
-          },
-        ],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [
+        Object {
+          "defaultValue": undefined,
+          "name": "a",
+          "type": 8,
+        },
+        Object {
+          "defaultValue": undefined,
+          "name": "b",
+          "type": 8,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -90,26 +96,29 @@ Array [
 
 exports[`parser function expressions parses functions with typed arguments 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [
-          Object {
-            "defaultValue": undefined,
-            "name": "str",
-            "type": 2,
-          },
-          Object {
-            "defaultValue": undefined,
-            "name": "count",
-            "type": 3,
-          },
-        ],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [
+        Object {
+          "defaultValue": undefined,
+          "name": "str",
+          "type": 2,
+        },
+        Object {
+          "defaultValue": undefined,
+          "name": "count",
+          "type": 3,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -117,50 +126,53 @@ Array [
 
 exports[`parser function expressions parses functions with typed arguments and default expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
+      },
+      "parameters": Array [
+        Object {
+          "defaultValue": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 3,
+            },
+          },
+          "name": "a",
+          "type": 3,
         },
-        "parameters": Array [
-          Object {
-            "defaultValue": Literal {
+        Object {
+          "defaultValue": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "a",
+              },
+            },
+            "right": Literal {
               "value": Int32 {
                 "kind": 3,
-                "value": 3,
+                "value": 5,
               },
             },
-            "name": "a",
-            "type": 3,
-          },
-          Object {
-            "defaultValue": Binary {
-              "left": Variable {
-                "name": Object {
-                  "kind": 21,
-                  "line": 1,
-                  "text": "a",
-                },
-              },
-              "right": Literal {
-                "value": Int32 {
-                  "kind": 3,
-                  "value": 5,
-                },
-              },
-              "token": Object {
-                "kind": 8,
-                "line": 1,
-                "text": "+",
-              },
+            "token": Object {
+              "kind": 8,
+              "line": 1,
+              "text": "+",
             },
-            "name": "b",
-            "type": 3,
           },
-        ],
-        "returns": 8,
-      },
+          "name": "b",
+          "type": 3,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -168,15 +180,18 @@ Array [
 
 exports[`parser function expressions parses minimal empty function expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [],
+      "returns": 8,
     },
   },
 ]
@@ -184,26 +199,29 @@ Array [
 
 exports[`parser function expressions parses non-empty function expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [
-            Print {
-              "expressions": Array [
-                Literal {
-                  "value": BrsString {
-                    "kind": 2,
-                    "value": "Lorem ipsum",
-                  },
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [
+          Print {
+            "expressions": Array [
+              Literal {
+                "value": BrsString {
+                  "kind": 2,
+                  "value": "Lorem ipsum",
                 },
-              ],
-            },
-          ],
-        },
-        "parameters": Array [],
-        "returns": 8,
+              },
+            ],
+          },
+        ],
       },
+      "parameters": Array [],
+      "returns": 8,
     },
   },
 ]
@@ -211,15 +229,18 @@ Array [
 
 exports[`parser function expressions parses return types 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [],
-        "returns": 9,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [],
+      "returns": 9,
     },
   },
 ]
@@ -227,15 +248,18 @@ Array [
 
 exports[`parser sub expressions parses minimal sub expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [],
+      "returns": 8,
     },
   },
 ]
@@ -243,26 +267,29 @@ Array [
 
 exports[`parser sub expressions parses non-empty sub expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [
-            Print {
-              "expressions": Array [
-                Literal {
-                  "value": BrsString {
-                    "kind": 2,
-                    "value": "Lorem ipsum",
-                  },
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [
+          Print {
+            "expressions": Array [
+              Literal {
+                "value": BrsString {
+                  "kind": 2,
+                  "value": "Lorem ipsum",
                 },
-              ],
-            },
-          ],
-        },
-        "parameters": Array [],
-        "returns": 8,
+              },
+            ],
+          },
+        ],
       },
+      "parameters": Array [],
+      "returns": 8,
     },
   },
 ]
@@ -270,60 +297,63 @@ Array [
 
 exports[`parser sub expressions parses subs with default argument expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [
-          Object {
-            "defaultValue": Literal {
-              "value": Int32 {
-                "kind": 3,
-                "value": 3,
-              },
-            },
-            "name": "a",
-            "type": 8,
-          },
-          Object {
-            "defaultValue": Literal {
-              "value": Int32 {
-                "kind": 3,
-                "value": 4,
-              },
-            },
-            "name": "b",
-            "type": 8,
-          },
-          Object {
-            "defaultValue": Binary {
-              "left": Variable {
-                "name": Object {
-                  "kind": 21,
-                  "line": 1,
-                  "text": "a",
-                },
-              },
-              "right": Literal {
-                "value": Int32 {
-                  "kind": 3,
-                  "value": 5,
-                },
-              },
-              "token": Object {
-                "kind": 8,
-                "line": 1,
-                "text": "+",
-              },
-            },
-            "name": "c",
-            "type": 8,
-          },
-        ],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [
+        Object {
+          "defaultValue": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 3,
+            },
+          },
+          "name": "a",
+          "type": 8,
+        },
+        Object {
+          "defaultValue": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 4,
+            },
+          },
+          "name": "b",
+          "type": 8,
+        },
+        Object {
+          "defaultValue": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "a",
+              },
+            },
+            "right": Literal {
+              "value": Int32 {
+                "kind": 3,
+                "value": 5,
+              },
+            },
+            "token": Object {
+              "kind": 8,
+              "line": 1,
+              "text": "+",
+            },
+          },
+          "name": "c",
+          "type": 8,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -331,26 +361,29 @@ Array [
 
 exports[`parser sub expressions parses subs with implicit-dynamic arguments 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [
-          Object {
-            "defaultValue": undefined,
-            "name": "a",
-            "type": 8,
-          },
-          Object {
-            "defaultValue": undefined,
-            "name": "b",
-            "type": 8,
-          },
-        ],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [
+        Object {
+          "defaultValue": undefined,
+          "name": "a",
+          "type": 8,
+        },
+        Object {
+          "defaultValue": undefined,
+          "name": "b",
+          "type": 8,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -358,26 +391,29 @@ Array [
 
 exports[`parser sub expressions parses subs with typed arguments 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
-        },
-        "parameters": Array [
-          Object {
-            "defaultValue": undefined,
-            "name": "str",
-            "type": 2,
-          },
-          Object {
-            "defaultValue": undefined,
-            "name": "count",
-            "type": 3,
-          },
-        ],
-        "returns": 8,
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
       },
+      "parameters": Array [
+        Object {
+          "defaultValue": undefined,
+          "name": "str",
+          "type": 2,
+        },
+        Object {
+          "defaultValue": undefined,
+          "name": "count",
+          "type": 3,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]
@@ -385,50 +421,53 @@ Array [
 
 exports[`parser sub expressions parses subs with typed arguments and default expressions 1`] = `
 Array [
-  Expression {
-    "expression": Grouping {
-      "expression": Function {
-        "body": Block {
-          "statements": Array [],
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Function {
+      "body": Block {
+        "statements": Array [],
+      },
+      "parameters": Array [
+        Object {
+          "defaultValue": Literal {
+            "value": Int32 {
+              "kind": 3,
+              "value": 3,
+            },
+          },
+          "name": "a",
+          "type": 3,
         },
-        "parameters": Array [
-          Object {
-            "defaultValue": Literal {
+        Object {
+          "defaultValue": Binary {
+            "left": Variable {
+              "name": Object {
+                "kind": 21,
+                "line": 1,
+                "text": "a",
+              },
+            },
+            "right": Literal {
               "value": Int32 {
                 "kind": 3,
-                "value": 3,
+                "value": 5,
               },
             },
-            "name": "a",
-            "type": 3,
-          },
-          Object {
-            "defaultValue": Binary {
-              "left": Variable {
-                "name": Object {
-                  "kind": 21,
-                  "line": 1,
-                  "text": "a",
-                },
-              },
-              "right": Literal {
-                "value": Int32 {
-                  "kind": 3,
-                  "value": 5,
-                },
-              },
-              "token": Object {
-                "kind": 8,
-                "line": 1,
-                "text": "+",
-              },
+            "token": Object {
+              "kind": 8,
+              "line": 1,
+              "text": "+",
             },
-            "name": "b",
-            "type": 3,
           },
-        ],
-        "returns": 8,
-      },
+          "name": "b",
+          "type": 3,
+        },
+      ],
+      "returns": 8,
     },
   },
 ]

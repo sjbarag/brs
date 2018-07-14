@@ -2,8 +2,13 @@
 
 exports[`parser boolean expressions parses boolean ANDs 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
         "value": BrsBoolean {
           "kind": 1,
@@ -19,7 +24,7 @@ Array [
       "token": Object {
         "kind": 31,
         "line": 1,
-        "literal": undefined,
+        "text": "and",
       },
     },
   },
@@ -28,8 +33,13 @@ Array [
 
 exports[`parser boolean expressions parses boolean ORs 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
         "value": BrsBoolean {
           "kind": 1,
@@ -45,7 +55,7 @@ Array [
       "token": Object {
         "kind": 62,
         "line": 1,
-        "literal": undefined,
+        "text": "or",
       },
     },
   },

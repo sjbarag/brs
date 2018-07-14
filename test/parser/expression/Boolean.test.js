@@ -2,23 +2,21 @@ const Parser = require("../../../lib/parser");
 const Expr = require("../../../lib/parser/Expression");
 const { Lexeme } = require("../../../lib/Lexeme");
 const BrsError = require("../../../lib/Error");
-const { Int32 } = require("../../../lib/brsTypes");
+const { BrsBoolean } = require("../../../lib/brsTypes");
 
 const { EOF } = require("../ParserTests");
 
 describe("parser", () => {
     afterEach(() => BrsError.reset());
 
-    describe("additive expressions", () => {
-        it("parses left-associative addition chains", () => {
+    describe("boolean expressions", () => {
+        it("parses boolean ANDs", () => {
             let parsed = Parser.parse([
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "1", literal: new Int32(1), line: 1 },
-                { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
-                { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
+                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
+                { kind: Lexeme.And, text: "and", line: 1 },
+                { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1 },
                 EOF
             ]);
 
@@ -28,15 +26,13 @@ describe("parser", () => {
             expect(parsed).toMatchSnapshot();
         });
 
-        it("parses left-associative subtraction chains", () => {
+        it("parses boolean ORs", () => {
             let parsed = Parser.parse([
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "1", literal: new Int32(1), line: 1 },
-                { kind: Lexeme.Minus, text: "-", line: 1 },
-                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
-                { kind: Lexeme.Minus, text: "-", line: 1 },
-                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
+                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
+                { kind: Lexeme.Or, text: "or", line: 1 },
+                { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1 },
                 EOF
             ]);
 

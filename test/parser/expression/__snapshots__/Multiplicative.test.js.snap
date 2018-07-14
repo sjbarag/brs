@@ -2,28 +2,42 @@
 
 exports[`parser multiplicative expressions parses left-associative division chains 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Binary {
         "left": Literal {
-          "value": 7,
+          "value": Float {
+            "kind": 5,
+            "value": 7,
+          },
         },
         "right": Literal {
-          "value": 5,
+          "value": Float {
+            "kind": 5,
+            "value": 5,
+          },
         },
         "token": Object {
           "kind": 10,
           "line": 1,
-          "literal": undefined,
+          "text": "/",
         },
       },
       "right": Literal {
-        "value": 3,
+        "value": Float {
+          "kind": 5,
+          "value": 3,
+        },
       },
       "token": Object {
         "kind": 10,
         "line": 1,
-        "literal": undefined,
+        "text": "/",
       },
     },
   },
@@ -32,28 +46,42 @@ Array [
 
 exports[`parser multiplicative expressions parses left-associative integer-division chains 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Binary {
         "left": Literal {
-          "value": 32.5,
+          "value": Float {
+            "kind": 5,
+            "value": 32.5,
+          },
         },
         "right": Literal {
-          "value": 5,
+          "value": Float {
+            "kind": 5,
+            "value": 5,
+          },
         },
         "token": Object {
           "kind": 12,
           "line": 1,
-          "literal": undefined,
+          "text": "\\\\",
         },
       },
       "right": Literal {
-        "value": 3,
+        "value": Float {
+          "kind": 5,
+          "value": 3,
+        },
       },
       "token": Object {
-        "kind": 11,
+        "kind": 12,
         "line": 1,
-        "literal": undefined,
+        "text": "\\\\",
       },
     },
   },
@@ -62,28 +90,42 @@ Array [
 
 exports[`parser multiplicative expressions parses left-associative modulo chains 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Binary {
         "left": Literal {
-          "value": 7,
+          "value": Float {
+            "kind": 5,
+            "value": 7,
+          },
         },
         "right": Literal {
-          "value": 9,
+          "value": Float {
+            "kind": 5,
+            "value": 5,
+          },
         },
         "token": Object {
           "kind": 11,
           "line": 1,
-          "literal": undefined,
+          "text": "MOD",
         },
       },
       "right": Literal {
-        "value": 3,
+        "value": Float {
+          "kind": 5,
+          "value": 3,
+        },
       },
       "token": Object {
         "kind": 11,
         "line": 1,
-        "literal": undefined,
+        "text": "MOD",
       },
     },
   },
@@ -92,28 +134,42 @@ Array [
 
 exports[`parser multiplicative expressions parses left-associative multiplication chains 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Binary {
         "left": Literal {
-          "value": 3,
+          "value": Float {
+            "kind": 5,
+            "value": 3,
+          },
         },
         "right": Literal {
-          "value": 5,
+          "value": Float {
+            "kind": 5,
+            "value": 5,
+          },
         },
         "token": Object {
           "kind": 9,
           "line": 1,
-          "literal": undefined,
+          "text": "*",
         },
       },
       "right": Literal {
-        "value": 7,
+        "value": Float {
+          "kind": 5,
+          "value": 7,
+        },
       },
       "token": Object {
         "kind": 9,
         "line": 1,
-        "literal": undefined,
+        "text": "*",
       },
     },
   },

@@ -2,8 +2,9 @@ const Parser = require("../../../lib/parser");
 const Expr = require("../../../lib/parser/Expression");
 const { Lexeme } = require("../../../lib/Lexeme");
 const BrsError = require("../../../lib/Error");
+const { Float } = require("../../../lib/brsTypes");
 
-const { token, EOF } = require("../ParserTests");
+const { EOF } = require("../ParserTests");
 
 describe("parser", () => {
     afterEach(() => BrsError.reset());
@@ -11,14 +12,17 @@ describe("parser", () => {
     describe("multiplicative expressions", () => {
         it("parses left-associative multiplication chains", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Float, Math.fround(3.0)),
-                token(Lexeme.Star),
-                token(Lexeme.Float, Math.fround(5.0)),
-                token(Lexeme.Star),
-                token(Lexeme.Float, Math.fround(7.0)),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Float, text: "3.0", literal: new Float(3.0), line: 1 },
+                { kind: Lexeme.Star, text: "*", line: 1 },
+                { kind: Lexeme.Float, text: "5.0", literal: new Float(5.0), line: 1 },
+                { kind: Lexeme.Star, text: "*", line: 1 },
+                { kind: Lexeme.Float, text: "7.0", literal: new Float(7.0), line: 1 },
                 EOF
             ]);
 
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -26,14 +30,17 @@ describe("parser", () => {
 
         it("parses left-associative division chains", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Float, Math.fround(7.0)),
-                token(Lexeme.Slash),
-                token(Lexeme.Float, Math.fround(5.0)),
-                token(Lexeme.Slash),
-                token(Lexeme.Float, Math.fround(3.0)),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Float, text: "7.0", literal: new Float(7.0), line: 1 },
+                { kind: Lexeme.Slash, text: "/", line: 1 },
+                { kind: Lexeme.Float, text: "5.0", literal: new Float(5.0), line: 1 },
+                { kind: Lexeme.Slash, text: "/", line: 1 },
+                { kind: Lexeme.Float, text: "3.0", literal: new Float(3.0), line: 1 },
                 EOF
             ]);
 
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -41,14 +48,17 @@ describe("parser", () => {
 
         it("parses left-associative modulo chains", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Float, Math.fround(7.0)),
-                token(Lexeme.Mod),
-                token(Lexeme.Float, Math.fround(9.0)),
-                token(Lexeme.Mod),
-                token(Lexeme.Float, Math.fround(3.0)),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Float, text: "7.0", literal: new Float(7.0), line: 1 },
+                { kind: Lexeme.Mod, text: "MOD", line: 1 },
+                { kind: Lexeme.Float, text: "5.0", literal: new Float(5.0), line: 1 },
+                { kind: Lexeme.Mod, text: "MOD", line: 1 },
+                { kind: Lexeme.Float, text: "3.0", literal: new Float(3.0), line: 1 },
                 EOF
             ]);
 
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -56,14 +66,17 @@ describe("parser", () => {
 
         it("parses left-associative integer-division chains", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Float, Math.fround(32.5)),
-                token(Lexeme.Backslash),
-                token(Lexeme.Float, Math.fround(5.0)),
-                token(Lexeme.Mod),
-                token(Lexeme.Float, Math.fround(3.0)),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Float, text: "32.5", literal: new Float(32.5), line: 1 },
+                { kind: Lexeme.Backslash, text: "\\", line: 1 },
+                { kind: Lexeme.Float, text: "5.0", literal: new Float(5.0), line: 1 },
+                { kind: Lexeme.Backslash, text: "\\", line: 1 },
+                { kind: Lexeme.Float, text: "3.0", literal: new Float(3.0), line: 1 },
                 EOF
             ]);
 
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();

@@ -2,39 +2,47 @@
 
 exports[`parser unary expressions parses consecutive unary '-' 1`] = `
 Array [
-  Expression {
-    "expression": Unary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Unary {
       "operator": Object {
         "kind": 7,
         "line": 1,
-        "literal": undefined,
+        "text": "-",
       },
       "right": Unary {
         "operator": Object {
           "kind": 7,
           "line": 1,
-          "literal": undefined,
+          "text": "-",
         },
         "right": Unary {
           "operator": Object {
             "kind": 7,
             "line": 1,
-            "literal": undefined,
+            "text": "-",
           },
           "right": Unary {
             "operator": Object {
               "kind": 7,
               "line": 1,
-              "literal": undefined,
+              "text": "-",
             },
             "right": Unary {
               "operator": Object {
                 "kind": 7,
                 "line": 1,
-                "literal": undefined,
+                "text": "-",
               },
               "right": Literal {
-                "value": 5,
+                "value": Int32 {
+                  "kind": 3,
+                  "value": 5,
+                },
               },
             },
           },
@@ -47,36 +55,41 @@ Array [
 
 exports[`parser unary expressions parses consecutive unary 'not' 1`] = `
 Array [
-  Expression {
-    "expression": Unary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Unary {
       "operator": Object {
         "kind": 60,
         "line": 1,
-        "literal": undefined,
+        "text": "not",
       },
       "right": Unary {
         "operator": Object {
           "kind": 60,
           "line": 1,
-          "literal": undefined,
+          "text": "not",
         },
         "right": Unary {
           "operator": Object {
             "kind": 60,
             "line": 1,
-            "literal": undefined,
+            "text": "not",
           },
           "right": Unary {
             "operator": Object {
               "kind": 60,
               "line": 1,
-              "literal": undefined,
+              "text": "not",
             },
             "right": Unary {
               "operator": Object {
                 "kind": 60,
                 "line": 1,
-                "literal": undefined,
+                "text": "not",
               },
               "right": Literal {
                 "value": BrsBoolean {
@@ -95,15 +108,23 @@ Array [
 
 exports[`parser unary expressions parses unary '-' 1`] = `
 Array [
-  Expression {
-    "expression": Unary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Unary {
       "operator": Object {
         "kind": 7,
         "line": 1,
-        "literal": undefined,
+        "text": "-",
       },
       "right": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
     },
   },
@@ -112,12 +133,17 @@ Array [
 
 exports[`parser unary expressions parses unary 'not' 1`] = `
 Array [
-  Expression {
-    "expression": Unary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Unary {
       "operator": Object {
         "kind": 60,
         "line": 1,
-        "literal": undefined,
+        "text": "not",
       },
       "right": Literal {
         "value": BrsBoolean {

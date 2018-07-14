@@ -2,6 +2,7 @@ const Parser = require("../../../lib/parser");
 const Expr = require("../../../lib/parser/Expression");
 const Stmt = require("../../../lib/parser/Statement");
 const { Lexeme } = require("../../../lib/Lexeme");
+const { Int32, BrsString } = require("../../../lib/brsTypes");
 const BrsError = require("../../../lib/Error");
 
 const { token, EOF } = require("../ParserTests");
@@ -12,39 +13,53 @@ describe("parser", () => {
     describe("primary expressions", () => {
         it("parses literals", () => {
             let numeric = Parser.parse([
-                token(Lexeme.Integer, 5),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Integer, text: 5, literal: new Int32(5), line: 1 },
                 EOF
             ]);
             expect(numeric).toEqual([
-                new Stmt.Expression(
-                    new Expr.Literal(5)
+                new Stmt.Assignment(
+                    { kind: Lexeme.Identifier, text: "_", line: 1 },
+                    new Expr.Literal(
+                        new Int32(5)
+                    )
                 )
             ]);
+            expect(BrsError.found()).toBeFalsy();
 
             let parsedString = Parser.parse([
-                token(Lexeme.String, "hello"),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.String, text: "hello", literal: new BrsString("hello"), line: 1 },
                 EOF
             ]);
             expect(parsedString).toEqual([
-                new Stmt.Expression(
-                    new Expr.Literal("hello")
+                new Stmt.Assignment(
+                    { kind: Lexeme.Identifier, text: "_", line: 1 },
+                    new Expr.Literal(
+                        new BrsString("hello")
+                    )
                 )
             ]);
+            expect(BrsError.found()).toBeFalsy();
         });
-
-        it("parses identifiers");
 
         it("parses expressions in parentheses", () => {
             let withParens = Parser.parse([
-                token(Lexeme.Integer, 1),
-                token(Lexeme.Plus),
-                token(Lexeme.LeftParen),
-                token(Lexeme.Integer, 2),
-                token(Lexeme.Star),
-                token(Lexeme.Integer, 3),
-                token(Lexeme.RightParen),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Integer, text: "1", literal: new Int32(1), line: 1 },
+                { kind: Lexeme.Plus, text: "+", line: 1 },
+                { kind: Lexeme.LeftParen, text: "(", line: 1 },
+                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                { kind: Lexeme.Star, text: "*", line: 1 },
+                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
+                { kind: Lexeme.RightParen, text: ")", line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(withParens).toBeDefined();
             expect(withParens).not.toBeNull();
             expect(withParens).toMatchSnapshot();

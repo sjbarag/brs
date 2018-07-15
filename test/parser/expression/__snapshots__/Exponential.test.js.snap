@@ -2,18 +2,29 @@
 
 exports[`parser exponential expressions parses exponential operators 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "right": Literal {
-        "value": 3,
+        "value": Int32 {
+          "kind": 3,
+          "value": 3,
+        },
       },
       "token": Object {
         "kind": 6,
         "line": 1,
-        "literal": undefined,
+        "text": "^",
       },
     },
   },
@@ -22,28 +33,42 @@ Array [
 
 exports[`parser exponential expressions parses repeated exponential operators as left-associative 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Binary {
         "left": Literal {
-          "value": 2,
+          "value": Int32 {
+            "kind": 3,
+            "value": 2,
+          },
         },
         "right": Literal {
-          "value": 3,
+          "value": Int32 {
+            "kind": 3,
+            "value": 3,
+          },
         },
         "token": Object {
           "kind": 6,
           "line": 1,
-          "literal": undefined,
+          "text": "^",
         },
       },
       "right": Literal {
-        "value": 4,
+        "value": Int32 {
+          "kind": 3,
+          "value": 4,
+        },
       },
       "token": Object {
         "kind": 6,
         "line": 1,
-        "literal": undefined,
+        "text": "^",
       },
     },
   },

@@ -1,9 +1,10 @@
 const Parser = require("../../../lib/parser");
 const Expr = require("../../../lib/parser/Expression");
 const { Lexeme } = require("../../../lib/Lexeme");
+const { Int32, BrsBoolean } = require("../../../lib/brsTypes");
 const BrsError = require("../../../lib/Error");
 
-const { token, EOF } = require("../ParserTests");
+const { EOF } = require("../ParserTests");
 
 describe("parser", () => {
     afterEach(() => BrsError.reset());
@@ -11,10 +12,14 @@ describe("parser", () => {
     describe("unary expressions", () => {
         it("parses unary 'not'", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Not),
-                token(Lexeme.True),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Not, text: "not", line: 1 },
+                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -22,14 +27,18 @@ describe("parser", () => {
 
         it("parses consecutive unary 'not'", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Not),
-                token(Lexeme.Not),
-                token(Lexeme.Not),
-                token(Lexeme.Not),
-                token(Lexeme.Not),
-                token(Lexeme.True),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Not, text: "not", line: 1 },
+                { kind: Lexeme.Not, text: "not", line: 1 },
+                { kind: Lexeme.Not, text: "not", line: 1 },
+                { kind: Lexeme.Not, text: "not", line: 1 },
+                { kind: Lexeme.Not, text: "not", line: 1 },
+                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -37,10 +46,14 @@ describe("parser", () => {
 
         it("parses unary '-'", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Minus),
-                token(Lexeme.Integer, 5),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Minus, text: "-", line: 1},
+                { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();
@@ -48,14 +61,18 @@ describe("parser", () => {
 
         it("parses consecutive unary '-'", () => {
             let parsed = Parser.parse([
-                token(Lexeme.Minus),
-                token(Lexeme.Minus),
-                token(Lexeme.Minus),
-                token(Lexeme.Minus),
-                token(Lexeme.Minus),
-                token(Lexeme.Integer, 5),
+                { kind: Lexeme.Identifier, text: "_", line: 1 },
+                { kind: Lexeme.Equal, text: "=", line: 1 },
+                { kind: Lexeme.Minus, text: "-", line: 1},
+                { kind: Lexeme.Minus, text: "-", line: 1},
+                { kind: Lexeme.Minus, text: "-", line: 1},
+                { kind: Lexeme.Minus, text: "-", line: 1},
+                { kind: Lexeme.Minus, text: "-", line: 1},
+                { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
                 EOF
             ]);
+
+            expect(BrsError.found()).toBeFalsy();
             expect(parsed).toBeDefined();
             expect(parsed).not.toBeNull();
             expect(parsed).toMatchSnapshot();

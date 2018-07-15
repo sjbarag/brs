@@ -48,7 +48,7 @@ export function parse(toParse: ReadonlyArray<Token>) {
     }
 }
 
-function declaration(): Statement | undefined {
+function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
     try {
         if (check(Lexeme.Sub, Lexeme.Function)) {
             return functionDeclaration(false);
@@ -58,10 +58,10 @@ function declaration(): Statement | undefined {
         // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
         // out what to do with it.
         if (check(Lexeme.Identifier) && checkNext(Lexeme.Equal)) {
-            return assignment();
+            return assignment(...additionalTerminators);
         }
 
-        return statement();
+        return statement(...additionalTerminators);
     } catch (error) {
         synchronize();
         return;
@@ -191,7 +191,9 @@ function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
     // TODO: support +=, -=, >>=, etc.
 
     let value = expression();
-    consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof, ...additionalterminators);
+    if (!check(...additionalterminators)) {
+        consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof, ...additionalterminators);
+    }
     return new Stmt.Assignment(name, value);
 }
 
@@ -235,6 +237,7 @@ function exitWhile(): Stmt.ExitWhile {
 
 function forStatement(): Stmt.For {
     const initializer = assignment(Lexeme.To);
+    advance();
     const finalValue = expression();
     let increment: Expression | undefined;
 
@@ -315,13 +318,25 @@ function ifStatement(): Stmt.If {
             match(Lexeme.Newline);
         }
     } else {
-        let thenStatement = statement(Lexeme.ElseIf, Lexeme.Else);
+        let thenStatement = declaration(Lexeme.ElseIf, Lexeme.Else);
+        if (!thenStatement) {
+            throw ParseError.make(peek(), "Expected a statement to follow 'if ...condition... then'");
+        }
         thenBranch = new Stmt.Block([thenStatement]);
 
         while(match(Lexeme.ElseIf)) {
+            let elseIf = previous();
             let elseIfCondition = expression();
             consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
-            let elseIfThen = statement(Lexeme.ElseIf, Lexeme.Else);
+
+            let elseIfThen = declaration(Lexeme.ElseIf, Lexeme.Else);
+            if (!elseIfThen) {
+                throw ParseError.make(
+                    peek(),
+                    `Expected a statement to follow '${elseIf.text} ...condition... then'`
+                );
+            }
+
             elseIfBranches.push({
                 condition: elseIfCondition,
                 thenBranch: new Stmt.Block([elseIfThen])
@@ -329,7 +344,10 @@ function ifStatement(): Stmt.If {
         }
 
         if (match(Lexeme.Else)) {
-            let elseStatement = statement();
+            let elseStatement = declaration();
+            if (!elseStatement) {
+                throw ParseError.make(peek(), `Expected a statement to follow 'else'`);
+            }
             elseBranch = new Stmt.Block([elseStatement]);
         }
     }
@@ -338,11 +356,18 @@ function ifStatement(): Stmt.If {
 }
 
 function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
+    let expressionStart = peek();
     let expr = expression();
+
     if (!check(...additionalterminators)) {
         consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
     }
-    return new Stmt.Expression(expr);
+
+    if (expr instanceof Expr.Call) {
+        return new Stmt.Expression(expr);
+    }
+
+    throw ParseError.make(expressionStart, "Expected statement or function call, but received an expression");
 }
 
 function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print {

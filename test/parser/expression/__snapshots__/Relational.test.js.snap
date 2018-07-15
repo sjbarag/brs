@@ -2,18 +2,29 @@
 
 exports[`parser relational expressions parses equality expressions 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "token": Object {
         "kind": 19,
         "line": 1,
-        "literal": undefined,
+        "text": "=",
       },
     },
   },
@@ -22,18 +33,29 @@ Array [
 
 exports[`parser relational expressions parses greater-than expressions 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "token": Object {
         "kind": 17,
         "line": 1,
-        "literal": undefined,
+        "text": ">",
       },
     },
   },
@@ -42,18 +64,29 @@ Array [
 
 exports[`parser relational expressions parses greater-than-or-equal-to expressions 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "token": Object {
         "kind": 18,
         "line": 1,
-        "literal": undefined,
+        "text": ">=",
       },
     },
   },
@@ -62,18 +95,29 @@ Array [
 
 exports[`parser relational expressions parses inequality expressions 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "token": Object {
         "kind": 20,
         "line": 1,
-        "literal": undefined,
+        "text": "<>",
       },
     },
   },
@@ -82,18 +126,29 @@ Array [
 
 exports[`parser relational expressions parses less-than expressions 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "token": Object {
         "kind": 15,
         "line": 1,
-        "literal": undefined,
+        "text": "<",
       },
     },
   },
@@ -102,18 +157,29 @@ Array [
 
 exports[`parser relational expressions parses less-than-or-equal-to expressions 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 2,
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
       },
       "token": Object {
         "kind": 16,
         "line": 1,
-        "literal": undefined,
+        "text": "<=",
       },
     },
   },

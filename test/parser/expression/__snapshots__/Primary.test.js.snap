@@ -2,30 +2,44 @@
 
 exports[`parser primary expressions parses expressions in parentheses 1`] = `
 Array [
-  Expression {
-    "expression": Binary {
+  Assignment {
+    "name": Object {
+      "kind": 21,
+      "line": 1,
+      "text": "_",
+    },
+    "value": Binary {
       "left": Literal {
-        "value": 1,
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
       },
       "right": Grouping {
         "expression": Binary {
           "left": Literal {
-            "value": 2,
+            "value": Int32 {
+              "kind": 3,
+              "value": 2,
+            },
           },
           "right": Literal {
-            "value": 3,
+            "value": Int32 {
+              "kind": 3,
+              "value": 3,
+            },
           },
           "token": Object {
             "kind": 9,
             "line": 1,
-            "literal": undefined,
+            "text": "*",
           },
         },
       },
       "token": Object {
         "kind": 8,
         "line": 1,
-        "literal": undefined,
+        "text": "+",
       },
     },
   },

@@ -34,8 +34,8 @@ export class AstPrinter implements Expr.Visitor<string> {
         return this.parenthesize("group", e.expression);
     }
     visitLiteral(e: Expr.Literal): string {
-        if (e.value == null) { return "invalid" }
-        else { return e.value.toString() };
+        if (e.value == null) { return "invalid"; }
+        else { return e.value.toString(); }
     }
     visitLogical(e: Expr.Logical): string {
         return JSON.stringify(e, undefined, 2);
@@ -63,9 +63,9 @@ export class AstPrinter implements Expr.Visitor<string> {
         this.indent++;
         let out = [
             `(${name}\n`,
-            expressions.map(e => {
-                return `${"  ".repeat(this.indent)}${e.accept(this)}\n`
-            }).join(""),
+            expressions.map(e =>
+                `${"  ".repeat(this.indent)}${e.accept(this)}\n`
+            ).join(""),
             `${"  ".repeat(this.indent - 1)})`
         ].join("");
         this.indent--;

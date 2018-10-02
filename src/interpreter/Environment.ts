@@ -27,7 +27,7 @@ export default class Environment {
     }
 
     static from(original: Environment) {
-        let newEnvironment = new Environment()
+        let newEnvironment = new Environment();
         newEnvironment.values = new Map<string, BrsType>(original.values);
         return newEnvironment;
     }

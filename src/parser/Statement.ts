@@ -81,7 +81,7 @@ export class Function implements Statement {
 export interface ElseIf {
     condition: Expr.Expression,
     thenBranch: Block
-};
+}
 
 export class If implements Statement {
     constructor(

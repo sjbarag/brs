@@ -3,7 +3,7 @@ type Expression = Expr.Expression;
 import * as Stmt from "./Statement";
 type Statement = Stmt.Statement;
 import { Lexeme } from "../Lexeme";
-import { Token } from "../Token"
+import { Token } from "../Token";
 import * as ParseError from "./ParseError";
 
 import {

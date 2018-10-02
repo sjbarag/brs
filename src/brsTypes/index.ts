@@ -8,7 +8,7 @@ import { Callable, CallableImplementation } from "./Callable";
 export * from "./BrsType";
 export * from "./Int32";
 export * from "./Int64";
-export * from "./Float"
+export * from "./Float";
 export * from "./Double";
 export * from "./Callable";
 

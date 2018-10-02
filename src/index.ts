@@ -26,7 +26,7 @@ const processOutput: OutputStreams = {
  * @returns a `Promise` that will be resolve if `filename` is successfully
  *          executed, or be rejected if an error occurs.
  */
-export function execute(filename: string, options: OutputStreams = processOutput) {
+export async function execute(filename: string, options: OutputStreams = processOutput) {
     return new Promise((resolve, reject) => {
         fs.readFile(filename, "utf-8", (err, contents) => {
             if (err) {

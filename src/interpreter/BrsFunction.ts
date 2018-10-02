@@ -33,7 +33,7 @@ export function toCallable(func: Expr.Function, name: string = "[Function]") {
                         return;
                     }
 
-                    subEnvironment.define(param.name, args[index])
+                    subEnvironment.define(param.name, args[index]);
                 });
             });
 

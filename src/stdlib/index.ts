@@ -9,7 +9,7 @@ function rebootSystemImpl(interpreter: Interpreter): BrsInvalid {
     }
 
     return BrsInvalid.Instance;
-};
+}
 
 export const RebootSystem = new Callable(
     {

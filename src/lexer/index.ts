@@ -192,7 +192,7 @@ function match(expected: string) {
  *          character.
  */
 function peek() {
-    if (isAtEnd()) { return "\0" };
+    if (isAtEnd()) { return "\0"; }
     return source.charAt(current);
 }
 

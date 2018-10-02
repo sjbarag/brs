@@ -1,12 +1,12 @@
-import { BrsType, Callable, ValueKind, BrsString, Int32 } from "../brsTypes";
-import { Interpreter } from "../interpreter";
+import { BrsType, Callable, ValueKind, BrsString, Int32 } from '../brsTypes';
+import { Interpreter } from '../interpreter';
 
 /** Converts the string to all uppercase. */
 export const UCase = new Callable(
     {
-        name: "UCase",
-        args: [{ name: "s", type: ValueKind.String }],
-        returns: ValueKind.String,
+      name: 'UCase',
+      args: [{name: 's', type: ValueKind.String}],
+      returns: ValueKind.String
     },
     (interpreter: Interpreter, s: BrsString) => new BrsString(s.value.toUpperCase())
 );
@@ -14,13 +14,12 @@ export const UCase = new Callable(
 /** Converts the string to all lowercase. */
 export const LCase = new Callable(
     {
-        name: "LCase",
-        args: [{ name: "s", type: ValueKind.String }],
-        returns: ValueKind.String,
+      name: 'LCase',
+      args: [{name: 's', type: ValueKind.String}],
+      returns: ValueKind.String
     },
     (interpreter: Interpreter, s: BrsString) => new BrsString(s.value.toLowerCase())
 );
-
 
 /**
  * Returns the Unicode ("ASCII") value for the first character of the specified string.
@@ -28,9 +27,9 @@ export const LCase = new Callable(
  */
 export const Asc = new Callable(
     {
-        name: "Asc",
-        args: [{ name: "letter", type: ValueKind.String }],
-        returns: ValueKind.String,
+      name: 'Asc',
+      args: [{name: 'letter', type: ValueKind.String}],
+      returns: ValueKind.String
     },
     (interpreter: Interpreter, str: BrsString) => new Int32(str.value.charCodeAt(0) || 0)
 );
@@ -43,16 +42,16 @@ export const Asc = new Callable(
  */
 export const Chr = new Callable(
     {
-        name: "Chr",
-        args: [{ name: "ch", type: ValueKind.Int32 }],
-        returns: ValueKind.String,
+      name: 'Chr',
+      args: [{name: 'ch', type: ValueKind.Int32}],
+      returns: ValueKind.String
     },
     (interpreter: Interpreter, ch: Int32) => {
-        const num = ch.getValue();
-        if (num <= 0)
-            return new BrsString("");
-        else
-            return new BrsString(String.fromCharCode(num));
+      const num = ch.getValue();
+      if (num <= 0)
+        return new BrsString('');
+      else
+        return new BrsString(String.fromCharCode(num));
     }
 );
 
@@ -61,9 +60,48 @@ export const Chr = new Callable(
  */
 export const Left = new Callable(
     {
-        name: "Left",
-        args: [{ name: "s", type: ValueKind.String }, { name: "n", type: ValueKind.Int32 }],
-        returns: ValueKind.String,
+      name: 'Left',
+      args: [{name: 's', type: ValueKind.String}, {name: 'n', type: ValueKind.Int32}],
+      returns: ValueKind.String
     },
     (interpreter: Interpreter, s: BrsString, n: Int32) => new BrsString(s.value.substr(0, n.getValue()))
+);
+
+/**
+ * Returns the index (1 based) of a string inside another string. Zero if there is no match.
+ */
+export const Instr = new Callable(
+    {
+      name: 'Instr',
+      args: [{name: 'start', type: ValueKind.Int32}, {name: 'str', type: ValueKind.String}, {name: 'search', type: ValueKind.String}],
+      returns: ValueKind.String
+    },
+    (interpreter: Interpreter, start: Int32, str: BrsString, search: BrsString) => new Int32(str.value.indexOf(search.value, start.getValue() - 1) + 1)
+);
+
+/**
+ * Return the number of characters in a string
+ */
+export const Len = new Callable(
+    {
+      name: 'Len',
+      args: [{name: 's', type: ValueKind.String}],
+      returns: ValueKind.Int32
+    },
+    (interpreter: Interpreter, s: BrsString) => new Int32(s.value.length)
+);
+
+/**
+ * Return a string located in the middle of another string from start index to end index
+ */
+export const Mid = new Callable(
+    {
+      name: 'Mid',
+      args: [{name: 's', type: ValueKind.String}, {name: 'p', type: ValueKind.Int32}, {name: 'n', type: ValueKind.Int32}],
+      returns: ValueKind.String
+    },
+    (interpreter: Interpreter, s: BrsString, p: Int32, n: Int32): BrsString => {
+      let start = p.getValue() - 1;
+      return (n) ? new BrsString(s.value.substring(start, start + n.getValue())) : new BrsString(s.value.substring(start));
+    }
 );

@@ -1,4 +1,4 @@
-const { UCase, LCase, Asc, Chr, Left } = require("../../lib/stdlib/index");
+const { UCase, LCase, Asc, Chr, Left, Instr, Len, Mid } = require("../../lib/stdlib/index");
 const { Interpreter } = require("../../lib/interpreter");
 const { BrsString, BrsBoolean, Int32 } = require("../../lib/brsTypes");
 
@@ -82,6 +82,54 @@ describe("global string functions", () => {
             expect(
                 Left.call(interpreter, new BrsString("apple"), new Int32(-5))
             ).toEqual(new BrsString(""));
+        });
+    });
+
+    describe("Instr", () => {
+        it("returns 0 if the string is not found", () => {
+            expect(
+                Instr.call(interpreter, new Int32(1), new BrsString("apple"), new BrsString("orange"))
+            ).toEqual(new Int32(0));
+        });
+
+        it("returns the index of the first found string", () => {
+            expect(
+                Instr.call(interpreter, new Int32(1), new BrsString("apple"), new BrsString("a"))
+            ).toEqual(new Int32(1));
+        });
+
+        it("returns the index of the first found after the starting index passed in", () => {
+            expect(
+                Instr.call(interpreter, new Int32(3), new BrsString("apple"), new BrsString("p"))
+            ).toEqual(new Int32(3));
+        });
+    });
+
+    describe("Len", () => {
+       it("returns the length of the passed in string", () => {
+           expect(
+               Len.call(interpreter, new BrsString("abc"))
+           ).toEqual(new Int32(3));
+       });
+
+       it("returns zero with an empty string", () => {
+            expect(
+                Len.call(interpreter, new BrsString(""))
+            ).toEqual(new Int32(0));
+       });
+    });
+
+    describe("Mid", () => {
+        it("return the middle of a string", () => {
+            expect(
+                Mid.call(interpreter, new BrsString("abc"), new Int32(2), new Int32(1))
+            ).toEqual(new BrsString("b"));
+        });
+
+        it("return the end of the string with only the position specified", () => {
+            expect(
+                Mid.call(interpreter, new BrsString("abc"), new Int32(2))
+            ).toEqual(new BrsString("bc"));
         });
     });
 });

@@ -68,6 +68,25 @@ export const Left = new Callable(
 );
 
 /**
+ * Returns the last n characters in a string
+ */
+export const Right = new Callable(
+    {
+      name: 'Right',
+      args: [{name: 's', type: ValueKind.String}, {name: 'n', type: ValueKind.Int32}],
+      returns: ValueKind.String
+    },
+    (interpreter: Interpreter, s: BrsString, n: Int32) => {
+        let end = s.value.length - 1;
+        let start = end - (n.getValue() - 1);
+
+        if (n.getValue() <= 0) return new BrsString("");
+        else if (start < 0) return new BrsString(s.value);
+        return new BrsString(s.value.substr(start, end));
+    }
+);
+
+/**
  * Returns the index (1 based) of a string inside another string. Zero if there is no match.
  */
 export const Instr = new Callable(

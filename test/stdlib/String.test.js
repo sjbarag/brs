@@ -1,4 +1,4 @@
-const { UCase, LCase, Asc, Chr, Left, Instr, Len, Mid } = require("../../lib/stdlib/index");
+const { UCase, LCase, Asc, Chr, Left, Right, Instr, Len, Mid } = require("../../lib/stdlib/index");
 const { Interpreter } = require("../../lib/interpreter");
 const { BrsString, BrsBoolean, Int32 } = require("../../lib/brsTypes");
 
@@ -81,6 +81,30 @@ describe("global string functions", () => {
 
             expect(
                 Left.call(interpreter, new BrsString("apple"), new Int32(-5))
+            ).toEqual(new BrsString(""));
+        });
+    });
+
+    describe("Right", () => {
+        it("get last n characters in a string longer than n characters", () => {
+            expect(
+                Right.call(interpreter, new BrsString("pineapple"), new Int32(4))
+            ).toEqual(new BrsString("pple"));
+        });
+
+        it("get the original string back with n larger than string length", () => {
+            expect(
+                Right.call(interpreter, new BrsString("boy"), new Int32(5))
+            ).toEqual(new BrsString("boy"));
+        });
+
+        it("get back empty string when character length is 0 or negative", () => {
+            expect(
+                Right.call(interpreter, new BrsString("apple"), new Int32(0))
+            ).toEqual(new BrsString(""));
+
+            expect(
+                Right.call(interpreter, new BrsString("apple"), new Int32(-5))
             ).toEqual(new BrsString(""));
         });
     });

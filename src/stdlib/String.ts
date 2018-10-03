@@ -47,11 +47,9 @@ export const Chr = new Callable(
       returns: ValueKind.String
     },
     (interpreter: Interpreter, ch: Int32) => {
-      const num = ch.getValue();
-      if (num <= 0)
-        return new BrsString('');
-      else
-        return new BrsString(String.fromCharCode(num));
+        const num = ch.getValue();
+        if (num <= 0) return new BrsString("");
+        else return new BrsString(String.fromCharCode(num));
     }
 );
 

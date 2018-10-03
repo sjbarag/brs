@@ -13,7 +13,8 @@
     "build": "tsc",
     "clean": "rimraf ./lib ./types",
     "test": "jest",
-    "prepublishOnly": "npm-run-all --serial clean build test"
+    "lint": "tslint --project .",
+    "prepublishOnly": "npm-run-all --serial clean build lint test"
   },
   "files": [
     "./bin/",
@@ -31,6 +32,8 @@
     "jest": "^22.0.4",
     "npm-run-all": "^4.1.2",
     "rimraf": "^2.6.2",
+    "tslint": "^5.11.0",
+    "tslint-language-service": "^0.9.9",
     "typescript": "^2.6.2"
   },
   "repository": "https://github.com/sjbarag/brs"

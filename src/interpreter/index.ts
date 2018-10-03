@@ -80,7 +80,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             this._environment = environment;
             return func(this);
         } finally {
-            this._environment = originalEnvironment
+            this._environment = originalEnvironment;
         }
     }
 
@@ -411,7 +411,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             throw BrsError.make(
                 `'${functionName}' is not a function and cannot be called.`,
                 expression.closingParen.line
-            )
+            );
         }
 
         if (callee.signature.name) {
@@ -425,18 +425,18 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 `'${functionName}' requires at least ${arity.required} arguments, ` +
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
-            )
+            );
         } else if (expression.args.length > arity.required + arity.optional) {
             throw BrsError.make(
                 `'${functionName}' accepts at most ${arity.required + arity.optional} arguments, ` +
                     `but received ${expression.args.length}.`,
                 expression.closingParen.line
-            )
+            );
         }
 
         // ensure argument types match
         let typeMismatchFound = false;
-        for (const index in args) {
+        args.forEach((_value, index) => {
             const signatureArg = callee.signature.args[index];
             if (signatureArg.type !== ValueKind.Dynamic && signatureArg.type !== args[index].kind) {
                 typeMismatchFound = true;
@@ -447,7 +447,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     expression.closingParen.line
                 );
             }
-        }
+        });
 
         if (typeMismatchFound) {
             throw new Error(

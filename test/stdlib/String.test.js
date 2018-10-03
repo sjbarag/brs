@@ -86,19 +86,19 @@ describe("global string functions", () => {
     });
 
     describe("Right", () => {
-        it("get last n characters in a string longer than n characters", () => {
+        it("returns the last (n) characters from a string", () => {
             expect(
                 Right.call(interpreter, new BrsString("pineapple"), new Int32(4))
             ).toEqual(new BrsString("pple"));
         });
 
-        it("get the original string back with n larger than string length", () => {
+        it("returns original string when (n) is longer than length", () => {
             expect(
                 Right.call(interpreter, new BrsString("boy"), new Int32(5))
             ).toEqual(new BrsString("boy"));
         });
 
-        it("get back empty string when character length is 0 or negative", () => {
+        it("returns an empty string", () => {
             expect(
                 Right.call(interpreter, new BrsString("apple"), new Int32(0))
             ).toEqual(new BrsString(""));

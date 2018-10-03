@@ -13,7 +13,7 @@ export enum ValueKind {
     Callable,
     Dynamic,
     Void
-};
+}
 
 export namespace ValueKind {
     /**

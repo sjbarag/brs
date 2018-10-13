@@ -63,6 +63,17 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             { name: "Right",        func: StdLib.Right },
             { name: "Instr",        func: StdLib.Instr },
             { name: "Len",          func: StdLib.Len },
+            { name: "Mid",          func: StdLib.Mid },
+            { name: "RebootSystem", func: StdLib.RebootSystem },
+            { name: "UCase",        func: StdLib.UCase },
+            { name: "LCase",        func: StdLib.LCase },
+            { name: "Asc",          func: StdLib.Asc },
+            { name: "Chr",          func: StdLib.Chr },
+            { name: "Pos",          func: StdLib.Pos },
+            { name: "Left",         func: StdLib.Left },
+            { name: "Right",        func: StdLib.Right },
+            { name: "Instr",        func: StdLib.Instr },
+            { name: "Len",          func: StdLib.Len },
             { name: "Mid",          func: StdLib.Mid }
         ].forEach(({name, func}) =>
             this._environment.define(Scope.Global, name, func)

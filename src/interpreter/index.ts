@@ -25,7 +25,7 @@ import * as BrsError from "../Error";
 
 import * as StdLib from "../stdlib";
 
-import { Scope, Environment } from "./Environment";
+import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
 import { BlockEnd, StopReason } from "../parser/Statement";
@@ -164,22 +164,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     this.stdout.write(" ");
                     break;
                 default:
-                    let toPrint: BrsType;
-
-                    // allow printing of references to uninitialized variables
-                    if (printable instanceof Expr.Variable) {
-                        try {
-                            // make sure a referenced variable exists before evaluating it
-                            let _ignored = this.environment.get(printable.name);
-                            toPrint = this.evaluate(printable);
-                        } catch (_ignored) {
-                            toPrint = new BrsString("<UNINITIALIZED>");
-                        }
-                    } else {
-                        toPrint = this.evaluate(printable);
-                    }
-
-                    this.stdout.write(stringify(toPrint));
+                    this.stdout.write(
+                        stringify(
+                            this.evaluate(printable)
+                        )
+                    );
                     break;
             }
         });
@@ -640,7 +629,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitVariable(expression: Expr.Variable) {
-        return this.environment.get(expression.name);
+        try {
+            return this.environment.get(expression.name);
+        } catch (err) {
+            if (err instanceof NotFound) {
+                return new BrsString("<UNINITIALIZED>");
+            }
+
+            throw err;
+        }
     }
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {

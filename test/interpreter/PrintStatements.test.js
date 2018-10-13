@@ -25,7 +25,6 @@ describe("interperter print statements", () => {
             new Expr.Literal(new BrsString("foo"))
         ]);
 
-
         const [ result ] = interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
@@ -132,6 +131,18 @@ describe("interperter print statements", () => {
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo   bar\n"
+        );
+    });
+
+    it("prints uninitialized values with placeholder text", () => {
+        const ast = new Stmt.Print([
+            new Expr.Variable({ kind: Lexeme.Identifier, text: "doesNotExist", line: 1 })
+        ]);
+
+        const [ result ] = interpreter.exec([ast]);
+        expect(result).toEqual(BrsInvalid.Instance);
+        expect(allArgs(stdout.write).join("")).toEqual(
+            "<UNINITIALIZED>\n"
         );
     });
 });

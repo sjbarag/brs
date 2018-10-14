@@ -1,4 +1,4 @@
-import { ValueKind, BrsInvalid, BrsBoolean, BrsString } from "./BrsType";
+import { ValueKind, BrsInvalid, BrsBoolean, BrsString, Uninitialized } from "./BrsType";
 import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
@@ -68,4 +68,5 @@ export type BrsType =
     Int64 |
     Float |
     Double |
-    Callable;
+    Callable |
+    Uninitialized;

@@ -62,16 +62,16 @@ describe("end to end functions", () => {
         });
     });
 
-    test("function/scoping.brs", async () => {
-        await execute(resourceFile("function", "scoping.brs"), outputStreams);
-
-        expect(BrsError.found()).toBe(false);
-        expect(
-            allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
-        ).toEqual([
-            "Global: ", "true",
-            "Module: ", "true",
-            "Function: ", "false"
-        ]);
+    test("function/scoping.brs", () => {
+        return execute(resourceFile("function", "scoping.brs"), outputStreams).then(() => {
+            expect(BrsError.found()).toBe(false);
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
+                "Global: ", "true",
+                "Module: ", "true",
+                "Function: ", "false"
+            ]);
+        });
     });
 });

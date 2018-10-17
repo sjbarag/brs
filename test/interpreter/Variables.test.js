@@ -24,7 +24,7 @@ describe("interpreter variables", () => {
         expect(result).toEqual(BrsInvalid.Instance);
     });
 
-    it("stores assigned values in global scope", () => {
+    it("stores assigned values in variable scope", () => {
         let six = new Int32(6)
         let ast = new Stmt.Assignment(
             identifier("bar"),
@@ -38,7 +38,7 @@ describe("interpreter variables", () => {
         ).toBe(six);
     });
 
-    it("retrieves variables from global scope", () => {
+    it("retrieves variables from variable scope", () => {
         let seven = new Int32(7);
         let assign = new Stmt.Assignment(
             identifier("baz"),

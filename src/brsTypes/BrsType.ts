@@ -12,7 +12,8 @@ export enum ValueKind {
     // TODO: Add Object types (associative arrays, lists, etc.)
     Callable,
     Dynamic,
-    Void
+    Void,
+    Uninitialized
 }
 
 export namespace ValueKind {
@@ -32,6 +33,7 @@ export namespace ValueKind {
             case ValueKind.Callable: return "Function";
             case ValueKind.Dynamic: return "Dynamic";
             case ValueKind.Void: return "Void";
+            case ValueKind.Uninitialized: return "<UNINITIALIZED>";
         }
     }
 
@@ -52,6 +54,7 @@ export namespace ValueKind {
             case "callable": return ValueKind.Callable;
             case "dynamic": return ValueKind.Dynamic;
             case "void": return ValueKind.Void;
+            case "<uninitialized>": return ValueKind.Uninitialized;
             default: return undefined;
         }
     }
@@ -219,5 +222,37 @@ export class BrsInvalid implements BrsValue {
 
     toString() {
         return "invalid";
+    }
+}
+
+/** Internal representation of uninitialized BrightScript variables. */
+export class Uninitialized implements BrsValue {
+    readonly kind = ValueKind.Uninitialized;
+    static Instance = new Uninitialized();
+
+    lessThan(other: BrsType): BrsBoolean {
+        // uninitialized values aren't less than anything
+        return BrsBoolean.False;
+    }
+
+    greaterThan(other: BrsType): BrsBoolean {
+        // uninitialized values aren't less than anything
+        return BrsBoolean.False;
+    }
+
+    equalTo(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.String) {
+            // Allow variables to be compared to the string "<UNINITIALIZED>" to test if they've
+            // been initialized
+            return BrsBoolean.from(
+                other.value === this.toString()
+            );
+        }
+
+        return BrsBoolean.False;
+    }
+
+    toString() {
+        return "<UNINITIALIZED>";
     }
 }

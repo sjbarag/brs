@@ -14,7 +14,8 @@ import {
     Float,
     Double,
     isBrsCallable,
-    BrsValue
+    BrsValue,
+    Uninitialized
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -25,7 +26,7 @@ import * as BrsError from "../Error";
 
 import * as StdLib from "../stdlib";
 
-import Environment from "./Environment";
+import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
 import { BlockEnd, StopReason } from "../parser/Statement";
@@ -36,8 +37,7 @@ export interface OutputStreams {
 }
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
-    private readonly globals = new Environment();
-    private _environment = this.globals;
+    private _environment = new Environment();
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
 
@@ -53,17 +53,32 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.stdout = new OutputProxy(outputStreams.stdout);
         this.stderr = new OutputProxy(outputStreams.stderr);
 
-        this.globals.define("RebootSystem", StdLib.RebootSystem);
-        this.globals.define("UCase", StdLib.UCase);
-        this.globals.define("LCase", StdLib.LCase);
-        this.globals.define("Asc", StdLib.Asc);
-        this.globals.define("Chr", StdLib.Chr);
-        this.globals.define("Pos", StdLib.Pos);
-        this.globals.define("Left", StdLib.Left);
-        this.globals.define("Right", StdLib.Right);
-        this.globals.define("Instr", StdLib.Instr);
-        this.globals.define("Len", StdLib.Len);
-        this.globals.define("Mid", StdLib.Mid);
+        [
+            { name: "RebootSystem", func: StdLib.RebootSystem },
+            { name: "UCase",        func: StdLib.UCase },
+            { name: "LCase",        func: StdLib.LCase },
+            { name: "Asc",          func: StdLib.Asc },
+            { name: "Chr",          func: StdLib.Chr },
+            { name: "Pos",          func: StdLib.Pos },
+            { name: "Left",         func: StdLib.Left },
+            { name: "Right",        func: StdLib.Right },
+            { name: "Instr",        func: StdLib.Instr },
+            { name: "Len",          func: StdLib.Len },
+            { name: "Mid",          func: StdLib.Mid },
+            { name: "RebootSystem", func: StdLib.RebootSystem },
+            { name: "UCase",        func: StdLib.UCase },
+            { name: "LCase",        func: StdLib.LCase },
+            { name: "Asc",          func: StdLib.Asc },
+            { name: "Chr",          func: StdLib.Chr },
+            { name: "Pos",          func: StdLib.Pos },
+            { name: "Left",         func: StdLib.Left },
+            { name: "Right",        func: StdLib.Right },
+            { name: "Instr",        func: StdLib.Instr },
+            { name: "Len",          func: StdLib.Len },
+            { name: "Mid",          func: StdLib.Mid }
+        ].forEach(({name, func}) =>
+            this._environment.define(Scope.Global, name, func)
+        );
     }
 
     /**
@@ -123,7 +138,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return BrsInvalid.Instance;
         }
 
-        this.environment.define(statement.name.text!, toCallable(statement.func, statement.name.text));
+        this.environment.define(Scope.Module, statement.name.text!, toCallable(statement.func, statement.name.text));
         return BrsInvalid.Instance;
     }
 
@@ -142,7 +157,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitPrint(statement: Stmt.Print): BrsType {
         // the `tab` function is only in-scope while executing print statements
-        this.environment.define("Tab", StdLib.Tab);
+        this.environment.define(Scope.Function, "Tab", StdLib.Tab);
 
         statement.expressions.forEach( (printable, index) => {
             switch (printable) {
@@ -162,7 +177,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     break;
                 default:
                     this.stdout.write(
-                        stringify(this.evaluate(printable))
+                        stringify(
+                            this.evaluate(printable)
+                        )
                     );
                     break;
             }
@@ -180,7 +197,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitAssignment(statement: Stmt.Assignment): BrsType {
         let value = this.evaluate(statement.value);
-        this.environment.define(statement.name.text!, value);
+        this.environment.define(Scope.Function, statement.name.text!, value);
         return BrsInvalid.Instance;
     }
 
@@ -203,8 +220,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to subtract non-numeric objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)}
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -215,8 +232,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to multiply non-numeric objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)}
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -227,8 +244,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to exponentiate non-numeric objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)}
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -239,8 +256,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 }
                 BrsError.make(
                     `Attempting to divide non-numeric objects.
-                    left: ${typeof left}
-                    right: ${typeof right}`,
+                    left: ${ValueKind.toString(left.kind)}
+                    right: ${ValueKind.toString(right.kind)}`,
                     expression.token.line
                 );
                 return BrsInvalid.Instance;
@@ -250,8 +267,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to modulo non-numeric objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)}
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -262,8 +279,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to integer-divide non-numeric objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)}
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -276,8 +293,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to add non-homogeneous objects.
-                        left: ${typeof left}
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)}
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -306,7 +323,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
                     BrsError.make(
                         `Attempting to 'and' boolean with non-boolean expression
-                        right: ${typeof right}`,
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -321,15 +338,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     // TODO: figure out how to handle 32-bit int AND 64-bit int
                     BrsError.make(
                         `Attempting to bitwise 'and' number with non-numeric expression
-                        right: ${typeof right}`,
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
                 } else {
                     BrsError.make(
                         `Attempting to 'and' unexpected expressions
-                        left: ${typeof left},
-                        right: ${typeof this.evaluate(expression.right)}`,
+                        left: ${ValueKind.toString(left.kind)},
+                        right: ${ValueKind.toString(this.evaluate(expression.right).kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -345,7 +362,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     } else {
                         BrsError.make(
                             `Attempting to 'or' boolean with non-boolean expression
-                            right: ${typeof right}`,
+                            right: ${ValueKind.toString(right.kind)}`,
                             expression.token.line
                         );
                         return BrsInvalid.Instance;
@@ -359,15 +376,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     // TODO: figure out how to handle 32-bit int OR 64-bit int
                     BrsError.make(
                         `Attempting to bitwise 'or' number with non-numeric expression
-                        right: ${typeof right}`,
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
                 } else {
                     BrsError.make(
                         `Attempting to 'or' unexpected objects
-                        left: ${typeof left},
-                        right: ${typeof right}`,
+                        left: ${ValueKind.toString(left.kind)},
+                        right: ${ValueKind.toString(right.kind)}`,
                         expression.token.line
                     );
                     return BrsInvalid.Instance;
@@ -602,7 +619,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to negate non-numeric value.
-                        value type: ${typeof right}`,
+                        value type: ${ValueKind.toString(right.kind)}`,
                         expression.operator.line
                     );
                     return BrsInvalid.Instance;
@@ -613,7 +630,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 } else {
                     BrsError.make(
                         `Attempting to NOT non-boolean value.
-                        value type: ${typeof right}`,
+                        value type: ${ValueKind.toString(right.kind)}`,
                         expression.operator.line
                     );
                     return BrsInvalid.Instance;
@@ -624,7 +641,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitVariable(expression: Expr.Variable) {
-        return this.environment.get(expression.name);
+        try {
+            return this.environment.get(expression.name);
+        } catch (err) {
+            if (err instanceof NotFound) {
+                return Uninitialized.Instance;
+            }
+
+            throw err;
+        }
     }
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {

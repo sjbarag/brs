@@ -1,6 +1,6 @@
 import * as Expr from "./Expression";
 import { Token } from "../Token";
-import { BrsType, BrsInvalid, Argument, BrsValue, ValueKind } from "../brsTypes/index";
+import { BrsType, BrsInvalid, Argument, BrsValue, ValueKind } from "../brsTypes";
 
 /** A set of reasons why a `Block` stopped executing. */
 export * from "./BlockEndReason";

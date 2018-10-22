@@ -79,6 +79,8 @@ function scanToken(): void {
         case ")": addToken(Lexeme.RightParen); break;
         case "{": addToken(Lexeme.LeftBrace); break;
         case "}": addToken(Lexeme.RightBrace); break;
+        case "[": addToken(Lexeme.LeftSquare); break;
+        case "]": addToken(Lexeme.RightSquare); break;
         case ",": addToken(Lexeme.Comma); break;
         case ".": addToken(Lexeme.Dot); break;
         case "+": addToken(Lexeme.Plus); break;

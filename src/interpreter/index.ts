@@ -15,7 +15,8 @@ import {
     Double,
     isBrsCallable,
     BrsValue,
-    Uninitialized
+    Uninitialized,
+    BrsArray
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -597,6 +598,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitLiteral(expression: Expr.Literal): BrsType {
         return expression.value;
+    }
+
+    visitArrayLiteral(expression: Expr.ArrayLiteral): BrsArray {
+        return new BrsArray(
+            expression.elements.map(expr => this.evaluate(expr))
+        );
     }
 
     visitLogical(expression: Expr.Logical) {

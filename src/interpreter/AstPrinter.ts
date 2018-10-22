@@ -37,6 +37,9 @@ export class AstPrinter implements Expr.Visitor<string> {
         if (e.value == null) { return "invalid"; }
         else { return e.value.toString(); }
     }
+    visitArrayLiteral(e: Expr.ArrayLiteral): string {
+        return JSON.stringify(e, undefined, 2);
+    }
     visitLogical(e: Expr.Logical): string {
         return JSON.stringify(e, undefined, 2);
     }

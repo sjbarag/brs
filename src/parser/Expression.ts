@@ -10,6 +10,7 @@ export interface Visitor<T> {
     visitGet(expression: Get): T;
     visitGrouping(expression: Grouping): T;
     visitLiteral(expression: Literal): T;
+    visitArrayLiteral(expression: ArrayLiteral): T;
     visitLogical(expression: Logical): T;
     visitM(expression: M): T;
     visitSet(expression: Set): T;
@@ -98,6 +99,14 @@ export class Literal implements Expression {
 
     accept <R> (visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);
+    }
+}
+
+export class ArrayLiteral implements Expression {
+    constructor(readonly elements: Expression[]) {}
+
+    accept <R> (visitor: Visitor<R>): R {
+        return visitor.visitArrayLiteral(this);
     }
 }
 

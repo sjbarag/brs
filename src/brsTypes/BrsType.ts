@@ -1,4 +1,4 @@
-import { BrsType } from "./";
+import { BrsType } from ".";
 
 /** Set of values supported in BrightScript. */
 export enum ValueKind {
@@ -10,6 +10,7 @@ export enum ValueKind {
     Float,
     Double,
     // TODO: Add Object types (associative arrays, lists, etc.)
+    Array,
     Callable,
     Dynamic,
     Void,
@@ -30,6 +31,7 @@ export namespace ValueKind {
             case ValueKind.Int64: return "LongInteger";
             case ValueKind.Float: return "Float";
             case ValueKind.Double: return "Double";
+            case ValueKind.Array: return "Array";
             case ValueKind.Callable: return "Function";
             case ValueKind.Dynamic: return "Dynamic";
             case ValueKind.Void: return "Void";

@@ -12,7 +12,7 @@ import {
     BrsString,
     Int32,
     ValueKind,
-    Argument
+    Argument,
 } from "../brsTypes";
 
 /** Set of all keywords that end blocks. */
@@ -22,7 +22,7 @@ type BlockTerminator =
     Lexeme.EndFor |
     Lexeme.EndIf |
     Lexeme.EndWhile |
-    Lexeme.EndSub|
+    Lexeme.EndSub |
     Lexeme.EndFunction;
 
 let current: number;
@@ -575,14 +575,32 @@ function primary(): Expression {
             Lexeme.Double,
             Lexeme.String
         ):
-            let lit = new Expr.Literal(previous().literal!);
-            return lit;
+            return new Expr.Literal(previous().literal!);
         case match(Lexeme.Identifier):
             return new Expr.Variable(previous());
         case match(Lexeme.LeftParen):
             let expr = expression();
             consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
             return new Expr.Grouping(expr);
+        case match(Lexeme.LeftSquare):
+            let elements: Expression[] = [];
+
+            if (!match(Lexeme.RightSquare)) {
+                elements.push(expression());
+                while (match(Lexeme.Comma, Lexeme.Newline)) {
+                    // TODO: check on a Roku to see if a trailing comma before the `]` is allowed
+                    if (match(Lexeme.RightSquare)) {
+                        break;
+                    }
+
+                    elements.push(expression());
+                }
+
+                consume("Unmatched '[' - expected ']' after array literal", Lexeme.RightSquare);
+            }
+
+            //consume("Expected newline or ':' after array literal", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
+            return new Expr.ArrayLiteral(elements);
         case match(Lexeme.Pos, Lexeme.Tab):
             let token = Object.assign(previous(), { kind: Lexeme.Identifier });
             return new Expr.Variable(token);

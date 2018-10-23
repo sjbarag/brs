@@ -8,7 +8,11 @@ export class BrsArray implements BrsValue, BrsComponent {
     constructor(readonly value: BrsType[]) { }
 
     toString() {
-        return "roArray";
+        return `roArray: ${JSON.stringify(this.value, undefined, 2)}`;
+    }
+
+    toJSON() {
+        return this.toString();
     }
 
     lessThan(other: BrsType) {

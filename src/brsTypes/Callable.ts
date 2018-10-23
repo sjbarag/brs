@@ -92,7 +92,10 @@ export class Callable implements Brs.BrsValue {
     }
 
     toString(): string {
-        // TODO: Add support for named functions
         return `[Function ${this.signature.name}]`;
+    }
+
+    toJSON() {
+        return this.toString();
     }
 }

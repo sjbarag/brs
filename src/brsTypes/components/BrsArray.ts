@@ -5,14 +5,14 @@ import { BrsComponent } from "./BrsComponent";
 export class BrsArray implements BrsValue, BrsComponent {
     readonly kind = ValueKind.Array;
 
-    constructor(readonly value: BrsType[]) { }
+    constructor(readonly elements: BrsType[]) { }
 
     toString() {
-        return `roArray: ${JSON.stringify(this.value, undefined, 2)}`;
+        return JSON.stringify(this.elements, undefined, 2);
     }
 
     toJSON() {
-        return this.toString();
+        return this.elements;
     }
 
     lessThan(other: BrsType) {
@@ -25,13 +25,13 @@ export class BrsArray implements BrsValue, BrsComponent {
 
     equalTo(other: BrsType) {
         if (other.kind === ValueKind.Array) {
-            return BrsBoolean.from(this.value === other.value);
+            return BrsBoolean.from(this.elements === other.elements);
         }
 
         return BrsBoolean.False;
     }
 
     getValue() {
-        return this.value;
+        return this.elements;
     }
 }

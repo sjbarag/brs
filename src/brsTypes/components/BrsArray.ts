@@ -5,7 +5,7 @@ import { BrsComponent } from "./BrsComponent";
 export class BrsArray implements BrsValue, BrsComponent {
     readonly kind = ValueKind.Array;
 
-    constructor(readonly elements: BrsType[]) { }
+    constructor(readonly elements: BrsType[]) {}
 
     toString() {
         return JSON.stringify(this.elements, undefined, 2);

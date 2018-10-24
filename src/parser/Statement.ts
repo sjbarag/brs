@@ -14,6 +14,7 @@ export interface Visitor<T> {
     visitIf(statement: If): BrsType;
     visitBlock(block: Block): BrsType;
     visitFor(statement: For): BrsType;
+    visitForEach(statement: ForEach): BrsType;
     visitWhile(statement: While): BrsType;
     visitNamedFunction(statement: Function): BrsType;
     visitReturn(statement: Return): never;
@@ -146,6 +147,18 @@ export class For implements Statement {
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitFor(this);
+    }
+}
+
+export class ForEach implements Statement {
+    constructor(
+        readonly item: Token,
+        readonly target: Expr.Expression,
+        readonly body: Block
+    ) {}
+
+    accept<R>(visitor: Visitor<R>): BrsType {
+        return visitor.visitForEach(this);
     }
 }
 

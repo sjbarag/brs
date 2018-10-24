@@ -208,6 +208,8 @@ function statement(...additionalterminators: BlockTerminator[]): Statement {
 
     if (match(Lexeme.For)) { return forStatement(); }
 
+    if (match(Lexeme.ForEach)) { return forEachStatement(); }
+
     if (match(Lexeme.ExitFor)) { return exitFor(); }
 
     if (match(Lexeme.Return)) { return returnStatement(); }
@@ -247,18 +249,40 @@ function forStatement(): Stmt.For {
         // BrightScript for/to/step loops default to a step of 1 if no `step` is provided
         increment = new Expr.Literal(new Int32(1));
     }
-    while(match(Lexeme.Newline)) {}
+    while(match(Lexeme.Newline));
 
     let body = block(Lexeme.EndFor);
     if (!body) {
         throw ParseError.make(peek(), "Expected 'end for' to terminate for-loop block");
     }
     advance();
-    while(match(Lexeme.Newline)) {}
+    while(match(Lexeme.Newline));
 
     // WARNING: BrightScript doesn't delete the loop initial value after a for/to loop! It just
     // stays around in scope with whatever value it was when the loop exited.
     return new Stmt.For(initializer, finalValue, increment, body);
+}
+
+function forEachStatement(): Stmt.ForEach {
+    let name = advance();
+
+    consume("Expected 'in' after 'for each <name>'", Lexeme.In);
+
+    let target = expression();
+    if (!target) {
+        throw ParseError.make(peek(), "Expected target object to iterate over");
+    }
+    advance();
+    while(match(Lexeme.Newline));
+
+    let body = block(Lexeme.EndFor);
+    if (!body) {
+        throw ParseError.make(peek(), "Expected 'end for' to terminate for-each loop block");
+    }
+    advance();
+    while(match(Lexeme.Newline));
+
+    return new Stmt.ForEach(name, target, body);
 }
 
 function exitFor(): Stmt.ExitFor {
@@ -682,6 +706,7 @@ function synchronize() {
             case Lexeme.Sub:
             case Lexeme.If:
             case Lexeme.For:
+            case Lexeme.ForEach:
             case Lexeme.While:
             case Lexeme.Print:
             case Lexeme.Return:

@@ -555,6 +555,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return BrsInvalid.Instance;
     }
 
+    visitForEach(statement: Stmt.ForEach): BrsType {
+        console.error("foreach loops not yet implemented");
+
+        return BrsInvalid.Instance;
+    }
+
     visitWhile(statement: Stmt.While): BrsType {
         while (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
             try {

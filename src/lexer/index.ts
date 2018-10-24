@@ -367,7 +367,7 @@ function identifier() {
     let text = source.slice(start, current);
 
     // some identifiers can be split into two words, so check the "next" word and see what we get
-    if ((text === "end" || text === "else" || text === "exit") && peek() === " ") {
+    if ((text === "end" || text === "else" || text === "exit" || text === "for") && peek() === " ") {
         let endOfFirstWord = current;
 
         advance(); // skip past the space

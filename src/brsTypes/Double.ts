@@ -192,6 +192,6 @@ export class Double implements Numeric {
     }
 
     toJSON() {
-        return this.toString();
+        return this.value;
     }
 }

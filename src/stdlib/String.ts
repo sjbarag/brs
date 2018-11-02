@@ -146,12 +146,29 @@ export const Str = new Callable(
 export const StrI = new Callable(
     {
         name: "StrI",
-        args: [{name: "value", type: ValueKind.Int32}],
+        args: [
+            {
+                name: "value",
+                type: ValueKind.Int32
+            },
+            {
+                name: "radis",
+                type: ValueKind.Int32,
+                defaultValue: new Expr.Literal(new Int32(10))
+            }
+        ],
         returns: ValueKind.String
     },
-    (interpreter: Interpreter, value: Int32): BrsString => {
+    (interpreter: Interpreter, value: Int32, brsRadix: Int32): BrsString => {
+        let radix = brsRadix.getValue();
+        if (radix < 2 || radix > 36) {
+            return new BrsString("");
+        }
+
         const intValue = value.getValue();
         const prefix = (intValue > 0) ? " " : "";
+
+        // TODO: handle radix
         return new BrsString(prefix + String(intValue));
     }
 );

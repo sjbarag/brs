@@ -17,7 +17,8 @@ import {
     BrsValue,
     Uninitialized,
     BrsArray,
-    isIterable
+    isIterable,
+    Argument
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -524,12 +525,16 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let typeMismatchFound = false;
         args.forEach((_value, index) => {
             const signatureArg = callee.signature.args[index];
-            if (signatureArg.type !== ValueKind.Dynamic && signatureArg.type !== args[index].kind) {
+            let signatureTypes: ReadonlyArray<ValueKind> = Array.isArray(signatureArg.type) ?
+                    signatureArg.type :
+                    [signatureArg.type];
+            if (signatureTypes.indexOf(ValueKind.Dynamic) !== -1 && signatureTypes.indexOf(args[index].kind) !== -1) {
                 typeMismatchFound = true;
+                let allowedTypes = signatureTypes.map(t => ValueKind.toString(t)).join(", or");
+
                 BrsError.make(
                     `Type mismatch in '${functionName}': argument '${signatureArg.name}' must be ` +
-                        `of type ${ValueKind.toString(signatureArg.type)}, but received ` +
-                        `${ValueKind.toString(args[index].kind)}.`,
+                        `of type ${allowedTypes}, but received ${ValueKind.toString(args[index].kind)}.`,
                     expression.closingParen.line
                 );
             }

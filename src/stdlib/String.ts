@@ -1,4 +1,5 @@
 import { BrsType, Callable, ValueKind, BrsString, Int32, Float } from "../brsTypes";
+import * as Expr from "../parser/Expression";
 import { Interpreter } from "../interpreter";
 
 /** Converts the string to all uppercase. */
@@ -124,7 +125,7 @@ export const Mid = new Callable(
 );
 
 /**
- * Return a string from a float. If it is positive, prefix it with a space.  
+ * Return a string from a float. If it is positive, prefix it with a space.
  */
 export const Str = new Callable(
     {
@@ -140,7 +141,7 @@ export const Str = new Callable(
 );
 
 /**
- * Return a string from an integer. If it is positive, prefix it with a space.  
+ * Return a string from an integer. If it is positive, prefix it with a space.
  */
 export const StrI = new Callable(
     {

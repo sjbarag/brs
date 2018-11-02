@@ -28,7 +28,7 @@ export function toCallable(func: Expr.Function, name: string = "[Function]") {
 
             interpreter.inSubEnv(subEnvironment, (subInterpreter) => {
                 func.parameters.forEach((param, index) => {
-                    if (param.defaultValue) {
+                    if (param.defaultValue && args[index] == null) {
                         subEnvironment.define(Scope.Function, param.name, subInterpreter.evaluate(param.defaultValue));
                         return;
                     }

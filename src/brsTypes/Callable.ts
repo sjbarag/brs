@@ -8,7 +8,7 @@ export interface Argument {
     /** The argument's name. */
     readonly name: string,
     /** The type of the argument expected by the BrightScript runtime. */
-    readonly type: Brs.ValueKind,
+    readonly type: Brs.ValueKind | ReadonlyArray<Brs.ValueKind>,
     /** The default value to use for the argument if none is provided. */
     readonly defaultValue?: Expr.Expression
 }

@@ -2,6 +2,7 @@ import { Interpreter } from "../interpreter";
 import * as Brs from ".";
 import { Token } from "../Token";
 import * as Expr from "../parser/Expression";
+import { Scope } from "../interpreter/Environment";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
@@ -63,7 +64,24 @@ export class Callable implements Brs.BrsValue {
      * @returns the return value of the function, or `invalid` if nothing is explicitly returned.
      */
     call(interpreter: Interpreter, ...args: Brs.BrsType[]) {
-        return this.impl(interpreter, ...args);
+        // first, we need to evaluate all of the parameter default values
+        // and define them in a new environment
+        let subEnvironment = interpreter.environment.createSubEnvironment();
+
+        let mutableArgs = args.slice();
+
+        return interpreter.inSubEnv(subEnvironment, (subInterpreter) => {
+            this.signature.args.forEach((param, index) => {
+                if (param.defaultValue && mutableArgs[index] == null) {
+                    mutableArgs[index] = subInterpreter.evaluate(param.defaultValue);
+                }
+
+                subEnvironment.define(Scope.Function, param.name, mutableArgs[index]);
+            });
+
+            // then return whatever the function's implementation would return
+            return this.impl(subInterpreter, ...mutableArgs);
+        });
     }
 
     /**

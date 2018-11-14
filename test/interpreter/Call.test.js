@@ -57,7 +57,7 @@ describe("interpreter calls", () => {
         expect(BrsError.found()).toBe(true);
     });
 
-    it("errors when argument types are incorrect", () => {
+    it.only("errors when argument types are incorrect", () => {
         const call = new Stmt.Expression(
             new Expr.Call(
                 new Expr.Variable(identifier("UCase")),

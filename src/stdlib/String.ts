@@ -166,10 +166,9 @@ export const StrI = new Callable(
         }
 
         const intValue = value.getValue();
-        const prefix = (intValue > 0) ? " " : "";
+        const prefix = (intValue > 0 && radix === 10) ? " " : "";
 
-        // TODO: handle radix
-        return new BrsString(prefix + String(intValue));
+        return new BrsString(prefix + intValue.toString(radix));
     }
 );
 

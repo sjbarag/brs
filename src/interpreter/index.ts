@@ -95,7 +95,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      *                    provided to `func`.
      * @param func the JavaScript function to execute with the sub interpreter.
      */
-    inSubEnv(environment: Environment, func: (interpreter: Interpreter) => void) {
+    inSubEnv(environment: Environment, func: (interpreter: Interpreter) => BrsType): BrsType {
         let originalEnvironment = this._environment;
         try {
             this._environment = environment;
@@ -107,25 +107,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     exec(statements: ReadonlyArray<Stmt.Statement>) {
         return statements.map((statement) => this.execute(statement));
-    }
-
-    /**
-     * Executes a block in the context of the provided environment.
-     * The original environment will be restored after execution finishes --
-     * even if an error occurs.
-     *
-     * @param statements an array of statements to execute
-     * @param environment the environment in which those statements will be executed
-     * @returns an array of `Result`s, one for each executed statement
-     */
-    executeBlock(block: Stmt.Block, environment: Environment) {
-        let originalEnvironment = this.environment;
-        try {
-            this._environment = environment;
-            return block.accept(this);
-        } finally {
-            this._environment = originalEnvironment;
-        }
     }
 
     visitAssign(statement: Expr.Assign): BrsType {
@@ -528,7 +509,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             let signatureTypes: ReadonlyArray<ValueKind> = Array.isArray(signatureArg.type) ?
                     signatureArg.type :
                     [signatureArg.type];
-            if (signatureTypes.indexOf(ValueKind.Dynamic) !== -1 && signatureTypes.indexOf(args[index].kind) !== -1) {
+            if (signatureTypes.indexOf(ValueKind.Dynamic) === -1 && signatureTypes.indexOf(args[index].kind) === -1) {
                 typeMismatchFound = true;
                 let allowedTypes = signatureTypes.map(t => ValueKind.toString(t)).join(", or");
 

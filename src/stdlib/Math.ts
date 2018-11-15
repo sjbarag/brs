@@ -49,7 +49,7 @@ export const Rnd = new Callable(
     },
     (interpreter: Interpreter, range: Int32) => {
         if (range.getValue() == 0) return new Float(Math.random())
-        else return new Int32(Math.floor(Math.random() * (range.getValue() - 1 + 1) + 1))
+        else return new Int32(Math.floor(Math.random() * range.getValue() + 1))
     }
 );
 

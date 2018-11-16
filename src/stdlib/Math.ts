@@ -37,7 +37,7 @@ export const Sqr = new Callable(
  * random integer between 1 and that number is returned (inclusive is returned). 
  * 
  * **NOTE:** the float returned is in the range [0,1) to match the javascript
- *     implementation, while the brightscript specification calls for [0,1]. 
+ *     implementation, while the brightscript specification calls for (0,1). 
  *     This should be okay in practice, but if this is necessary a more complicated
  *     implementation will be necessary.  
 */

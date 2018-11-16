@@ -1,7 +1,7 @@
 import { Callable, ValueKind, Int32, Float } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
-/** Returns the arc-tangent (in radians) a float. */
+/** Returns the arc-tangent (in radians) of a float. */
 export const Atn = new Callable(
     {
       name: "Atn",
@@ -11,7 +11,7 @@ export const Atn = new Callable(
     (interpreter: Interpreter, x: Float) => new Float(Math.atan(x.getValue()))
 );
 
-/** Returns the cosine of a float (argument must provide in radians). */
+/** Returns the cosine of a float (argument must be provided in radians). */
 export const Cos = new Callable(
     {
       name: "Cos",
@@ -21,7 +21,7 @@ export const Cos = new Callable(
     (interpreter: Interpreter, x: Float) => new Float(Math.cos(x.getValue()))
 );
 
-/** Returns the sine of a float (argument must provide in radians). */
+/** Returns the sine of a float (argument must be provided in radians). */
 export const Sin = new Callable(
     {
       name: "Sin",

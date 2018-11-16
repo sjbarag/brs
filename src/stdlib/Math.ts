@@ -40,7 +40,7 @@ export const Sqr = new Callable(
  *     implementation, while the brightscript specification calls for (0,1). 
  *     This should be okay in practice, but if this is necessary a more complicated
  *     implementation will be necessary.  
-*/
+ */
 export const Rnd = new Callable(
     {
       name: "Rnd",
@@ -48,8 +48,8 @@ export const Rnd = new Callable(
       returns: ValueKind.Dynamic
     },
     (interpreter: Interpreter, range: Int32) => {
-        if (range.getValue() == 0) return new Float(Math.random())
-        else return new Int32(Math.floor(Math.random() * range.getValue() + 1))
+        if (range.getValue() === 0) return new Float(Math.random());
+        else return new Int32(Math.floor(Math.random() * range.getValue() + 1));
     }
 );
 

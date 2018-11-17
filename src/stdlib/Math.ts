@@ -1,6 +1,86 @@
 import { Callable, ValueKind, Int32, Float } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
+/** Returns the absolute value of a float. */
+export const Abs = new Callable(
+    {
+      name: "Abs",
+      args: [{name: "x", type: ValueKind.Float}],
+      returns: ValueKind.Float
+    },
+    (interpreter: Interpreter, x: Float) => new Float(Math.abs(x.getValue()))
+);
+
+/*
+ * Returns the integer as a 32-bit float. 
+ * ** NOTE: the function name implies it makes a 64-bit float, but the docs say
+ *     it currently returns a 32-bit float, but may return a 64-bit float in the future.
+ */
+export const Cdbl = new Callable(
+    {
+      name: "Cdbl",
+      args: [{name: "x", type: ValueKind.Int32}],
+      returns: ValueKind.Float
+    },
+    (interpreter: Interpreter, x: Int32) => new Float(x.getValue())
+);
+
+/** Returns an integer from a float rounding up from midpoints */
+export const Cint = new Callable(
+    {
+      name: "Cint",
+      args: [{name: "x", type: ValueKind.Float}],
+      returns: ValueKind.Int32
+    },
+    (interpreter: Interpreter, x: Float) => new Int32(Math.round(x.getValue()))
+);
+
+/** Returns the integer as a 32-bit float. */
+export const Csng = new Callable(
+    {
+      name: "Csng",
+      args: [{name: "x", type: ValueKind.Int32}],
+      returns: ValueKind.Float
+    },
+    (interpreter: Interpreter, x: Int32) => new Float(x.getValue())
+);
+
+/** Returns an integer from a float removing fractional parts. */
+export const Fix = new Callable(
+    {
+      name: "Fix",
+      args: [{name: "x", type: ValueKind.Float}],
+      returns: ValueKind.Int32
+    },
+    (interpreter: Interpreter, x: Int32) => new Int32(Math.trunc(x.getValue()))
+);
+
+
+/** Returns an integer from a float. */
+export const Int = new Callable(
+    {
+      name: "Int",
+      args: [{name: "x", type: ValueKind.Float}],
+      returns: ValueKind.Int32
+    },
+    (interpreter: Interpreter, x: Int32) => new Int32(Math.floor(x.getValue()))
+);
+
+/** Returns -1 if parameter is negative, 0 if zero, and 1 if positive. */
+export const Sgn = new Callable(
+    {
+      name: "Sgn",
+      args: [{name: "x", type: ValueKind.Float}],
+      returns: ValueKind.Int32
+    },
+    (interpreter: Interpreter, x: Float) => {
+        let val = x.getValue();
+        if (val > 0.0) return new Int32(1);
+        else if (val < 0.0) return new Int32(-1);
+        else return new Int32(0);
+    }
+);
+
 /** Returns the arc-tangent (in radians) of a float. */
 export const Atn = new Callable(
     {

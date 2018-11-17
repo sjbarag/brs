@@ -4,8 +4,8 @@ import { Interpreter } from "../interpreter";
 
 /** Converts the string to all uppercase. */
 export const UCase = new Callable(
+    "UCase",
     {
-      name: "UCase",
       args: [{name: "s", type: ValueKind.String}],
       returns: ValueKind.String
     },
@@ -14,8 +14,8 @@ export const UCase = new Callable(
 
 /** Converts the string to all lowercase. */
 export const LCase = new Callable(
+    "LCase",
     {
-      name: "LCase",
       args: [{name: "s", type: ValueKind.String}],
       returns: ValueKind.String
     },
@@ -27,8 +27,8 @@ export const LCase = new Callable(
  * An empty string argument will return `0`.
  */
 export const Asc = new Callable(
+    "Asc",
     {
-        name: "Asc",
         args: [{name: "letter", type: ValueKind.String}],
         returns: ValueKind.String
     },
@@ -42,8 +42,8 @@ export const Asc = new Callable(
  * Returns empty string (`""`) if the specified value is `0` or an invalid Unicode value.
  */
 export const Chr = new Callable(
+    "Chr",
     {
-        name: "Chr",
         args: [{name: "ch", type: ValueKind.Int32}],
         returns: ValueKind.String
     },
@@ -58,8 +58,8 @@ export const Chr = new Callable(
  * Returns the first n characters in a string
  */
 export const Left = new Callable(
+    "Left",
     {
-        name: "Left",
         args: [{name: "s", type: ValueKind.String}, {name: "n", type: ValueKind.Int32}],
         returns: ValueKind.String
     },
@@ -70,8 +70,8 @@ export const Left = new Callable(
  * Returns the last n characters in a string
  */
 export const Right = new Callable(
+    "Right",
     {
-        name: "Right",
         args: [{name: "s", type: ValueKind.String}, {name: "n", type: ValueKind.Int32}],
         returns: ValueKind.String
     },
@@ -89,8 +89,8 @@ export const Right = new Callable(
  * Returns the index (1 based) of a string inside another string. Zero if there is no match.
  */
 export const Instr = new Callable(
+    "Instr",
     {
-        name: "Instr",
         args: [{name: "start", type: ValueKind.Int32}, {name: "str", type: ValueKind.String}, {name: "search", type: ValueKind.String}],
         returns: ValueKind.String
     },
@@ -101,8 +101,8 @@ export const Instr = new Callable(
  * Return the number of characters in a string
  */
 export const Len = new Callable(
+    "Len",
     {
-        name: "Len",
         args: [{name: "s", type: ValueKind.String}],
         returns: ValueKind.Int32
     },
@@ -113,8 +113,8 @@ export const Len = new Callable(
  * Return a string located in the middle of another string from start index to end index
  */
 export const Mid = new Callable(
+    "Mid",
     {
-        name: "Mid",
         args: [{name: "s", type: ValueKind.String}, {name: "p", type: ValueKind.Int32}, {name: "n", type: ValueKind.Int32}],
         returns: ValueKind.String
     },
@@ -128,8 +128,8 @@ export const Mid = new Callable(
  * Return a string from a float. If it is positive, prefix it with a space.
  */
 export const Str = new Callable(
+    "Str",
     {
-        name: "Str",
         args: [{name: "value", type: ValueKind.Float}],
         returns: ValueKind.String
     },
@@ -144,8 +144,8 @@ export const Str = new Callable(
  * Return a string from an integer. If it is positive, prefix it with a space.
  */
 export const StrI = new Callable(
+    "StrI",
     {
-        name: "StrI",
         args: [
             {
                 name: "value",
@@ -176,8 +176,8 @@ export const StrI = new Callable(
  * Return a float from a string
  */
 export const Val = new Callable(
+    "Val",
     {
-        name: "Val",
         args: [{name: "s", type: ValueKind.String}],
         returns: ValueKind.Float
     },

@@ -8,8 +8,8 @@ import { Interpreter } from "../interpreter";
  * May be used several times in a `print` list.
  */
 export const Tab = new Callable(
+    "Tab",
     {
-        name: "Tab",
         args: [{ name: "position", type: ValueKind.Int32 }],
         returns: ValueKind.String,
     },
@@ -31,9 +31,9 @@ export const Tab = new Callable(
  * it's completely ignored.
  */
 export const Pos = new Callable(
+    "Pos",
     {
-        name: "Pos",
-        // `pos` expects an argument and doesn't use it. The refreence
+        // `pos` expects an argument and doesn't use it. The reference
         // implementation's documentation even says it must be provided but
         // isn't used: https://sdkdocs.roku.com/display/sdkdoc/Program+Statements#ProgramStatements-PRINTitemlist
         args: [{ name: "dummy", type: ValueKind.Dynamic }],

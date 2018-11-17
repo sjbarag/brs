@@ -16,8 +16,8 @@ import { Scope, Environment } from "./Environment";
  */
 export function toCallable(func: Expr.Function, name: string = "[Function]") {
     return new Callable(
+        name,
         {
-            name: name,
             args: func.parameters,
             returns: func.returns
         },

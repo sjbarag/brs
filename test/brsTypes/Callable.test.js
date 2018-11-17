@@ -59,8 +59,8 @@ describe("Callable", () => {
     describe("arity", () => {
         it("allows no-args functions", () => {
             const noArgs = new BrsTypes.Callable(
+                "acceptsNoArgs",
                 {
-                    name: "acceptsNoArgs",
                     args: []
                 },
                 () => {}
@@ -73,8 +73,8 @@ describe("Callable", () => {
 
         it("allows functions with only required args", () => {
             const required = new BrsTypes.Callable(
+                "requiredOnly",
                 {
-                    name: "requiredOnly",
                     args: [
                         { name: "foo", type: BrsTypes.ValueKind.String },
                         { name: "bar", type: BrsTypes.ValueKind.Int32 },
@@ -89,8 +89,8 @@ describe("Callable", () => {
 
         it("allows functions with only optional args", () => {
             const required = new BrsTypes.Callable(
+                "optionalOnly",
                 {
-                    name: "optionalOnly",
                     args: [
                         { name: "foo", type: BrsTypes.ValueKind.String, defaultValue: new BrsTypes.BrsString("okay") },
                         { name: "bar", type: BrsTypes.ValueKind.Int32, defaultValue: new BrsTypes.Int32(-1) },
@@ -105,8 +105,8 @@ describe("Callable", () => {
 
         it("allows functions with both required and optional args", () => {
             const required = new BrsTypes.Callable(
+                "requiredAndOptional",
                 {
-                    name: "requiredAndOptional",
                     args: [
                         { name: "foo", type: BrsTypes.ValueKind.String },
                         { name: "bar", type: BrsTypes.ValueKind.Int32, defaultValue: new BrsTypes.Int32(-1) },

@@ -482,9 +482,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             );
         }
 
-        if (callee.signature.name) {
-            functionName = callee.signature.name;
-        }
+        functionName = callee.getName();
 
         // ensure argument counts match
         const arity = callee.arity;
@@ -539,7 +537,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             if (callee.signature.returns !== ValueKind.Dynamic && callee.signature.returns !== returnedValue.kind) {
                 throw BrsError.make(
                     `Attempting to return value of type ${ValueKind.toString(returnedValue.kind)}, `
-                    + `but function ${callee.signature.name} declares return value of type `
+                    + `but function ${callee.getName()} declares return value of type `
                     + ValueKind.toString(callee.signature.returns),
                     returnLocation.line
                 );

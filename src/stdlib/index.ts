@@ -12,8 +12,8 @@ function rebootSystemImpl(interpreter: Interpreter): BrsInvalid {
 }
 
 export const RebootSystem = new Callable(
+    "RebootSystem",
     {
-        name: "RebootSystem",
         args: [],
         returns: ValueKind.Void
     },

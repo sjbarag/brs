@@ -57,7 +57,7 @@ describe("interpreter calls", () => {
         expect(BrsError.found()).toBe(true);
     });
 
-    it.only("errors when argument types are incorrect", () => {
+    it("errors when argument types are incorrect", () => {
         const call = new Stmt.Expression(
             new Expr.Call(
                 new Expr.Variable(identifier("UCase")),
@@ -68,7 +68,7 @@ describe("interpreter calls", () => {
             )
         );
 
-        expect(() => interpreter.exec([call])).toThrow(/Type mismatch/);
+        expect(() => interpreter.exec([call])).toThrow(/Argument '.+' must be of type/);
         expect(BrsError.found()).toBe(true);
     });
 });

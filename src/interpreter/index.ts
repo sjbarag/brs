@@ -513,7 +513,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             function formatMismatch(mismatchedSignature: SignatureAndMismatches) {
                 let sig = mismatchedSignature.signature;
                 let mismatches = mismatchedSignature.mismatches;
-                // TODO: figure out how to get the signature from the file.
 
                 let messageParts = [];
 

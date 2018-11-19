@@ -132,12 +132,44 @@ export const Mid = new Callable(
     "Mid",
     {
         signature: {
-            args: [{name: "s", type: ValueKind.String}, {name: "p", type: ValueKind.Int32}, {name: "n", type: ValueKind.Int32}],
+            args: [
+                {
+                    name: "s",
+                    type: ValueKind.String
+                },
+                {
+                    name: "p",
+                    type: ValueKind.Int32
+                }
+            ],
+            returns: ValueKind.String
+        },
+        impl: (interpreter: Interpreter, s: BrsString, p: Int32): BrsString => {
+            let start = p.getValue() - 1;
+            return new BrsString(s.value.substring(start));
+        }
+    },
+    {
+        signature: {
+            args: [
+                {
+                    name: "s",
+                    type: ValueKind.String
+                },
+                {
+                    name: "p",
+                    type: ValueKind.Int32
+                },
+                {
+                    name: "n",
+                    type: ValueKind.Int32
+                }
+            ],
             returns: ValueKind.String
         },
         impl: (interpreter: Interpreter, s: BrsString, p: Int32, n: Int32): BrsString => {
             let start = p.getValue() - 1;
-            return (n) ? new BrsString(s.value.substring(start, start + n.getValue())) : new BrsString(s.value.substring(start));
+            return new BrsString(s.value.substring(start, start + n.getValue()));
         }
     }
 );

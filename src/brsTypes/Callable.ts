@@ -23,25 +23,37 @@ export interface Signature {
 
 /** A BrightScript function signature paired with its implementation. */
 type SignatureAndImplementation = {
+    /** A BrightScript function's signature. */
     signature: Signature,
+    /** The implementation corresponding to `signature`. */
     impl: CallableImplementation
 };
 
 type SignatureMismatch = AnonymousMismatch | ArgumentMismatch;
 
+/** A mismatch between a BrightScript function's signature and its received arguments. */
 export interface AnonymousMismatch {
+    /** The type of mismatch that was received. */
     reason: MismatchReason.TooFewArguments | MismatchReason.TooManyArguments,
+    /** The number of arguments that was expected. */
     expected: string,
+    /** The number of arguments that was actually received. */
     received: string
 }
 
+/** A mismatch between a function argument's expected type and its runtime type. */
 export interface ArgumentMismatch {
+    /** The type of mismatch that was received. */
     reason: MismatchReason.ArgumentTypeMismatch,
+    /** The BrightScript type that was expected for argument `argName`. */
     expected: string,
+    /** The BrightScript type that was actually received. */
     received: string
+    /** The name of the argument that had a type mismatch. */
     argName: string
 }
 
+/** The set of possible reasons why a signature and runtime arguments don't match. */
 export enum MismatchReason {
     /** Not enough arguments were provided to satisfy a signature. */
     TooFewArguments,
@@ -51,18 +63,13 @@ export enum MismatchReason {
     ArgumentTypeMismatch
 }
 
+/** A BrightScript function's signature, paired with a set of detected signature mismatches. */
 export type SignatureAndMismatches = {
+    /** A BrightScript function's signature. */
     signature: Signature,
+    /** The set of mismatches between `signature` and the detected mismatches. */
     mismatches: SignatureMismatch[]
 };
-
-/** Describes the number of required and optional arguments for a `Callable`. */
-export interface Arity {
-    /** The minimum number of arguments required for this function call. */
-    required: number,
-    /** The number of optional arguments accepted by this function. */
-    optional: number
-}
 
 /*
  * Note that TypeScript's `--strictFunctionTypes` compiler argument prevents the `args` parameter

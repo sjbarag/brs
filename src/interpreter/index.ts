@@ -516,7 +516,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
                 let messageParts = [];
 
-                let args = sig.args.map(a => `${a.name} as ${ValueKind.toString(a.type)}`);
+                let args = sig.args.map(a => {
+                    let requiredArg = `${a.name} as ${ValueKind.toString(a.type)}`;
+                    if (a.defaultValue) {
+                        return `[${requiredArg}]`;
+                    } else {
+                        return requiredArg;
+                    }
+                });
                 messageParts.push(`function ${functionName}(${args}) as ${ValueKind.toString(sig.returns)}:`);
                 messageParts.push(
                     ...mismatches.map(mm => {

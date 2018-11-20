@@ -523,7 +523,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     } else {
                         return requiredArg;
                     }
-                });
+                }).join(", ");
                 messageParts.push(`function ${functionName}(${args}) as ${ValueKind.toString(sig.returns)}:`);
                 messageParts.push(
                     ...mismatches.map(mm => {
@@ -535,10 +535,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             case MismatchReason.ArgumentTypeMismatch:
                                 return `* Argument '${mm.argName}' must be of type ${mm.expected}, but received ${mm.received}.`;
                         }
-                    })
+                    }).map(line => `    ${line}`)
                 );
 
-                return messageParts.join("\n    ");
+                return messageParts.map(line => `    ${line}`).join("\n");
             }
 
             let mismatchedSignatures = callee.getAllSignatureMismatches(args);
@@ -554,7 +554,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             }
 
             throw BrsError.make(
-                `${header}\n${messages.join("\n    ")}`,
+                [header, ...messages].join("\n"),
                 expression.closingParen.line
             );
         }

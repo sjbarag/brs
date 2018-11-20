@@ -131,8 +131,9 @@ export class Callable implements Brs.BrsValue {
 
     /**
      * Creates a new BrightScript `function` or `sub`.
-     * @param signature the signature this callable should have within the BrightScript runtime.
-     * @param impl the (JavaScript) function to call when this `callable` is executed.
+     * @param name the name this callable should have within the BrightScript runtime.
+     * @param signatures the signatures and associated (JavaScript) implementations this callable should
+     *                   have within the BrightScript runtime.
      */
     constructor(name: string | undefined, ...signatures: SignatureAndImplementation[]) {
         this.name = name;

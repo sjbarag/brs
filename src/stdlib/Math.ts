@@ -86,6 +86,18 @@ export const Sgn = new Callable(
             args: [{name: "x", type: ValueKind.Float}],
             returns: ValueKind.Int32
         },
+        impl: (interpreter: Interpreter, x: Float) => {
+            let val = x.getValue();
+            if (val > 0.0) return new Int32(1);
+            else if (val < 0.0) return new Int32(-1);
+            else return new Int32(0);
+        }
+    },
+    {
+        signature: {
+            args: [{name: "x", type: ValueKind.Int32}],
+            returns: ValueKind.Int32
+        },
         impl: (interpreter: Interpreter, x: Int32) => {
             let val = x.getValue();
             if (val > 0.0) return new Int32(1);

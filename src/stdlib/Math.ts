@@ -3,12 +3,14 @@ import { Interpreter } from "../interpreter";
 
 /** Returns the absolute value of a float. */
 export const Abs = new Callable(
+    "Abs",
     {
-      name: "Abs",
-      args: [{name: "x", type: ValueKind.Float}],
-      returns: ValueKind.Float
-    },
-    (interpreter: Interpreter, x: Float) => new Float(Math.abs(x.getValue()))
+        signature: {
+            args: [{name: "x", type: ValueKind.Float}],
+            returns: ValueKind.Float
+        },
+        impl: (interpreter: Interpreter, x: Float) => new Float(Math.abs(x.getValue()))
+    }
 );
 
 /*
@@ -17,67 +19,79 @@ export const Abs = new Callable(
  *     it currently returns a 32-bit float, but may return a 64-bit float in the future.
  */
 export const Cdbl = new Callable(
+    "Cdbl",
     {
-      name: "Cdbl",
-      args: [{name: "x", type: ValueKind.Int32}],
-      returns: ValueKind.Float
-    },
-    (interpreter: Interpreter, x: Int32) => new Float(x.getValue())
+        signature: {
+            args: [{name: "x", type: ValueKind.Int32}],
+            returns: ValueKind.Float
+        },
+        impl: (interpreter: Interpreter, x: Int32) => new Float(x.getValue())
+    }
 );
 
 /** Returns an integer from a float rounding up from midpoints */
 export const Cint = new Callable(
+    "Cint",
     {
-      name: "Cint",
-      args: [{name: "x", type: ValueKind.Float}],
-      returns: ValueKind.Int32
-    },
-    (interpreter: Interpreter, x: Float) => new Int32(Math.round(x.getValue()))
+        signature: {
+            args: [{name: "x", type: ValueKind.Float}],
+            returns: ValueKind.Int32
+        },
+        impl: (interpreter: Interpreter, x: Int32) => new Int32(Math.round(x.getValue()))
+    }
 );
 
 /** Returns the integer as a 32-bit float. */
 export const Csng = new Callable(
+    "Csng",
     {
-      name: "Csng",
-      args: [{name: "x", type: ValueKind.Int32}],
-      returns: ValueKind.Float
-    },
-    (interpreter: Interpreter, x: Int32) => new Float(x.getValue())
+        signature: {
+            args: [{name: "x", type: ValueKind.Int32}],
+            returns: ValueKind.Float
+        },
+        impl: (interpreter: Interpreter, x: Int32) => new Float(x.getValue())
+    }
 );
 
 /** Returns an integer from a float removing fractional parts. */
 export const Fix = new Callable(
+    "Fix",
     {
-      name: "Fix",
-      args: [{name: "x", type: ValueKind.Float}],
-      returns: ValueKind.Int32
-    },
-    (interpreter: Interpreter, x: Int32) => new Int32(Math.trunc(x.getValue()))
+        signature: {
+            args: [{name: "x", type: ValueKind.Float}],
+            returns: ValueKind.Int32
+        },
+        impl: (interpreter: Interpreter, x: Int32) => new Int32(Math.trunc(x.getValue()))
+    }
 );
 
 
 /** Returns an integer from a float. */
 export const Int = new Callable(
+    "Int",
     {
-      name: "Int",
-      args: [{name: "x", type: ValueKind.Float}],
-      returns: ValueKind.Int32
-    },
-    (interpreter: Interpreter, x: Int32) => new Int32(Math.floor(x.getValue()))
+        signature: {
+            args: [{name: "x", type: ValueKind.Float}],
+            returns: ValueKind.Int32
+        },
+        impl: (interpreter: Interpreter, x: Int32) => new Int32(Math.floor(x.getValue()))
+    }
 );
 
 /** Returns -1 if parameter is negative, 0 if zero, and 1 if positive. */
 export const Sgn = new Callable(
+    "Sgn",
     {
-      name: "Sgn",
-      args: [{name: "x", type: ValueKind.Float}],
-      returns: ValueKind.Int32
-    },
-    (interpreter: Interpreter, x: Float) => {
-        let val = x.getValue();
-        if (val > 0.0) return new Int32(1);
-        else if (val < 0.0) return new Int32(-1);
-        else return new Int32(0);
+        signature: {
+            args: [{name: "x", type: ValueKind.Float}],
+            returns: ValueKind.Int32
+        },
+        impl: (interpreter: Interpreter, x: Int32) => {
+            let val = x.getValue();
+            if (val > 0.0) return new Int32(1);
+            else if (val < 0.0) return new Int32(-1);
+            else return new Int32(0);
+        }
     }
 );
 

@@ -267,7 +267,7 @@ export const Substitute = new Callable(
             let replacements = [ arg0, arg1, arg2, arg3 ];
             for (let index in replacements) {
                 let token = "\\{" + index + "\\}";
-                tmpStr = tmpStr.replace(new RegExp(token, 'g'), replacements[index].value);
+                tmpStr = tmpStr.replace(new RegExp(token, "g"), replacements[index].value);
             }
 
             return new BrsString(tmpStr);

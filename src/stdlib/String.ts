@@ -248,7 +248,6 @@ export const Val = new Callable(
             returns: ValueKind.Dynamic
         },
         impl: (interpreter: Interpreter, s: BrsString, brsRadix: Int32): BrsNumber => {
-            console.log(brsRadix);
             function isBrsStrFloat(str: BrsString): boolean {
                 return str.value.includes(".");
             }

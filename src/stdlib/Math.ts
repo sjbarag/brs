@@ -78,6 +78,13 @@ export const Int = new Callable(
     }
 );
 
+function SgnImpl(interpreter: Interpreter, x: Int32 | Float) {
+    let val = x.getValue();
+    if (val > 0.0) return new Int32(1);
+    else if (val < 0.0) return new Int32(-1);
+    else return new Int32(0);
+}
+
 /** Returns -1 if parameter is negative, 0 if zero, and 1 if positive. */
 export const Sgn = new Callable(
     "Sgn",
@@ -86,24 +93,14 @@ export const Sgn = new Callable(
             args: [{name: "x", type: ValueKind.Float}],
             returns: ValueKind.Int32
         },
-        impl: (interpreter: Interpreter, x: Float) => {
-            let val = x.getValue();
-            if (val > 0.0) return new Int32(1);
-            else if (val < 0.0) return new Int32(-1);
-            else return new Int32(0);
-        }
+        impl: SgnImpl
     },
     {
         signature: {
             args: [{name: "x", type: ValueKind.Int32}],
             returns: ValueKind.Int32
         },
-        impl: (interpreter: Interpreter, x: Int32) => {
-            let val = x.getValue();
-            if (val > 0.0) return new Int32(1);
-            else if (val < 0.0) return new Int32(-1);
-            else return new Int32(0);
-        }
+        impl: SgnImpl
     }
 );
 

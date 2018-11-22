@@ -228,6 +228,54 @@ export const StrI = new Callable(
 );
 
 /**
+ * Return a string from another string replacing instances of {index} with the 
+ * respective parameter.
+ */
+export const Substitute = new Callable(
+    "Substitute",
+    {
+        signature: {
+            args: [
+                {
+                    name: "str",
+                    type: ValueKind.String
+                },
+                {
+                    name: "arg0",
+                    type: ValueKind.String
+                },
+                {
+                    name: "arg1",
+                    type: ValueKind.String,
+                    defaultValue: new Expr.Literal(new BrsString(""))
+                },
+                {
+                    name: "arg2",
+                    type: ValueKind.String,
+                    defaultValue: new Expr.Literal(new BrsString(""))
+                },
+                {
+                    name: "arg3",
+                    type: ValueKind.String,
+                    defaultValue: new Expr.Literal(new BrsString(""))
+                },
+            ],
+            returns: ValueKind.String
+        },
+        impl: (interpreter: Interpreter, str: BrsString, arg0: BrsString, arg1: BrsString, arg2: BrsString, arg3: BrsString): BrsString => {
+            let tmpStr = str.value;
+            let replacements = [ arg0, arg1, arg2, arg3 ];
+            for (let index in replacements) {
+                let token = "\\{" + index + "\\}";
+                tmpStr = tmpStr.replace(new RegExp(token, 'g'), replacements[index].value);
+            }
+
+            return new BrsString(tmpStr);
+        }
+    }
+);
+
+/**
  * Return a float from a string
  */
 export const Val = new Callable(

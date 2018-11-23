@@ -264,8 +264,8 @@ export const Substitute = new Callable(
         },
         impl: (interpreter: Interpreter, str: BrsString, arg0: BrsString, arg1: BrsString, arg2: BrsString, arg3: BrsString): BrsString => {
             let tmpStr = str.value;
-            let replacements = [ arg0, arg1, arg2, arg3 ];
-            for (let index in replacements) {
+            let replacements:{ [index:string]: BrsString } = { "0" : arg0, "1" : arg1, "2" : arg2, "3" : arg3 };
+            for (const index in replacements) {
                 let token = "\\{" + index + "\\}";
                 tmpStr = tmpStr.replace(new RegExp(token, "g"), replacements[index].value);
             }

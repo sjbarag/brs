@@ -263,14 +263,11 @@ export const Substitute = new Callable(
             returns: ValueKind.String
         },
         impl: (interpreter: Interpreter, str: BrsString, arg0: BrsString, arg1: BrsString, arg2: BrsString, arg3: BrsString): BrsString => {
-            let tmpStr = str.value;
-            let replacements:{ [index:string]: BrsString } = { "0" : arg0, "1" : arg1, "2" : arg2, "3" : arg3 };
-            for (const index in replacements) {
-                let token = "\\{" + index + "\\}";
-                tmpStr = tmpStr.replace(new RegExp(token, "g"), replacements[index].value);
-            }
-
-            return new BrsString(tmpStr);
+            let completelyReplaced = [arg0, arg1, arg2, arg3].reduce(
+                (replaced, replacement, index) => replaced.replace(new RegExp(`\\{${index}\\}`, "g"), replacement.value),
+                str.value
+            );
+            return new BrsString(completelyReplaced);
         }
     }
 );

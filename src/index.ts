@@ -28,25 +28,30 @@ const processOutput: OutputStreams = {
  * @returns a `Promise` that will be resolve if `filename` is successfully
  *          executed, or be rejected if an error occurs.
  */
-export async function execute(filename: string, options: OutputStreams = processOutput) {
+export async function execute(filenames: string[], options: OutputStreams = processOutput) {
     return new Promise((resolve, reject) => {
-        fs.readFile(filename, "utf-8", (err, contents) => {
-            if (err) {
-                reject({
-                    "message" : `brs: can't open file '${filename}': [Errno ${err.errno}]`
-                });
-            } else {
-                run(contents, options);
-                if (BrsError.found()) {
+        const interpreter = new Interpreter(options); // shared between files
+
+        for (let filename of filenames) {
+            console.log("running file: " + filename);
+            fs.readFile(filename, "utf-8", (err, contents) => {
+                if (err) {
                     reject({
-                        "message" : "Error occurred"
+                        "message" : `brs: can't open file '${filename}': [Errno ${err.errno}]`
                     });
                 } else {
-                    resolve();
+                    run(contents, options, interpreter);
+                    if (BrsError.found()) {
+                        reject({
+                            "message" : "Error occurred"
+                        });
+                    } else {
+                        resolve();
+                    }
+                    // TODO: Wire up runtime errors so we can use a second exit code
                 }
-                // TODO: Wire up runtime errors so we can use a second exit code
-            }
-        });
+            });
+        }
     });
 }
 

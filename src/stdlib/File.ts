@@ -13,15 +13,11 @@ import { URL } from "url";
 export function getVolumeByPath(interpreter: Interpreter, path: string): Volume | null {
     try {
         const protocol = new URL(path).protocol;
-        switch (protocol) {
-            case "tmp:":
-                return interpreter.temporaryVolume;
-            default:
-                return null;
-        }
+        if (protocol === "tmp:") return interpreter.temporaryVolume;
     } catch (err) {
         return null;
     }
+    return null;
 }
 
 /*

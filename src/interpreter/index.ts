@@ -94,7 +94,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             { name: "Csng",         func: StdLib.Csng },
             { name: "Fix",          func: StdLib.Fix },
             { name: "Int",          func: StdLib.Int },
-            { name: "Sgn",          func: StdLib.Sgn }
+            { name: "Sgn",          func: StdLib.Sgn },
+            { name: "StrToI",       func: StdLib.StrToI }
         ].forEach(({name, func}) =>
             this._environment.define(Scope.Global, name, func)
         );

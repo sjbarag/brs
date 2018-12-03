@@ -18,10 +18,10 @@ describe("end to end brightscript functions", () => {
         jest.restoreAllMocks();
     });
 
-    test("brs/test1.brs and brs/test1.brs", () => {
+    test("multi-file/test1.brs and multi-file/test1.brs", () => {
         let resourceFiles = [
-            resourceFile("brs", "test1.brs"),
-            resourceFile("brs", "test2.brs")
+            resourceFile("multi-file", "test1.brs"),
+            resourceFile("multi-file", "test2.brs")
         ];
         return execute(resourceFiles, outputStreams).then(() => {
             expect(BrsError.found()).toBe(false);

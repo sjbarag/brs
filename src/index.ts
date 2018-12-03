@@ -32,7 +32,7 @@ export async function execute(filenames: string[], options: OutputStreams = proc
     return new Promise((resolve, reject) => {
         const interpreter = new Interpreter(options); // shared between files
 
-        let brsError = null;
+        let brsError;
         for (let filename of filenames) {
             try {
                 let contents = fs.readFileSync(filename, "utf-8");
@@ -47,7 +47,7 @@ export async function execute(filenames: string[], options: OutputStreams = proc
             }
         }
 
-        if (brsError === null) {
+        if (brsError == null) {
             resolve();
         } else  {
             reject({

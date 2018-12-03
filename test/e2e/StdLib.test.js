@@ -19,7 +19,7 @@ describe("end to end standard libary", () => {
     });
 
     test("stdlib/files.brs", () => {
-        return execute(resourceFile("stdlib", "files.brs"), outputStreams).then(() => {
+        return execute([ resourceFile("stdlib", "files.brs") ], outputStreams).then(() => {
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
             ).toEqual([

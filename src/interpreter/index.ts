@@ -30,6 +30,7 @@ import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
 import { BlockEnd, StopReason } from "../parser/Statement";
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
+import { Volume } from "memfs/lib/volume";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -38,8 +39,10 @@ export interface OutputStreams {
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
+    
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
+    readonly temporaryVolume = new Volume();
 
     get environment() {
         return this._environment;
@@ -96,6 +99,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             { name: "Int",          func: StdLib.Int },
             { name: "Sgn",          func: StdLib.Sgn },
             { name: "StrToI",       func: StdLib.StrToI }
+            { name: "ReadAsciiFile", func: StdLib.ReadAsciiFile },
+            { name: "WriteAsciiFile", func: StdLib.WriteAsciiFile }
         ].forEach(({name, func}) =>
             this._environment.define(Scope.Global, name, func)
         );
@@ -576,7 +581,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let source = this.evaluate(expression.obj);
         if (!isIterable(source)) {
             throw BrsError.typeMismatch({
-                message: "Attemptin to retrieve property from non-iterable value",
+                message: "Attempting to retrieve property from non-iterable value",
                 line: expression.name.line,
                 left: source
             });
@@ -777,7 +782,61 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     visitM(expression: Expr.M) {
         return BrsInvalid.Instance;
     }
-    visitSet(expression: Expr.Set) {
+
+    visitDottedSet(statement: Stmt.DottedSet) {
+        let source = this.evaluate(statement.obj);
+        let value = this.evaluate(statement.value);
+
+        if (!isIterable(source)) {
+            throw BrsError.typeMismatch({
+                message: "Attempting to set property on non-iterable value",
+                line: statement.name.line,
+                left: source
+            });
+            return BrsInvalid.Instance;
+        }
+
+        try {
+            source.set(new BrsString(statement.name.text), value);
+        } catch (err) {
+            throw BrsError.make(err.message, statement.name.line);
+        }
+
+        return BrsInvalid.Instance;
+    }
+
+    visitIndexedSet(statement: Stmt.IndexedSet) {
+        let source = this.evaluate(statement.obj);
+
+        if (!isIterable(source)) {
+            BrsError.typeMismatch({
+                message: "Attempting to set property on non-iterable value",
+                line: statement.closingSquare.line,
+                left: source
+            });
+            return BrsInvalid.Instance;
+        }
+
+        let index = this.evaluate(statement.index);
+        if (!isBrsNumber(index) && !isBrsString(index)) {
+            BrsError.typeMismatch({
+                message: "Attempting to set property on iterable with illegal index type",
+                line: statement.closingSquare.line,
+                left: source,
+                right: index
+            });
+
+            return BrsInvalid.Instance;
+        }
+
+        let value = this.evaluate(statement.value);
+
+        try {
+            source.set(index, value);
+        } catch (err) {
+            throw BrsError.make(err.message, statement.closingSquare.line);
+        }
+
         return BrsInvalid.Instance;
     }
 

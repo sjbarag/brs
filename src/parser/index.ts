@@ -72,7 +72,7 @@ function functionDeclaration(isAnonymous: false): Stmt.Function;
 function functionDeclaration(isAnonymous: boolean) {
     let isSub = check(Lexeme.Sub);
     let functionType = isSub ? "sub" : "function";
-    let name: Token;
+    let name: Identifier;
     let returnType: ValueKind | undefined = ValueKind.Dynamic;
 
     advance();
@@ -80,7 +80,7 @@ function functionDeclaration(isAnonymous: boolean) {
     if (isAnonymous) {
         consume(`Expected '(' after ${functionType}`, Lexeme.LeftParen);
     } else {
-        name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier);
+        name = consume(`Expected ${functionType} name after '${functionType}'`, Lexeme.Identifier) as Identifier;
         consume(`Expected '(' after ${functionType} name`, Lexeme.LeftParen);
     }
 
@@ -193,7 +193,7 @@ function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
     if (!check(...additionalterminators)) {
         consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof, ...additionalterminators);
     }
-    return new Stmt.Assignment(name, value);
+    return new Stmt.Assignment(name as Identifier, value);
 }
 
 function statement(...additionalterminators: BlockTerminator[]): Statement {
@@ -302,7 +302,11 @@ function ifStatement(): Stmt.If {
     let thenBranch: Stmt.Block;
     let elseIfBranches: Stmt.ElseIf[] = [];
     let elseBranch: Stmt.Block | undefined;
-    consume("Expected 'then' after 'if ...condition...", Lexeme.Then);
+
+    if (check(Lexeme.Then)) {
+        // `then` is optional after `if ...condition...`, so only advance to the next token if `then` is present
+        advance();
+    }
 
     if (match(Lexeme.Newline)) {
         // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
@@ -319,7 +323,10 @@ function ifStatement(): Stmt.If {
         // attempt to read a bunch of "else if" clauses
         while (match(Lexeme.ElseIf)) {
             let elseIfCondition = expression();
-            consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
+            if (check(Lexeme.Then)) {
+                // `then` is optional after `else if ...condition...`, so only advance to the next token if `then` is present
+                advance();
+            }
             match(Lexeme.Newline);
             let elseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
             if (!elseIfThen) {
@@ -355,7 +362,10 @@ function ifStatement(): Stmt.If {
         while(match(Lexeme.ElseIf)) {
             let elseIf = previous();
             let elseIfCondition = expression();
-            consume("Expected 'then' after 'else if ...condition...'", Lexeme.Then);
+            if (check(Lexeme.Then)) {
+                // `then` is optional after `else if ...condition...`, so only advance to the next token if `then` is present
+                advance();
+            }
 
             let elseIfThen = declaration(Lexeme.ElseIf, Lexeme.Else);
             if (!elseIfThen) {
@@ -383,7 +393,7 @@ function ifStatement(): Stmt.If {
     return new Stmt.If(condition, thenBranch, elseIfBranches, elseBranch);
 }
 
-function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression {
+function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.Expression | Stmt.DottedSet | Stmt.IndexedSet {
     let expressionStart = peek();
     let expr = expression();
 
@@ -393,6 +403,21 @@ function expressionStatement(...additionalterminators: BlockTerminator[]): Stmt.
 
     if (expr instanceof Expr.Call) {
         return new Stmt.Expression(expr);
+    } else if (expr instanceof Expr.Binary) {
+        if (expr.left instanceof Expr.IndexedGet && expr.token.kind === Lexeme.Equal) {
+            return new Stmt.IndexedSet(
+                expr.left.obj,
+                expr.left.index,
+                expr.right,
+                expr.left.closingSquare
+            );
+        } else if (expr.left instanceof Expr.DottedGet && expr.token.kind === Lexeme.Equal) {
+            return new Stmt.DottedSet(
+                expr.left.obj,
+                expr.left.name,
+                expr.right
+            );
+        }
     }
 
     throw ParseError.make(expressionStart, "Expected statement or function call, but received an expression");
@@ -620,7 +645,7 @@ function primary(): Expression {
         ):
             return new Expr.Literal(previous().literal!);
         case match(Lexeme.Identifier):
-            return new Expr.Variable(previous());
+            return new Expr.Variable(previous() as Identifier);
         case match(Lexeme.LeftParen):
             let expr = expression();
             consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
@@ -694,7 +719,7 @@ function primary(): Expression {
 
             return new Expr.AALiteral(members);
         case match(Lexeme.Pos, Lexeme.Tab):
-            let token = Object.assign(previous(), { kind: Lexeme.Identifier });
+            let token = Object.assign(previous(), { kind: Lexeme.Identifier }) as Identifier;
             return new Expr.Variable(token);
         default:
             throw ParseError.make(peek(), `Found unexpected token '${peek().text}'`);

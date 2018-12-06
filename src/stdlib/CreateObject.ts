@@ -4,6 +4,7 @@ import { Interpreter } from "../interpreter";
 import { createObjectBindingPattern } from "typescript";
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 
+/** Creates a new instance of a given brightscript component (e.g. roAssociativeArray) */
 export const CreateObject = new Callable(
     "CreateObject",
     {

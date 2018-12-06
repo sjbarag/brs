@@ -1,8 +1,7 @@
-import { Callable, ValueKind, BrsString, BrsBoolean } from "../brsTypes";
+import { Callable, ValueKind, BrsString, BrsBoolean, BrsArray } from "../brsTypes";
 import { Interpreter } from "../interpreter";
-import { Volume } from "memfs/lib/volume";
 import { URL } from "url";
-
+const MemoryFileSystem = require("memory-fs");
 
 /*
  * Returns a memfs volume based on the brs path uri.  For example, passing in
@@ -10,7 +9,7 @@ import { URL } from "url";
  * 
  * Returns invalid in no appopriate volume is found for the path
  */
-export function getVolumeByPath(interpreter: Interpreter, path: string): Volume | null {
+export function getVolumeByPath(interpreter: Interpreter, path: string): typeof MemoryFileSystem | null {
     try {
         const protocol = new URL(path).protocol;
         if (protocol === "tmp:") return interpreter.temporaryVolume;
@@ -27,6 +26,32 @@ export function getVolumeByPath(interpreter: Interpreter, path: string): Volume 
 export function getMemfsPath(fileUri: string) {
     return new URL(fileUri).pathname;
 }
+
+export const ListDir = new Callable(
+    "ListDir",
+    {
+        signature: {
+            args: [
+                {name: "path", type: ValueKind.String}
+            ],
+            returns: ValueKind.Array // TODO: change this to roList when available
+        },
+        impl: (interpreter: Interpreter, path: BrsString) => {
+            const volume = getVolumeByPath(interpreter, path.value);
+            if (volume === null) {
+                return new BrsArray([]);
+            }
+
+            const memfsPath = getMemfsPath(path.value);
+            try {
+                let subPaths = volume.readdirSync(memfsPath);
+                return new BrsArray(subPaths);
+            } catch (err) {
+                return new BrsArray([]);
+            }
+        }
+    }
+)
 
 /** Reads ascii file from file system. */
 export const ReadAsciiFile = new Callable(

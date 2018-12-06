@@ -30,8 +30,7 @@ import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
 import { BlockEnd, StopReason } from "../parser/Statement";
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
-//import { Volume } from "memfs/lib/volume";
-const MemoryFileSystem = require("memory-fs");
+import MemoryFileSystem from "memory-fs";
 
 export interface OutputStreams {
     stdout: NodeJS.WriteStream,
@@ -43,7 +42,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
-    readonly temporaryVolume: typeof MemoryFileSystem = new MemoryFileSystem();
+    readonly temporaryVolume: MemoryFileSystem = new MemoryFileSystem();
 
     get environment() {
         return this._environment;

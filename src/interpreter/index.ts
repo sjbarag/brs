@@ -14,7 +14,8 @@ import {
     isIterable,
     SignatureAndMismatches,
     MismatchReason,
-    isComparable
+    isComparable,
+    Callable
 } from "../brsTypes";
 
 import * as Expr from "../parser/Expression";
@@ -56,69 +57,32 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.stdout = new OutputProxy(outputStreams.stdout);
         this.stderr = new OutputProxy(outputStreams.stderr);
 
-        [
-            { name: "RebootSystem", func: StdLib.RebootSystem },
-            { name: "UCase",        func: StdLib.UCase },
-            { name: "LCase",        func: StdLib.LCase },
-            { name: "Asc",          func: StdLib.Asc },
-            { name: "Chr",          func: StdLib.Chr },
-            { name: "Pos",          func: StdLib.Pos },
-            { name: "Left",         func: StdLib.Left },
-            { name: "Right",        func: StdLib.Right },
-            { name: "Instr",        func: StdLib.Instr },
-            { name: "Len",          func: StdLib.Len },
-            { name: "Mid",          func: StdLib.Mid },
-            { name: "RebootSystem", func: StdLib.RebootSystem },
-            { name: "UCase",        func: StdLib.UCase },
-            { name: "LCase",        func: StdLib.LCase },
-            { name: "Asc",          func: StdLib.Asc },
-            { name: "Chr",          func: StdLib.Chr },
-            { name: "Pos",          func: StdLib.Pos },
-            { name: "Left",         func: StdLib.Left },
-            { name: "Right",        func: StdLib.Right },
-            { name: "Instr",        func: StdLib.Instr },
-            { name: "Len",          func: StdLib.Len },
-            { name: "Mid",          func: StdLib.Mid },
-            { name: "Str",          func: StdLib.Str },
-            { name: "StrI",         func: StdLib.StrI },
-            { name: "Substitute",   func: StdLib.Substitute },
-            { name: "Val",          func: StdLib.Val },
-            { name: "Exp",          func: StdLib.Exp },
-            { name: "Log",          func: StdLib.Log },
-            { name: "Sqr",          func: StdLib.Sqr },
-            { name: "Rnd",          func: StdLib.Rnd },
-            { name: "Atn",          func: StdLib.Atn },
-            { name: "Cos",          func: StdLib.Cos },
-            { name: "Sin",          func: StdLib.Sin },
-            { name: "Tan",          func: StdLib.Tan },
-            { name: "Abs",          func: StdLib.Abs },
-            { name: "Cdbl",         func: StdLib.Cdbl },
-            { name: "Cint",         func: StdLib.Cint },
-            { name: "Csng",         func: StdLib.Csng },
-            { name: "Fix",          func: StdLib.Fix },
-            { name: "Int",          func: StdLib.Int },
-            { name: "Sgn",          func: StdLib.Sgn },
-            { name: "ListDir",      func: StdLib.ListDir },
-            { name: "ReadAsciiFile", func: StdLib.ReadAsciiFile },
-            { name: "WriteAsciiFile", func: StdLib.WriteAsciiFile },
-            { name: "StrToI",       func: StdLib.StrToI }
-        ].forEach(({name, func}) =>
-            this._environment.define(Scope.Global, name, func)
-        );
+        Object.keys(StdLib)
+            .map(name => (StdLib as any)[name])
+            .filter(func => func instanceof Callable)
+            .filter((func: Callable) => {
+                if (!func.name) {
+                    throw new Error("Unnamed standard library function detected!");
+                }
+
+                return !!func.name;
+            })
+            .forEach((func: Callable) =>
+                this._environment.define(Scope.Global, func.name || "", func)
+            );
     }
 
     /**
      * Temporarily sets an interpreter's environment to the provided one, then
      * passes the sub-interpreter to the provided JavaScript function. Always
      * reverts the current interpreter's environment to its original value.
-     * @param environment the sub-environment to use for the interpreter
-     *                    provided to `func`.
      * @param func the JavaScript function to execute with the sub interpreter.
      */
-    inSubEnv(environment: Environment, func: (interpreter: Interpreter) => BrsType): BrsType {
+    inSubEnv(func: (interpreter: Interpreter) => BrsType): BrsType {
         let originalEnvironment = this._environment;
+        let newEnv = this._environment.createSubEnvironment();
         try {
-            this._environment = environment;
+            this._environment = newEnv;
             return func(this);
         } finally {
             this._environment = originalEnvironment;
@@ -516,7 +480,23 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         if (satisfiedSignature) {
             try {
-                return callee.call(this, ...args);
+                let mPointer = this._environment.getM();
+
+                if (expression.callee instanceof Expr.DottedGet || expression.callee instanceof Expr.IndexedGet) {
+                    let maybeM = this.evaluate(expression.callee.obj);
+                    if (maybeM.kind === ValueKind.AssociativeArray) {
+                        mPointer = maybeM;
+                    } else {
+                        BrsError.make("Retrieved a function from non-indexable value", expression.closingParen.line);
+                    }
+                }
+
+                return this.inSubEnv(
+                    (subInterpreter) => {
+                        subInterpreter.environment.setM(mPointer);
+                        return callee.call(this, ...args);
+                    }
+                );
             } catch (reason) {
                 if (reason.kind == null) {
                     throw new Error("Something terrible happened and we didn't throw a `BlockEnd` instance.");

@@ -2,8 +2,6 @@ const { AssociativeArray, BrsObjects, CreateObject, BrsInvalid } = require("../.
 const BrsError = require("../../lib/Error");
 
 describe("CreateObject", () => {
-    beforeEach(() => BrsError.reset());
-
     it("creates a new instance of associative array", () => {
         let obj = CreateObject("roAssociativeArray");
         expect(obj).toEqual(new AssociativeArray([]));

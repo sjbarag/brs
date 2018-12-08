@@ -189,7 +189,9 @@ export const FormatDrive = new Callable(
             returns: ValueKind.Boolean
         },
         impl: (interpreter: Interpreter, dir: BrsString) => {
-            console.warn("`FormatDrive` is not implemented in `brs`.");
+            if (process.env.NODE_ENV !== "test") {
+                console.error("`FormatDrive` is not implemented in `brs`.");
+            }
             return BrsBoolean.False;
         }
     }

@@ -21,11 +21,6 @@ export const Type = new Callable(
         },
         impl: (interpreter: Interpreter, variable: BrsType, version: Int32) => {
             if (variable.kind < ValueKind.Array) {
-                if (version.equalTo(new Int32(3)).toBoolean() && variable.kind === ValueKind.String) {
-                    // TODO: replace this with a component name once boxed types are supported
-                    return new BrsString("roString");
-                }
-
                 return new BrsString(ValueKind.toString(variable.kind));
             } else {
                 switch (variable.kind) {

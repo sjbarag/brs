@@ -9,7 +9,7 @@ export const FormatJson = new Callable("FormatJson", {
     ]},
     impl: (interpreter: Interpreter, json: BrsType, flags: Int32) => {
         try {
-            return new BrsString(`"TODO: FormatJson"`);
+            return new BrsString('null');
             // TODO: JSON.stringify
         } catch (err) {
             // example RBI error format: "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"
@@ -25,7 +25,7 @@ export const ParseJson = new Callable("ParseJson", {
     ]},
     impl: (interpreter: Interpreter, jsonString: BrsString) => {
         try {
-            return new BrsString(`"TODO: ParseJson"`);
+            return BrsInvalid.InstancePass;
             // TODO: JSON.parse
         } catch (err) {
             // example RBI error format: "BRIGHTSCRIPT: ERROR: ParseJSON: Unknown identifier 'I'm not JSON': pkg:/source/main.brs(25)"

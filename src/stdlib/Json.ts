@@ -30,6 +30,10 @@ function brsValueOf(jsonValue: any): any {
     }
 }
 
+function logBrsErr(functionName: string, err: Error): void {
+    console.error(`BRIGHTSCRIPT: ERROR: ${functionName}: ${err.message}`);
+}
+
 export const FormatJson = new Callable("FormatJson", {
     signature: { returns: ValueKind.String, args: [
         { name: "x", type: ValueKind.Object },
@@ -40,7 +44,7 @@ export const FormatJson = new Callable("FormatJson", {
             return new BrsString(JSON.stringify(jsonValueOf(x)));
         } catch (err) {
             // example RBI error format: "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"
-            console.error(`FormatJSON: ${err.message}`);
+            logBrsErr("FormatJSON", err);
             return new BrsString("");
         }
     }
@@ -55,7 +59,7 @@ export const ParseJson = new Callable("ParseJson", {
             return brsValueOf(JSON.parse(jsonString.value));
         } catch (err) {
             // example RBI error format: "BRIGHTSCRIPT: ERROR: ParseJSON: Unknown identifier 'I'm not JSON': pkg:/source/main.brs(25)"
-            console.error(`ParseJSON: ${err.message}`);
+            logBrsErr("ParseJSON", err);
             return BrsInvalid.Instance;
         }
     }

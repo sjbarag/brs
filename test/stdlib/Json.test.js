@@ -15,11 +15,10 @@ describe('global JSON functions', () => {
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
-            const spy = jest.spyOn(console, 'error');
+            jest.spyOn(console, 'error').mockImplementationOnce((s) => {
+                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
+            })
             actual = FormatJson.call(interpreter, Uninitialized.Instance);
-            expect(spy).toHaveBeenCalledWith(
-                expect.stringMatching(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
-            );
             expect(actual).toMatchObject(brsEmpty);
         });
 
@@ -36,11 +35,10 @@ describe('global JSON functions', () => {
 
     describe('ParseJson', () => {
         it('rejects empty strings', () => {
-            const spy = jest.spyOn(console, 'error');
+            jest.spyOn(console, 'error').mockImplementationOnce((s) => {
+                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: ParseJSON: /)
+            })
             actual = ParseJson.call(interpreter, brsEmpty);
-            expect(spy).toHaveBeenCalledWith(
-                expect.stringMatching(/BRIGHTSCRIPT: ERROR: ParseJSON: /)
-            );
             expect(actual).toBe(BrsInvalid.Instance);
         });
 

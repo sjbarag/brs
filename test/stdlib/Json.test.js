@@ -1,13 +1,28 @@
 const { Interpreter } = require('../../lib/interpreter');
-const { BrsBoolean, BrsInvalid, BrsString } = require("../../lib/brsTypes");
 const { FormatJson, ParseJson } = require("../../lib/stdlib/index");
+const {
+    BrsBoolean,
+    BrsInvalid,
+    BrsString,
+    Uninitialized
+} = require("../../lib/brsTypes");
 
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
     let brsBareNull = new BrsString('null')
     let brsBareFalse = new BrsString('false')
+    let brsEmpty = new BrsString('')
 
     describe('FormatJson', () => {
+        it('rejects non-convertible types', () => {
+            const spy = jest.spyOn(console, 'error');
+            actual = FormatJson.call(interpreter, Uninitialized.Instance);
+            expect(spy).toHaveBeenCalledWith(
+                expect.stringMatching(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
+            );
+            expect(actual).toMatchObject(brsEmpty);
+        });
+
         it('converts BRS invalid to bare null string', () => {
             actual = FormatJson.call(interpreter, BrsInvalid.Instance);
             expect(actual).toMatchObject(brsBareNull);
@@ -20,6 +35,15 @@ describe('global JSON functions', () => {
     });
 
     describe('ParseJson', () => {
+        it('rejects empty strings', () => {
+            const spy = jest.spyOn(console, 'error');
+            actual = ParseJson.call(interpreter, brsEmpty);
+            expect(spy).toHaveBeenCalledWith(
+                expect.stringMatching(/BRIGHTSCRIPT: ERROR: ParseJSON: /)
+            );
+            expect(actual).toBe(BrsInvalid.Instance);
+        });
+
         it('converts bare null string to BRS invalid', () => {
             actual = ParseJson.call(interpreter, brsBareNull);
             expect(actual).toBe(BrsInvalid.Instance);

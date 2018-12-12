@@ -25,6 +25,8 @@ function brsValueOf(jsonValue: any): any {
     switch (typeof jsonValue) {
     case "boolean":
         return BrsBoolean.from(jsonValue);
+    case "string":
+        return new BrsString(jsonValue);
     default:
         throw `brsValueOf not implemented for: ${jsonValue}`;
     }

@@ -23,7 +23,8 @@ function jsonValueOf(brsValue: any): any {
 function brsValueOf(jsonValue: any): any {
     if (jsonValue === null) { return BrsInvalid.Instance; }
     switch (typeof jsonValue) {
-    case "boolean": return BrsBoolean.False;
+    case "boolean":
+        return BrsBoolean.from(jsonValue);
     default:
         throw `brsValueOf not implemented for: ${jsonValue}`;
     }

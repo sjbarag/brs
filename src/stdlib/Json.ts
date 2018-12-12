@@ -1,6 +1,14 @@
-import { BrsInvalid, BrsString, BrsType, Callable, Int32, ValueKind } from "../brsTypes";
 import { Interpreter } from "../interpreter";
-import * as Expr from "../parser/Expression";
+import { Literal } from "../parser/Expression";
+import {
+    BrsBoolean,
+    BrsInvalid,
+    BrsString,
+    BrsType,
+    Callable,
+    Int32,
+    ValueKind
+} from "../brsTypes";
 
 function jsonValueOf(brsValue: any): any {
     if (brsValue.hasOwnProperty("value")) { return brsValue.value; }
@@ -15,6 +23,7 @@ function jsonValueOf(brsValue: any): any {
 function brsValueOf(jsonValue: any): any {
     if (jsonValue === null) { return BrsInvalid.Instance; }
     switch (typeof jsonValue) {
+    case "boolean": return BrsBoolean.False;
     default:
         throw `brsValueOf not implemented for: ${jsonValue}`;
     }
@@ -23,7 +32,7 @@ function brsValueOf(jsonValue: any): any {
 export const FormatJson = new Callable("FormatJson", {
     signature: { returns: ValueKind.String, args: [
         { name: "x", type: ValueKind.Object },
-        { name: "flags", type: ValueKind.Int32, defaultValue: new Expr.Literal(new Int32(0)) }
+        { name: "flags", type: ValueKind.Int32, defaultValue: new Literal(new Int32(0)) }
     ]},
     impl: (_: Interpreter, x: BrsType, flags: Int32) => {
         try {

@@ -34,7 +34,7 @@ describe('global JSON functions', () => {
             expect(actual).toMatchObject(brsBareFalse);
         });
 
-        it('converts BRS string to bare string', () => {
+        it('converts BRS string to bare (quoted) string', () => {
             actual = FormatJson.call(interpreter, brsUnquoted);
             expect(actual).toMatchObject(brsQuoted);
         });
@@ -59,7 +59,7 @@ describe('global JSON functions', () => {
             expect(actual).toBe(BrsBoolean.False);
         });
 
-        it('converts bare string to BRS string', () => {
+        it('converts bare (quoted) string to BRS string', () => {
             actual = ParseJson.call(interpreter, brsQuoted);
             expect(actual).toMatchObject(brsUnquoted);
         });

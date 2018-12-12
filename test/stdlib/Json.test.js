@@ -12,6 +12,8 @@ describe('global JSON functions', () => {
     let brsBareNull = new BrsString('null')
     let brsBareFalse = new BrsString('false')
     let brsEmpty = new BrsString('')
+    let brsUnquoted = new BrsString('ok')
+    let brsQuoted = new BrsString('"ok"')
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
@@ -30,6 +32,11 @@ describe('global JSON functions', () => {
         it('converts BRS false to bare false string', () => {
             actual = FormatJson.call(interpreter, BrsBoolean.False);
             expect(actual).toMatchObject(brsBareFalse);
+        });
+
+        it('converts BRS string to bare string', () => {
+            actual = FormatJson.call(interpreter, brsUnquoted);
+            expect(actual).toMatchObject(brsQuoted);
         });
     });
 
@@ -50,6 +57,11 @@ describe('global JSON functions', () => {
         it('converts bare false string to BRS false', () => {
             actual = ParseJson.call(interpreter, brsBareFalse);
             expect(actual).toBe(BrsBoolean.False);
+        });
+
+        it('converts bare string to BRS string', () => {
+            actual = ParseJson.call(interpreter, brsQuoted);
+            expect(actual).toMatchObject(brsUnquoted);
         });
     });
 });

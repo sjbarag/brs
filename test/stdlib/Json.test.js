@@ -8,8 +8,28 @@ const {
     Float,
     Int32,
     Int64,
-    Uninitialized
+    Uninitialized,
+    ValueKind
 } = require("../../lib/brsTypes");
+
+expect.extend({
+    toBeFloatStrCloseTo(actual, expected, numDigits = Float.IEEE_FLOAT_SIGFIGS) {
+        actualFloat = Number.parseFloat(actual);
+        expectedFloat = Number.parseFloat(expected);
+        expect(actualFloat).toBeCloseTo(expectedFloat, numDigits);
+        return { pass: true };
+    },
+    toBeBrsFloatCloseTo(actual, floatStr) {
+        expect(actual.kind).toBe(ValueKind.Float); // 5
+        expect(actual.value).toBeFloatStrCloseTo(floatStr);
+        return { pass: true };
+    },
+    toBeBrsBareFloatCloseTo(actual, floatStr) {
+        expect(actual.kind).toBe(ValueKind.String); // 2
+        expect(actual.value).toBeFloatStrCloseTo(floatStr);
+        return { pass: true };
+    }
+});
 
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
@@ -23,7 +43,7 @@ describe('global JSON functions', () => {
     let brsUnquoted = new BrsString('ok');
     let brsQuoted = new BrsString('"ok"');
 
-    let floatStr = '3.402823061e+38';
+    let floatStr = '3.14159265358979323846264338327950288419716939937510';
     let brsFloat = Float.fromString(floatStr);
     let brsBareFloat = new BrsString(floatStr);
 
@@ -34,10 +54,6 @@ describe('global JSON functions', () => {
     let longIntegerStr = '9223372036854775807';
     let brsLongInteger = Int64.fromString(longIntegerStr);
     let brsBareLongInteger = new BrsString(longIntegerStr);
-
-    let doubleStr = '1.7976931348623e+308';
-    let brsDouble = Double.fromString(doubleStr);
-    let brsBareDouble = new BrsString(doubleStr);
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
@@ -73,9 +89,9 @@ describe('global JSON functions', () => {
             expect(actual).toMatchObject(brsBareLongInteger);
         });
 
-        xit('converts BRS float to bare float string', () => {
+        it('converts BRS float to bare float string', () => {
             actual = FormatJson.call(interpreter, brsFloat);
-            expect(actual).toMatchObject(brsBareFloat);
+            expect(actual).toBeBrsBareFloatCloseTo(floatStr);
         });
     });
 
@@ -113,9 +129,9 @@ describe('global JSON functions', () => {
             expect(actual).toMatchObject(brsLongInteger);
         });
 
-        xit('converts bare float string to BRS float', () => {
+        it('converts bare float string to BRS float', () => {
             actual = ParseJson.call(interpreter, brsBareFloat);
-            expect(actual).toMatchObject(brsFloat);
+            expect(actual).toBeBrsFloatCloseTo(floatStr);
         });
     });
 });

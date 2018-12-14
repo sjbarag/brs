@@ -6,30 +6,49 @@ import {
     BrsString,
     BrsType,
     Callable,
+    Float,
     Int32,
+    Int64,
     ValueKind
 } from "../brsTypes";
 
-function jsonValueOf(brsValue: any): any {
-    if (brsValue.hasOwnProperty("value")) { return brsValue.value; }
-    switch (brsValue.kind) {
+function jsonValueOf(x: any): any {
+    if (x.hasOwnProperty("value")) { return x.value; }
+    let kind: ValueKind = x.kind;
+    switch (kind) {
     case ValueKind.Invalid:
         return null;
     default:
-        throw `jsonValueOf not implemented for: ${brsValue}`;
+        throw `jsonValueOf not implemented for: ${x} <${kind}>`;
     }
 }
 
-function brsValueOf(jsonValue: any): any {
-    if (jsonValue === null) { return BrsInvalid.Instance; }
-    switch (typeof jsonValue) {
+function isInt32(n: number): boolean {
+    const lo: number = -2_147_483_648;
+    const hi: number = 2_147_483_647;
+    return Number.isInteger(n) && n >= lo && n <= hi;
+}
+
+function brsValueOf(x: any): any {
+    if (x === null) { return BrsInvalid.Instance; }
+    let t: string = typeof x;
+    let errMsg: string = "";
+
+    switch (t) {
     case "boolean":
-        return BrsBoolean.from(jsonValue);
+        return BrsBoolean.from(x);
     case "string":
-        return new BrsString(jsonValue);
+        return new BrsString(x);
+    case "number":
+        if (Number.isInteger(x)) {
+            return isInt32(x) ? new Int32(x) : new Int64(x);
+        }
+        return new Float(x) ;
     default:
-        throw `brsValueOf not implemented for: ${jsonValue}`;
+        errMsg = `brsValueOf not implemented for: ${x} <${t}>`;
+        break;
     }
+    if (errMsg.trim() !== "") { throw errMsg; }
 }
 
 function logBrsErr(functionName: string, err: Error): void {

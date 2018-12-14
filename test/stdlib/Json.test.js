@@ -103,12 +103,12 @@ describe('global JSON functions', () => {
             expect(actual).toMatchObject(brsUnquoted);
         });
 
-        xit('converts bare integer string to BRS integer', () => {
+        it('converts bare integer string to BRS integer', () => {
             actual = ParseJson.call(interpreter, brsBareInteger);
             expect(actual).toMatchObject(brsInteger);
         });
 
-        xit('converts bare longInteger string to BRS longInteger', () => {
+        it('converts bare longInteger string to BRS longInteger', () => {
             actual = ParseJson.call(interpreter, brsBareLongInteger);
             expect(actual).toMatchObject(brsLongInteger);
         });

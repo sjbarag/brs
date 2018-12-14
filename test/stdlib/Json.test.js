@@ -4,7 +4,6 @@ const {
     BrsBoolean,
     BrsInvalid,
     BrsString,
-    Double,
     Float,
     Int32,
     Int64,
@@ -47,11 +46,11 @@ describe('global JSON functions', () => {
     let brsFloat = Float.fromString(floatStr);
     let brsBareFloat = new BrsString(floatStr);
 
-    let integerStr = '2147483647';
+    let integerStr = '2147483647'; // max 32-bit int
     let brsInteger = Int32.fromString(integerStr);
     let brsBareInteger = new BrsString(integerStr);
 
-    let longIntegerStr = '9223372036854775807';
+    let longIntegerStr = '9223372036854775807'; // max 64-bit int
     let brsLongInteger = Int64.fromString(longIntegerStr);
     let brsBareLongInteger = new BrsString(longIntegerStr);
 
@@ -84,7 +83,7 @@ describe('global JSON functions', () => {
             expect(actual).toMatchObject(brsBareInteger);
         });
 
-        xit('converts BRS longInteger to bare longInteger string', () => {
+        it('converts BRS longInteger to bare longInteger string', () => {
             actual = FormatJson.call(interpreter, brsLongInteger);
             expect(actual).toMatchObject(brsBareLongInteger);
         });

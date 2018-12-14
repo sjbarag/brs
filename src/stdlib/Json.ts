@@ -40,15 +40,16 @@ function brsValueOf(x: any): any {
     if (errMsg.trim() !== "") { throw errMsg; }
 }
 
-function jsonValueOf(x: any): any {
-    if (x.hasOwnProperty("value")) { return x.value; }
+function brsStringOf(x: any): any {
     let kind: ValueKind = x.kind;
-    switch (kind) {
-    case ValueKind.Invalid:
-        return null;
-    default:
-        throw `jsonValueOf not implemented for: ${x} <${kind}>`;
+    if (kind === ValueKind.Invalid) { return new BrsString("null"); }
+    if (kind === ValueKind.Int64) {
+        return new BrsString(x.value.toString());
     }
+    if (x.hasOwnProperty("value")) {
+        return new BrsString(JSON.stringify(x.value));
+    }
+    throw `jsonValueOf not implemented for: ${x}`;
 }
 
 function logBrsErr(functionName: string, err: Error): void {
@@ -62,7 +63,7 @@ export const FormatJson = new Callable("FormatJson", {
     ]},
     impl: (_: Interpreter, x: BrsType, flags: Int32) => {
         try {
-            return new BrsString(JSON.stringify(jsonValueOf(x)));
+            return brsStringOf(x);
         } catch (err) {
             // example RBI error format: "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"
             logBrsErr("FormatJSON", err);

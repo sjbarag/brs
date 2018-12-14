@@ -12,17 +12,6 @@ import {
     ValueKind
 } from "../brsTypes";
 
-function jsonValueOf(x: any): any {
-    if (x.hasOwnProperty("value")) { return x.value; }
-    let kind: ValueKind = x.kind;
-    switch (kind) {
-    case ValueKind.Invalid:
-        return null;
-    default:
-        throw `jsonValueOf not implemented for: ${x} <${kind}>`;
-    }
-}
-
 function isInt32(n: number): boolean {
     const lo: number = -2_147_483_648;
     const hi: number = 2_147_483_647;
@@ -43,12 +32,23 @@ function brsValueOf(x: any): any {
         if (Number.isInteger(x)) {
             return isInt32(x) ? new Int32(x) : new Int64(x);
         }
-        return new Float(x) ;
+        return new Float(x);
     default:
         errMsg = `brsValueOf not implemented for: ${x} <${t}>`;
         break;
     }
     if (errMsg.trim() !== "") { throw errMsg; }
+}
+
+function jsonValueOf(x: any): any {
+    if (x.hasOwnProperty("value")) { return x.value; }
+    let kind: ValueKind = x.kind;
+    switch (kind) {
+    case ValueKind.Invalid:
+        return null;
+    default:
+        throw `jsonValueOf not implemented for: ${x} <${kind}>`;
+    }
 }
 
 function logBrsErr(functionName: string, err: Error): void {

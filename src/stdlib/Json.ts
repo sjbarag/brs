@@ -1,4 +1,4 @@
-import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
+import { AssociativeArray as BrsAssociativeArray } from "../brsTypes/components/AssociativeArray";
 import { BrsArray } from "../brsTypes/components/BrsArray";
 import { Interpreter } from "../interpreter";
 import { Literal } from "../parser/Expression";
@@ -9,10 +9,10 @@ import {
     BrsType,
     BrsValue,
     Callable,
-    Float,
-    Int32,
-    Int64,
-    Uninitialized,
+    Float as BrsFloat,
+    Int32 as BrsInteger,
+    Int64 as BrsLongInteger,
+    Uninitialized as BrsUninitialized,
     ValueKind
 } from "../brsTypes";
 
@@ -22,11 +22,12 @@ function isInt32(n: number): boolean {
     return Number.isInteger(n) && n >= lo && n <= hi;
 }
 
-function brsValueOf(x: any): any {
+type BrsJsonValue = any; //BrsValue;
+type TsJsonValue = any;
+
+function brsValueOf(x: TsJsonValue): BrsJsonValue {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
-    let errMsg: string = "";
-
     switch (t) {
     case "boolean":
         return BrsBoolean.from(x);
@@ -34,24 +35,22 @@ function brsValueOf(x: any): any {
         return new BrsString(x);
     case "number":
         if (Number.isInteger(x)) {
-            return isInt32(x) ? new Int32(x) : new Int64(x);
+            return isInt32(x) ? new BrsInteger(x) : new BrsLongInteger(x);
         }
-        return new Float(x);
+        return new BrsFloat(x);
     default:
-        errMsg = `brsValueOf not implemented for: ${x} <${t}>`;
-        break;
+        throw new Error(`brsValueOf not implemented for: ${x} <${t}>`);
     }
-    if (errMsg.trim() !== "") { throw new Error(errMsg); }
 }
 
-type ItemFn = (k: BrsString, v: BrsValue) => any;
-function itemsMap(brsAa: AssociativeArray, fn: ItemFn) {
+type ItemFn = (k: BrsString, v: BrsValue) => string;
+function itemsMap(brsAa: BrsAssociativeArray, fn: ItemFn) {
     return brsAa.getElements().map((key) => {
         return fn(key, brsAa.get(key));
     });
 }
 
-type ElementFn = (v: BrsValue) => any;
+type ElementFn = (v: BrsJsonValue) => string;
 function elementsMap(brsArray: BrsArray, fn: ElementFn) {
     return brsArray.getElements().map(fn);
 }
@@ -64,7 +63,7 @@ function jsonOf(x: BrsValue): string {
     if (x instanceof BrsInvalid) {
         return "null";
     }
-    if (x instanceof AssociativeArray) {
+    if (x instanceof BrsAssociativeArray) {
         return `{${itemsMap(x, jsonOfItem).join(",")}}`;
     }
     if (x instanceof BrsArray) {
@@ -73,7 +72,7 @@ function jsonOf(x: BrsValue): string {
     if (x instanceof BrsString) {
         return `"${x.toString()}"`;
     }
-    if (!(x instanceof Uninitialized)) {
+    if (!(x instanceof BrsUninitialized)) {
         return x.toString();
     }
     throw new Error(`jsonValueOf not implemented for: ${x}`);
@@ -86,9 +85,13 @@ function logBrsErr(functionName: string, err: Error): void {
 export const FormatJson = new Callable("FormatJson", {
     signature: { returns: ValueKind.String, args: [
         { name: "x", type: ValueKind.Object },
-        { name: "flags", type: ValueKind.Int32, defaultValue: new Literal(new Int32(0)) }
+        {
+            name: "flags",
+            type: ValueKind.Int32,
+            defaultValue: new Literal(new BrsInteger(0))
+        }
     ]},
-    impl: (_: Interpreter, x: BrsType, flags: Int32) => {
+    impl: (_: Interpreter, x: BrsType, flags: BrsInteger) => {
         try {
             return new BrsString(jsonOf(x));
         } catch (err) {

@@ -1,6 +1,7 @@
 const { Interpreter } = require('../../lib/interpreter');
 const { FormatJson, ParseJson } = require("../../lib/stdlib/index");
 const { BrsArray } = require("../../lib/brsTypes/components/BrsArray");
+const { AssociativeArray } = require("../../lib/brsTypes/components/AssociativeArray");
 const {
     BrsBoolean,
     BrsInvalid,
@@ -8,9 +9,14 @@ const {
     Float,
     Int32,
     Int64,
-    Uninitialized,
-    ValueKind
+    Uninitialized
 } = require("../../lib/brsTypes");
+
+const BrsAssociativeArray = AssociativeArray;
+const BrsFloat = Float;
+const BrsInteger = Int32;
+const BrsLongInteger = Int64;
+const BrsUninitialized = Uninitialized;
 
 expect.extend({
     toMatchBrsArray(actual, expected) {
@@ -18,20 +24,19 @@ expect.extend({
         expect(actual.getElements()).toMatchObject(expected.getElements());
         return { pass: true };
     },
-    toBeFloatStrCloseTo(actual, expected, sigfigs) {
-        actualFloat = Number.parseFloat(actual);
-        expectedFloat = Number.parseFloat(expected);
-        expect(actualFloat).toBeCloseTo(expectedFloat, sigfigs);
+    toBeBrsFloatCloseTo(actual, expectedFloatStr) {
+        expect(actual).toBeInstanceOf(BrsFloat);
+        expectedFloat = Number.parseFloat(expectedFloatStr);
+        expect(actual.getValue())
+            .toBeCloseTo(expectedFloat, BrsFloat.IEEE_FLOAT_SIGFIGS);
         return { pass: true };
     },
-    toBeBrsFloatCloseTo(actual, floatStr, sigfigs = Float.IEEE_FLOAT_SIGFIGS) {
-        expect(actual).toBeInstanceOf(Float);
-        expect(actual.value).toBeFloatStrCloseTo(floatStr, sigfigs);
-        return { pass: true };
-    },
-    toBeBrsBareFloatCloseTo(actual, floatStr, sigfigs = Float.IEEE_FLOAT_SIGFIGS) {
+    toBeBrsFloatStrCloseTo(actual, expectedFloatStr) {
         expect(actual).toBeInstanceOf(BrsString);
-        expect(actual.value).toBeFloatStrCloseTo(floatStr, sigfigs);
+        actualFloat = Number.parseFloat(actual.toString());
+        expectedFloat = Number.parseFloat(expectedFloatStr);
+        expect(actualFloat)
+            .toBeCloseTo(expectedFloat, BrsFloat.IEEE_FLOAT_SIGFIGS);
         return { pass: true };
     }
 });
@@ -55,15 +60,15 @@ describe('global JSON functions', () => {
     let brsQuoted = new BrsString(strQuoted);
 
     let floatStr = '3.14159265358979323846264338327950288419716939937510';
-    let brsFloat = Float.fromString(floatStr);
+    let brsFloat = BrsFloat.fromString(floatStr);
     let brsBareFloat = new BrsString(floatStr);
 
     let integerStr = '2147483647'; // max 32-bit int
-    let brsInteger = Int32.fromString(integerStr);
+    let brsInteger = BrsInteger.fromString(integerStr);
     let brsBareInteger = new BrsString(integerStr);
 
     let longIntegerStr = '9223372036854775807'; // max 64-bit int
-    let brsLongInteger = Int64.fromString(longIntegerStr);
+    let brsLongInteger = BrsLongInteger.fromString(longIntegerStr);
     let brsBareLongInteger = new BrsString(longIntegerStr);
 
     // Don't include floats for now
@@ -83,7 +88,7 @@ describe('global JSON functions', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
                 expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
             })
-            actual = FormatJson.call(interpreter, Uninitialized.Instance);
+            actual = FormatJson.call(interpreter, BrsUninitialized.Instance);
             expect(actual).toMatchObject(brsEmpty);
         });
 
@@ -114,7 +119,7 @@ describe('global JSON functions', () => {
 
         it('converts BRS float to bare float string', () => {
             actual = FormatJson.call(interpreter, brsFloat);
-            expect(actual).toBeBrsBareFloatCloseTo(floatStr);
+            expect(actual).toBeBrsFloatStrCloseTo(floatStr);
         });
 
         it('converts from BRS array', () => {

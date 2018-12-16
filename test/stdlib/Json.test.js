@@ -1,5 +1,6 @@
 const { Interpreter } = require('../../lib/interpreter');
 const { FormatJson, ParseJson } = require("../../lib/stdlib/index");
+const { BrsArray } = require("../../lib/brsTypes/components/BrsArray");
 const {
     BrsBoolean,
     BrsInvalid,
@@ -12,20 +13,25 @@ const {
 } = require("../../lib/brsTypes");
 
 expect.extend({
-    toBeFloatStrCloseTo(actual, expected, numDigits = Float.IEEE_FLOAT_SIGFIGS) {
+    toMatchBrsArray(actual, expected) {
+        expect(actual).toBeInstanceOf(BrsArray);
+        expect(actual.getElements()).toMatchObject(expected.getElements());
+        return { pass: true };
+    },
+    toBeFloatStrCloseTo(actual, expected, sigfigs) {
         actualFloat = Number.parseFloat(actual);
         expectedFloat = Number.parseFloat(expected);
-        expect(actualFloat).toBeCloseTo(expectedFloat, numDigits);
+        expect(actualFloat).toBeCloseTo(expectedFloat, sigfigs);
         return { pass: true };
     },
-    toBeBrsFloatCloseTo(actual, floatStr) {
-        expect(actual.kind).toBe(ValueKind.Float); // 5
-        expect(actual.value).toBeFloatStrCloseTo(floatStr);
+    toBeBrsFloatCloseTo(actual, floatStr, sigfigs = Float.IEEE_FLOAT_SIGFIGS) {
+        expect(actual).toBeInstanceOf(Float);
+        expect(actual.value).toBeFloatStrCloseTo(floatStr, sigfigs);
         return { pass: true };
     },
-    toBeBrsBareFloatCloseTo(actual, floatStr) {
-        expect(actual.kind).toBe(ValueKind.String); // 2
-        expect(actual.value).toBeFloatStrCloseTo(floatStr);
+    toBeBrsBareFloatCloseTo(actual, floatStr, sigfigs = Float.IEEE_FLOAT_SIGFIGS) {
+        expect(actual).toBeInstanceOf(BrsString);
+        expect(actual.value).toBeFloatStrCloseTo(floatStr, sigfigs);
         return { pass: true };
     }
 });
@@ -33,14 +39,20 @@ expect.extend({
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
 
-    let brsBareNull = new BrsString('null');
+    let nullStr = 'null';
+    let brsNull = BrsInvalid.Instance;
+    let brsBareNull = new BrsString(nullStr);
 
-    let brsBareFalse = new BrsString('false');
+    let falseStr = 'false';
+    let brsFalse = new BrsBoolean(false);
+    let brsBareFalse = new BrsString(falseStr);
 
     let brsEmpty = new BrsString('');
 
-    let brsUnquoted = new BrsString('ok');
-    let brsQuoted = new BrsString('"ok"');
+    let strUnquoted = 'ok';
+    let strQuoted = `"${strUnquoted}"`;
+    let brsUnquoted = new BrsString(strUnquoted);
+    let brsQuoted = new BrsString(strQuoted);
 
     let floatStr = '3.14159265358979323846264338327950288419716939937510';
     let brsFloat = Float.fromString(floatStr);
@@ -53,6 +65,18 @@ describe('global JSON functions', () => {
     let longIntegerStr = '9223372036854775807'; // max 64-bit int
     let brsLongInteger = Int64.fromString(longIntegerStr);
     let brsBareLongInteger = new BrsString(longIntegerStr);
+
+    // Don't include floats for now
+    let array = [nullStr, falseStr, strQuoted, integerStr, longIntegerStr];
+    let arrayStr = `[${array.join(',')}]`;
+    let brsArrayStr = new BrsString(arrayStr);
+    let brsArray = new BrsArray([
+        brsNull,
+        brsFalse,
+        brsUnquoted,
+        brsInteger,
+        brsLongInteger
+    ]);
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
@@ -91,6 +115,11 @@ describe('global JSON functions', () => {
         it('converts BRS float to bare float string', () => {
             actual = FormatJson.call(interpreter, brsFloat);
             expect(actual).toBeBrsBareFloatCloseTo(floatStr);
+        });
+
+        it('converts from BRS array', () => {
+            actual = FormatJson.call(interpreter, brsArray);
+            expect(actual).toEqual(brsArrayStr);
         });
     });
 
@@ -131,6 +160,11 @@ describe('global JSON functions', () => {
         it('converts bare float string to BRS float', () => {
             actual = ParseJson.call(interpreter, brsBareFloat);
             expect(actual).toBeBrsFloatCloseTo(floatStr);
+        });
+
+        xit('converts to BRS array', () => {
+            actual = ParseJson.call(interpreter, brsArrayStr);
+            expect(actual).toMatchBrsArray(brsArray);
         });
     });
 });

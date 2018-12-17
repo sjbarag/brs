@@ -28,7 +28,9 @@ export function parse(toParse: ReadonlyArray<Token>) {
 function hashConst(): CC.Chunk {
     if (match(Lexeme.HashConst)) {
         let name = advance();
+        consume("Expected '=' after #const (name)", Lexeme.Equal);
         let value = advance();
+        match(Lexeme.Newline);
         return new CC.Declaration(name, value);
     }
 

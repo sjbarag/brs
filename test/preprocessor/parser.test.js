@@ -20,8 +20,10 @@ describe("preprocessor parser", () => {
         let chunks = Preprocessor.parse([
             { kind: Lexeme.HashConst, text: "#const", line: 1, isReserved: false },
             { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
+            { kind: Lexeme.Equal, text: "=", line: 1, isReserved: false },
             { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1, isReserved: true },
-            { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: true }
+            { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
+            { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: false }
         ]);
 
         expect(chunks).toBeDefined();

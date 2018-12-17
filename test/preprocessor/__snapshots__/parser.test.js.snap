@@ -1,0 +1,305 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`preprocessor parser conditionals #if #else if and #else 1`] = `
+Array [
+  If {
+    "condition": Object {
+      "isReserved": false,
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "elseChunk": BrightScript {
+      "tokens": Array [
+        Object {
+          "isReserved": false,
+          "kind": 21,
+          "line": 6,
+          "text": "neither",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 0,
+          "line": 6,
+          "text": "(",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 1,
+          "line": 6,
+          "text": ")",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 84,
+          "line": 6,
+          "text": "
+",
+        },
+      ],
+    },
+    "elseIfs": Array [
+      Object {
+        "condition": Object {
+          "isReserved": false,
+          "kind": 21,
+          "line": 3,
+          "text": "bar",
+        },
+        "thenChunk": BrightScript {
+          "tokens": Array [
+            Object {
+              "isReserved": false,
+              "kind": 84,
+              "line": 3,
+              "text": "
+",
+            },
+            Object {
+              "isReserved": false,
+              "kind": 21,
+              "line": 4,
+              "text": "bar",
+            },
+            Object {
+              "isReserved": false,
+              "kind": 0,
+              "line": 4,
+              "text": "(",
+            },
+            Object {
+              "isReserved": false,
+              "kind": 1,
+              "line": 4,
+              "text": ")",
+            },
+            Object {
+              "isReserved": false,
+              "kind": 84,
+              "line": 4,
+              "text": "
+",
+            },
+          ],
+        },
+      },
+    ],
+    "thenChunk": BrightScript {
+      "tokens": Array [
+        Object {
+          "isReserved": false,
+          "kind": 21,
+          "line": 2,
+          "text": "fooIsTrue",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 0,
+          "line": 2,
+          "text": "(",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 1,
+          "line": 2,
+          "text": ")",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 84,
+          "line": 2,
+          "text": "
+",
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`preprocessor parser conditionals #if and #else 1`] = `
+Array [
+  If {
+    "condition": Object {
+      "isReserved": false,
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "elseChunk": BrightScript {
+      "tokens": Array [
+        Object {
+          "isReserved": false,
+          "kind": 21,
+          "line": 4,
+          "text": "fooIsFalse",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 0,
+          "line": 4,
+          "text": "(",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 1,
+          "line": 4,
+          "text": ")",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 84,
+          "line": 4,
+          "text": "
+",
+        },
+      ],
+    },
+    "elseIfs": Array [],
+    "thenChunk": BrightScript {
+      "tokens": Array [
+        Object {
+          "isReserved": false,
+          "kind": 21,
+          "line": 2,
+          "text": "fooIsTrue",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 0,
+          "line": 2,
+          "text": "(",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 1,
+          "line": 2,
+          "text": ")",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 84,
+          "line": 2,
+          "text": "
+",
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`preprocessor parser conditionals #if only 1`] = `
+Array [
+  If {
+    "condition": Object {
+      "isReserved": false,
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "elseChunk": undefined,
+    "elseIfs": Array [],
+    "thenChunk": BrightScript {
+      "tokens": Array [
+        Object {
+          "isReserved": false,
+          "kind": 21,
+          "line": 2,
+          "text": "fooIsTrue",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 0,
+          "line": 2,
+          "text": "(",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 1,
+          "line": 2,
+          "text": ")",
+        },
+        Object {
+          "isReserved": false,
+          "kind": 84,
+          "line": 2,
+          "text": "
+",
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`preprocessor parser parses #const 1`] = `
+Array [
+  Declaration {
+    "name": Object {
+      "isReserved": false,
+      "kind": 21,
+      "line": 1,
+      "text": "foo",
+    },
+    "value": Object {
+      "isReserved": true,
+      "kind": 81,
+      "line": 1,
+      "literal": BrsBoolean {
+        "kind": 1,
+        "value": true,
+      },
+      "text": "true",
+    },
+  },
+]
+`;
+
+exports[`preprocessor parser parses #error 1`] = `
+Array [
+  Error {
+    "hashError": Object {
+      "isReserved": false,
+      "kind": 36,
+      "line": 1,
+      "text": "#error",
+    },
+    "message": "I'm an error message!",
+  },
+]
+`;
+
+exports[`preprocessor parser parses chunks of brightscript 1`] = `
+Array [
+  BrightScript {
+    "tokens": Array [
+      Object {
+        "isReserved": false,
+        "kind": 21,
+        "line": 1,
+        "text": "someFunction",
+      },
+      Object {
+        "isReserved": false,
+        "kind": 0,
+        "line": 1,
+        "text": "(",
+      },
+      Object {
+        "isReserved": false,
+        "kind": 1,
+        "line": 1,
+        "text": ")",
+      },
+      Object {
+        "isReserved": false,
+        "kind": 84,
+        "line": 1,
+        "text": "
+",
+      },
+    ],
+  },
+]
+`;

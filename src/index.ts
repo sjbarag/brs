@@ -5,6 +5,7 @@ import pSettle from "p-settle";
 const readFile = promisify(fs.readFile);
 
 import { Token, Lexer } from "./lexer";
+import * as Preprocessor from "./preprocessor";
 import * as Parser from "./parser";
 import { Interpreter, OutputStreams } from "./interpreter";
 import * as BrsError from "./Error";
@@ -12,6 +13,7 @@ import * as BrsError from "./Error";
 export { Lexeme, Token, Lexer } from "./lexer";
 import * as BrsTypes from "./brsTypes";
 export { BrsTypes };
+export { Preprocessor };
 export { Parser };
 
 /** The `stdout`/`stderr` pair from the process that invoked `brs`. */

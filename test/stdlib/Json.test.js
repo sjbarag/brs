@@ -84,16 +84,22 @@ describe('global JSON functions', () => {
     let brsLongInteger = BrsLongInteger.fromString(longIntegerStr);
     let brsBareLongInteger = new BrsString(longIntegerStr);
 
-    // Don't include floats for now
-    let array = [nullStr, falseStr, strQuoted, integerStr, longIntegerStr];
-    let arrayStr = `[${array.join(',')}]`;
+    let arrayStr = '['
+        + falseStr + ','
+        + floatStr + ','
+        + integerStr + ','
+        + longIntegerStr + ','
+        + nullStr + ','
+        + strQuoted
+        + ']';
     let brsArrayStr = new BrsString(arrayStr);
     let brsArray = new BrsArray([
-        brsNull,
         brsFalse,
-        brsUnquoted,
+        brsFloat,
         brsInteger,
-        brsLongInteger
+        brsLongInteger,
+        brsNull,
+        brsUnquoted
     ]);
 
     // Alpha-sorted by key

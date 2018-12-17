@@ -35,12 +35,12 @@ expect.extend({
             .toBeCloseTo(expectedFloat, BrsFloat.IEEE_FLOAT_SIGFIGS);
         return { pass: true };
     },
-    toMatchBrsArray(actual, expected) {
+    toEqualBrsArray(actual, expected) {
         expect(actual).toBeInstanceOf(BrsArray);
         expect(actual.getElements()).toEqual(expected.getElements());
         return { pass: true };
     },
-    toMatchBrsAssociativeArray(actual, expected) {
+    toEqualBrsAssociativeArray(actual, expected) {
         expect(actual).toBeInstanceOf(BrsAssociativeArray);
         actualKeys = actual.getElements();
         expectedKeys = expected.getElements();
@@ -195,12 +195,12 @@ describe('global JSON functions', () => {
 
         it('converts to BRS array', () => {
             actual = ParseJson.call(interpreter, brsArrayStr);
-            expect(actual).toMatchBrsArray(brsArray);
+            expect(actual).toEqualBrsArray(brsArray);
         });
 
         it('converts to BRS associative array', () => {
             actual = ParseJson.call(interpreter, brsAssociativeArrayStr);
-            expect(actual).toMatchBrsAssociativeArray(brsAssociativeArray);
+            expect(actual).toEqualBrsAssociativeArray(brsAssociativeArray);
         });
     });
 });

@@ -70,7 +70,6 @@ describe('global JSON functions', () => {
 
     let floatStr = '3.14';
     let brsFloat = BrsFloat.fromString(floatStr);
-    let brsBareFloat = new BrsString(floatStr);
 
     let floatStrPrecise = '3.141592653589793238462643383279502884197169399375';
     let brsFloatClose = BrsFloat.fromString(floatStrPrecise);
@@ -171,7 +170,7 @@ describe('global JSON functions', () => {
             expect(actual).toEqual(brsArrayStr);
         });
 
-        it('converts from BRS associative array', () => {
+        it('converts from BRS associative array to key-sorted JSON string', () => {
             actual = FormatJson.call(interpreter, brsAssociativeArrayDesc);
             expect(actual).toEqual(brsAssociativeArrayStrAsc);
         });

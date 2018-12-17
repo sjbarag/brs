@@ -116,7 +116,7 @@ describe('global JSON functions', () => {
         { name: new BrsString('boolean'), value: brsFalse }
     ]);
 
-    let brsAssociativeArrayStrUnsorted = new BrsString(associativeArrayStrAsc);
+    let brsAssociativeArrayStrAsc = new BrsString(associativeArrayStrAsc);
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
@@ -167,7 +167,7 @@ describe('global JSON functions', () => {
 
         it('converts from BRS associative array', () => {
             actual = FormatJson.call(interpreter, brsAssociativeArrayDesc);
-            expect(actual).toEqual(brsAssociativeArrayStrUnsorted);
+            expect(actual).toEqual(brsAssociativeArrayStrAsc);
         });
     });
 
@@ -219,7 +219,7 @@ describe('global JSON functions', () => {
         });
 
         it('converts to BRS associative array', () => {
-            actual = ParseJson.call(interpreter, brsAssociativeArrayStrUnsorted);
+            actual = ParseJson.call(interpreter, brsAssociativeArrayStrAsc);
             expect(actual).toEqualBrsAssociativeArray(brsAssociativeArrayDesc);
         });
     });

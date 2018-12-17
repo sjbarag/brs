@@ -21,7 +21,7 @@ export function parse(toParse: ReadonlyArray<Token>) {
 
         return chunks;
     } catch (conditionalCompilationError) {
-        return;
+        return [];
     }
 }
 
@@ -87,8 +87,13 @@ function hashError(): CC.Chunk {
 
 function chunk(): CC.BrightScript {
     let chunkTokens: Token[] = [];
-    while (!isAtEnd() && !check(Lexeme.HashIf, Lexeme.HashElseIf, Lexeme.HashElse, Lexeme.HashEndIf, Lexeme.HashConst, Lexeme.HashError)) {
+    while (!check(Lexeme.HashIf, Lexeme.HashElseIf, Lexeme.HashElse, Lexeme.HashEndIf, Lexeme.HashConst, Lexeme.HashError)) {
         chunkTokens.push(advance());
+
+        if (isAtEnd()) {
+            chunkTokens.push(peek());
+            break;
+        }
     }
 
     return new CC.BrightScript(chunkTokens);

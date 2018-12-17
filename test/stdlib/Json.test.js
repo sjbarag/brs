@@ -20,19 +20,17 @@ const BrsLongInteger = Int64;
 const BrsUninitialized = Uninitialized;
 
 expect.extend({
-    toBeBrsFloatCloseTo(actual, expectedFloatStr) {
+    toBeBrsFloatCloseTo(actual, expectedFloatStr, sigfigs) {
         expect(actual).toBeInstanceOf(BrsFloat);
         expectedFloat = Number.parseFloat(expectedFloatStr);
-        expect(actual.getValue())
-            .toBeCloseTo(expectedFloat, BrsFloat.IEEE_FLOAT_SIGFIGS);
+        expect(actual.getValue()).toBeCloseTo(expectedFloat, sigfigs);
         return { pass: true };
     },
-    toBeBrsFloatStrCloseTo(actual, expectedFloatStr) {
+    toBeBrsFloatStrCloseTo(actual, expectedFloatStr, sigfigs) {
         expect(actual).toBeInstanceOf(BrsString);
         actualFloat = Number.parseFloat(actual.toString());
         expectedFloat = Number.parseFloat(expectedFloatStr);
-        expect(actualFloat)
-            .toBeCloseTo(expectedFloat, BrsFloat.IEEE_FLOAT_SIGFIGS);
+        expect(actualFloat).toBeCloseTo(expectedFloat, sigfigs);
         return { pass: true };
     },
     toEqualBrsArray(actual, expected) {
@@ -70,9 +68,13 @@ describe('global JSON functions', () => {
     let brsUnquoted = new BrsString(strUnquoted);
     let brsQuoted = new BrsString(strQuoted);
 
-    let floatStr = '3.14159265358979323846264338327950288419716939937510';
+    let floatStr = '3.14';
     let brsFloat = BrsFloat.fromString(floatStr);
     let brsBareFloat = new BrsString(floatStr);
+
+    let floatStrPrecise = '3.141592653589793238462643383279502884197169399375';
+    let brsFloatClose = BrsFloat.fromString(floatStrPrecise);
+    let brsBareFloatClose = new BrsString(floatStrPrecise);
 
     let integerStr = '2147483647'; // max 32-bit int
     let brsInteger = BrsInteger.fromString(integerStr);
@@ -94,15 +96,27 @@ describe('global JSON functions', () => {
         brsLongInteger
     ]);
 
-    let associativeArrayStr = '{"bool":false,"int":2147483647,"longInt":9223372036854775807,"null":null,"str":"ok"}';
-    let brsAssociativeArrayStr = new BrsString(associativeArrayStr);
-    let brsAssociativeArray = new BrsAssociativeArray([
-        { name: new BrsString('bool'), value: brsFalse },
-        { name: new BrsString('int'), value: brsInteger },
-        { name: new BrsString('longInt'), value: brsLongInteger },
+    // Alpha-sorted by key
+    let associativeArrayStrAsc = '{'
+        + '"boolean":' + falseStr + ','
+        + '"float":' + floatStr + ','
+        + '"integer":' + integerStr + ','
+        + '"longInteger":' + longIntegerStr + ','
+        + '"null":' + nullStr + ','
+        + '"string":' + strQuoted
+        + '}';
+
+    // Reverse alpha-sorted by key
+    let brsAssociativeArrayDesc = new BrsAssociativeArray([
+        { name: new BrsString('string'), value: brsUnquoted },
         { name: new BrsString('null'), value: brsNull },
-        { name: new BrsString('str'), value: brsUnquoted }
+        { name: new BrsString('longInteger'), value: brsLongInteger },
+        { name: new BrsString('integer'), value: brsInteger },
+        { name: new BrsString('float'), value: brsFloat },
+        { name: new BrsString('boolean'), value: brsFalse }
     ]);
+
+    let brsAssociativeArrayStrUnsorted = new BrsString(associativeArrayStrAsc);
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
@@ -138,9 +152,12 @@ describe('global JSON functions', () => {
             expect(actual).toEqual(brsBareLongInteger);
         });
 
-        it('converts BRS float to bare float string', () => {
-            actual = FormatJson.call(interpreter, brsFloat);
-            expect(actual).toBeBrsFloatStrCloseTo(floatStr);
+        it('converts BRS float to bare float string, within seven significant digits', () => {
+            actual = FormatJson.call(interpreter, brsFloatClose);
+            expect(actual).toBeBrsFloatStrCloseTo(
+                floatStrPrecise,
+                BrsFloat.IEEE_FLOAT_SIGFIGS
+            );
         });
 
         it('converts from BRS array', () => {
@@ -149,8 +166,8 @@ describe('global JSON functions', () => {
         });
 
         it('converts from BRS associative array', () => {
-            actual = FormatJson.call(interpreter, brsAssociativeArray);
-            expect(actual).toEqual(brsAssociativeArrayStr);
+            actual = FormatJson.call(interpreter, brsAssociativeArrayDesc);
+            expect(actual).toEqual(brsAssociativeArrayStrUnsorted);
         });
     });
 
@@ -188,9 +205,12 @@ describe('global JSON functions', () => {
             expect(actual).toEqual(brsLongInteger);
         });
 
-        it('converts bare float string to BRS float', () => {
-            actual = ParseJson.call(interpreter, brsBareFloat);
-            expect(actual).toBeBrsFloatCloseTo(floatStr);
+        it('converts bare float string to BRS float, within seven significant digits', () => {
+            actual = ParseJson.call(interpreter, brsBareFloatClose);
+            expect(actual).toBeBrsFloatCloseTo(
+                floatStrPrecise,
+                BrsFloat.IEEE_FLOAT_SIGFIGS
+            );
         });
 
         it('converts to BRS array', () => {
@@ -199,8 +219,8 @@ describe('global JSON functions', () => {
         });
 
         it('converts to BRS associative array', () => {
-            actual = ParseJson.call(interpreter, brsAssociativeArrayStr);
-            expect(actual).toEqualBrsAssociativeArray(brsAssociativeArray);
+            actual = ParseJson.call(interpreter, brsAssociativeArrayStrUnsorted);
+            expect(actual).toEqualBrsAssociativeArray(brsAssociativeArrayDesc);
         });
     });
 });

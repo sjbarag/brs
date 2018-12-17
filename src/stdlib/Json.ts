@@ -22,8 +22,8 @@ function isInt32(n: number): boolean {
     return Number.isInteger(n) && n >= lo && n <= hi;
 }
 
-type BrsJsonValue = any;
 type JsonValue = any;
+type BrsJsonValue = any;
 
 function brsValueOf(x: JsonValue): BrsJsonValue {
     if (x === null) { return BrsInvalid.Instance; }

@@ -48,7 +48,8 @@ export async function execute(filenames: string[], options: OutputStreams = proc
         }
 
         let tokens = Lexer.scan(contents);
-        let statements = Parser.parse(tokens);
+        let processedTokens = Preprocessor.preprocess(tokens);
+        let statements = Parser.parse(processedTokens);
 
         if (BrsError.found()) {
             return Promise.reject({

@@ -94,13 +94,6 @@ describe('global JSON functions', () => {
         brsLongInteger
     ]);
 
-    let associativeArray = {
-        bool: falseStr,
-        int: integerStr,
-        longInt: longIntegerStr,
-        null: nullStr,
-        str: strQuoted
-    };
     let associativeArrayStr = '{"bool":false,"int":2147483647,"longInt":9223372036854775807,"null":null,"str":"ok"}';
     let brsAssociativeArrayStr = new BrsString(associativeArrayStr);
     let brsAssociativeArray = new BrsAssociativeArray([

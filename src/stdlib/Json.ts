@@ -22,10 +22,10 @@ function isInt32(n: number): boolean {
     return Number.isInteger(n) && n >= lo && n <= hi;
 }
 
-type BrsJsonValue = any; //BrsValue;
-type TsJsonValue = any;
+type BrsJsonValue = any;
+type JsonValue = any;
 
-function brsValueOf(x: TsJsonValue): BrsJsonValue {
+function brsValueOf(x: JsonValue): BrsJsonValue {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
     switch (t) {
@@ -57,7 +57,7 @@ function brsValueOf(x: TsJsonValue): BrsJsonValue {
 
 type ItemFn = (k: BrsString, v: BrsValue) => string;
 function itemsMap(brsAa: BrsAssociativeArray, fn: ItemFn) {
-    return brsAa.getElements().map((key) => {
+    return brsAa.getElements().map((key: BrsString) => {
         return fn(key, brsAa.get(key));
     });
 }

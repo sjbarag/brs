@@ -167,7 +167,7 @@ describe('global JSON functions', () => {
             expect(actual).toBeBrsFloatCloseTo(floatStr);
         });
 
-        xit('converts to BRS array', () => {
+        it('converts to BRS array', () => {
             actual = ParseJson.call(interpreter, brsArrayStr);
             expect(actual).toMatchBrsArray(brsArray);
         });

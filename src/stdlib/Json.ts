@@ -38,6 +38,15 @@ function brsValueOf(x: TsJsonValue): BrsJsonValue {
             return isInt32(x) ? new BrsInteger(x) : new BrsLongInteger(x);
         }
         return new BrsFloat(x);
+    case "object":
+        if (Array.isArray(x)) {
+            return new BrsArray(x.map(brsValueOf));
+        }
+        return new BrsAssociativeArray(
+            x.getOwnPropertyNames().map((k: string) => {
+                return [k, x[k]].map(brsValueOf);
+            })
+        );
     default:
         throw new Error(`brsValueOf not implemented for: ${x} <${t}>`);
     }

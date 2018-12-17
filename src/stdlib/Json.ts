@@ -103,7 +103,7 @@ export const FormatJson = new Callable("FormatJson", {
             defaultValue: new Literal(new BrsInteger(0))
         }
     ]},
-    impl: (_: Interpreter, x: BrsType, flags: BrsInteger) => {
+    impl: (_: Interpreter, x: BrsType, _flags: BrsInteger) => {
         try {
             return new BrsString(jsonOf(x));
         } catch (err) {

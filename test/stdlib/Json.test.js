@@ -12,6 +12,7 @@ const {
     Uninitialized
 } = require("../../lib/brsTypes");
 
+// aliases
 const BrsAssociativeArray = AssociativeArray;
 const BrsFloat = Float;
 const BrsInteger = Int32;
@@ -19,21 +20,6 @@ const BrsLongInteger = Int64;
 const BrsUninitialized = Uninitialized;
 
 expect.extend({
-    toMatchBrsAssociativeArray(actual, expected) {
-        expect(actual).toBeInstanceOf(BrsAssociativeArray);
-        actualKeys = actual.getElements();
-        expectedKeys = expected.getElements();
-        expect(actualKeys).toMatchObject(expectedKeys);
-        actualKeys.forEach((key) => {
-            expect(actual.get(key)).toMatchObject(expected.get(key));
-        });
-        return { pass: true };
-    },
-    toMatchBrsArray(actual, expected) {
-        expect(actual).toBeInstanceOf(BrsArray);
-        expect(actual.getElements()).toMatchObject(expected.getElements());
-        return { pass: true };
-    },
     toBeBrsFloatCloseTo(actual, expectedFloatStr) {
         expect(actual).toBeInstanceOf(BrsFloat);
         expectedFloat = Number.parseFloat(expectedFloatStr);
@@ -47,6 +33,21 @@ expect.extend({
         expectedFloat = Number.parseFloat(expectedFloatStr);
         expect(actualFloat)
             .toBeCloseTo(expectedFloat, BrsFloat.IEEE_FLOAT_SIGFIGS);
+        return { pass: true };
+    },
+    toMatchBrsArray(actual, expected) {
+        expect(actual).toBeInstanceOf(BrsArray);
+        expect(actual.getElements()).toEqual(expected.getElements());
+        return { pass: true };
+    },
+    toMatchBrsAssociativeArray(actual, expected) {
+        expect(actual).toBeInstanceOf(BrsAssociativeArray);
+        actualKeys = actual.getElements();
+        expectedKeys = expected.getElements();
+        expect(actualKeys).toEqual(expectedKeys);
+        actualKeys.forEach((key) => {
+            expect(actual.get(key)).toEqual(expected.get(key));
+        });
         return { pass: true };
     }
 });
@@ -116,32 +117,32 @@ describe('global JSON functions', () => {
                 expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
             })
             actual = FormatJson.call(interpreter, BrsUninitialized.Instance);
-            expect(actual).toMatchObject(brsEmpty);
+            expect(actual).toEqual(brsEmpty);
         });
 
         it('converts BRS invalid to bare null string', () => {
             actual = FormatJson.call(interpreter, BrsInvalid.Instance);
-            expect(actual).toMatchObject(brsBareNull);
+            expect(actual).toEqual(brsBareNull);
         });
 
         it('converts BRS false to bare false string', () => {
             actual = FormatJson.call(interpreter, BrsBoolean.False);
-            expect(actual).toMatchObject(brsBareFalse);
+            expect(actual).toEqual(brsBareFalse);
         });
 
         it('converts BRS string to bare (quoted) string', () => {
             actual = FormatJson.call(interpreter, brsUnquoted);
-            expect(actual).toMatchObject(brsQuoted);
+            expect(actual).toEqual(brsQuoted);
         });
 
         it('converts BRS integer to bare integer string', () => {
             actual = FormatJson.call(interpreter, brsInteger);
-            expect(actual).toMatchObject(brsBareInteger);
+            expect(actual).toEqual(brsBareInteger);
         });
 
         it('converts BRS longInteger to bare longInteger string', () => {
             actual = FormatJson.call(interpreter, brsLongInteger);
-            expect(actual).toMatchObject(brsBareLongInteger);
+            expect(actual).toEqual(brsBareLongInteger);
         });
 
         it('converts BRS float to bare float string', () => {
@@ -181,17 +182,17 @@ describe('global JSON functions', () => {
 
         it('converts bare (quoted) string to BRS string', () => {
             actual = ParseJson.call(interpreter, brsQuoted);
-            expect(actual).toMatchObject(brsUnquoted);
+            expect(actual).toEqual(brsUnquoted);
         });
 
         it('converts bare integer string to BRS integer', () => {
             actual = ParseJson.call(interpreter, brsBareInteger);
-            expect(actual).toMatchObject(brsInteger);
+            expect(actual).toEqual(brsInteger);
         });
 
         it('converts bare longInteger string to BRS longInteger', () => {
             actual = ParseJson.call(interpreter, brsBareLongInteger);
-            expect(actual).toMatchObject(brsLongInteger);
+            expect(actual).toEqual(brsLongInteger);
         });
 
         it('converts bare float string to BRS float', () => {

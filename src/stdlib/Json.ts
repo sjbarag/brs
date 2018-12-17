@@ -43,8 +43,11 @@ function brsValueOf(x: TsJsonValue): BrsJsonValue {
             return new BrsArray(x.map(brsValueOf));
         }
         return new BrsAssociativeArray(
-            x.getOwnPropertyNames().map((k: string) => {
-                return [k, x[k]].map(brsValueOf);
+            Object.getOwnPropertyNames(x).map((k: string) => {
+                return {
+                    name: brsValueOf(k),
+                    value: brsValueOf(x[k])
+                };
             })
         );
     default:

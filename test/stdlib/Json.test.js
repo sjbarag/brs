@@ -19,6 +19,16 @@ const BrsLongInteger = Int64;
 const BrsUninitialized = Uninitialized;
 
 expect.extend({
+    toMatchBrsAssociativeArray(actual, expected) {
+        expect(actual).toBeInstanceOf(BrsAssociativeArray);
+        actualKeys = actual.getElements();
+        expectedKeys = expected.getElements();
+        expect(actualKeys).toMatchObject(expectedKeys);
+        actualKeys.forEach((key) => {
+            expect(actual.get(key)).toMatchObject(expected.get(key));
+        });
+        return { pass: true };
+    },
     toMatchBrsArray(actual, expected) {
         expect(actual).toBeInstanceOf(BrsArray);
         expect(actual.getElements()).toMatchObject(expected.getElements());
@@ -83,6 +93,23 @@ describe('global JSON functions', () => {
         brsLongInteger
     ]);
 
+    let associativeArray = {
+        bool: falseStr,
+        int: integerStr,
+        longInt: longIntegerStr,
+        null: nullStr,
+        str: strQuoted
+    };
+    let associativeArrayStr = '{"bool":false,"int":2147483647,"longInt":9223372036854775807,"null":null,"str":"ok"}';
+    let brsAssociativeArrayStr = new BrsString(associativeArrayStr);
+    let brsAssociativeArray = new BrsAssociativeArray([
+        { name: new BrsString('bool'), value: brsFalse },
+        { name: new BrsString('int'), value: brsInteger },
+        { name: new BrsString('longInt'), value: brsLongInteger },
+        { name: new BrsString('null'), value: brsNull },
+        { name: new BrsString('str'), value: brsUnquoted }
+    ]);
+
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
@@ -125,6 +152,11 @@ describe('global JSON functions', () => {
         it('converts from BRS array', () => {
             actual = FormatJson.call(interpreter, brsArray);
             expect(actual).toEqual(brsArrayStr);
+        });
+
+        it('converts from BRS associative array', () => {
+            actual = FormatJson.call(interpreter, brsAssociativeArray);
+            expect(actual).toEqual(brsAssociativeArrayStr);
         });
     });
 
@@ -170,6 +202,11 @@ describe('global JSON functions', () => {
         it('converts to BRS array', () => {
             actual = ParseJson.call(interpreter, brsArrayStr);
             expect(actual).toMatchBrsArray(brsArray);
+        });
+
+        it('converts to BRS associative array', () => {
+            actual = ParseJson.call(interpreter, brsAssociativeArrayStr);
+            expect(actual).toMatchBrsAssociativeArray(brsAssociativeArray);
         });
     });
 });

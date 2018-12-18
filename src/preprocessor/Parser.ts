@@ -31,11 +31,17 @@ export function parse(toParse: ReadonlyArray<Token>) {
 function nChunks(): CC.Chunk[] {
     let chunks: CC.Chunk[] = [];
 
-    while (!isAtEnd()) {
+    while (true) {
         let c = hashConst();
         if (c) {
             chunks.push(c);
-        } else {
+        }
+
+        let maybeEof = eof();
+        if (maybeEof) {
+            chunks.push(maybeEof);
+            break;
+        } else if (!c) {
             break;
         }
     }
@@ -131,13 +137,20 @@ function brightScriptChunk(): CC.BrightScript | undefined {
         chunkTokens.push(advance());
 
         if (isAtEnd()) {
-            chunkTokens.push(peek());
             break;
         }
     }
 
     if (chunkTokens.length > 0) {
         return new CC.BrightScript(chunkTokens);
+    } else {
+        return undefined;
+    }
+}
+
+function eof(): CC.BrightScript | undefined {
+    if (isAtEnd()) {
+        return new CC.BrightScript([ peek() ]);
     } else {
         return undefined;
     }

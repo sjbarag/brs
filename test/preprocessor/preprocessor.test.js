@@ -86,15 +86,14 @@ describe("preprocessor", () => {
 
     describe("#error", () => {
         it("throws error when #error directives encountered", () => {
-            let errorMessage = "I'm an error message!";
             expect(() =>
                 new Preprocessor().filter([
                     new Chunk.Error(
                         { kind: Lexeme.HashError, text: "#error", line: 1, isReserved: false },
-                        errorMessage
+                        "I'm an error message!"
                     )
                 ])
-            ).toThrow(errorMessage);
+            ).toThrow();
         });
 
         it("doesn't throw when branched around", () => {

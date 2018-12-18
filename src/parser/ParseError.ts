@@ -8,7 +8,7 @@ export function make(token: Token, message: string) {
     }
     BrsError.make(m, token.line);
 
-    return new ParseError(m);
+    return new ParseError();
 }
 
 export class ParseError extends Error {}

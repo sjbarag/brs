@@ -40,8 +40,7 @@ export class Preprocessor implements CC.Visitor {
      */
     visitDeclaration(chunk: CC.Declaration) {
         if (this.constants.has(chunk.name.text)) {
-            // TODO: should this warn or error?  Or is silent failure okay?
-            return [];
+            throw BrsError.make(`Attempting to re-declare #const with name '${chunk.name.text}'`, chunk.name.line);
         }
 
         let value;

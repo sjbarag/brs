@@ -81,6 +81,21 @@ describe("preprocessor", () => {
                     ])
                 ).toThrow("#const declarations can only have");
             });
+
+            it("disallows re-declaration of values", () => {
+                expect(() =>
+                    new Preprocessor().filter([
+                        new Chunk.Declaration(
+                            { kind: Lexeme.Identifier, text: "lorem", line: 1, isReserved: false },
+                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1, isReserved: true }
+                        ),
+                        new Chunk.Declaration(
+                            { kind: Lexeme.Identifier, text: "lorem", line: 1, isReserved: false },
+                            { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1, isReserved: true }
+                        ),
+                    ])
+                ).toThrow("Attempting to re-declare");
+            });
         });
     });
 

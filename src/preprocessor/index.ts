@@ -13,5 +13,6 @@ export function preprocess(tokens: ReadonlyArray<Token>) {
     return new Preprocessor().filter(chunks);
 }
 
-export * from "./Chunk";
+import * as Chunk from "./Chunk";
+export { Chunk };
 export { parse } from "./Parser";

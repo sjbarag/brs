@@ -9,23 +9,30 @@ export function parse(toParse: ReadonlyArray<Token>) {
     current = 0;
     tokens = toParse;
 
-    let chunks: CC.Chunk[] = [];
 
     try {
-        while (!isAtEnd()) {
-            let c = hashConst();
-            if (c) {
-                chunks.push(c);
-            }
-        }
-
-        return chunks;
+        return nChunks();
     } catch (conditionalCompilationError) {
         return [];
     }
 }
 
-function hashConst(): CC.Chunk {
+function nChunks() {
+    let chunks: CC.Chunk[] = [];
+
+    while (!isAtEnd()) {
+        let c = hashConst();
+        if (c) {
+            chunks.push(c);
+        } else {
+            break;
+        }
+    }
+
+    return chunks;
+}
+
+function hashConst(): CC.Chunk | undefined {
     if (match(Lexeme.HashConst)) {
         let name = advance();
         consume("Expected '=' after #const (name)", Lexeme.Equal);
@@ -37,32 +44,33 @@ function hashConst(): CC.Chunk {
     return hashIf();
 }
 
-function hashIf(): CC.Chunk {
+function hashIf(): CC.Chunk | undefined {
     let startingLine = peek().line;
 
     if (match(Lexeme.HashIf)) {
-        let elseChunk: CC.Chunk | undefined;
+        let elseChunk: CC.Chunk[] | undefined;
 
         let ifCondition = advance();
         match(Lexeme.Newline);
 
-        let thenChunk = chunk();
+        let thenChunk = nChunks();
 
         let elseIfs: CC.HashElseIf[] = [];
 
         while (match(Lexeme.HashElseIf)) {
+            let condition = advance();
             match(Lexeme.Newline);
 
             elseIfs.push({
-                condition: advance(),
-                thenChunk: chunk()
+                condition: condition,
+                thenChunks: nChunks()
             });
         }
 
         if (match(Lexeme.HashElse)) {
             match(Lexeme.Newline);
 
-            elseChunk = chunk();
+            elseChunk = nChunks();
         }
 
         consume(
@@ -77,17 +85,17 @@ function hashIf(): CC.Chunk {
     return hashError();
 }
 
-function hashError(): CC.Chunk {
+function hashError(): CC.Chunk | undefined {
     if (check(Lexeme.HashError)) {
         let hashError = advance();
         let message = advance();
         return new CC.Error(hashError, message.text || "");
     }
 
-    return chunk();
+    return brightScriptChunk();
 }
 
-function chunk(): CC.BrightScript {
+function brightScriptChunk(): CC.BrightScript | undefined {
     let chunkTokens: Token[] = [];
     while (!check(Lexeme.HashIf, Lexeme.HashElseIf, Lexeme.HashElse, Lexeme.HashEndIf, Lexeme.HashConst, Lexeme.HashError)) {
         chunkTokens.push(advance());
@@ -98,7 +106,11 @@ function chunk(): CC.BrightScript {
         }
     }
 
-    return new CC.BrightScript(chunkTokens);
+    if (chunkTokens.length > 0) {
+        return new CC.BrightScript(chunkTokens);
+    } else {
+        return undefined;
+    }
 }
 
 function match(...lexemes: Lexeme[]) {

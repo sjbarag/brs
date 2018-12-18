@@ -48,6 +48,7 @@ export async function execute(filenames: string[], options: OutputStreams = proc
         }
 
         let tokens = Lexer.scan(contents);
+        // TODO: Does this need to work across multiple files?
         let processedTokens = Preprocessor.preprocess(tokens);
         let statements = Parser.parse(processedTokens);
 

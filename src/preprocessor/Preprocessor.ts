@@ -3,27 +3,44 @@ import { ParseError } from "../parser";
 import { Token, Lexeme } from "../lexer";
 import * as BrsError from "../Error";
 
+/**
+ * A simple pre-processor that executes BrightScript's conditional compilation directives by
+ * selecting chunks of tokens to be considered for later evaluation.
+ */
 export class Preprocessor implements CC.Visitor {
 
     private constants = new Map<string, boolean>();
 
+    /**
+     * Filters the tokens contained within a set of chunks based on a set of constants.
+     * @param chunks the chunks from which to retrieve tokens
+     * @returns an array of tokens, filtered by conditional compilation directives included within
+     */
     filter(chunks: ReadonlyArray<CC.Chunk>) {
-        return chunks.map(chunk => this.visit(chunk)).reduce(
+        return chunks.map(chunk => chunk.accept(this)).reduce(
            (allTokens: Token[], chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ],
            []
         );
     }
 
-    visit(this: Preprocessor, chunk: CC.Chunk) {
-        return chunk.accept(this);
-    }
-
+    /**
+     * Handles a simple chunk of BrightScript tokens by returning the tokens contained within.
+     * @param chunk the chunk to extract tokens from
+     * @returns the array of tokens contained within `chunk`
+     */
     visitBrightScript(chunk: CC.BrightScript) {
         return chunk.tokens;
     }
 
+    /**
+     * Handles a BrightScript `#const` directive, creating a variable in-scope only for the
+     * conditional compilation pass.
+     * @param chunk the `#const` directive, including the name and variable to use for the constant
+     * @returns an empty array, since `#const` directives are always removed from the evaluated script.
+     */
     visitDeclaration(chunk: CC.Declaration) {
         if (this.constants.has(chunk.name.text)) {
+            // TODO: should this warn or error?  Or is silent failure okay?
             return [];
         }
 
@@ -51,30 +68,50 @@ export class Preprocessor implements CC.Visitor {
         return [];
     }
 
+    /**
+     * Throws an error, stopping "compilation" of the program.
+     * @param chunk the error to report to users
+     * @throws a JavaScript error with the provided message
+     */
     visitError(chunk: CC.Error): never {
         throw ParseError.make(chunk.hashError, chunk.message);
     }
 
+    /**
+     * Produces tokens from a branch of a conditional-compilation `#if`, or no tokens if no branches evaluate to `true`.
+     * @param chunk the `#if` directive, any `#else if` or `#else` directives, and their associated BrightScript chunks.
+     * @returns an array of tokens to include in the final executed script.
+     */
     visitIf(chunk: CC.If): Token[] {
         if (this.evaluateCondition(chunk.condition)) {
-            return chunk.thenChunk.accept(this);
+            return chunk.thenChunks
+                    .map(chunk => chunk.accept(this))
+                    .reduce((allTokens, chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ], []);
         } else {
             for (const elseIf of chunk.elseIfs) {
                 if (this.evaluateCondition(elseIf.condition)) {
-                    return elseIf.thenChunk.accept(this);
+                    return elseIf.thenChunks
+                        .map(chunk => chunk.accept(this))
+                        .reduce((allTokens, chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ], []);
                 }
             }
         }
 
-        if (chunk.elseChunk) {
-            return chunk.elseChunk.accept(this);
+        if (chunk.elseChunks) {
+            return chunk.elseChunks
+                .map(chunk => chunk.accept(this))
+                .reduce((allTokens, chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ], []);
         }
 
         return [];
     }
 
+    /**
+     * Resolves a token to a JavaScript boolean value, or throws an error.
+     * @param token the token to resolve to either `true`, `false`, or an error
+     * @throws if attempting to reference an undefined `#const` or if `token` is neither `true`, `false`, nor an identifier.
+     */
     evaluateCondition(token: Token): boolean {
-        // literal true and false return directly
         switch (token.kind) {
             case Lexeme.True: return true;
             case Lexeme.False: return false;

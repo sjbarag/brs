@@ -12,36 +12,42 @@ const {
     Uninitialized
 } = require("../../lib/brsTypes");
 
+function withEnv(k, v, fn) {
+    let save = process.env[k];
+    try {
+        process.env[k] = v;
+        return fn();
+    } finally {
+        process.env[k] = save;
+    }
+}
+
+function expectConsoleError(expected, fn) {
+    jest.spyOn(console, 'error').mockImplementationOnce((s) => {
+        expect(s).toMatch(expected);
+    })
+    return withEnv('NODE_ENV', 'force test!', fn);
+}
+
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
-    let node_env = process.env.NODE_ENV;
-
-    beforeEach(() => {
-        process.env.NODE_ENV = "force test";
-    });
-
-    afterEach(() => {
-        process.env.NODE_ENV = node_env;
-    });
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
-            jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /);
-            })
-            expect(FormatJson.call(interpreter, Uninitialized.Instance)).toEqual(new BrsString(''));
+            expectConsoleError(/BRIGHTSCRIPT: ERROR: FormatJSON: /, () => {
+                expect(FormatJson.call(interpreter, Uninitialized.Instance)).toEqual(new BrsString(''));
+            });
         });
 
         it('rejects nested object references', () => {
-            jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/);
-            })
             let aa = new AssociativeArray([
                 { name: new BrsString('foo'), value: new BrsString('bar') },
                 { name: new BrsString('lorem'), value: Float.fromString('1.234') }
             ]);
             aa.set(new BrsString('self'), aa);
-            expect(FormatJson.call(interpreter, aa)).toEqual(new BrsString(''));
+            expectConsoleError(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/, () => {
+                expect(FormatJson.call(interpreter, aa)).toEqual(new BrsString(''));
+            });
         });
 
         it('converts BRS invalid to bare null string', () => {
@@ -98,10 +104,9 @@ describe('global JSON functions', () => {
 
     describe('ParseJson', () => {
         it('rejects empty strings', () => {
-            jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: ParseJSON: /);
-            })
-            expect(ParseJson.call(interpreter, new BrsString(''))).toBe(BrsInvalid.Instance);
+            expectConsoleError(/BRIGHTSCRIPT: ERROR: ParseJSON: /, () => {
+                expect(ParseJson.call(interpreter, new BrsString(''))).toBe(BrsInvalid.Instance);
+            });
         });
 
         it('converts bare null string to BRS invalid', () => {

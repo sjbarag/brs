@@ -17,24 +17,24 @@ describe('global JSON functions', () => {
     let node_env = process.env.NODE_ENV;
 
     beforeEach(() => {
-        process.env.NODE_ENV = "force test"
+        process.env.NODE_ENV = "force test";
     });
 
     afterEach(() => {
-        process.env.NODE_ENV = node_env
+        process.env.NODE_ENV = node_env;
     });
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
+                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /);
             })
             expect(FormatJson.call(interpreter, Uninitialized.Instance)).toEqual(new BrsString(''));
         });
 
         it('rejects nested object references', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/)
+                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/);
             })
             let aa = new AssociativeArray([
                 { name: new BrsString('foo'), value: new BrsString('bar') },
@@ -99,7 +99,7 @@ describe('global JSON functions', () => {
     describe('ParseJson', () => {
         it('rejects empty strings', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: ParseJSON: /)
+                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: ParseJSON: /);
             })
             expect(ParseJson.call(interpreter, new BrsString(''))).toBe(BrsInvalid.Instance);
         });

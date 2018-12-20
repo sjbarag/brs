@@ -100,6 +100,7 @@ describe("end to end standard libary", () => {
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
             ).toEqual([
+                "",
                 `{"boolean":false,"float":3.14,"integer":2147483647,"longinteger":2147483650,"null":null,"string":"ok"}`,
                 [
                     "<Component: roAssociativeArray> =",

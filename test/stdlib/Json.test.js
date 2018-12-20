@@ -14,6 +14,15 @@ const {
 
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
+    let node_env = process.env.NODE_ENV;
+
+    beforeEach(() => {
+        process.env.NODE_ENV = "force test"
+    });
+
+    afterEach(() => {
+        process.env.NODE_ENV = node_env
+    });
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
@@ -21,6 +30,18 @@ describe('global JSON functions', () => {
                 expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
             })
             expect(FormatJson.call(interpreter, Uninitialized.Instance)).toEqual(new BrsString(''));
+        });
+
+        it('rejects nested object references', () => {
+            jest.spyOn(console, 'error').mockImplementationOnce((s) => {
+                expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/)
+            })
+            let aa = new AssociativeArray([
+                { name: new BrsString('foo'), value: new BrsString('bar') },
+                { name: new BrsString('lorem'), value: Float.fromString('1.234') }
+            ]);
+            aa.set(new BrsString('self'), aa);
+            expect(FormatJson.call(interpreter, aa)).toEqual(new BrsString(''));
         });
 
         it('converts BRS invalid to bare null string', () => {

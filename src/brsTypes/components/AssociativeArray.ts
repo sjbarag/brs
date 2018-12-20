@@ -89,6 +89,14 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
         return BrsInvalid.Instance;
     }
 
+    delete(index: BrsType) {
+        if (index.kind !== ValueKind.String) {
+            throw new Error("Associative array indexes must be strings");
+        }
+        console.info(`deleting ${index.value}`);
+        return BrsBoolean.from(this.elements.delete(index.value));
+    }
+
     private clear = new Callable(
         "clear",
         {

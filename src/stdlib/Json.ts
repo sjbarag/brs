@@ -2,6 +2,8 @@ import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import { BrsArray } from "../brsTypes/components/BrsArray";
 import { Interpreter } from "../interpreter";
 import { Literal } from "../parser/Expression";
+import { randomBytes } from "crypto";
+
 import {
     BrsBoolean,
     BrsInvalid,
@@ -44,7 +46,7 @@ function brsValueOf(x: any): any {
     }
 }
 
-function jsonOf(x: BrsType): string {
+function jsonOf(x: BrsType, uid: BrsString): string {
     switch (x.kind) {
     case ValueKind.Invalid:
         return "null";
@@ -58,10 +60,21 @@ function jsonOf(x: BrsType): string {
         return x.toString();
     case ValueKind.Object:
         if (x instanceof AssociativeArray) {
-            return `{${x.getElements().map((k: BrsString) => { return `"${k.toString()}":${jsonOf(x.get(k))}`; }).join(",")}}`;
+            try {
+                if (x.get(uid) !== BrsInvalid.Instance) {
+                    throw new Error("Nested object reference");
+                }
+                let elements = x.getElements();
+                x.set(uid, BrsBoolean.True);
+                return `{${elements.map((k: BrsString) => {
+                    return `"${k.toString()}":${jsonOf(x.get(k), uid)}`;
+                }).join(",")}}`;
+            } finally {
+                x.delete(uid);
+            }
         }
         if (x instanceof BrsArray) {
-            return `[${x.getElements().map(jsonOf).join(",")}]`;
+            return `[${x.getElements().map((el: BrsType) => { return jsonOf(el, uid); }).join(",")}]`;
         }
         break;
     case ValueKind.Callable:
@@ -82,7 +95,8 @@ export const FormatJson = new Callable("FormatJson", {
     ]},
     impl: (_: Interpreter, x: BrsType, _flags: Int32) => {
         try {
-            return new BrsString(jsonOf(x));
+            let uid = new BrsString(randomBytes(20).toString("hex"));
+            return new BrsString(jsonOf(x, uid));
         } catch (err) {
             // example RBI error:
             // "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"

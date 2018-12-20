@@ -72,7 +72,6 @@ function jsonOf(interpreter: Interpreter, x: BrsType, uid: BrsString): string {
             } finally {
                 let m: Callable | undefined = x.getMethod("delete");
                 if (m) { m.call(interpreter, uid); }
-                // x.delete(uid);
             }
         }
         if (x instanceof BrsArray) {

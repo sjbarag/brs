@@ -94,4 +94,25 @@ describe("end to end standard libary", () => {
             ]);
         });
     });
+
+    test("stdlib/json.brs", () => {
+        return execute([resourceFile("stdlib", "json.brs")], outputStreams).then(() => {
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
+                `{"boolean":false,"float":3.14,"integer":2147483647,"longInteger":2147483650,"null":null,"string":"ok"}`,
+                [
+                    "<Component: roAssociativeArray> =",
+                    "{",
+                    "    boolean: false",
+                    "    float: 3.14",
+                    "    integer: 2147483647",
+                    "    longInteger: 2147483650",
+                    "    null: invalid",
+                    "    string: ok",
+                   "}"
+                ].join("\n")
+            ]);
+        })
+    });
 });

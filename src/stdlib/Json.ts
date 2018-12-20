@@ -26,9 +26,7 @@ function brsValueOf(x: any): any {
         return new BrsString(x);
     case "number":
         if (Number.isInteger(x)) {
-            const lo: number = -2_147_483_648;
-            const hi: number = 2_147_483_647;
-            return Number.isInteger(x) && x >= lo && x <= hi ? new Int32(x) : new Int64(x);
+            return x >= -2_147_483_648 && x <= 2_147_483_647 ? new Int32(x) : new Int64(x);
         }
         return new Float(x);
     case "object":

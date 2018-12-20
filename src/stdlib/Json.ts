@@ -48,21 +48,28 @@ function brsValueOf(x: any): any {
     }
 }
 
-function jsonOf(x: BrsValue): string {
-    if (x instanceof BrsInvalid) {
+function jsonOf(x: BrsType): string {
+    switch (x.kind) {
+    case ValueKind.Invalid:
         return "null";
-    }
-    if (x instanceof AssociativeArray) {
-        return `{${x.getElements().map((k: BrsString) => { return `"${k.toString()}":${jsonOf(x.get(k))}`; }).join(",")}}`;
-    }
-    if (x instanceof BrsArray) {
-        return `[${x.getElements().map(jsonOf).join(",")}]`;
-    }
-    if (x instanceof BrsString) {
+    case ValueKind.String:
         return `"${x.toString()}"`;
-    }
-    if (!(x instanceof Uninitialized)) {
+    case ValueKind.Boolean:
+    case ValueKind.Double:
+    case ValueKind.Float:
+    case ValueKind.Int32:
+    case ValueKind.Int64:
         return x.toString();
+    case ValueKind.Object:
+        if (x instanceof AssociativeArray) {
+            return `{${x.getElements().map((k: BrsString) => { return `"${k.toString()}":${jsonOf(x.get(k))}`; }).join(",")}}`;
+        }
+        if (x instanceof BrsArray) {
+            return `[${x.getElements().map(jsonOf).join(",")}]`;
+        }
+        break;
+    case ValueKind.Callable:
+        break;
     }
     throw new Error(`jsonValueOf not implemented for: ${x}`);
 }

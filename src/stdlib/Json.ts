@@ -95,8 +95,7 @@ export const FormatJson = new Callable("FormatJson", {
     ]},
     impl: (_: Interpreter, x: BrsType, _flags: Int32) => {
         try {
-            let uid = new BrsString(randomBytes(20).toString("hex"));
-            return new BrsString(jsonOf(x, uid));
+            return new BrsString(jsonOf(x, new BrsString(randomBytes(20).toString("hex"))));
         } catch (err) {
             // example RBI error:
             // "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"

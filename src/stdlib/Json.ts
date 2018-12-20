@@ -48,16 +48,12 @@ function brsValueOf(x: any): any {
     }
 }
 
-function jsonOfItem(k: BrsString, v: BrsValue): string {
-    return `"${k.toString()}":${jsonOf(v)}`;
-}
-
 function jsonOf(x: BrsValue): string {
     if (x instanceof BrsInvalid) {
         return "null";
     }
     if (x instanceof AssociativeArray) {
-        return `{${x.getElements().map((key: BrsString) => { return jsonOfItem(key, x.get(key)); }).join(",")}}`;
+        return `{${x.getElements().map((k: BrsString) => { return `"${k.toString()}":${jsonOf(x.get(k))}`; }).join(",")}}`;
     }
     if (x instanceof BrsArray) {
         return `[${x.getElements().map(jsonOf).join(",")}]`;

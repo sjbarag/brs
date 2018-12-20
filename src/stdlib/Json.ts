@@ -16,12 +16,6 @@ import {
     ValueKind
 } from "../brsTypes";
 
-function isInt32(n: number): boolean {
-    const lo: number = -2_147_483_648;
-    const hi: number = 2_147_483_647;
-    return Number.isInteger(n) && n >= lo && n <= hi;
-}
-
 function brsValueOf(x: any): any {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
@@ -32,7 +26,9 @@ function brsValueOf(x: any): any {
         return new BrsString(x);
     case "number":
         if (Number.isInteger(x)) {
-            return isInt32(x) ? new Int32(x) : new Int64(x);
+            const lo: number = -2_147_483_648;
+            const hi: number = 2_147_483_647;
+            return Number.isInteger(x) && x >= lo && x <= hi ? new Int32(x) : new Int64(x);
         }
         return new Float(x);
     case "object":

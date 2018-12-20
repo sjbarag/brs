@@ -65,12 +65,12 @@ describe('global JSON functions', () => {
             let brsAssociativeArrayDesc = new AssociativeArray([
                 { name: new BrsString('string'), value: new BrsString('ok') },
                 { name: new BrsString('null'), value: BrsInvalid.Instance },
-                { name: new BrsString('longInteger'), value: Int64.fromString('9223372036854775807') },
+                { name: new BrsString('longinteger'), value: Int64.fromString('9223372036854775807') },
                 { name: new BrsString('integer'), value: Int32.fromString('2147483647') },
                 { name: new BrsString('float'), value: Float.fromString('3.14') },
                 { name: new BrsString('boolean'), value: new BrsBoolean(false) }
             ]);
-            let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longInteger":9223372036854775807,"null":null,"string":"ok"}`);
+            let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longinteger":9223372036854775807,"null":null,"string":"ok"}`);
             expect(FormatJson.call(interpreter, brsAssociativeArrayDesc)).toEqual(brsAssociativeArrayStrAsc);
         });
     });
@@ -127,12 +127,12 @@ describe('global JSON functions', () => {
             let expected = new AssociativeArray([
                 { name: new BrsString('string'), value: new BrsString('ok') },
                 { name: new BrsString('null'), value: BrsInvalid.Instance },
-                { name: new BrsString('longInteger'), value: Int64.fromString('9223372036854775807') },
+                { name: new BrsString('longinteger'), value: Int64.fromString('9223372036854775807') },
                 { name: new BrsString('integer'), value: Int32.fromString('2147483647') },
                 { name: new BrsString('float'), value: Float.fromString('3.14') },
                 { name: new BrsString('boolean'), value: new BrsBoolean(false) }
             ]);
-            let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longInteger":9223372036854775807,"null":null,"string":"ok"}`);
+            let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longinteger":9223372036854775807,"null":null,"string":"ok"}`);
             let actual = ParseJson.call(interpreter, brsAssociativeArrayStrAsc);
             expect(actual).toBeInstanceOf(AssociativeArray);
             actualKeys = actual.getElements();

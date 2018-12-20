@@ -7,12 +7,10 @@ import {
     BrsInvalid,
     BrsString,
     BrsType,
-    BrsValue,
     Callable,
     Float,
     Int32,
     Int64,
-    Uninitialized,
     ValueKind
 } from "../brsTypes";
 
@@ -69,10 +67,11 @@ function jsonOf(x: BrsType): string {
     case ValueKind.Callable:
         break;
     }
-    throw new Error(`jsonValueOf not implemented for: ${x}`);
+    throw new Error(`jsonOf not implemented for: ${x}`);
 }
 
 function logBrsErr(functionName: string, err: Error): void {
+    if (process.env.NODE_ENV === "test") { return; }
     console.error(`BRIGHTSCRIPT: ERROR: ${functionName}: ${err.message}`);
 }
 

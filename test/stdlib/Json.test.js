@@ -137,9 +137,7 @@ describe('global JSON functions', () => {
             expect(actual).toBeInstanceOf(AssociativeArray);
             actualKeys = actual.getElements();
             expect(actualKeys).toEqual(expected.getElements());
-            actualKeys.forEach((key) => {
-                expect(actual.get(key)).toEqual(expected.get(key));
-            });
+            actualKeys.forEach((key) => { expect(actual.get(key)).toEqual(expected.get(key)); });
         });
     });
 });

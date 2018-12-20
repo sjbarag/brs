@@ -22,10 +22,7 @@ function isInt32(n: number): boolean {
     return Number.isInteger(n) && n >= lo && n <= hi;
 }
 
-type JsonValue = any;
-type BrsJsonValue = any;
-
-function brsValueOf(x: JsonValue): BrsJsonValue {
+function brsValueOf(x: any): any {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
     switch (t) {
@@ -55,15 +52,34 @@ function brsValueOf(x: JsonValue): BrsJsonValue {
     }
 }
 
+// An ItemFn is a function that takes a key and a value and returns a string.
+// NOTE: `jsonOfItem` matches this signature.
 type ItemFn = (k: BrsString, v: BrsValue) => string;
-function itemsMap(brsAa: AssociativeArray, fn: ItemFn) {
-    return brsAa.getElements().map((key: BrsString) => {
-        return fn(key, brsAa.get(key));
+
+/**
+ * Convenience function for mapping an ItemFn onto the "items" (key/value
+ * pairs) of an AssociativeArray.
+ * @param {AssociativeArray} associativeArray An AssociativeArray.
+ * @param {ItemFn} fn A function that takes a BrsString and a BrsValue and returns a string.
+ * @return {string[]} An array of strings.
+ */
+function itemsMap(associativeArray: AssociativeArray, fn: ItemFn): string[] {
+    return associativeArray.getElements().map((key: BrsString) => {
+        return fn(key, associativeArray.get(key));
     });
 }
 
-type ElementFn = (v: BrsJsonValue) => string;
-function elementsMap(brsArray: BrsArray, fn: ElementFn) {
+// An ElementFn is a function that takes a value and returns a string.
+// NOTE: `jsonOf` matches this signature.
+type ElementFn = (v: any) => string;
+
+/**
+ * Maps an ElementFn onto the "elements" (values) of a BrsArray.
+ * @param {BrsArray} brsArray A BrsArray.
+ * @param {ElementFn} fn A function that takes a value and returns a string.
+ * @return {string[]} An array of strings.
+ */
+function elementsMap(brsArray: BrsArray, fn: ElementFn): string[] {
     return brsArray.getElements().map(fn);
 }
 
@@ -97,11 +113,7 @@ function logBrsErr(functionName: string, err: Error): void {
 export const FormatJson = new Callable("FormatJson", {
     signature: { returns: ValueKind.String, args: [
         { name: "x", type: ValueKind.Object },
-        {
-            name: "flags",
-            type: ValueKind.Int32,
-            defaultValue: new Literal(new Int32(0))
-        }
+        { name: "flags", type: ValueKind.Int32, defaultValue: new Literal(new Int32(0)) }
     ]},
     impl: (_: Interpreter, x: BrsType, _flags: Int32) => {
         try {

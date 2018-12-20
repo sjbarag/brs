@@ -46,7 +46,7 @@ function brsValueOf(x: any): any {
     }
 }
 
-function jsonOf(x: BrsType, uid: BrsString): string {
+function jsonOf(interpreter: Interpreter, x: BrsType, uid: BrsString): string {
     switch (x.kind) {
     case ValueKind.Invalid:
         return "null";
@@ -67,14 +67,16 @@ function jsonOf(x: BrsType, uid: BrsString): string {
                 let elements = x.getElements();
                 x.set(uid, BrsBoolean.True);
                 return `{${elements.map((k: BrsString) => {
-                    return `"${k.toString()}":${jsonOf(x.get(k), uid)}`;
+                    return `"${k.toString()}":${jsonOf(interpreter, x.get(k), uid)}`;
                 }).join(",")}}`;
             } finally {
-                x.delete(uid);
+                let m: Callable | undefined = x.getMethod("delete");
+                if (m) { m.call(interpreter, uid); }
+                // x.delete(uid);
             }
         }
         if (x instanceof BrsArray) {
-            return `[${x.getElements().map((el: BrsType) => { return jsonOf(el, uid); }).join(",")}]`;
+            return `[${x.getElements().map((el: BrsType) => { return jsonOf(interpreter, el, uid); }).join(",")}]`;
         }
         break;
     case ValueKind.Callable:
@@ -93,9 +95,9 @@ export const FormatJson = new Callable("FormatJson", {
         { name: "x", type: ValueKind.Object },
         { name: "flags", type: ValueKind.Int32, defaultValue: new Literal(new Int32(0)) }
     ]},
-    impl: (_: Interpreter, x: BrsType, _flags: Int32) => {
+    impl: (interpreter: Interpreter, x: BrsType, _flags: Int32) => {
         try {
-            return new BrsString(jsonOf(x, new BrsString(randomBytes(20).toString("hex"))));
+            return new BrsString(jsonOf(interpreter, x, new BrsString(randomBytes(20).toString("hex"))));
         } catch (err) {
             // example RBI error:
             // "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"

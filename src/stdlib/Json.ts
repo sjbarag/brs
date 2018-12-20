@@ -79,6 +79,10 @@ function jsonOf(interpreter: Interpreter, x: BrsType, uid: BrsString): string {
         }
         break;
     case ValueKind.Callable:
+    case ValueKind.Uninitialized:
+        break;
+    default:
+        const _: never = x;
         break;
     }
     throw new Error(`jsonOf not implemented for: ${x}`);

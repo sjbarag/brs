@@ -12,16 +12,9 @@ const {
     Uninitialized
 } = require("../../lib/brsTypes");
 
-// aliases
-const BrsAssociativeArray = AssociativeArray;
-const BrsFloat = Float;
-const BrsInteger = Int32;
-const BrsLongInteger = Int64;
-const BrsUninitialized = Uninitialized;
-
 expect.extend({
     toBeBrsFloatCloseTo(actual, expectedFloatStr, sigfigs) {
-        expect(actual).toBeInstanceOf(BrsFloat);
+        expect(actual).toBeInstanceOf(Float);
         expectedFloat = Number.parseFloat(expectedFloatStr);
         expect(actual.getValue()).toBeCloseTo(expectedFloat, sigfigs);
         return { pass: true };
@@ -39,7 +32,7 @@ expect.extend({
         return { pass: true };
     },
     toEqualBrsAssociativeArray(actual, expected) {
-        expect(actual).toBeInstanceOf(BrsAssociativeArray);
+        expect(actual).toBeInstanceOf(AssociativeArray);
         actualKeys = actual.getElements();
         expectedKeys = expected.getElements();
         expect(actualKeys).toEqual(expectedKeys);
@@ -53,126 +46,61 @@ expect.extend({
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
 
-    let nullStr = 'null';
-    let brsNull = BrsInvalid.Instance;
-    let brsBareNull = new BrsString(nullStr);
-
-    let falseStr = 'false';
-    let brsFalse = new BrsBoolean(false);
-    let brsBareFalse = new BrsString(falseStr);
-
-    let brsEmpty = new BrsString('');
-
-    let strUnquoted = 'ok';
-    let strQuoted = `"${strUnquoted}"`;
-    let brsUnquoted = new BrsString(strUnquoted);
-    let brsQuoted = new BrsString(strQuoted);
-
-    let floatStr = '3.14';
-    let brsFloat = BrsFloat.fromString(floatStr);
-
-    let floatStrPrecise = '3.141592653589793238462643383279502884197169399375';
-    let brsFloatClose = BrsFloat.fromString(floatStrPrecise);
-    let brsBareFloatClose = new BrsString(floatStrPrecise);
-
-    let integerStr = '2147483647'; // max 32-bit int
-    let brsInteger = BrsInteger.fromString(integerStr);
-    let brsBareInteger = new BrsString(integerStr);
-
-    let longIntegerStr = '9223372036854775807'; // max 64-bit int
-    let brsLongInteger = BrsLongInteger.fromString(longIntegerStr);
-    let brsBareLongInteger = new BrsString(longIntegerStr);
-
-    let arrayStr = '['
-        + falseStr + ','
-        + floatStr + ','
-        + integerStr + ','
-        + longIntegerStr + ','
-        + nullStr + ','
-        + strQuoted
-        + ']';
-    let brsArrayStr = new BrsString(arrayStr);
-    let brsArray = new BrsArray([
-        brsFalse,
-        brsFloat,
-        brsInteger,
-        brsLongInteger,
-        brsNull,
-        brsUnquoted
-    ]);
-
-    // Alpha-sorted by key
-    let associativeArrayStrAsc = '{'
-        + '"boolean":' + falseStr + ','
-        + '"float":' + floatStr + ','
-        + '"integer":' + integerStr + ','
-        + '"longInteger":' + longIntegerStr + ','
-        + '"null":' + nullStr + ','
-        + '"string":' + strQuoted
-        + '}';
-
-    // Reverse alpha-sorted by key
-    let brsAssociativeArrayDesc = new BrsAssociativeArray([
-        { name: new BrsString('string'), value: brsUnquoted },
-        { name: new BrsString('null'), value: brsNull },
-        { name: new BrsString('longInteger'), value: brsLongInteger },
-        { name: new BrsString('integer'), value: brsInteger },
-        { name: new BrsString('float'), value: brsFloat },
-        { name: new BrsString('boolean'), value: brsFalse }
-    ]);
-
-    let brsAssociativeArrayStrAsc = new BrsString(associativeArrayStrAsc);
-
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
                 expect(s).toMatch(/BRIGHTSCRIPT: ERROR: FormatJSON: /)
             })
-            actual = FormatJson.call(interpreter, BrsUninitialized.Instance);
-            expect(actual).toEqual(brsEmpty);
+            expect(FormatJson.call(interpreter, Uninitialized.Instance)).toEqual(new BrsString(''));
         });
 
         it('converts BRS invalid to bare null string', () => {
-            actual = FormatJson.call(interpreter, BrsInvalid.Instance);
-            expect(actual).toEqual(brsBareNull);
+            expect(FormatJson.call(interpreter, BrsInvalid.Instance)).toEqual(new BrsString('null'));
         });
 
         it('converts BRS false to bare false string', () => {
-            actual = FormatJson.call(interpreter, BrsBoolean.False);
-            expect(actual).toEqual(brsBareFalse);
+            expect(FormatJson.call(interpreter, BrsBoolean.False)).toEqual(new BrsString('false'));
         });
 
         it('converts BRS string to bare (quoted) string', () => {
-            actual = FormatJson.call(interpreter, brsUnquoted);
-            expect(actual).toEqual(brsQuoted);
+            expect(FormatJson.call(interpreter, new BrsString('ok'))).toEqual(new BrsString(`"ok"`));
         });
 
         it('converts BRS integer to bare integer string', () => {
-            actual = FormatJson.call(interpreter, brsInteger);
-            expect(actual).toEqual(brsBareInteger);
+            expect(FormatJson.call(interpreter, Int32.fromString('2147483647'))).toEqual(new BrsString('2147483647'));
         });
 
         it('converts BRS longInteger to bare longInteger string', () => {
-            actual = FormatJson.call(interpreter, brsLongInteger);
-            expect(actual).toEqual(brsBareLongInteger);
+            expect(FormatJson.call(interpreter, Int64.fromString('9223372036854775807'))).toEqual(new BrsString('9223372036854775807'));
         });
 
         it('converts BRS float to bare float string, within seven significant digits', () => {
-            actual = FormatJson.call(interpreter, brsFloatClose);
-            expect(actual).toBeBrsFloatStrCloseTo(
-                floatStrPrecise,
-                BrsFloat.IEEE_FLOAT_SIGFIGS
-            );
+            expect(FormatJson.call(interpreter, Float.fromString('3.141592653589793238462643383279502884197169399375'))).toBeBrsFloatStrCloseTo('3.141592653589793238462643383279502884197169399375', Float.IEEE_FLOAT_SIGFIGS );
         });
 
         it('converts from BRS array', () => {
-            actual = FormatJson.call(interpreter, brsArray);
-            expect(actual).toEqual(brsArrayStr);
+            let brsArray = new BrsArray([
+                new BrsBoolean(false),
+                Float.fromString('3.14'),
+                Int32.fromString('2147483647'),
+                Int64.fromString('9223372036854775807'),
+                BrsInvalid.Instance,
+                new BrsString('ok')
+            ]);
+            expect(FormatJson.call(interpreter, brsArray)).toEqual(new BrsString(`[false,3.14,2147483647,9223372036854775807,null,"ok"]`));
         });
 
         it('converts from BRS associative array to key-sorted JSON string', () => {
-            actual = FormatJson.call(interpreter, brsAssociativeArrayDesc);
-            expect(actual).toEqual(brsAssociativeArrayStrAsc);
+            let brsAssociativeArrayDesc = new AssociativeArray([
+                { name: new BrsString('string'), value: new BrsString('ok') },
+                { name: new BrsString('null'), value: BrsInvalid.Instance },
+                { name: new BrsString('longInteger'), value: Int64.fromString('9223372036854775807') },
+                { name: new BrsString('integer'), value: Int32.fromString('2147483647') },
+                { name: new BrsString('float'), value: Float.fromString('3.14') },
+                { name: new BrsString('boolean'), value: new BrsBoolean(false) }
+            ]);
+            let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longInteger":9223372036854775807,"null":null,"string":"ok"}`);
+            expect(FormatJson.call(interpreter, brsAssociativeArrayDesc)).toEqual(brsAssociativeArrayStrAsc);
         });
     });
 
@@ -181,51 +109,56 @@ describe('global JSON functions', () => {
             jest.spyOn(console, 'error').mockImplementationOnce((s) => {
                 expect(s).toMatch(/BRIGHTSCRIPT: ERROR: ParseJSON: /)
             })
-            actual = ParseJson.call(interpreter, brsEmpty);
-            expect(actual).toBe(BrsInvalid.Instance);
+            expect(ParseJson.call(interpreter, new BrsString(''))).toBe(BrsInvalid.Instance);
         });
 
         it('converts bare null string to BRS invalid', () => {
-            actual = ParseJson.call(interpreter, brsBareNull);
-            expect(actual).toBe(BrsInvalid.Instance);
+            expect(ParseJson.call(interpreter, new BrsString('null'))).toBe(BrsInvalid.Instance);
         });
 
         it('converts bare false string to BRS false', () => {
-            actual = ParseJson.call(interpreter, brsBareFalse);
-            expect(actual).toBe(BrsBoolean.False);
+            expect(ParseJson.call(interpreter, new BrsString('false'))).toBe(BrsBoolean.False);
         });
 
         it('converts bare (quoted) string to BRS string', () => {
-            actual = ParseJson.call(interpreter, brsQuoted);
-            expect(actual).toEqual(brsUnquoted);
+            expect(ParseJson.call(interpreter, new BrsString(`"ok"`))).toEqual(new BrsString('ok'));
         });
 
         it('converts bare integer string to BRS integer', () => {
-            actual = ParseJson.call(interpreter, brsBareInteger);
-            expect(actual).toEqual(brsInteger);
+            expect(ParseJson.call(interpreter, new BrsString('2147483647'))).toEqual(Int32.fromString('2147483647'));
         });
 
         it('converts bare longInteger string to BRS longInteger', () => {
-            actual = ParseJson.call(interpreter, brsBareLongInteger);
-            expect(actual).toEqual(brsLongInteger);
+            expect(ParseJson.call(interpreter, new BrsString('9223372036854775807'))).toEqual(Int64.fromString('9223372036854775807'));
         });
 
         it('converts bare float string to BRS float, within seven significant digits', () => {
-            actual = ParseJson.call(interpreter, brsBareFloatClose);
-            expect(actual).toBeBrsFloatCloseTo(
-                floatStrPrecise,
-                BrsFloat.IEEE_FLOAT_SIGFIGS
-            );
+            expect(ParseJson.call(interpreter, new BrsString('3.141592653589793238462643383279502884197169399375'))).toBeBrsFloatCloseTo('3.141592653589793238462643383279502884197169399375', Float.IEEE_FLOAT_SIGFIGS);
         });
 
         it('converts to BRS array', () => {
-            actual = ParseJson.call(interpreter, brsArrayStr);
-            expect(actual).toEqualBrsArray(brsArray);
+            let brsArray = new BrsArray([
+                new BrsBoolean(false),
+                Float.fromString('3.14'),
+                Int32.fromString('2147483647'),
+                Int64.fromString('9223372036854775807'),
+                BrsInvalid.Instance,
+                new BrsString('ok')
+            ]);
+            expect(ParseJson.call(interpreter, new BrsString(`[false,3.14,2147483647,9223372036854775807,null,"ok"]`))).toEqualBrsArray(brsArray);
         });
 
         it('converts to BRS associative array', () => {
-            actual = ParseJson.call(interpreter, brsAssociativeArrayStrAsc);
-            expect(actual).toEqualBrsAssociativeArray(brsAssociativeArrayDesc);
+            let brsAssociativeArrayDesc = new AssociativeArray([
+                { name: new BrsString('string'), value: new BrsString('ok') },
+                { name: new BrsString('null'), value: BrsInvalid.Instance },
+                { name: new BrsString('longInteger'), value: Int64.fromString('9223372036854775807') },
+                { name: new BrsString('integer'), value: Int32.fromString('2147483647') },
+                { name: new BrsString('float'), value: Float.fromString('3.14') },
+                { name: new BrsString('boolean'), value: new BrsBoolean(false) }
+            ]);
+            let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longInteger":9223372036854775807,"null":null,"string":"ok"}`);
+            expect(ParseJson.call(interpreter, brsAssociativeArrayStrAsc)).toEqualBrsAssociativeArray(brsAssociativeArrayDesc);
         });
     });
 });

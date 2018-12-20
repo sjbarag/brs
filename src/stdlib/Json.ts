@@ -1,4 +1,4 @@
-import { AssociativeArray as BrsAssociativeArray } from "../brsTypes/components/AssociativeArray";
+import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import { BrsArray } from "../brsTypes/components/BrsArray";
 import { Interpreter } from "../interpreter";
 import { Literal } from "../parser/Expression";
@@ -9,10 +9,10 @@ import {
     BrsType,
     BrsValue,
     Callable,
-    Float as BrsFloat,
-    Int32 as BrsInteger,
-    Int64 as BrsLongInteger,
-    Uninitialized as BrsUninitialized,
+    Float,
+    Int32,
+    Int64,
+    Uninitialized,
     ValueKind
 } from "../brsTypes";
 
@@ -35,14 +35,14 @@ function brsValueOf(x: JsonValue): BrsJsonValue {
         return new BrsString(x);
     case "number":
         if (Number.isInteger(x)) {
-            return isInt32(x) ? new BrsInteger(x) : new BrsLongInteger(x);
+            return isInt32(x) ? new Int32(x) : new Int64(x);
         }
-        return new BrsFloat(x);
+        return new Float(x);
     case "object":
         if (Array.isArray(x)) {
             return new BrsArray(x.map(brsValueOf));
         }
-        return new BrsAssociativeArray(
+        return new AssociativeArray(
             Object.getOwnPropertyNames(x).map((k: string) => {
                 return {
                     name: brsValueOf(k),
@@ -56,7 +56,7 @@ function brsValueOf(x: JsonValue): BrsJsonValue {
 }
 
 type ItemFn = (k: BrsString, v: BrsValue) => string;
-function itemsMap(brsAa: BrsAssociativeArray, fn: ItemFn) {
+function itemsMap(brsAa: AssociativeArray, fn: ItemFn) {
     return brsAa.getElements().map((key: BrsString) => {
         return fn(key, brsAa.get(key));
     });
@@ -75,7 +75,7 @@ function jsonOf(x: BrsValue): string {
     if (x instanceof BrsInvalid) {
         return "null";
     }
-    if (x instanceof BrsAssociativeArray) {
+    if (x instanceof AssociativeArray) {
         return `{${itemsMap(x, jsonOfItem).join(",")}}`;
     }
     if (x instanceof BrsArray) {
@@ -84,7 +84,7 @@ function jsonOf(x: BrsValue): string {
     if (x instanceof BrsString) {
         return `"${x.toString()}"`;
     }
-    if (!(x instanceof BrsUninitialized)) {
+    if (!(x instanceof Uninitialized)) {
         return x.toString();
     }
     throw new Error(`jsonValueOf not implemented for: ${x}`);
@@ -100,10 +100,10 @@ export const FormatJson = new Callable("FormatJson", {
         {
             name: "flags",
             type: ValueKind.Int32,
-            defaultValue: new Literal(new BrsInteger(0))
+            defaultValue: new Literal(new Int32(0))
         }
     ]},
-    impl: (_: Interpreter, x: BrsType, _flags: BrsInteger) => {
+    impl: (_: Interpreter, x: BrsType, _flags: Int32) => {
         try {
             return new BrsString(jsonOf(x));
         } catch (err) {

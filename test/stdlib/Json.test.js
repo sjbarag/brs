@@ -12,37 +12,6 @@ const {
     Uninitialized
 } = require("../../lib/brsTypes");
 
-expect.extend({
-    toBeBrsFloatCloseTo(actual, expectedFloatStr, sigfigs) {
-        expect(actual).toBeInstanceOf(Float);
-        expectedFloat = Number.parseFloat(expectedFloatStr);
-        expect(actual.getValue()).toBeCloseTo(expectedFloat, sigfigs);
-        return { pass: true };
-    },
-    toBeBrsFloatStrCloseTo(actual, expectedFloatStr, sigfigs) {
-        expect(actual).toBeInstanceOf(BrsString);
-        actualFloat = Number.parseFloat(actual.toString());
-        expectedFloat = Number.parseFloat(expectedFloatStr);
-        expect(actualFloat).toBeCloseTo(expectedFloat, sigfigs);
-        return { pass: true };
-    },
-    toEqualBrsArray(actual, expected) {
-        expect(actual).toBeInstanceOf(BrsArray);
-        expect(actual.getElements()).toEqual(expected.getElements());
-        return { pass: true };
-    },
-    toEqualBrsAssociativeArray(actual, expected) {
-        expect(actual).toBeInstanceOf(AssociativeArray);
-        actualKeys = actual.getElements();
-        expectedKeys = expected.getElements();
-        expect(actualKeys).toEqual(expectedKeys);
-        actualKeys.forEach((key) => {
-            expect(actual.get(key)).toEqual(expected.get(key));
-        });
-        return { pass: true };
-    }
-});
-
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
 
@@ -75,7 +44,9 @@ describe('global JSON functions', () => {
         });
 
         it('converts BRS float to bare float string, within seven significant digits', () => {
-            expect(FormatJson.call(interpreter, Float.fromString('3.141592653589793238462643383279502884197169399375'))).toBeBrsFloatStrCloseTo('3.141592653589793238462643383279502884197169399375', Float.IEEE_FLOAT_SIGFIGS );
+            let actual = FormatJson.call(interpreter, Float.fromString('3.141592653589793238462643383279502884197169399375'));
+            expect(actual).toBeInstanceOf(BrsString);
+            expect(Number.parseFloat(actual.toString())).toBeCloseTo(Number.parseFloat('3.141592653589793238462643383279502884197169399375'), Float.IEEE_FLOAT_SIGFIGS);
         });
 
         it('converts from BRS array', () => {
@@ -133,11 +104,13 @@ describe('global JSON functions', () => {
         });
 
         it('converts bare float string to BRS float, within seven significant digits', () => {
-            expect(ParseJson.call(interpreter, new BrsString('3.141592653589793238462643383279502884197169399375'))).toBeBrsFloatCloseTo('3.141592653589793238462643383279502884197169399375', Float.IEEE_FLOAT_SIGFIGS);
+            let actual = ParseJson.call(interpreter, new BrsString('3.141592653589793238462643383279502884197169399375'));
+            expect(actual).toBeInstanceOf(Float);
+            expect(actual.getValue()).toBeCloseTo(Number.parseFloat('3.141592653589793238462643383279502884197169399375'), Float.IEEE_FLOAT_SIGFIGS);
         });
 
         it('converts to BRS array', () => {
-            let brsArray = new BrsArray([
+            let expected = new BrsArray([
                 new BrsBoolean(false),
                 Float.fromString('3.14'),
                 Int32.fromString('2147483647'),
@@ -145,11 +118,13 @@ describe('global JSON functions', () => {
                 BrsInvalid.Instance,
                 new BrsString('ok')
             ]);
-            expect(ParseJson.call(interpreter, new BrsString(`[false,3.14,2147483647,9223372036854775807,null,"ok"]`))).toEqualBrsArray(brsArray);
+            let actual = ParseJson.call(interpreter, new BrsString(`[false,3.14,2147483647,9223372036854775807,null,"ok"]`));
+            expect(actual).toBeInstanceOf(BrsArray);
+            expect(actual.getElements()).toEqual(expected.getElements());
         });
 
         it('converts to BRS associative array', () => {
-            let brsAssociativeArrayDesc = new AssociativeArray([
+            let expected = new AssociativeArray([
                 { name: new BrsString('string'), value: new BrsString('ok') },
                 { name: new BrsString('null'), value: BrsInvalid.Instance },
                 { name: new BrsString('longInteger'), value: Int64.fromString('9223372036854775807') },
@@ -158,7 +133,13 @@ describe('global JSON functions', () => {
                 { name: new BrsString('boolean'), value: new BrsBoolean(false) }
             ]);
             let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longInteger":9223372036854775807,"null":null,"string":"ok"}`);
-            expect(ParseJson.call(interpreter, brsAssociativeArrayStrAsc)).toEqualBrsAssociativeArray(brsAssociativeArrayDesc);
+            let actual = ParseJson.call(interpreter, brsAssociativeArrayStrAsc);
+            expect(actual).toBeInstanceOf(AssociativeArray);
+            actualKeys = actual.getElements();
+            expect(actualKeys).toEqual(expected.getElements());
+            actualKeys.forEach((key) => {
+                expect(actual.get(key)).toEqual(expected.get(key));
+            });
         });
     });
 });

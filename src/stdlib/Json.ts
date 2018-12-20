@@ -52,37 +52,6 @@ function brsValueOf(x: any): any {
     }
 }
 
-// An ItemFn is a function that takes a key and a value and returns a string.
-// NOTE: `jsonOfItem` matches this signature.
-type ItemFn = (k: BrsString, v: BrsValue) => string;
-
-/**
- * Convenience function for mapping an ItemFn onto the "items" (key/value
- * pairs) of an AssociativeArray.
- * @param {AssociativeArray} associativeArray An AssociativeArray.
- * @param {ItemFn} fn A function that takes a BrsString and a BrsValue and returns a string.
- * @return {string[]} An array of strings.
- */
-function itemsMap(associativeArray: AssociativeArray, fn: ItemFn): string[] {
-    return associativeArray.getElements().map((key: BrsString) => {
-        return fn(key, associativeArray.get(key));
-    });
-}
-
-// An ElementFn is a function that takes a value and returns a string.
-// NOTE: `jsonOf` matches this signature.
-type ElementFn = (v: any) => string;
-
-/**
- * Maps an ElementFn onto the "elements" (values) of a BrsArray.
- * @param {BrsArray} brsArray A BrsArray.
- * @param {ElementFn} fn A function that takes a value and returns a string.
- * @return {string[]} An array of strings.
- */
-function elementsMap(brsArray: BrsArray, fn: ElementFn): string[] {
-    return brsArray.getElements().map(fn);
-}
-
 function jsonOfItem(k: BrsString, v: BrsValue): string {
     return `"${k.toString()}":${jsonOf(v)}`;
 }
@@ -92,10 +61,10 @@ function jsonOf(x: BrsValue): string {
         return "null";
     }
     if (x instanceof AssociativeArray) {
-        return `{${itemsMap(x, jsonOfItem).join(",")}}`;
+        return `{${x.getElements().map((key: BrsString) => { return jsonOfItem(key, x.get(key)); }).join(",")}}`;
     }
     if (x instanceof BrsArray) {
-        return `[${elementsMap(x, jsonOf).join(",")}]`;
+        return `[${x.getElements().map(jsonOf).join(",")}]`;
     }
     if (x instanceof BrsString) {
         return `"${x.toString()}"`;

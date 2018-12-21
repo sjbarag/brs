@@ -4,7 +4,7 @@ import { BrsType } from "..";
 import { Callable } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
-import luxon from "luxon";
+import * as luxon from "luxon";
 
 export class Timespan extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
@@ -81,11 +81,10 @@ export class Timespan extends BrsComponent implements BrsValue {
             },
             impl: (_: Interpreter, date: BrsString) => {
                 let dateToParse = luxon.DateTime.fromISO(date.value, { zone: "utc" });
-                console.log(date.value);
                 let msDate = dateToParse.millisecond;
                 let now = Date.now();
 
-                return BrsBoolean.from(dateToParse.isValid) ? new Int32(msDate - now) : new Int32(2077252342);
+                return dateToParse.isValid ? new Int32(msDate - now) : new Int32(2077252342);
             }
         }
     );

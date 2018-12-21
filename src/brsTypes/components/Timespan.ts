@@ -1,30 +1,29 @@
 import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
-import { BrsComponent, BrsIterable } from "./BrsComponent";
-import { BrsType, isBrsNumber } from "..";
+import { BrsComponent } from "./BrsComponent";
+import { BrsType } from "..";
 import { Callable } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
-import { ftruncate } from "fs";
+import luxon from "luxon";
 
 export class Timespan extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
-    private start = Date.now();
+    private now = Date.now();
 
     constructor() {
         super("roTimespan");
         this.registerMethods([
             this.mark,
             this.totalmilliseconds,
-            // this.totalseconds,
-            // this.getsecondstoiso8601date
+            this.totalseconds,
+            this.getsecondstoiso8601date
         ]);
 
         this.resetTime();
     }
 
     resetTime() {
-        this.start = Date.now();
-        console.log(this.start);
+        this.now = Date.now();
     }
 
     toString(parent?: BrsType): string {
@@ -53,7 +52,40 @@ export class Timespan extends BrsComponent implements BrsValue {
                 returns: ValueKind.Int32
             },
             impl: (_: Interpreter) => {
-               return new Int32(Date.now() - this.start);
+                return new Int32(Date.now() - this.now);
+            }
+        }
+    );
+
+    private totalseconds = new Callable(
+        "totalseconds",
+        {
+            signature: {
+                args: [],
+                returns: ValueKind.Int32
+            },
+            impl: (_: Interpreter) => {
+                return new Int32((Date.now() - this.now) / 1000);
+            }
+        }
+    );
+
+    private getsecondstoiso8601date = new Callable(
+        "getsecondstoiso8601date",
+        {
+            signature: {
+                args: [
+                    { name: "date", type: ValueKind.String }
+                ],
+                returns: ValueKind.Int32
+            },
+            impl: (_: Interpreter, date: BrsString) => {
+                let dateToParse = luxon.DateTime.fromISO(date.value, { zone: "utc" });
+                console.log(date.value);
+                let msDate = dateToParse.millisecond;
+                let now = Date.now();
+
+                return BrsBoolean.from(dateToParse.isValid) ? new Int32(msDate - now) : new Int32(2077252342);
             }
         }
     );

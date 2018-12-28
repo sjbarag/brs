@@ -270,3 +270,19 @@ export const WriteAsciiFile = new Callable(
     }
 );
 
+export const MatchFiles = new Callable(
+    "MatchFiles",
+    {
+        signature: {
+            args: [
+                { name: "path", type: ValueKind.String },
+                { name: "pattern_in", type: ValueKind.String }
+            ],
+            returns: ValueKind.Object
+        },
+        impl: (interpreter: Interpreter, path: BrsString, pattern_in: BrsString) => {
+            return new BrsArray([]);
+        }
+    }
+);
+

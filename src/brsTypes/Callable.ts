@@ -78,7 +78,7 @@ export type SignatureAndMismatches = {
  * description of why.
  */
 /** The function type required for all concrete Callables to provide. */
-export type CallableImplementation = (interpreter: Interpreter, ...args: any[]) => Brs.BrsType;
+export type CallableImplementation = (interpreter: Interpreter, ...args: any[]) => Brs.BrsType | Promise<Brs.BrsType>;
 
 /** A `function` or `sub` (either "native" or implemented in BrightScript) that can be called in a BrightScript file. */
 export class Callable implements Brs.BrsValue {
@@ -111,16 +111,19 @@ export class Callable implements Brs.BrsValue {
 
         let mutableArgs = args.slice();
 
-        return interpreter.inSubEnv(subInterpreter => {
+        return interpreter.inSubEnv(async subInterpreter => {
             // first, we need to evaluate all of the parameter default values
             // and define them in a new environment
-            signature.args.forEach((param, index) => {
-                if (param.defaultValue && mutableArgs[index] == null) {
-                    mutableArgs[index] = subInterpreter.evaluate(param.defaultValue);
-                }
+            await Promise.all(
+                signature.args.map(async (param, index) => {
+                    if (param.defaultValue && mutableArgs[index] == null) {
+                        mutableArgs[index] = await subInterpreter.evaluate(param.defaultValue);
+                    }
 
-                subInterpreter.environment.define(Scope.Function, param.name, mutableArgs[index]);
-            });
+                    subInterpreter.environment.define(Scope.Function, param.name, mutableArgs[index]);
+                    return Promise.resolve();
+                })
+            );
 
             // then return whatever the selected implementation would return
             return impl(subInterpreter, ...mutableArgs);

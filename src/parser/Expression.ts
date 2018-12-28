@@ -4,23 +4,23 @@ import { Block } from "./Statement";
 
 export interface Visitor<T> {
     visitAssign(expression: Assign): T;
-    visitBinary(expression: Binary): T;
-    visitCall(expression: Call): T;
+    visitBinary(expression: Binary): Promise<T>;
+    visitCall(expression: Call): T | Promise<T>;
     visitAnonymousFunction(func: Function): T;
-    visitDottedGet(expression: DottedGet): T;
-    visitIndexedGet(expression: IndexedGet): T;
-    visitGrouping(expression: Grouping): T;
+    visitDottedGet(expression: DottedGet): Promise<T>;
+    visitIndexedGet(expression: IndexedGet): Promise<T>;
+    visitGrouping(expression: Grouping): Promise<T>;
     visitLiteral(expression: Literal): T;
-    visitArrayLiteral(expression: ArrayLiteral): T;
-    visitAALiteral(expression: AALiteral): T;
+    visitArrayLiteral(expression: ArrayLiteral): Promise<T>;
+    visitAALiteral(expression: AALiteral): Promise<T>;
     visitLogical(expression: Logical): T;
     visitM(expression: M): T;
-    visitUnary(expression: Unary): T;
+    visitUnary(expression: Unary): Promise<T>;
     visitVariable(expression: Variable): T;
 }
 
 export interface Expression {
-    accept <R> (visitor: Visitor<R>): R;
+    accept <R> (visitor: Visitor<R>): R | Promise<R>;
 }
 
 export class Assign implements Expression {
@@ -42,7 +42,7 @@ export class Binary implements Expression {
     ) { }
 
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitBinary(this);
     }
 }
@@ -56,7 +56,7 @@ export class Call implements Expression {
         readonly args: Expression[]
     ) {}
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): R | Promise<R> {
         return visitor.visitCall(this);
     }
 }
@@ -79,7 +79,7 @@ export class DottedGet implements Expression {
         readonly name: Identifier
     ) {}
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitDottedGet(this);
     }
 }
@@ -91,7 +91,7 @@ export class IndexedGet implements Expression {
         readonly closingSquare: Token,
     ) {}
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitIndexedGet(this);
     }
 }
@@ -102,7 +102,7 @@ export class Grouping implements Expression {
         readonly expression: Expression
     ) {}
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitGrouping(this);
     }
 }
@@ -118,7 +118,7 @@ export class Literal implements Expression {
 export class ArrayLiteral implements Expression {
     constructor(readonly elements: Expression[]) {}
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitArrayLiteral(this);
     }
 }
@@ -134,7 +134,7 @@ export interface AAMember {
 export class AALiteral implements Expression {
     constructor(readonly elements: AAMember[]) {}
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitAALiteral(this);
     }
 }
@@ -165,7 +165,7 @@ export class Unary implements Expression {
         readonly right: Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): Promise<R> {
         return visitor.visitUnary(this);
     }
 }

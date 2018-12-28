@@ -6,20 +6,20 @@ import { BrsType } from "../brsTypes";
 export * from "./BlockEndReason";
 
 export interface Visitor<T> {
-    visitAssignment(statement: Assignment): BrsType;
-    visitExpression(statement: Expression): BrsType;
+    visitAssignment(statement: Assignment): Promise<BrsType>;
+    visitExpression(statement: Expression): Promise<BrsType>;
     visitExitFor(statement: ExitFor): never;
     visitExitWhile(statement: ExitWhile): never;
     visitPrint(statement: Print): BrsType;
-    visitIf(statement: If): BrsType;
+    visitIf(statement: If): Promise<BrsType>;
     visitBlock(block: Block): BrsType;
-    visitFor(statement: For): BrsType;
-    visitForEach(statement: ForEach): BrsType;
-    visitWhile(statement: While): BrsType;
+    visitFor(statement: For): Promise<BrsType>;
+    visitForEach(statement: ForEach): Promise<BrsType>;
+    visitWhile(statement: While): Promise<BrsType>;
     visitNamedFunction(statement: Function): BrsType;
-    visitReturn(statement: Return): never;
-    visitDottedSet(statement: DottedSet): BrsType;
-    visitIndexedSet(statement: IndexedSet): BrsType;
+    visitReturn(statement: Return): Promise<BrsType>;
+    visitDottedSet(statement: DottedSet): Promise<BrsType>;
+    visitIndexedSet(statement: IndexedSet): Promise<BrsType>;
 }
 
 /** A BrightScript statement */
@@ -30,13 +30,13 @@ export interface Statement {
      * @returns a BrightScript value (typically `invalid`) and the reason why
      *          the statement exited (typically `StopReason.End`)
      */
-    accept <R> (visitor: Visitor<R>): BrsType;
+    accept <R> (visitor: Visitor<R>): BrsType | Promise<BrsType>;
 }
 
 export class Assignment implements Statement {
     constructor(readonly name: Identifier, readonly value: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitAssignment(this);
     }
 }
@@ -52,7 +52,7 @@ export class Block implements Statement {
 export class Expression implements Statement {
     constructor(readonly expression: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitExpression(this);
     }
 }
@@ -94,7 +94,7 @@ export class If implements Statement {
         readonly elseBranch?: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitIf(this);
     }
 }
@@ -134,7 +134,7 @@ export class Return implements Statement {
         readonly value?: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitReturn(this);
     }
 }
@@ -147,7 +147,7 @@ export class For implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitFor(this);
     }
 }
@@ -159,7 +159,7 @@ export class ForEach implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitForEach(this);
     }
 }
@@ -170,7 +170,7 @@ export class While implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitWhile(this);
     }
 }
@@ -182,7 +182,7 @@ export class DottedSet implements Statement {
        readonly value: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitDottedSet(this);
     }
 }
@@ -195,7 +195,7 @@ export class IndexedSet implements Statement {
        readonly closingSquare: Token
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitIndexedSet(this);
     }
 }

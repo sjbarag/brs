@@ -14,7 +14,7 @@ export const Abs = new Callable(
 );
 
 /*
- * Returns the integer as a 32-bit float. 
+ * Returns the integer as a 32-bit float.
  * ** NOTE: the function name implies it makes a 64-bit float, but the docs say
  *     it currently returns a 32-bit float, but may return a 64-bit float in the future.
  */

@@ -46,6 +46,8 @@
   "repository": "https://github.com/sjbarag/brs",
   "jest": {
     "testEnvironment": "node",
-    "preset": "ts-jest"
+    "moduleNameMapper": {
+      "^@lib/(.*)$": "<rootDir>/lib/$1"
+    }
   }
 }

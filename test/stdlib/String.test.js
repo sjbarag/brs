@@ -1,6 +1,6 @@
-import { UCase, LCase, Asc, Chr, Left, Right, Instr, Len, Mid, Str, StrI, Substitute, Val, StrToI } from "../../src/stdlib";
-import { Interpreter } from "../../src/interpreter";
-import { BrsString, Int32, Float } from "../../src/brsTypes";
+const { UCase, LCase, Asc, Chr, Left, Right, Instr, Len, Mid, Str, StrI, Substitute, Val, StrToI } = require("@lib/stdlib");
+const { Interpreter } = require("@lib/interpreter");
+const { BrsString, Int32, Float } = require("@lib/brsTypes");
 
 const interpreter = new Interpreter();
 

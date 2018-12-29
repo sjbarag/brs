@@ -96,12 +96,18 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    exec(statements: ReadonlyArray<Stmt.Statement>) {
-        let results = statements.map((statement) => this.execute(statement));
+    async exec(statements: ReadonlyArray<Stmt.Statement>) {
+        let results: BrsType[] = [];
+
+        // resolve statement promises in a loop to ensure statements are executed in order.
+        for (let statement of statements) {
+            results.push(await this.execute(statement));
+        }
+
         try {
             let maybeMain = this._environment.get({ kind: Lexeme.Identifier, text: "main", line: -1, isReserved: false });
             if (maybeMain.kind === ValueKind.Callable) {
-                results = [ maybeMain.call(this) ];
+                results = [ await maybeMain.call(this) ];
             }
         } catch (err) {
             throw err;

@@ -1,7 +1,7 @@
-const BrsError = require("../../lib/Error");
-const Expr = require("../../lib/parser/Expression");
-const Stmt = require("../../lib/parser/Statement");
-const { Interpreter } = require("../../lib/interpreter");
+const BrsError = require("@lib/Error");
+const Expr = require("@lib/parser/Expression");
+const Stmt = require("@lib/parser/Statement");
+const { Interpreter } = require("@lib/interpreter");
 const { Lexeme, BrsTypes } = require("brs");
 const { BrsString, ValueKind } = BrsTypes;
 
@@ -15,7 +15,7 @@ describe("interpreter calls", () => {
         interpreter = new Interpreter();
     });
 
-    it("calls functions", () => {
+    it("calls functions", async () => {
         const call = new Stmt.Expression(
             new Expr.Call(
                 new Expr.Variable(identifier("UCase")),
@@ -23,11 +23,11 @@ describe("interpreter calls", () => {
                 [ new Expr.Literal(new BrsTypes.BrsString("h@lL0")) ]
             )
         );
-        const [ result ] = interpreter.exec([call]);
+        const [ result ] = await interpreter.exec([call]);
         expect(result.toString()).toBe("H@LL0");
     });
 
-    it("sets a new `m` pointer when called from an associative array", () => {
+    it("sets a new `m` pointer when called from an associative array", async () => {
         const ast = [
             new Stmt.Assignment(
                 { kind: Lexeme.Identifier, text: "foo", line: 2 },
@@ -60,7 +60,7 @@ describe("interpreter calls", () => {
             )
         ];
 
-        interpreter.exec(ast);
+        await interpreter.exec(ast);
 
         let foo = interpreter.environment.get({ kind: Lexeme.Identifier, text: "foo", line: -1 });
         expect(foo.kind).toBe(ValueKind.Object);
@@ -69,7 +69,7 @@ describe("interpreter calls", () => {
         ).toEqual(new BrsString("this is an ID"));
     });
 
-    it("errors when not enough arguments provided", () => {
+    it("errors when not enough arguments provided", async () => {
         const call = new Stmt.Expression(
             new Expr.Call(
                 new Expr.Variable(identifier("UCase")),
@@ -78,11 +78,11 @@ describe("interpreter calls", () => {
             )
         );
 
-        expect(() => interpreter.exec([call])).toThrow(/UCase.*arguments/);
+        await expect(interpreter.exec([call])).rejects.toThrowError(/UCase.*arguments/);
         expect(BrsError.found()).toBe(true);
     });
 
-    it("errors when too many arguments are provided", () => {
+    it("errors when too many arguments are provided", async () => {
         const call = new Stmt.Expression(
             new Expr.Call(
                 new Expr.Variable(identifier("UCase")),
@@ -94,11 +94,11 @@ describe("interpreter calls", () => {
             )
         );
 
-        expect(() => interpreter.exec([call])).toThrow(/UCase.*arguments/);
+        await expect(interpreter.exec([call])).rejects.toThrow(/UCase.*arguments/);
         expect(BrsError.found()).toBe(true);
     });
 
-    it("errors when argument types are incorrect", () => {
+    it("errors when argument types are incorrect", async () => {
         const call = new Stmt.Expression(
             new Expr.Call(
                 new Expr.Variable(identifier("UCase")),
@@ -109,7 +109,7 @@ describe("interpreter calls", () => {
             )
         );
 
-        expect(() => interpreter.exec([call])).toThrow(/Argument '.+' must be of type/);
+        await expect(interpreter.exec([call])).rejects.toThrow(/Argument '.+' must be of type/);
         expect(BrsError.found()).toBe(true);
     });
 });

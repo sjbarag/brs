@@ -90,8 +90,8 @@ export function repl() {
     });
     rl.setPrompt("brs> ");
 
-    rl.on("line", (line) => {
-        let results = run(line, defaultExecutionOptions, replInterpreter);
+    rl.on("line", async (line) => {
+        let results = await run(line, defaultExecutionOptions, replInterpreter);
         if (results) {
             results.map(result => console.log(result.toString()));
         }
@@ -114,7 +114,7 @@ export function repl() {
  *          statement exited and what its return value was, or `undefined` if
  *          `interpreter` threw an Error.
  */
-function run(contents: string, options: ExecutionOptions = defaultExecutionOptions, interpreter?: Interpreter) {
+async function run(contents: string, options: ExecutionOptions = defaultExecutionOptions, interpreter?: Interpreter) {
     const tokens: ReadonlyArray<Token> = Lexer.scan(contents);
     const statements = Parser.parse(tokens);
 
@@ -125,7 +125,7 @@ function run(contents: string, options: ExecutionOptions = defaultExecutionOptio
     if (!statements) { return; }
 
     try {
-        return (interpreter || new Interpreter(options)).exec(statements);
+        return await (interpreter || new Interpreter(options)).exec(statements);
     } catch (e) {
         //options.stderr.write(e.message);
         return;

@@ -16,6 +16,13 @@ import {
     ValueKind
 } from "../brsTypes";
 
+/**
+ * Converts a value to its representation as a BrsType. If no such
+ * representation is possible, throws an Error.
+ * @param {any} x Some value.
+ * @return {BrsType} The BrsType representaion of `x`.
+ * @throws {Error} If `x` cannot be represented as a BrsType.
+ */
 function brsValueOf(x: any): BrsType {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
@@ -46,6 +53,14 @@ function brsValueOf(x: any): BrsType {
     }
 }
 
+/**
+ * Converts a BrsType value to its representation as a JSON string. If no such
+ * representation is possible, throws an Error.
+ * @param {Interpreter} interpreter An Interpreter.
+ * @param {BrsType} x Some BrsType value.
+ * @return {string} The JSON string representation of `x`.
+ * @throws {Error} If `x` cannot be represented as a JSON string.
+ */
 function jsonOf(interpreter: Interpreter, x: BrsType, uid: BrsString): string {
     switch (x.kind) {
     case ValueKind.Invalid:

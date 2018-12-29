@@ -16,7 +16,7 @@ import {
     ValueKind
 } from "../brsTypes";
 
-function brsValueOf(x: any): any {
+function brsValueOf(x: any): BrsType {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
     switch (t) {
@@ -36,7 +36,7 @@ function brsValueOf(x: any): any {
         return new AssociativeArray(
             Object.getOwnPropertyNames(x).map((k: string) => {
                 return {
-                    name: brsValueOf(k),
+                    name: new BrsString(k),
                     value: brsValueOf(x[k])
                 };
             })

@@ -55,13 +55,17 @@ function brsValueOf(x: any): BrsType {
 
 /**
  * Converts a BrsType value to its representation as a JSON string. If no such
- * representation is possible, throws an Error.
+ * representation is possible, throws an Error. Objects with cyclical references
+ * are rejected.
  * @param {Interpreter} interpreter An Interpreter.
  * @param {BrsType} x Some BrsType value.
+ * @param {Set<AssociativeArray | BrsArray>} visited An optional Set of visited
+ *   AssociativeArray or BrsArray values. If not provided, a new Set will be
+ *   created.
  * @return {string} The JSON string representation of `x`.
  * @throws {Error} If `x` cannot be represented as a JSON string.
  */
-function jsonOf(interpreter: Interpreter, x: BrsType, uid: BrsString): string {
+function jsonOf(interpreter: Interpreter, x: BrsType, visited: Set<AssociativeArray | BrsArray> = new Set()): string {
     switch (x.kind) {
     case ValueKind.Invalid:
         return "null";
@@ -75,28 +79,26 @@ function jsonOf(interpreter: Interpreter, x: BrsType, uid: BrsString): string {
         return x.toString();
     case ValueKind.Object:
         if (x instanceof AssociativeArray) {
-            try {
-                if (x.get(uid) !== BrsInvalid.Instance) {
-                    throw new Error("Nested object reference");
-                }
-                let elements = x.getElements();
-                x.set(uid, BrsBoolean.True);
-                return `{${elements.map((k: BrsString) => {
-                    return `"${k.toString()}":${jsonOf(interpreter, x.get(k), uid)}`;
-                }).join(",")}}`;
-            } finally {
-                let m: Callable | undefined = x.getMethod("delete");
-                if (m) { m.call(interpreter, uid); }
-            }
+            if (visited.has(x)) { throw new Error("Nested object reference"); }
+            visited.add(x);
+            return `{${x.getElements().map((k: BrsString) => {
+                return `"${k.toString()}":${jsonOf(interpreter, x.get(k), visited)}`;
+            }).join(",")}}`;
         }
         if (x instanceof BrsArray) {
-            return `[${x.getElements().map((el: BrsType) => { return jsonOf(interpreter, el, uid); }).join(",")}]`;
+            if (visited.has(x)) { throw new Error("Nested object reference"); }
+            visited.add(x);
+            return `[${x.getElements().map((el: BrsType) => {
+                return jsonOf(interpreter, el, visited);
+            }).join(",")}]`;
         }
         break;
     case ValueKind.Callable:
     case ValueKind.Uninitialized:
         break;
     default:
+        // Exhaustive check as per:
+        // https://basarat.gitbooks.io/typescript/content/docs/types/discriminated-unions.html
         const _: never = x;
         break;
     }
@@ -115,7 +117,7 @@ export const FormatJson = new Callable("FormatJson", {
     ]},
     impl: (interpreter: Interpreter, x: BrsType, _flags: Int32) => {
         try {
-            return new BrsString(jsonOf(interpreter, x, new BrsString(randomBytes(20).toString("hex"))));
+            return new BrsString(jsonOf(interpreter, x));
         } catch (err) {
             // example RBI error:
             // "BRIGHTSCRIPT: ERROR: FormatJSON: Value type not supported: roFunction: pkg:/source/main.brs(14)"

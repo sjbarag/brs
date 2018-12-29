@@ -103,8 +103,8 @@ describe('global JSON functions', () => {
     });
 
     describe('ParseJson', () => {
-        it('rejects empty strings', () => {
-            expectConsoleError(/BRIGHTSCRIPT: ERROR: ParseJSON: /, () => {
+        it('rejects empty strings with special case message', () => {
+            expectConsoleError(/BRIGHTSCRIPT: ERROR: ParseJSON: Data is empty/, () => {
                 expect(ParseJson.call(interpreter, new BrsString(''))).toBe(BrsInvalid.Instance);
             });
         });

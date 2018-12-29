@@ -116,7 +116,11 @@ export const ParseJson = new Callable("ParseJson", {
     ]},
     impl: (_: Interpreter, jsonString: BrsString) => {
         try {
-            return brsValueOf(JSON.parse(jsonString.toString()));
+            let s: string = jsonString.toString().trim();
+
+            if (s === "") { throw new Error("Data is empty"); }
+
+            return brsValueOf(JSON.parse(s));
         } catch (err) {
             // example RBI error:
             // "BRIGHTSCRIPT: ERROR: ParseJSON: Unknown identifier 'x': pkg:/source/main.brs(25)"

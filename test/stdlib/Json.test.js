@@ -39,7 +39,7 @@ describe('global JSON functions', () => {
             });
         });
 
-        it('rejects nested object references', () => {
+        it('rejects nested associative array references', () => {
             let aa = new AssociativeArray([
                 { name: new BrsString('foo'), value: new BrsString('bar') },
                 { name: new BrsString('lorem'), value: Float.fromString('1.234') }
@@ -47,6 +47,17 @@ describe('global JSON functions', () => {
             aa.set(new BrsString('self'), aa);
             expectConsoleError(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/, () => {
                 expect(FormatJson.call(interpreter, aa)).toEqual(new BrsString(''));
+            });
+        });
+
+        it('rejects nested array references', () => {
+            let a = new BrsArray([
+                new BrsString('bar'),
+                Float.fromString('1.234')
+            ]);
+            a.getMethod("push").call(interpreter, a)
+            expectConsoleError(/BRIGHTSCRIPT: ERROR: FormatJSON: Nested object reference/, () => {
+                expect(FormatJson.call(interpreter, a)).toEqual(new BrsString(''));
             });
         });
 

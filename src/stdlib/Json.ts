@@ -53,19 +53,25 @@ function brsValueOf(x: any): BrsType {
     }
 }
 
+type BrsAggregate = AssociativeArray | BrsArray;
+
+function visit(x: BrsAggregate, visited: Set<BrsAggregate>): void {
+    if (visited.has(x)) { throw new Error("Nested object reference"); }
+    visited.add(x);
+}
+
 /**
  * Converts a BrsType value to its representation as a JSON string. If no such
  * representation is possible, throws an Error. Objects with cyclical references
  * are rejected.
  * @param {Interpreter} interpreter An Interpreter.
  * @param {BrsType} x Some BrsType value.
- * @param {Set<AssociativeArray | BrsArray>} visited An optional Set of visited
- *   AssociativeArray or BrsArray values. If not provided, a new Set will be
- *   created.
+ * @param {Set<BrsAggregate>} visited An optional Set of visited of BrsArray or
+ *   AssociativeArray. If not provided, a new Set will be created.
  * @return {string} The JSON string representation of `x`.
  * @throws {Error} If `x` cannot be represented as a JSON string.
  */
-function jsonOf(interpreter: Interpreter, x: BrsType, visited: Set<AssociativeArray | BrsArray> = new Set()): string {
+function jsonOf(interpreter: Interpreter, x: BrsType, visited: Set<BrsAggregate> = new Set()): string {
     switch (x.kind) {
     case ValueKind.Invalid:
         return "null";
@@ -79,15 +85,13 @@ function jsonOf(interpreter: Interpreter, x: BrsType, visited: Set<AssociativeAr
         return x.toString();
     case ValueKind.Object:
         if (x instanceof AssociativeArray) {
-            if (visited.has(x)) { throw new Error("Nested object reference"); }
-            visited.add(x);
+            visit(x, visited);
             return `{${x.getElements().map((k: BrsString) => {
                 return `"${k.toString()}":${jsonOf(interpreter, x.get(k), visited)}`;
             }).join(",")}}`;
         }
         if (x instanceof BrsArray) {
-            if (visited.has(x)) { throw new Error("Nested object reference"); }
-            visited.add(x);
+            visit(x, visited);
             return `[${x.getElements().map((el: BrsType) => {
                 return jsonOf(interpreter, el, visited);
             }).join(",")}]`;

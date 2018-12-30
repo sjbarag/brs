@@ -41,12 +41,10 @@ function brsValueOf(x: any): BrsType {
             return new BrsArray(x.map(brsValueOf));
         }
         return new AssociativeArray(
-            Object.getOwnPropertyNames(x).map((k: string) => {
-                return {
-                    name: new BrsString(k),
-                    value: brsValueOf(x[k])
-                };
-            })
+            Object.getOwnPropertyNames(x).map((k: string) => ({
+                name: new BrsString(k),
+                value: brsValueOf(x[k])
+            }))
         );
     default:
         throw new Error(`brsValueOf not implemented for: ${x} <${t}>`);

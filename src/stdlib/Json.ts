@@ -2,7 +2,6 @@ import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import { BrsArray } from "../brsTypes/components/BrsArray";
 import { Interpreter } from "../interpreter";
 import { Literal } from "../parser/Expression";
-import { randomBytes } from "crypto";
 
 import {
     BrsBoolean,

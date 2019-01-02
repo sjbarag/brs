@@ -14,7 +14,7 @@ describe("interpreter function declarations", () => {
         interpreter = new Interpreter();
     });
 
-    it("creates function callables", () => {
+    it("creates function callables", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
@@ -26,7 +26,7 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(BrsError.found()).toBe(false);
 
         let storedValue = interpreter.environment.get(
@@ -36,7 +36,7 @@ describe("interpreter function declarations", () => {
         expect(storedValue).toBeInstanceOf(Callable);
     });
 
-    it("can call functions after definition", () => {
+    it("can call functions after definition", async () => {
         let emptyBlock = new Stmt.Block([]);
         jest.spyOn(emptyBlock, "accept");
 
@@ -60,13 +60,13 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(BrsError.found()).toBe(false);
 
         expect(emptyBlock.accept).toHaveBeenCalledTimes(1);
     });
 
-    it("returns values", () => {
+    it("returns values", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
@@ -95,7 +95,7 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(BrsError.found()).toBe(false);
 
         let storedResult = interpreter.environment.get(
@@ -104,7 +104,7 @@ describe("interpreter function declarations", () => {
         expect(storedResult).toEqual(new BrsString("hello, world"));
     });
 
-    it("evaluates default arguments", () => {
+    it("evaluates default arguments", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "ident", line: 1 },
@@ -137,7 +137,7 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(BrsError.found()).toBe(false);
 
         let storedResult = interpreter.environment.get(
@@ -150,7 +150,7 @@ describe("interpreter function declarations", () => {
         )).toBe(false);
     });
 
-    it("enforces return value type checking", () => {
+    it("enforces return value type checking", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
@@ -179,11 +179,11 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        expect(() => interpreter.exec(statements)).toThrow("Attempting to return value of type");
+        await expect(interpreter.exec(statements)).rejects.toThrow("Attempting to return value of type");
         expect(BrsError.found()).toBe(true);
     });
 
-    it("evaluates default arguments", () => {
+    it("evaluates default arguments", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "ident", line: 1 },
@@ -216,7 +216,7 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(BrsError.found()).toBe(false);
 
         let storedResult = interpreter.environment.get(
@@ -229,7 +229,7 @@ describe("interpreter function declarations", () => {
         )).toBe(false);
     });
 
-    it("disallows functions named after reserved words", () => {
+    it("disallows functions named after reserved words", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "type", isReserved: true, line: 1 },
@@ -241,10 +241,10 @@ describe("interpreter function declarations", () => {
             ),
         ];
 
-        expect(() => interpreter.exec(statements)).toThrow(/reserved name/);
+        await expect(interpreter.exec(statements)).rejects.toThrow(/reserved name/);
     });
 
-    it("allows functions to override global stdlib functions", () => {
+    it("allows functions to override global stdlib functions", async () => {
         let statements = [
             new Stmt.Function(
                 { kind: Lexeme.Identifier, text: "UCase", isReserved: false, line: 1 },
@@ -256,10 +256,10 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        expect(() => interpreter.exec(statements)).not.toThrow();
+        await expect(interpreter.exec(statements)).resolves.not.toThrow();
     });
 
-    it("automatically calls main()", () => {
+    it("automatically calls main()", async () => {
         let mainBody = new Stmt.Block([]);
         jest.spyOn(mainBody, "accept");
 
@@ -274,7 +274,7 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        expect(() => interpreter.exec(statements)).not.toThrow();
+        await expect(interpreter.exec(statements)).resolves.not.toThrow();
         expect(mainBody.accept).toHaveBeenCalledTimes(1);
     });
 });

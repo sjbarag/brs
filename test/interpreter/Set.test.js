@@ -14,7 +14,7 @@ describe("property setting", () => {
     });
 
     describe("arrays", () => {
-        test("one-dimensional", () => {
+        test("one-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "array", line: 1 },
@@ -40,7 +40,7 @@ describe("property setting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBe(false);
             expect(
@@ -50,7 +50,7 @@ describe("property setting", () => {
             ).toEqual(new BrsString("new index0"));
         });
 
-        test("multi-dimensional", () => {
+        test("multi-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "array", line: 1 },
@@ -95,7 +95,7 @@ describe("property setting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBe(false);
             expect(
@@ -107,7 +107,7 @@ describe("property setting", () => {
     });
 
     describe("associative arrays", () => {
-        test("one-dimensional", () => {
+        test("one-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "aa", line: 1 },
@@ -145,7 +145,7 @@ describe("property setting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBeFalsy();
 
@@ -161,7 +161,7 @@ describe("property setting", () => {
             ).toEqual(new BrsString("added bar"));
         });
 
-        test("multi-dimensional", () => {
+        test("multi-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "aa", line: 1 },
@@ -217,7 +217,7 @@ describe("property setting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBeFalsy();
 

@@ -13,7 +13,7 @@ describe("interpreter boolean algebra", () => {
         interpreter = new Interpreter();
     });
 
-    it("ANDs booleans", () => {
+    it("ANDs booleans", async () => {
         let ast = new Stmt.Expression(
             new Expr.Binary(
                 new Expr.Literal(BrsTypes.BrsBoolean.True),
@@ -22,11 +22,11 @@ describe("interpreter boolean algebra", () => {
             )
         );
 
-        let [result] = interpreter.exec([ast]);
+        let [result] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsTypes.BrsBoolean.False);
     });
 
-    it("ORs booleans", () => {
+    it("ORs booleans", async () => {
         let ast = new Stmt.Expression(
             new Expr.Binary(
                 new Expr.Literal(BrsTypes.BrsBoolean.True),
@@ -35,11 +35,11 @@ describe("interpreter boolean algebra", () => {
             )
         );
 
-        let [result] = interpreter.exec([ast]);
+        let [result] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsTypes.BrsBoolean.True);
     });
 
-    it("doesn't allow mixed-type ANDs", () => {
+    it("doesn't allow mixed-type ANDs", async () => {
         let ast = new Stmt.Expression(
             new Expr.Binary(
                 new Expr.Literal(BrsTypes.BrsBoolean.True),
@@ -48,11 +48,11 @@ describe("interpreter boolean algebra", () => {
             )
         );
 
-        expect(() => interpreter.exec([ast])).toThrow(/Attempting to 'and' boolean/);
+        await expect(interpreter.exec([ast])).rejects.toThrow(/Attempting to 'and' boolean/);
         expect(BrsError.found()).toBe(true);
     });
 
-    it("doesn't allow mixed-type ORs", () => {
+    it("doesn't allow mixed-type ORs", async () => {
         let ast = new Stmt.Expression(
             new Expr.Binary(
                 new Expr.Literal(BrsTypes.BrsBoolean.False),
@@ -61,7 +61,7 @@ describe("interpreter boolean algebra", () => {
             )
         );
 
-        expect(() => interpreter.exec([ast])).toThrow(/Attempting to 'or' boolean/);
+        await expect(interpreter.exec([ast])).rejects.toThrow(/Attempting to 'or' boolean/);
         expect(BrsError.found()).toBe(true);
     });
 });

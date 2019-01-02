@@ -669,7 +669,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         ) {
             // execute the block
             try {
-                this.execute(statement.body);
+                await this.execute(statement.body);
             } catch (reason) {
                 if (reason.kind === Stmt.StopReason.ExitFor) {
                     loopExitReason = reason as BlockEnd;
@@ -681,14 +681,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             }
 
             // then increment the counter
-            this.execute(step);
+            await this.execute(step);
         }
 
         // BrightScript for/to loops execute the body one more time when initial === final
         if (loopExitReason === undefined) {
-            this.execute(statement.body);
+            await this.execute(statement.body);
             // they also increments the counter once more
-            this.execute(step);
+            await this.execute(step);
         }
 
         return BrsInvalid.Instance;

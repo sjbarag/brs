@@ -23,7 +23,7 @@ describe("interpreter for loops", () => {
         jest.restoreAllMocks();
     });
 
-    it("initializes the counter variable", () => {
+    it("initializes the counter variable", async () => {
         const counterSpy = jest.spyOn(initializeCounter, "accept");
 
         const statements = [
@@ -35,11 +35,11 @@ describe("interpreter for loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(counterSpy).toHaveBeenCalledTimes(1);
     });
 
-    it("evaluates final value expression only once", () => {
+    it("evaluates final value expression only once", async () => {
         const finalValue = new Expr.Literal(new Int32(5));
         const finalValueSpy = jest.spyOn(finalValue, "accept");
 
@@ -52,11 +52,11 @@ describe("interpreter for loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(finalValueSpy).toHaveBeenCalledTimes(1);
     });
 
-    it("evaluates step expression only once", () => {
+    it("evaluates step expression only once", async () => {
         const stepValue = new Expr.Literal(new Int32(1));
         const stepValueSpy = jest.spyOn(stepValue, "accept");
 
@@ -69,11 +69,11 @@ describe("interpreter for loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(stepValueSpy).toHaveBeenCalledTimes(1);
     });
 
-    it("executes block one last time when `counter = finalValue`", () => {
+    it("executes block one last time when `counter = finalValue`", async () => {
         const body = new Stmt.Block([]); // no need for anything in it
         const bodySpy = jest.spyOn(body, "accept");
 
@@ -86,12 +86,12 @@ describe("interpreter for loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         // i=0 through i=4, then when i=5 (final value)
         expect(bodySpy).toHaveBeenCalledTimes(6);
     });
 
-    it("leaves counter in-scope after loop", () => {
+    it("leaves counter in-scope after loop", async () => {
         const statements = [
             new Stmt.For(
                 initializeCounter,
@@ -106,12 +106,12 @@ describe("interpreter for loops", () => {
             )
         ];
 
-        const [forLoop, i] = interpreter.exec(statements);
+        const [forLoop, i] = await interpreter.exec(statements);
         // counter must get incremented after last body iteration
         expect(i).toEqual(new Int32(6));
     });
 
-    it("can be exited", () => {
+    it("can be exited", async () => {
         const body = new Stmt.Block([
             new Stmt.ExitFor()
         ]);
@@ -126,7 +126,7 @@ describe("interpreter for loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(bodySpy).toHaveBeenCalledTimes(1);
     });
 });

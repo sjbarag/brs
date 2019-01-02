@@ -12,7 +12,7 @@ export interface Visitor<T> {
     visitExitWhile(statement: ExitWhile): never;
     visitPrint(statement: Print): Promise<BrsType>;
     visitIf(statement: If): Promise<BrsType>;
-    visitBlock(block: Block): BrsType;
+    visitBlock(block: Block): Promise<BrsType>;
     visitFor(statement: For): Promise<BrsType>;
     visitForEach(statement: ForEach): Promise<BrsType>;
     visitWhile(statement: While): Promise<BrsType>;
@@ -44,7 +44,7 @@ export class Assignment implements Statement {
 export class Block implements Statement {
     constructor(readonly statements: ReadonlyArray<Statement>) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitBlock(this);
     }
 }

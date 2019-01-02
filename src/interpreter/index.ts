@@ -475,8 +475,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    visitBlock(block: Stmt.Block): BrsType {
-        block.statements.forEach((statement) => this.execute(statement));
+    async visitBlock(block: Stmt.Block): Promise<BrsType>{
+        for (let statement of block.statements) {
+            await this.execute(statement);
+        }
         return BrsInvalid.Instance;
     }
 
@@ -737,7 +739,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     async visitWhile(statement: Stmt.While) {
         while ((await this.evaluate(statement.condition)).equalTo(BrsBoolean.True).toBoolean()) {
             try {
-                this.execute(statement.body);
+                await this.execute(statement.body);
             } catch (reason) {
                 if (reason.kind && reason.kind === Stmt.StopReason.ExitWhile) {
                     break;

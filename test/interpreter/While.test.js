@@ -36,7 +36,7 @@ describe("interpreter while loops", () => {
         decrementSpy.mockRestore();
     });
 
-    it("loops until 'condition' is false", () => {
+    it("loops until 'condition' is false", async () => {
         const statements = [
             initializeFoo,
             new Stmt.While(
@@ -51,12 +51,12 @@ describe("interpreter while loops", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        let results = await interpreter.exec(statements);
         expect(results.map(r => r.reason)).toEqual([Stmt.StopReason.End, Stmt.StopReason.End]);
         expect(decrementSpy).toHaveBeenCalledTimes(5);
     });
 
-    it("evaluates 'condition' before every loop", () => {
+    it("evaluates 'condition' before every loop", async () => {
         const greaterThanZero = new Expr.Binary(
             new Expr.Variable(identifier("foo")),
             { kind: Lexeme.Greater, text: ">" },
@@ -74,12 +74,12 @@ describe("interpreter while loops", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        await interpreter.exec(statements);
         // body executes five times, but the condition is evaluated once more to know it should exit
         expect(greaterThanZero.accept).toHaveBeenCalledTimes(6);
     });
 
-    it("exits early when it encounters 'exit while'", () => {
+    it("exits early when it encounters 'exit while'", async () => {
         const statements = [
             initializeFoo,
             new Stmt.While(
@@ -95,9 +95,8 @@ describe("interpreter while loops", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        let results = await interpreter.exec(statements);
         expect(results.map(r => r.reason)).toEqual([Stmt.StopReason.End, Stmt.StopReason.End]);
         expect(decrementSpy).toHaveBeenCalledTimes(1);
     });
-
 });

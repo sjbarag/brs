@@ -24,7 +24,7 @@ describe("interpreter for-each loops", () => {
         jest.restoreAllMocks();
     });
 
-    it("iterates across all elements of an array", () => {
+    it("iterates across all elements of an array", async () => {
         const emptyBlock = new Stmt.Block([]);
         const receivedElements = [];
         const emptyBlockSpy = jest.spyOn(emptyBlock, "accept").mockImplementation(_interpreter =>
@@ -49,14 +49,14 @@ describe("interpreter for-each loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
 
         expect(BrsError.found()).toBe(false);
         expect(emptyBlockSpy).toHaveBeenCalledTimes(3);
         expect(receivedElements).toEqual(arrayMembers);
     });
 
-    it("doesn't exceute the body for empty arrays", () => {
+    it("doesn't exceute the body for empty arrays", async () => {
         const emptyBlock = new Stmt.Block([]);
         const emptyBlockSpy = jest.spyOn(emptyBlock, "accept");
 
@@ -72,13 +72,13 @@ describe("interpreter for-each loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
 
         expect(BrsError.found()).toBe(false);
         expect(emptyBlockSpy).not.toHaveBeenCalled();
     });
 
-    it("leaves the loop variable in-scope after loop", () => {
+    it("leaves the loop variable in-scope after loop", async () => {
         const emptyBlock = new Stmt.Block([]);
 
         const statements = [
@@ -95,7 +95,7 @@ describe("interpreter for-each loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
 
         expect(BrsError.found()).toBe(false);
         expect(
@@ -105,7 +105,7 @@ describe("interpreter for-each loops", () => {
         ).toEqual(arrayMembers[arrayMembers.length - 1]);
     });
 
-    it("exits early when it encounters 'exit for'", () => {
+    it("exits early when it encounters 'exit for'", async () => {
         const block = new Stmt.Block([
             new Stmt.ExitFor()
         ]);
@@ -125,7 +125,7 @@ describe("interpreter for-each loops", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
 
         expect(BrsError.found()).toBe(false);
         expect(blockSpy).toHaveBeenCalledTimes(1);

@@ -48,7 +48,7 @@ describe("interpreter if statements", () => {
         interpreter = new Interpreter();
     });
 
-    it("executes 'then' statements if 'condition' is 'true'", () => {
+    it("executes 'then' statements if 'condition' is 'true'", async () => {
         assignTo.bar.accept = jest.fn();
         let statements = [
             new Stmt.If(
@@ -64,11 +64,11 @@ describe("interpreter if statements", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(assignTo.bar.accept).toBeCalled();
     });
 
-    it("skips 'then' statements if 'condition' is 'false'", () => {
+    it("skips 'then' statements if 'condition' is 'false'", async () => {
         assignTo.foo.accept = jest.fn();
         let statements = [
             new Stmt.If(
@@ -84,11 +84,11 @@ describe("interpreter if statements", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(assignTo.foo.accept).not.toBeCalled();
     });
 
-    it("only executes one valid 'else if' that evaluates to 'true'", () => {
+    it("only executes one valid 'else if' that evaluates to 'true'", async () => {
         let shouldExecute = jest.fn();
         let shouldNotExecute = jest.fn();
 
@@ -126,12 +126,12 @@ describe("interpreter if statements", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(shouldNotExecute).not.toBeCalled();
         expect(shouldExecute).toHaveBeenCalledTimes(2);
     })
 
-    it("executes 'else' statements if nothing else matches", () => {
+    it("executes 'else' statements if nothing else matches", async () => {
         let shouldExecute = jest.fn();
         let shouldNotExecute = jest.fn();
 
@@ -167,7 +167,7 @@ describe("interpreter if statements", () => {
             )
         ];
 
-        let results = interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(shouldNotExecute).not.toBeCalled();
         expect(shouldExecute).toBeCalled();
     });

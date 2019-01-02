@@ -12,6 +12,8 @@ const {
     Uninitialized
 } = require("../../lib/brsTypes");
 
+const { allArgs } = require("../e2e/E2ETests");
+
 function withEnv(k, v, fn) {
     let save = process.env[k];
     try {
@@ -23,14 +25,21 @@ function withEnv(k, v, fn) {
 }
 
 function expectConsoleError(expected, fn) {
-    jest.spyOn(console, 'error').mockImplementationOnce((s) => {
-        expect(s).toMatch(expected);
-    })
-    return withEnv('NODE_ENV', 'force test!', fn);
+    let consoleError = jest.spyOn(console, 'error').mockImplementation(() => { /* no op */ });
+    return withEnv('NODE_ENV', 'force test!', () => {
+        fn();
+        expect(allArgs(consoleError)).toEqual([
+            expect.stringMatching(expected)
+        ]);
+    });
 }
 
 describe('global JSON functions', () => {
     let interpreter = new Interpreter();
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     describe('FormatJson', () => {
         it('rejects non-convertible types', () => {

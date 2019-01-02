@@ -14,7 +14,7 @@ describe("property getting", () => {
     });
 
     describe("arrays", () => {
-        test("one-dimensional", () => {
+        test("one-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "array", line: 1 },
@@ -34,7 +34,7 @@ describe("property getting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBeFalsy();
             expect(
@@ -44,7 +44,7 @@ describe("property getting", () => {
             ).toEqual(new BrsString("index1"));
         });
 
-        test("multi-dimensional", () => {
+        test("multi-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "array", line: 1 },
@@ -80,7 +80,7 @@ describe("property getting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBeFalsy();
             expect(
@@ -92,7 +92,7 @@ describe("property getting", () => {
     });
 
     describe("associative arrays", () => {
-        test("one-dimensional", () => {
+        test("one-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "aa", line: 1 },
@@ -116,7 +116,7 @@ describe("property getting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBeFalsy();
             expect(
@@ -126,7 +126,7 @@ describe("property getting", () => {
             ).toEqual(new BrsString("foo's value"));
         });
 
-        test("multi-dimensional", () => {
+        test("multi-dimensional", async () => {
             let ast = [
                 new Stmt.Assignment(
                     { kind: Lexeme.Identifier, text: "aa", line: 1 },
@@ -154,7 +154,7 @@ describe("property getting", () => {
                 )
             ];
 
-            interpreter.exec(ast);
+            await interpreter.exec(ast);
 
             expect(BrsError.found()).toBeFalsy();
             expect(

@@ -10,7 +10,7 @@ export interface Visitor<T> {
     visitExpression(statement: Expression): Promise<BrsType>;
     visitExitFor(statement: ExitFor): never;
     visitExitWhile(statement: ExitWhile): never;
-    visitPrint(statement: Print): BrsType;
+    visitPrint(statement: Print): Promise<BrsType>;
     visitIf(statement: If): Promise<BrsType>;
     visitBlock(block: Block): BrsType;
     visitFor(statement: For): Promise<BrsType>;
@@ -123,7 +123,7 @@ export class Print implements Statement {
         readonly expressions: (Expr.Expression | PrintSeparator)[]
     ) {}
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitPrint(this);
     }
 }

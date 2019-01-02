@@ -26,7 +26,7 @@ import * as StdLib from "../stdlib";
 import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
-import { BlockEnd, StopReason } from "../parser/Statement";
+import { BlockEnd, StopReason, PrintSeparator } from "../parser/Statement";
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import MemoryFileSystem from "memory-fs";
 
@@ -153,15 +153,26 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return await this.evaluate(statement.expression);
     }
 
-    visitPrint(statement: Stmt.Print): BrsType {
+    async visitPrint(statement: Stmt.Print): Promise<BrsType> {
         // the `tab` function is only in-scope while executing print statements
         this.environment.define(Scope.Function, "Tab", StdLib.Tab);
 
-        // TODO: serialize these prints!  They're currently parallelized
-        for (let expression of statement.expressions) {
+        let printables: (BrsType | PrintSeparator)[] = [];
+
+        for (let printable of statement.expressions) {
+            if (printable === Stmt.PrintSeparator.Tab || printable === Stmt.PrintSeparator.Space) {
+                printables.push(printable);
+            } else {
+                try {
+                    printables.push(await this.evaluate(printable));
+                } catch (err) {
+                    console.error(err);
+                    throw err;
+                }
+            }
         }
 
-        statement.expressions.forEach( async (printable, index) => {
+        printables.forEach((printable, index) => {
             switch (printable) {
                 case Stmt.PrintSeparator.Tab:
                     this.stdout.write(
@@ -178,9 +189,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     this.stdout.write(" ");
                     break;
                 default:
-                    this.stdout.write(
-                        (await this.evaluate(printable)).toString()
-                    );
+                    this.stdout.write(printable.toString());
                     break;
             }
         });

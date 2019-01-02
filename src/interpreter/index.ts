@@ -656,7 +656,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     async visitFor(statement: Stmt.For) {
         // BrightScript for/to loops evaluate the counter initial value, final value, and increment
         // values *only once*, at the top of the for/to loop.
-        this.execute(statement.counterDeclaration);
+        await this.execute(statement.counterDeclaration);
         const finalValue = await this.evaluate(statement.finalValue);
         const increment = await this.evaluate(statement.increment);
 
@@ -729,8 +729,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     throw reason;
                 }
             }
-
-            continue;
         }
 
         return BrsInvalid.Instance;

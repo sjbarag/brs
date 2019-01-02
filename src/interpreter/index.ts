@@ -753,18 +753,18 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     async visitIf(statement: Stmt.If) {
         if ((await this.evaluate(statement.condition)).equalTo(BrsBoolean.True).toBoolean()) {
-            this.execute(statement.thenBranch);
+            await this.execute(statement.thenBranch);
             return BrsInvalid.Instance;
         } else {
             for (const elseIf of statement.elseIfs || []) {
                 if ((await this.evaluate(elseIf.condition)).equalTo(BrsBoolean.True).toBoolean()) {
-                    this.execute(elseIf.thenBranch);
+                    await this.execute(elseIf.thenBranch);
                     return BrsInvalid.Instance;
                 }
             }
 
             if (statement.elseBranch) {
-                this.execute(statement.elseBranch);
+                await this.execute(statement.elseBranch);
             }
 
             return BrsInvalid.Instance;

@@ -14,23 +14,23 @@ describe("interpreter variables", () => {
         interpreter = new Interpreter();
     });
 
-    it("returns 'invalid' for assignments", () => {
+    it("returns 'invalid' for assignments", async () => {
         let ast = new Stmt.Assignment(
             identifier("foo"),
             new Expr.Literal(new Int32(5))
         );
 
-        let [result] = interpreter.exec([ast]);
+        let [result] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
     });
 
-    it("stores assigned values in variable scope", () => {
+    it("stores assigned values in variable scope", async () => {
         let six = new Int32(6)
         let ast = new Stmt.Assignment(
             identifier("bar"),
             new Expr.Literal(six)
         );
-        interpreter.exec([ast]);
+        await interpreter.exec([ast]);
         expect(
             interpreter.environment.get(
                 identifier("bar")
@@ -38,7 +38,7 @@ describe("interpreter variables", () => {
         ).toBe(six);
     });
 
-    it("retrieves variables from variable scope", () => {
+    it("retrieves variables from variable scope", async () => {
         let seven = new Int32(7);
         let assign = new Stmt.Assignment(
             identifier("baz"),
@@ -49,11 +49,11 @@ describe("interpreter variables", () => {
                 identifier("baz")
             )
         );
-        let results = interpreter.exec([ assign, retrieve ]);
+        let results = await interpreter.exec([ assign, retrieve ]);
         expect(results).toEqual([BrsInvalid.Instance, seven]);
     });
 
-    it("disallows variables named after reserved words", () => {
+    it("disallows variables named after reserved words", async () => {
         let ast = [
             new Stmt.Assignment(
                 { kind: Lexeme.Identifier, text: "type", isReserved: true, line: 1 },
@@ -61,6 +61,6 @@ describe("interpreter variables", () => {
             )
         ];
 
-        expect(() => interpreter.exec(ast)).toThrow(/reserved name/);
+        await expect(interpreter.exec(ast)).rejects.toThrow(/reserved name/);
     });
 });

@@ -157,7 +157,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // the `tab` function is only in-scope while executing print statements
         this.environment.define(Scope.Function, "Tab", StdLib.Tab);
 
-        statement.expressions.forEach( (printable, index) => {
+        // TODO: serialize these prints!  They're currently parallelized
+        for (let expression of statement.expressions) {
+        }
+
+        statement.expressions.forEach( async (printable, index) => {
             switch (printable) {
                 case Stmt.PrintSeparator.Tab:
                     this.stdout.write(
@@ -175,7 +179,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     break;
                 default:
                     this.stdout.write(
-                        this.evaluate(printable).toString()
+                        (await this.evaluate(printable)).toString()
                     );
                     break;
             }

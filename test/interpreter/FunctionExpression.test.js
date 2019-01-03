@@ -14,7 +14,7 @@ describe("interpreter function expressions", () => {
         interpreter = new Interpreter();
     });
 
-    it("creates callable functions", () => {
+    it("creates callable functions", async () => {
         let emptyBlock = new Stmt.Block([]);
         jest.spyOn(emptyBlock, "accept");
 
@@ -32,7 +32,7 @@ describe("interpreter function expressions", () => {
             )
         ];
 
-        interpreter.exec(statements);
+        await interpreter.exec(statements);
         expect(BrsError.found()).toBe(false);
 
         expect(emptyBlock.accept).toHaveBeenCalledTimes(1);

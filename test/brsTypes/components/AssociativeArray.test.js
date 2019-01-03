@@ -94,20 +94,20 @@ describe("AssociativeArray", () => {
         });
 
         describe("clear", () => {
-            it("empties the associative array", () => {
+            it("empties the associative array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("foo"), value: new Int32(-99) }
                 ]);
 
                 let clear = aa.getMethod("clear");
                 expect(clear).toBeTruthy();
-                expect(clear.call(interpreter)).toBe(BrsInvalid.Instance);
+                await expect(clear.call(interpreter)).resolves.toBe(BrsInvalid.Instance);
                 expect(aa.elements).toEqual(new Map());
             });
         });
 
         describe("delete", () => {
-            it("deletes a given item in the associative array", () => {
+            it("deletes a given item in the associative array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("foo"), value: new Int32(-99) },
                     { name: new BrsString("bar"), value: new Int32(800) }
@@ -115,32 +115,40 @@ describe("AssociativeArray", () => {
 
                 let deleteCall = aa.getMethod("delete");
                 expect(deleteCall).toBeTruthy();
-                expect(deleteCall.call(interpreter, new BrsString("foo"))).toBe(BrsBoolean.True);
-                expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.False);
+                await expect(
+                    deleteCall.call(interpreter, new BrsString("foo"))
+                ).resolves.toBe(BrsBoolean.True);
+                await expect(
+                    deleteCall.call(interpreter, new BrsString("baz"))
+                ).resolves.toBe(BrsBoolean.False);
                 expect(aa.get(new BrsString("foo"))).toEqual(BrsInvalid.Instance);
             });
         });
 
         describe("addreplace", () => {
-            it("adds new elements to the associative array", () => {
+            it("adds new elements to the associative array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("letter1"), value: new BrsString("a") }
                 ]);
 
                 let addreplace = aa.getMethod("addreplace");
                 expect(addreplace).toBeTruthy();
-                expect(addreplace.call(interpreter, new BrsString("letter2"), new BrsString("b"))).toBe(BrsInvalid.Instance);
+                await expect(
+                    addreplace.call(interpreter, new BrsString("letter2"), new BrsString("b"))
+                ).resolves.toBe(BrsInvalid.Instance);
                 expect(aa.get(new BrsString("letter2"))).toEqual(new BrsString("b"));
             });
 
-            it("replaces the value of known elements in the associative array", () => {
+            it("replaces the value of known elements in the associative array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("letter1"), value: new BrsString("a") }
                 ]);
 
                 let addreplace = aa.getMethod("addreplace");
                 expect(addreplace).toBeTruthy();
-                expect(addreplace.call(interpreter, new BrsString("letter1"), new BrsString("c"))).toBe(BrsInvalid.Instance);
+                await expect(
+                    addreplace.call(interpreter, new BrsString("letter1"), new BrsString("c"))
+                ).resolves.toBe(BrsInvalid.Instance);
                 expect(aa.get(new BrsString("letter1"))).not.toEqual(new BrsString("a"));
                 expect(aa.get(new BrsString("letter1"))).toEqual(new BrsString("c"));
             });
@@ -148,7 +156,7 @@ describe("AssociativeArray", () => {
         });
 
         describe("count", () => {
-            it("returns the number of items in the associative array", () => {
+            it("returns the number of items in the associative array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("letter1"), value: new BrsString("a") },
                     { name: new BrsString("letter2"), value: new BrsString("b") }
@@ -157,13 +165,12 @@ describe("AssociativeArray", () => {
                 let count = aa.getMethod("count");
                 expect(count).toBeTruthy();
 
-                let result = count.call(interpreter);
-                expect(result).toEqual(new Int32(2));
+                await expect(count.call(interpreter)).resolves.toEqual(new Int32(2));
             });
         })
 
         describe("doesexist", () => {
-            it("returns true when an item exists in the array", () => {
+            it("returns true when an item exists in the array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("letter1"), value: new BrsString("a") },
                     { name: new BrsString("letter2"), value: new BrsString("b") }
@@ -172,26 +179,26 @@ describe("AssociativeArray", () => {
                 let doesexist = aa.getMethod("doesexist");
                 expect(doesexist).toBeTruthy();
 
-                let result = doesexist.call(interpreter, new BrsString("letter2"));
-                expect(result.kind).toBe(ValueKind.Boolean);
-                expect(result).toBe(BrsBoolean.True);
+                await expect(
+                    doesexist.call(interpreter, new BrsString("letter2"))
+                ).resolves.toBe(BrsBoolean.True);
             });
 
-            it("returns false when an item doesn't exist in the array", () => {
+            it("returns false when an item doesn't exist in the array", async () => {
                 let aa = new AssociativeArray([
                     { name: new BrsString("letter1"), value: new BrsString("a") },
                     { name: new BrsString("letter2"), value: new BrsString("b") }
                 ]);
 
                 let doesexist = aa.getMethod("doesexist");
-                let result = doesexist.call(interpreter, new BrsString("letter3"));
-                expect(result.kind).toBe(ValueKind.Boolean);
-                expect(result).toBe(BrsBoolean.False);
+                await expect(
+                    doesexist.call(interpreter, new BrsString("letter3"))
+                ).resolves.toBe(BrsBoolean.False);
             });
         })
 
         describe("append", () => {
-            it("appends a new associative array to an existing one", () => {
+            it("appends a new associative array to an existing one", async () => {
                 let aa1 = new AssociativeArray([
                     { name: new BrsString("letter1"), value: new BrsString("a") },
                 ]);
@@ -216,14 +223,13 @@ describe("AssociativeArray", () => {
                     { name: new BrsString("num"), value: new Int32(555) }
                 ]);
 
-                let result = append.call(interpreter, aa2);
+                await expect(append.call(interpreter, aa2)).resolves.toBe(BrsInvalid.Instance);
                 expect(aa1.toString()).toEqual(resultAA.toString());
-                expect(result).toBe(BrsInvalid.Instance);
             });
         });
 
         describe("keys", () => {
-            it("returns an array of keys from the associative array in lexicographical order", () => {
+            it("returns an array of keys from the associative array in lexicographical order", async () => {
                 let letter1 = new BrsString("letter1");
                 let letter2 = new BrsString("letter2");
                 let cletter = new BrsString("cletter");
@@ -237,23 +243,23 @@ describe("AssociativeArray", () => {
                 let keys = aa.getMethod("keys");
                 expect(keys).toBeTruthy();
 
-                let result = keys.call(interpreter);
+                let result = await keys.call(interpreter);
                 expect(result.elements).toEqual(new BrsArray([ cletter, letter1, letter2 ]).elements);
             });
 
-            it("returns an empty array from an empty associative array", () => {
+            it("returns an empty array from an empty associative array", async () => {
                 let aa = new AssociativeArray([]);
 
                 let keys = aa.getMethod("keys");
                 expect(keys).toBeTruthy();
 
-                let result = keys.call(interpreter);
+                let result = await keys.call(interpreter);
                 expect(result.elements).toEqual(new BrsArray([]).elements);
             });
         });
 
         describe("items", () => {
-            it("returns an array of values from the associative array in lexicographical order", () => {
+            it("returns an array of values from the associative array in lexicographical order", async () => {
                 let cletter = new BrsString("c");
                 let letter1 = new BrsString("a");
                 let letter2 = new BrsString("b");
@@ -266,17 +272,17 @@ describe("AssociativeArray", () => {
 
                 let items = aa.getMethod("items");
                 expect(items).toBeTruthy();
-                let result = items.call(interpreter);
+                let result = await items.call(interpreter);
                 expect(result.elements).toEqual(new BrsArray([ letter1, letter2, cletter ]).elements);
             });
 
-            it("returns an empty array from an empty associative array", () => {
+            it("returns an empty array from an empty associative array", async () => {
                 let aa = new AssociativeArray([]);
 
                 let items = aa.getMethod("items");
                 expect(items).toBeTruthy();
 
-                let result = items.call(interpreter);
+                let result = await items.call(interpreter);
                 expect(result.elements).toEqual(new BrsArray([]).elements);
             });
         });

@@ -1,9 +1,8 @@
 const { Preprocessor } = require("brs");
 const { getManifest, getBsConst } = Preprocessor;
 
-jest.mock('fs', () => ({
-    exists(f, cb) { console.log("derp"); cb(true); }
-}))
+jest.mock("fs");
+let fs = require("fs");
 
 describe("manifest support", () => {
     describe("manifest parser", () => {
@@ -23,9 +22,10 @@ describe("manifest support", () => {
         });
 
         it.only("rejects key-value pairs with no '='", async () => {
-            // fs.readFile.mockImplementation(
-            //     (filename, encoding, cb) => cb(/* no error */ null, "no_equal")
-            // );
+            fs.exists.mockImplementation((filename, cb) => { console.log("it exists!"); cb(true) });
+            fs.readFile.mockImplementation(
+                (filename, encoding, cb) => cb(/* no error */ null, "no_equal")
+            );
 
             await expect(
                 getManifest("/has/key/but/no/equal")

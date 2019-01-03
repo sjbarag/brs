@@ -20,33 +20,33 @@ describe("interperter print statements", () => {
         stderr = outputStreams.stderr;
     });
 
-    it("prints single values on their own line", () => {
+    it("prints single values on their own line", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo"))
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo\n"
         );
     });
 
-    it("prints multiple values with no separators", () => {
+    it("prints multiple values with no separators", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo")),
             new Expr.Literal(new BrsString("bar")),
             new Expr.Literal(new BrsString("baz")),
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foobarbaz\n"
         );
     });
 
-    it("prints multiple values with space separators", () => {
+    it("prints multiple values with space separators", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo")),
             Stmt.PrintSeparator.Space,
@@ -56,14 +56,14 @@ describe("interperter print statements", () => {
 
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo bar baz\n"
         );
     });
 
-    it("aligns values to 16-charcater tab stops", () => {
+    it("aligns values to 16-character tab stops", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo")),
             Stmt.PrintSeparator.Tab,
@@ -72,7 +72,7 @@ describe("interperter print statements", () => {
             new Expr.Literal(new BrsString("baz")),
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
         //   0   0   0   1   1   2   2   2   3
@@ -81,7 +81,7 @@ describe("interperter print statements", () => {
         );
     });
 
-    it("skips cursor-return with a trailing semicolon", () => {
+    it("skips cursor-return with a trailing semicolon", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo")),
             Stmt.PrintSeparator.Space,
@@ -91,14 +91,14 @@ describe("interperter print statements", () => {
             Stmt.PrintSeparator.Space,
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo bar baz"
         );
     });
 
-    it("inserts the current position via `pos`", () => {
+    it("inserts the current position via `pos`", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo")),
             Stmt.PrintSeparator.Space,
@@ -109,14 +109,14 @@ describe("interperter print statements", () => {
             )
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo 4\n"
         );
     });
 
-    it("indents to an arbitrary position via `tab`", () => {
+    it("indents to an arbitrary position via `tab`", async () => {
         const ast = new Stmt.Print([
             new Expr.Literal(new BrsString("foo")),
             new Expr.Call(
@@ -127,19 +127,19 @@ describe("interperter print statements", () => {
             new Expr.Literal(new BrsString("bar"))
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "foo   bar\n"
         );
     });
 
-    it("prints uninitialized values with placeholder text", () => {
+    it("prints uninitialized values with placeholder text", async () => {
         const ast = new Stmt.Print([
             new Expr.Variable({ kind: Lexeme.Identifier, text: "doesNotExist", line: 1 })
         ]);
 
-        const [ result ] = interpreter.exec([ast]);
+        const [ result ] = await interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
         expect(allArgs(stdout.write).join("")).toEqual(
             "<UNINITIALIZED>\n"

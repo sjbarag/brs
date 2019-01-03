@@ -157,22 +157,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // the `tab` function is only in-scope while executing print statements
         this.environment.define(Scope.Function, "Tab", StdLib.Tab);
 
-        let printables: (BrsType | PrintSeparator)[] = [];
+        // Array.prototype.forEach would normally be the best choice, but it'd create another async
+        // context the expressions in a print statement must be executed *in order* and we need the
+        // index of each element as well.  The easiest option is a for loop with an integer.
+        for (let index = 0; index < statement.expressions.length; index++) {
+            let printable = statement.expressions[index];
 
-        for (let printable of statement.expressions) {
-            if (printable === Stmt.PrintSeparator.Tab || printable === Stmt.PrintSeparator.Space) {
-                printables.push(printable);
-            } else {
-                try {
-                    printables.push(await this.evaluate(printable));
-                } catch (err) {
-                    console.error(err);
-                    throw err;
-                }
-            }
-        }
-
-        printables.forEach((printable, index) => {
             switch (printable) {
                 case Stmt.PrintSeparator.Tab:
                     this.stdout.write(
@@ -189,10 +179,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     this.stdout.write(" ");
                     break;
                 default:
-                    this.stdout.write(printable.toString());
+                    this.stdout.write(
+                        (await this.evaluate(printable)).toString()
+                    );
                     break;
             }
-        });
+        }
 
         if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Space) {
             this.stdout.write("\n");

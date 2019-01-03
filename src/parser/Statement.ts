@@ -36,7 +36,7 @@ export interface Statement {
 export class Assignment implements Statement {
     constructor(readonly name: Identifier, readonly value: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitAssignment(this);
     }
 }
@@ -44,7 +44,7 @@ export class Assignment implements Statement {
 export class Block implements Statement {
     constructor(readonly statements: ReadonlyArray<Statement>) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitBlock(this);
     }
 }
@@ -52,7 +52,7 @@ export class Block implements Statement {
 export class Expression implements Statement {
     constructor(readonly expression: Expr.Expression) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitExpression(this);
     }
 }
@@ -94,7 +94,7 @@ export class If implements Statement {
         readonly elseBranch?: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitIf(this);
     }
 }
@@ -123,7 +123,7 @@ export class Print implements Statement {
         readonly expressions: (Expr.Expression | PrintSeparator)[]
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitPrint(this);
     }
 }
@@ -134,7 +134,7 @@ export class Return implements Statement {
         readonly value?: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitReturn(this);
     }
 }
@@ -147,7 +147,7 @@ export class For implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitFor(this);
     }
 }
@@ -159,7 +159,7 @@ export class ForEach implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitForEach(this);
     }
 }
@@ -170,7 +170,7 @@ export class While implements Statement {
         readonly body: Block
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitWhile(this);
     }
 }
@@ -182,7 +182,7 @@ export class DottedSet implements Statement {
        readonly value: Expr.Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitDottedSet(this);
     }
 }
@@ -195,7 +195,7 @@ export class IndexedSet implements Statement {
        readonly closingSquare: Token
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<BrsType> {
+    async accept<R>(visitor: Visitor<R>): Promise<BrsType> {
         return visitor.visitIndexedSet(this);
     }
 }

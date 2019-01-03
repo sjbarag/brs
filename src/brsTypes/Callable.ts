@@ -99,7 +99,7 @@ export class Callable implements Brs.BrsValue {
      *
      * @returns the return value of the function, or `invalid` if nothing is explicitly returned.
      */
-    call(interpreter: Interpreter, ...args: Brs.BrsType[]) {
+    async call(interpreter: Interpreter, ...args: Brs.BrsType[]) {
         let satisfiedSignature = this.getFirstSatisfiedSignature(args);
         if (satisfiedSignature == null) {
             throw new Error(
@@ -126,7 +126,7 @@ export class Callable implements Brs.BrsValue {
             );
 
             // then return whatever the selected implementation would return
-            return impl(subInterpreter, ...mutableArgs);
+            return await impl(subInterpreter, ...mutableArgs);
         });
     }
 

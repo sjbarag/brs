@@ -42,7 +42,7 @@ export class Binary implements Expression {
     ) { }
 
 
-    accept <R> (visitor: Visitor<R>): Promise<R> {
+    async accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitBinary(this);
     }
 }
@@ -79,7 +79,7 @@ export class DottedGet implements Expression {
         readonly name: Identifier
     ) {}
 
-    accept <R> (visitor: Visitor<R>): Promise<R> {
+    async accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitDottedGet(this);
     }
 }
@@ -91,7 +91,7 @@ export class IndexedGet implements Expression {
         readonly closingSquare: Token,
     ) {}
 
-    accept <R> (visitor: Visitor<R>): Promise<R> {
+    async accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitIndexedGet(this);
     }
 }
@@ -102,7 +102,7 @@ export class Grouping implements Expression {
         readonly expression: Expression
     ) {}
 
-    accept <R> (visitor: Visitor<R>): Promise<R> {
+    async accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitGrouping(this);
     }
 }
@@ -118,7 +118,7 @@ export class Literal implements Expression {
 export class ArrayLiteral implements Expression {
     constructor(readonly elements: Expression[]) {}
 
-    accept <R> (visitor: Visitor<R>): Promise<R> {
+    async accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitArrayLiteral(this);
     }
 }
@@ -134,7 +134,7 @@ export interface AAMember {
 export class AALiteral implements Expression {
     constructor(readonly elements: AAMember[]) {}
 
-    accept <R> (visitor: Visitor<R>): Promise<R> {
+    async accept <R> (visitor: Visitor<R>): Promise<R> {
         return visitor.visitAALiteral(this);
     }
 }
@@ -165,7 +165,7 @@ export class Unary implements Expression {
         readonly right: Expression
     ) {}
 
-    accept<R>(visitor: Visitor<R>): Promise<R> {
+    async accept<R>(visitor: Visitor<R>): Promise<R> {
         return visitor.visitUnary(this);
     }
 }

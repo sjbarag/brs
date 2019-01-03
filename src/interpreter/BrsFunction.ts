@@ -22,9 +22,9 @@ export function toCallable(func: Expr.Function, name: string = "[Function]") {
                 args: func.parameters,
                 returns: func.returns
             },
-            impl: (interpreter: Interpreter, ...args: BrsType[]) => {
+            impl: async (interpreter: Interpreter, ...args: BrsType[]) => {
                 // just return whatever BrightScript returned
-                return func.body.accept(interpreter);
+                return await func.body.accept(interpreter);
             }
         }
     );

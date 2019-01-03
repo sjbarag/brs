@@ -522,9 +522,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 }
 
                 return await this.inSubEnv(
-                    (subInterpreter) => {
+                    async (subInterpreter) => {
                         subInterpreter.environment.setM(mPointer);
-                        return callee.call(this, ...args);
+                        return await callee.call(this, ...args);
                     }
                 );
             } catch (reason) {

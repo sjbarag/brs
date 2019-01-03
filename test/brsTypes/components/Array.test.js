@@ -92,7 +92,7 @@ describe("Array", () => {
         });
 
         describe("peek", () => {
-            it("returns the value at the highest index", () => {
+            it("returns the value at the highest index", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -101,20 +101,20 @@ describe("Array", () => {
 
                 let peek = arr.getMethod("peek");
                 expect(peek).toBeTruthy();
-                expect(peek.call(interpreter)).toBe(c);
+                await expect(peek.call(interpreter)).resolves.toBe(c);
             });
 
-            it("returns `invalid` when empty", () => {
+            it("returns `invalid` when empty", async () => {
                 let arr = new BrsArray([]);
 
                 let peek = arr.getMethod("peek");
                 expect(peek).toBeTruthy();
-                expect(peek.call(interpreter)).toBe(BrsInvalid.Instance);
+                await expect(peek.call(interpreter)).resolves.toBe(BrsInvalid.Instance);
             });
         });
 
         describe("pop", () => {
-            it("returns and removes the value at the highest index", () => {
+            it("returns and removes the value at the highest index", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -123,24 +123,24 @@ describe("Array", () => {
 
                 let pop = arr.getMethod("pop");
                 expect(pop).toBeTruthy();
-                expect(pop.call(interpreter)).toBe(c);
+                await expect(pop.call(interpreter)).resolves.toBe(c);
                 expect(arr.elements).toEqual([ a, b ]);
             });
 
-            it("returns `invalid` and doesn't modify when empty", () => {
+            it("returns `invalid` and doesn't modify when empty", async () => {
                 let arr = new BrsArray([]);
 
                 let pop = arr.getMethod("pop");
                 expect(pop).toBeTruthy();
 
                 let before = arr.getElements();
-                expect(pop.call(interpreter)).toBe(BrsInvalid.Instance);
+                await expect(pop.call(interpreter)).resolves.toBe(BrsInvalid.Instance);
                 expect(arr.getElements()).toEqual(before);
             });
         });
 
         describe("push", () => {
-            it("appends a value to the end of the array", () => {
+            it("appends a value to the end of the array", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -149,14 +149,14 @@ describe("Array", () => {
 
                 let push = arr.getMethod("push");
                 expect(push).toBeTruthy();
-                expect(push.call(interpreter, c)).toBe(BrsInvalid.Instance);
+                await expect(push.call(interpreter, c)).resolves.toBe(BrsInvalid.Instance);
                 expect(arr.elements).toEqual([ a, b, c ]);
             });
         });
 
 
         describe("shift", () => {
-            it("returns and removes the value at the lowest index", () => {
+            it("returns and removes the value at the lowest index", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -165,24 +165,24 @@ describe("Array", () => {
 
                 let shift = arr.getMethod("shift");
                 expect(shift).toBeTruthy();
-                expect(shift.call(interpreter)).toBe(a);
+                await expect(shift.call(interpreter)).resolves.toBe(a);
                 expect(arr.elements).toEqual([ b, c ]);
             });
 
-            it("returns `invalid` and doesn't modify when empty", () => {
+            it("returns `invalid` and doesn't modify when empty", async () => {
                 let arr = new BrsArray([]);
 
                 let shift = arr.getMethod("shift");
                 expect(shift).toBeTruthy();
 
                 let before = arr.getElements();
-                expect(shift.call(interpreter)).toBe(BrsInvalid.Instance);
+                await expect(shift.call(interpreter)).resolves.toBe(BrsInvalid.Instance);
                 expect(arr.getElements()).toEqual(before);
             });
         });
 
         describe("unshift", () => {
-            it("inserts a value at the beginning of the array", () => {
+            it("inserts a value at the beginning of the array", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -191,13 +191,13 @@ describe("Array", () => {
 
                 let unshift = arr.getMethod("unshift");
                 expect(unshift).toBeTruthy();
-                expect(unshift.call(interpreter, a)).toBe(BrsInvalid.Instance);
+                await expect(unshift.call(interpreter, a)).resolves.toBe(BrsInvalid.Instance);
                 expect(arr.elements).toEqual([ a, b, c ]);
             });
         });
 
         describe("delete", () => {
-            it("removes elements from in-bounds indices", () => {
+            it("removes elements from in-bounds indices", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -206,11 +206,11 @@ describe("Array", () => {
 
                 let deleteMethod = arr.getMethod("delete");
                 expect(deleteMethod).toBeTruthy();
-                expect(deleteMethod.call(interpreter, new Int32(1))).toBe(BrsBoolean.True);
+                await expect(deleteMethod.call(interpreter, new Int32(1))).resolves.toBe(BrsBoolean.True);
                 expect(arr.elements).toEqual([ a, c ]);
             });
 
-            it("doesn't remove elements from out-of-bounds indices", () => {
+            it("doesn't remove elements from out-of-bounds indices", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -219,14 +219,14 @@ describe("Array", () => {
 
                 let deleteMethod = arr.getMethod("delete");
                 expect(deleteMethod).toBeTruthy();
-                expect(deleteMethod.call(interpreter, new Int32(1111))).toBe(BrsBoolean.False);
-                expect(deleteMethod.call(interpreter, new Int32(-1))).toBe(BrsBoolean.False);
+                await expect(deleteMethod.call(interpreter, new Int32(1111))).resolves.toBe(BrsBoolean.False);
+                await expect(deleteMethod.call(interpreter, new Int32(-1))).resolves.toBe(BrsBoolean.False);
                 expect(arr.elements).toEqual([ a, b, c ]);
             });
         });
 
         describe("count", () => {
-            it("returns the length of the array", () => {
+            it("returns the length of the array", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -235,12 +235,12 @@ describe("Array", () => {
 
                 let count = arr.getMethod("count");
                 expect(count).toBeTruthy();
-                expect(count.call(interpreter)).toEqual(new Int32(3));
+                await expect(count.call(interpreter)).resolves.toEqual(new Int32(3));
             });
         });
 
         describe("clear", () => {
-            it("empties the array", () => {
+            it("empties the array", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let c = new BrsString("c");
@@ -249,13 +249,13 @@ describe("Array", () => {
 
                 let clear = arr.getMethod("clear");
                 expect(clear).toBeTruthy();
-                expect(clear.call(interpreter)).toBe(BrsInvalid.Instance);
+                await expect(clear.call(interpreter)).resolves.toBe(BrsInvalid.Instance);
                 expect(arr.elements).toEqual([]);
             });
         });
 
         describe("append", () => {
-            it("adds non-empty elements to the current array", () => {
+            it("adds non-empty elements to the current array", async () => {
                 let a = new BrsString("a");
                 let b = new BrsString("b");
                 let src = new BrsArray([a, b]);
@@ -268,7 +268,7 @@ describe("Array", () => {
 
                 let append = src.getMethod("append");
                 expect(append).toBeTruthy();
-                expect(append.call(interpreter, other)).toBe(BrsInvalid.Instance);
+                await expect(append.call(interpreter, other)).resolves.toBe(BrsInvalid.Instance);
                 expect(src.elements).toEqual([a, b, c, d, e, f]);
             });
         });

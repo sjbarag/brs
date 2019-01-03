@@ -22,7 +22,7 @@ describe("manifest support", () => {
         });
 
         it.only("rejects key-value pairs with no '='", async () => {
-            fs.exists.mockImplementation((filename, cb) => { console.log("it exists!"); cb(true) });
+            fs.exists.mockImplementation((filename, cb) => cb(true));
             fs.readFile.mockImplementation(
                 (filename, encoding, cb) => cb(/* no error */ null, "no_equal")
             );

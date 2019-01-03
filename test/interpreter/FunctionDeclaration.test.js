@@ -256,7 +256,10 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        await expect(interpreter.exec(statements)).resolves.not.toThrow();
+        await interpreter.exec(statements);
+        expect(interpreter.environment.get(
+            { kind: Lexeme.Identifier, text: "UCase", line: 6 }
+        )).toBeInstanceOf(Callable);
     });
 
     it("automatically calls main()", async () => {
@@ -274,7 +277,7 @@ describe("interpreter function declarations", () => {
             )
         ];
 
-        await expect(interpreter.exec(statements)).resolves.not.toThrow();
+        await interpreter.exec(statements);
         expect(mainBody.accept).toHaveBeenCalledTimes(1);
     });
 });

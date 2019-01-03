@@ -185,7 +185,7 @@ describe('global JSON functions', () => {
             let brsAssociativeArrayStrAsc = new BrsString(`{"boolean":false,"float":3.14,"integer":2147483647,"longinteger":9223372036854775807,"null":null,"string":"ok"}`);
             let actual = await ParseJson.call(interpreter, brsAssociativeArrayStrAsc);
             expect(actual).toBeInstanceOf(AssociativeArray);
-            actualKeys = actual.getElements();
+            let actualKeys = actual.getElements();
             expect(actualKeys).toEqual(expected.getElements());
             actualKeys.forEach((key) => { expect(actual.get(key)).toEqual(expected.get(key)); });
         });

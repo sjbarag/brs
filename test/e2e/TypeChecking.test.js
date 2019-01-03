@@ -6,6 +6,7 @@ const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 describe("function argument type checking", () => {
     let outputStreams;
     let originalNodeEnv;
+    let stderr;
 
     beforeAll(() => {
         originalNodeEnv = process.env.NODE_ENV;

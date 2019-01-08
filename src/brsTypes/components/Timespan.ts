@@ -8,7 +8,7 @@ import * as luxon from "luxon";
 
 export class Timespan extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
-    private now = Date.now();
+    private markTime = Date.now();
 
     constructor() {
         super("roTimespan");
@@ -23,13 +23,14 @@ export class Timespan extends BrsComponent implements BrsValue {
     }
 
     resetTime() {
-        this.now = Date.now();
+        this.markTime = Date.now();
     }
 
     toString(parent?: BrsType): string {
         return "<Component: roTimespan>";
     }
 
+    /** Sets timespan object to the current time */
     private mark = new Callable(
         "mark",
         {
@@ -44,6 +45,7 @@ export class Timespan extends BrsComponent implements BrsValue {
         }
     );
 
+    /** Returns total milliseconds from the mark time to now */
     private totalmilliseconds = new Callable(
         "totalmilliseconds",
         {
@@ -52,11 +54,12 @@ export class Timespan extends BrsComponent implements BrsValue {
                 returns: ValueKind.Int32
             },
             impl: (_: Interpreter) => {
-                return new Int32(Date.now() - this.now);
+                return new Int32(Date.now() - this.markTime);
             }
         }
     );
-
+    
+    /** Returns total seconds from the mark time to now */
     private totalseconds = new Callable(
         "totalseconds",
         {
@@ -65,11 +68,14 @@ export class Timespan extends BrsComponent implements BrsValue {
                 returns: ValueKind.Int32
             },
             impl: (_: Interpreter) => {
-                return new Int32((Date.now() - this.now) / 1000);
+                return new Int32((Date.now() - this.markTime) / 1000);
             }
         }
     );
 
+    /** Parses an ISO8601 date and returns number of seconds from now until the given date.
+     * If the date is not a valid ISO8601 date string and can't be parsed, the int 2077252342 is returned, consistent with the brightscript method.
+     */
     private getsecondstoiso8601date = new Callable(
         "getsecondstoiso8601date",
         {
@@ -80,17 +86,17 @@ export class Timespan extends BrsComponent implements BrsValue {
                 returns: ValueKind.Int32
             },
             impl: (_: Interpreter, date: BrsString) => {
-                let msDate;
+                let dateAsSeconds;
                 let now = Date.now();
                 let dateToParse = luxon.DateTime.fromISO(date.value, { zone: "utc" });
 
                 if (dateToParse.isValid) {
-                    msDate = Date.parse(dateToParse.toISO()) - now;
+                    dateAsSeconds = (Date.parse(dateToParse.toISO()) - now) / 1000;
                 } else {
-                    msDate = 2077252342;
+                    dateAsSeconds = 2077252342;
                 }
 
-                return new Int32(msDate);
+                return new Int32(dateAsSeconds);
             }
         }
     );

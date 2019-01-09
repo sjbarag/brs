@@ -30,7 +30,6 @@ describe("Timespan", () => {
     
     describe("methods", () => {
         let interpreter;
-        let currentTime;
         
         beforeEach(() => {
             interpreter = new Interpreter();
@@ -78,8 +77,8 @@ describe("Timespan", () => {
             it("returns seconds from now until a valid ISO8601 date", () => {
                 let getsecondstoiso8601date = ts.getMethod("getsecondstoiso8601date");
                 
-                let dateToParse1 = "2030-11-10T05:47:52Z"
-                let dateToParse2 = "1986-11-10T05:47:52Z"
+                let dateToParse1 = "2030-11-10T05:47:52Z";
+                let dateToParse2 = "1986-11-10T05:47:52Z";
 
                 let result1 = getsecondstoiso8601date.call(interpreter, new BrsString(dateToParse1));
                 let result2 = getsecondstoiso8601date.call(interpreter, new BrsString(dateToParse2));
@@ -92,19 +91,18 @@ describe("Timespan", () => {
             it("accepts other ISO8601 formats and returns correct seconds", () => {
                 let getsecondstoiso8601date = ts.getMethod("getsecondstoiso8601date");
                 
-                let dateToParse = "2020-05-25"
+                let dateToParse = "2020-05-25";
 
                 let result = getsecondstoiso8601date.call(interpreter, new BrsString(dateToParse));
                 expect(getsecondstoiso8601date).toBeTruthy();
-                console.log(result)
                 expect(result).toEqual(new Int32(43292429));
             });
 
             it("returns 2077252342 for strings that can't be parsed", () => {
                 let getsecondstoiso8601date = ts.getMethod("getsecondstoiso8601date");
                 
-                let dateToParse1 = "not a date"
-                let dateToParse2 = "14 Jun 2017 00:00:00 PDT"
+                let dateToParse1 = "not a date";
+                let dateToParse2 = "14 Jun 2017 00:00:00 PDT";
 
                 let result1 = getsecondstoiso8601date.call(interpreter, new BrsString(dateToParse1));
                 let result2 = getsecondstoiso8601date.call(interpreter, new BrsString(dateToParse2));

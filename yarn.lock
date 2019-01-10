@@ -25,7 +25,7 @@
 
 "@types/lolex@^2.1.3":
   version "2.1.3"
-  resolved "http://npm.prod.hulu.com/@types%2flolex/-/lolex-2.1.3.tgz#793557c9b8ad319b4c8e4c6548b90893f4aa5f69"
+  resolved "https://registry.yarnpkg.com/@types/lolex/-/lolex-2.1.3.tgz#793557c9b8ad319b4c8e4c6548b90893f4aa5f69"
   integrity sha512-nEipOLYyZJ4RKHCg7tlR37ewFy91oggmip2MBzPdVQ8QhTFqjcRhE8R0t4tfpDnSlxGWHoEGJl0UCC4kYhqoiw==
 
 "@types/long@^3.0.32":
@@ -35,7 +35,7 @@
 
 "@types/luxon@^1.4.1":
   version "1.4.1"
-  resolved "http://npm.prod.hulu.com/@types%2fluxon/-/luxon-1.4.1.tgz#ece499ada215fb253e07c7ac05d30731412ba6aa"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.4.1.tgz#ece499ada215fb253e07c7ac05d30731412ba6aa"
   integrity sha512-mYv/gbkOJ40CDgR8st5sosfFNrJncdlkpdzQSNRdU86UQg3oWWmll4AO/7B8F5FlBC6YrIXqXDSnkoCBqo+uMA==
 
 "@types/memory-fs@^0.3.2":
@@ -2232,7 +2232,7 @@ lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.4:
 
 lolex@^3.0.0:
   version "3.0.0"
-  resolved "http://npm.prod.hulu.com/lolex/-/lolex-3.0.0.tgz#f04ee1a8aa13f60f1abd7b0e8f4213ec72ec193e"
+  resolved "https://registry.yarnpkg.com/lolex/-/lolex-3.0.0.tgz#f04ee1a8aa13f60f1abd7b0e8f4213ec72ec193e"
   integrity sha512-hcnW80h3j2lbUfFdMArd5UPA/vxZJ+G8vobd+wg3nVEQA0EigStbYcrG030FJxL6xiDDPEkoMatV9xIh5OecQQ==
 
 long@^3.2.0:
@@ -2257,7 +2257,7 @@ lru-cache@^4.0.1:
 
 luxon@^1.8.3:
   version "1.8.3"
-  resolved "http://npm.prod.hulu.com/luxon/-/luxon-1.8.3.tgz#6c76b50319b3a91a357002ca2e96576bb3bfe26d"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.8.3.tgz#6c76b50319b3a91a357002ca2e96576bb3bfe26d"
   integrity sha512-hICQcGmUl5e9VUnf5PtHAma+tpiwL/wMBV9/6/M/6iSpzWFHdEElK2Rj4IZx8kbk2/baJvYftgb+n/I2wJ7RXQ==
 
 makeerror@1.0.x:

@@ -13,7 +13,7 @@ describe("Timespan", () => {
     });
 
     afterAll(() => {
-        lolex.uninstall();
+        clock.uninstall();
     });
     
     describe("stringification", () => {

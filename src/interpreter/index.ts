@@ -29,6 +29,7 @@ import { toCallable } from "./BrsFunction";
 import { BlockEnd, StopReason, PrintSeparator } from "../parser/Statement";
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import MemoryFileSystem from "memory-fs";
+import { BrsComponent } from "../brsTypes/components/BrsComponent";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -91,6 +92,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         try {
             this._environment = newEnv;
             return await func(this);
+        } catch (err) {
+            if (err.kind == null) {
+                console.error("Runtime error encountered in BRS implementation: ", err);
+            }
+            throw err;
         } finally {
             this._environment = originalEnvironment;
         }
@@ -142,7 +148,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     async visitReturn(statement: Stmt.Return) {
         if (!statement.value) {
-            throw new Stmt.ReturnValue(statement.keyword, BrsInvalid.Instance);
+            throw new Stmt.ReturnValue(statement.keyword);
         }
 
         let toReturn = await this.evaluate(statement.value);
@@ -534,16 +540,38 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
                 let returnedValue = (reason as Stmt.ReturnValue).value;
                 let returnLocation = (reason as Stmt.ReturnValue).location;
-                if (satisfiedSignature.signature.returns !== ValueKind.Dynamic && satisfiedSignature.signature.returns !== returnedValue.kind) {
-                    throw BrsError.make(
-                        `Attempting to return value of type ${ValueKind.toString(returnedValue.kind)}, `
-                        + `but function ${callee.getName()} declares return value of type `
-                        + ValueKind.toString(satisfiedSignature.signature.returns),
-                        returnLocation.line
+
+                if (returnedValue && satisfiedSignature.signature.returns === ValueKind.Void) {
+                    throw new Stmt.Runtime(
+                        BrsError.make(
+                            `Attempting to return value of non-void type ${ValueKind.toString(returnedValue.kind)} `
+                            + `from function ${callee.getName()} with void return type.`,
+                            returnLocation.line
+                        )
                     );
                 }
 
-                return returnedValue;
+                if (!returnedValue && satisfiedSignature.signature.returns !== ValueKind.Void) {
+                    throw new Stmt.Runtime(
+                        BrsError.make(
+                            `Attempting to return void value from function ${callee.getName()} with non-void return type.`,
+                            returnLocation.line
+                        )
+                    );
+                }
+
+                if (returnedValue && satisfiedSignature.signature.returns !== ValueKind.Dynamic && satisfiedSignature.signature.returns !== returnedValue.kind) {
+                    throw new Stmt.Runtime(
+                        BrsError.make(
+                            `Attempting to return value of type ${ValueKind.toString(returnedValue.kind)}, `
+                            + `but function ${callee.getName()} declares return value of type `
+                            + ValueKind.toString(satisfiedSignature.signature.returns),
+                            returnLocation.line
+                        )
+                    );
+                }
+
+                return returnedValue || BrsInvalid.Instance;
             }
         } else {
             function formatMismatch(mismatchedSignature: SignatureAndMismatches) {
@@ -598,18 +626,25 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     async visitDottedGet(expression: Expr.DottedGet) {
         let source = await this.evaluate(expression.obj);
-        if (!isIterable(source)) {
+
+        if (isIterable(source)) {
+            try {
+                return source.get(new BrsString(expression.name.text));
+            } catch (err) {
+                throw BrsError.make(err.message, expression.name.line);
+            }
+        } else if (source instanceof BrsComponent) {
+            try {
+                return source.getMethod(expression.name.text) || BrsInvalid.Instance;
+            } catch (err) {
+                throw BrsError.make(err.message, expression.name.line);
+            }
+        } else {
             throw BrsError.typeMismatch({
                 message: "Attempting to retrieve property from non-iterable value",
                 line: expression.name.line,
                 left: source
             });
-        }
-
-        try {
-            return source.get(new BrsString(expression.name.text));
-        } catch (err) {
-            throw BrsError.make(err.message, expression.name.line);
         }
     }
 

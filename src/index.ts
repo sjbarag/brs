@@ -96,6 +96,25 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     return interpreter.exec(statements);
 }
 
+export function executeSync(filenames: string[], options: Partial<ExecutionOptions>) {
+    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    const interpreter = new Interpreter(executionOptions); // shared between files
+
+    let manifest = PP.getManifestSync(executionOptions.root);
+
+    let allStatements = filenames
+        .map(filename => {
+            let contents = fs.readFileSync(filename, "utf-8");
+            let scanResults = Lexer.scan(contents);
+            let preprocessor = new PP.Preprocessor();
+            let preprocessorResults = preprocessor.preprocess(scanResults.tokens, manifest);
+            return Parser.parse(preprocessorResults.processedTokens).statements;
+        })
+        .reduce((allStatements, statements) => [...allStatements, ...statements], []);
+
+    return interpreter.exec(allStatements);
+}
+
 /**
  * Launches an interactive read-execute-print loop, which reads input from
  * `stdin` and executes it.

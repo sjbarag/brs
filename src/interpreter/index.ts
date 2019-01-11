@@ -56,6 +56,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
 
+    readonly options: ExecutionOptions;
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
     readonly temporaryVolume: MemoryFileSystem = new MemoryFileSystem();
@@ -94,11 +95,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     /**
      * Creates a new Interpreter, including any global properties and functions.
-     * @param outputStreams the WriteStreams to use for `stdout` and `stderr`.
+     * @param options configuration for the execution, including the streams to use for `stdout` and
+     *                `stderr` and the base directory for path resolution
      */
-    constructor(outputStreams: ExecutionOptions = defaultExecutionOptions) {
-        this.stdout = new OutputProxy(outputStreams.stdout);
-        this.stderr = new OutputProxy(outputStreams.stderr);
+    constructor(options: ExecutionOptions = defaultExecutionOptions) {
+        this.stdout = new OutputProxy(options.stdout);
+        this.stderr = new OutputProxy(options.stderr);
+        this.options = options;
 
         Object.keys(StdLib)
             .map(name => (StdLib as any)[name])
@@ -157,10 +160,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 },
             });
             if (maybeMain.kind === ValueKind.Callable) {
-                results = [maybeMain.call(this)];
+                maybeMain.call(this);
             }
         } catch (err) {
-            throw err;
+            if (err instanceof Stmt.ReturnValue) {
+                results = [err.value || BrsInvalid.Instance];
+            } else {
+                throw err;
+            }
         } finally {
             return results;
         }

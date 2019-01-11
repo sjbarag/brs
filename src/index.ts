@@ -96,15 +96,14 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     return interpreter.exec(statements);
 }
 
-export function executeSync(filenames: string[], options: Partial<ExecutionOptions>) {
+export function executeSync(fileContents: string[], options: Partial<ExecutionOptions>) {
     const executionOptions = Object.assign(defaultExecutionOptions, options);
     const interpreter = new Interpreter(executionOptions); // shared between files
 
     let manifest = PP.getManifestSync(executionOptions.root);
 
-    let allStatements = filenames
-        .map(filename => {
-            let contents = fs.readFileSync(filename, "utf-8");
+    let allStatements = fileContents
+        .map(contents => {
             let scanResults = Lexer.scan(contents);
             let preprocessor = new PP.Preprocessor();
             let preprocessorResults = preprocessor.preprocess(scanResults.tokens, manifest);

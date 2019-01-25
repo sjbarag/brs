@@ -5,9 +5,9 @@ jobs:
       - image: circleci/node:6
     steps:
       - checkout
-      - run:
-          name: Install yarn
-          command: "npm install -g yarn"
+        #- run:
+        #    name: Install yarn
+        #    command: "npm install -g yarn"
       - run:
           name: Install dependencies
           command: "yarn"

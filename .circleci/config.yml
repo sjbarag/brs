@@ -17,8 +17,7 @@ jobs:
           command: yarn lint
       - run:
           name: Test
-          comand: yarn test
-
+          command: yarn test
   "node 6":
     <<: *build-lint-test
     docker:

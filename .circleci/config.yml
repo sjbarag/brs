@@ -7,17 +7,17 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install dependencies
-        command: yarn
+          name: Install dependencies
+          command: yarn
       - run:
-        name: Compile
-        command: yarn build
+          name: Compile
+          command: yarn build
       - run:
-        name: Lint
-        command: yarn lint
+          name: Lint
+          command: yarn lint
       - run:
-        name: Test
-        comand: yarn test
+          name: Test
+          comand: yarn test
 
   "node:6":
     <<: *build-lint-test

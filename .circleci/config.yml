@@ -34,20 +34,10 @@ jobs:
     docker:
       - image: node:10
 
-  "Node latest":
+  "Node 11":
     <<: *build-lint-test
     docker:
-        - image: node:latest
-
-  "Chakra 8":
-    <<: *build-lint-test
-    docker:
-        - image: node:chakracore-8
-
-  "Chakra 10":
-    <<: *build-lint-test
-    docker:
-        - image: node:chakracore-10
+        - image: node:11
 
 workflows:
   version: 2
@@ -57,8 +47,3 @@ workflows:
       - "Node 8"
       - "Node 10"
       - "Node latest"
-
-  "Chakra - supported versions":
-    jobs:
-      - "Chakra 8"
-      - "Chakra 10"

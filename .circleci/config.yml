@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  .build-lint-test: &build-lint-test
+  private-build-lint-test: &build-lint-test
     docker:
       - image: circleci/node # will be overridden
     steps:
@@ -19,17 +19,17 @@ jobs:
           name: Test
           comand: yarn test
 
-  "node:6":
+  "node 6":
     <<: *build-lint-test
     docker:
       - image: node:6
 
-  "node:8":
+  "node 8":
     <<: *build-lint-test
     docker:
       - image: node:8
 
-  "node:10":
+  "node 10":
     <<: *build-lint-test
     docker:
       - image: node:10
@@ -38,6 +38,6 @@ workflows:
   version: 2
   test-node-versions:
     jobs:
-      - "node:6"
-      - "node:8"
-      - "node:10"
+      - "node 6"
+      - "node 8"
+      - "node 10"

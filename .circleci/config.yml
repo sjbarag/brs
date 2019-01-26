@@ -4,7 +4,7 @@ jobs:
   .build-lint-test: &build-lint-test
     docker:
       - image: circleci/node # will be overridden
-    - steps:
+    steps:
       - checkout
       - run:
         name: Install dependencies

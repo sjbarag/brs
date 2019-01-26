@@ -20,6 +20,10 @@ jobs:
           command: yarn test --ci --runInBand --testResultsProcessor=jest-junit
           environment:
             - JEST_JUNIT_ANCESTOR_SEPARATOR: ">"
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
 
   "Node 6":
     <<: *build-lint-test

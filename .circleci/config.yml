@@ -18,25 +18,46 @@ jobs:
       - run:
           name: Test
           command: yarn test
-  "node 6":
+
+  "Node 6":
     <<: *build-lint-test
     docker:
       - image: node:6
 
-  "node 8":
+  "Node 8":
     <<: *build-lint-test
     docker:
       - image: node:8
 
-  "node 10":
+  "Node 10":
     <<: *build-lint-test
     docker:
       - image: node:10
 
+  "Node latest":
+    <<: *build-lint-test
+    docker:
+        - image: node:latest
+
+  "Chakra 8":
+    <<: *build-lint-test
+    docker:
+        - image: node:chakracore-8
+
+  "Chakra 8":
+    <<: *build-lint-test
+    docker:
+        - image: node:chakracore-10
+
 workflows:
   version: 2
-  test-node-versions:
+  "Supported Node versions":
     jobs:
-      - "node 6"
-      - "node 8"
-      - "node 10"
+      - "Node 6"
+      - "Node 8"
+      - "Node 10"
+
+  "Supported Chakra versions":
+    jobs:
+      - "Chakra 8"
+      - "Chakra 10"

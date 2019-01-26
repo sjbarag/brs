@@ -52,4 +52,4 @@ workflows:
       - "Node 6"
       - "Node 8"
       - "Node 10"
-      - "Node latest"
+      - "Node 11"

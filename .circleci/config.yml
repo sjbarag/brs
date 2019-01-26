@@ -44,7 +44,7 @@ jobs:
     docker:
         - image: node:chakracore-8
 
-  "Chakra 8":
+  "Chakra 10":
     <<: *build-lint-test
     docker:
         - image: node:chakracore-10

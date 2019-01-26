@@ -1,8 +1,7 @@
 version: 2.1
+
 jobs:
   build:
-    docker:
-      - image: circleci/node:6
     steps:
       - checkout
       - run:
@@ -39,7 +38,31 @@ jobs:
 
 workflows:
   version: 2
-  build-lint-test:
+  "node:6":
+    docker:
+      - image: circleci/node:6
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+  "node:8":
+    docker:
+      - image: circleci/node:8
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+  "node:10":
+    docker:
+      - image: circleci/node:10
     jobs:
       - build
       - lint:

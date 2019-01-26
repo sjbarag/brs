@@ -17,7 +17,7 @@ jobs:
           command: yarn lint
       - run:
           name: Test
-          command: yarn test
+          command: yarn test --runInBand
 
   "Node 6":
     <<: *build-lint-test
@@ -51,13 +51,14 @@ jobs:
 
 workflows:
   version: 2
-  "Supported Node versions":
+  "Node - supported versions":
     jobs:
       - "Node 6"
       - "Node 8"
       - "Node 10"
+      - "Node latest"
 
-  "Supported Chakra versions":
+  "Chakra - supported versions":
     jobs:
       - "Chakra 8"
       - "Chakra 10"

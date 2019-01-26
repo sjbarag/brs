@@ -1,73 +1,43 @@
 version: 2.1
 
 jobs:
-  build:
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: "yarn install"
-      - run:
-          name: Compile
-          command: "yarn build"
-  lint:
+  .build-lint-test: &build-lint-test
     docker:
-      - image: circleci/node:6
-    steps:
+      - image: circleci/node # will be overridden
+    - steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: "yarn install"
+        name: Install dependencies
+        command: yarn
       - run:
-          name: Lint
-          command: "yarn lint"
-  test:
+        name: Compile
+        command: yarn build
+      - run:
+        name: Lint
+        command: yarn lint
+      - run:
+        name: Test
+        comand: yarn test
+
+  "node:6":
+    <<: *build-lint-test
     docker:
-      - image: circleci/node:6
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: "yarn install"
-      - run:
-          name: Compile
-          command: "yarn build"
-      - run:
-          name: Test
-          command: "yarn test"
+      - image: node:6
+
+  "node:8":
+    <<: *build-lint-test
+    docker:
+      - image: node:8
+
+  "node:10":
+    <<: *build-lint-test
+    docker:
+      - image: node:10
 
 workflows:
   version: 2
-  "node:6":
-    docker:
-      - image: circleci/node:6
+  test-node-versions:
     jobs:
-      - build
-      - lint:
-          requires:
-            - build
-      - test:
-          requires:
-            - build
-  "node:8":
-    docker:
-      - image: circleci/node:8
-    jobs:
-      - build
-      - lint:
-          requires:
-            - build
-      - test:
-          requires:
-            - build
-  "node:10":
-    docker:
-      - image: circleci/node:10
-    jobs:
-      - build
-      - lint:
-          requires:
-            - build
-      - test:
-          requires:
-            - build
+      - "node:6"
+      - "node:8"
+      - "node:10"

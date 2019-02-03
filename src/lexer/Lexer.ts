@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 
 import { Lexeme } from "./Lexeme";
-import { Token, TokenLocation } from "./Token";
+import { Token, Location } from "./Token";
 import { ReservedWords, KeyWords } from "./ReservedWords";
 import { BrsError } from "../Error";
 import { isAlpha, isDigit, isAlphaNumeric } from "./Characters";
@@ -66,9 +66,10 @@ export class Lexer {
      * later be used to build an abstract syntax tree.
      *
      * @param toScan the BrightScript code to convert into tokens
+     * @param filename the name of the file
      * @returns an object containing an array of `errors` and an array of `tokens` to be passed to a parser.
      */
-    public scan(toScan: string): ScanResults {
+    public scan(toScan: string, filename?: string): ScanResults {
         /** The zero-indexed position at which the token under consideration begins. */
         let start = 0;
         /** The zero-indexed position being examined for the token under consideration. */
@@ -560,7 +561,7 @@ export class Lexer {
          * @param text the text to create a location for
          * @returns the location of `text` as a `TokenLocation`.
          */
-        function locationOf(text: string): TokenLocation {
+        function locationOf(text: string): Location {
             return {
                 start: {
                     line: line,
@@ -570,7 +571,7 @@ export class Lexer {
                     line: line,
                     column: column + text.length - 1
                 },
-                file: "derp"
+                file: filename
             };
         }
     }

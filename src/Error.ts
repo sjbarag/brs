@@ -1,17 +1,21 @@
 import { BrsType, ValueKind } from "./brsTypes";
-import { TokenLocation } from "./lexer";
+import { Location } from "./lexer";
 
 export class BrsError extends Error {
-    constructor(message: string, location: TokenLocation) {
+    constructor(message: string, location: Location) {
         let formattedLocation: string;
 
+        let file = location.file
+            ? `${location.file}:`
+            : "Line";
+
         if (location.start.line === location.end.line) {
-            formattedLocation = `${location.file}: ${location.start.line}:${location.start.column}`;
+            formattedLocation = `${file} ${location.start.line}:${location.start.column}`;
             if (location.start.column !== location.end.column) {
                 formattedLocation += `-${location.end.column}`;
             }
         } else {
-            formattedLocation = `${location.file}: ${location.start.line}:${location.start.column}-${location.end.line}:${location.end.line}`;
+            formattedLocation = `${file} ${location.start.line}:${location.start.column}-${location.end.line}:${location.end.line}`;
         }
 
         let output = `[${formattedLocation}] ${message}`;
@@ -36,7 +40,7 @@ export type TypeAndLocation = {
     /** The type of a value involved in a type mismatch. */
     type: BrsType,
     /** The location at which the offending value was resolved. */
-    location: TokenLocation
+    location: Location
 }
 
 /**

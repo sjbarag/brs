@@ -1,4 +1,4 @@
-import { Token, Identifier, TokenLocation } from "../lexer";
+import { Token, Identifier, Location } from "../lexer";
 import { BrsType, Argument, ValueKind, BrsString } from "../brsTypes";
 import { Block } from "./Statement";
 
@@ -18,7 +18,7 @@ export interface Visitor<T> {
 
 export interface Expression {
     accept <R> (visitor: Visitor<R>): R;
-    location: TokenLocation;
+    location: Location;
 }
 
 export class Binary implements Expression {

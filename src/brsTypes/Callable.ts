@@ -2,12 +2,12 @@ import { Interpreter } from "../interpreter";
 import * as Brs from ".";
 import * as Expr from "../parser/Expression";
 import { Scope } from "../interpreter/Environment";
-import { TokenLocation } from "../lexer";
+import { Location } from "../lexer";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument extends StdlibArgument {
     /** Where the argument exists in the parsed source file(s). */
-    readonly location: TokenLocation
+    readonly location: Location
 }
 
 export interface StdlibArgument {

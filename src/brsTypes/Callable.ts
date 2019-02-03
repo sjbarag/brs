@@ -2,21 +2,27 @@ import { Interpreter } from "../interpreter";
 import * as Brs from ".";
 import * as Expr from "../parser/Expression";
 import { Scope } from "../interpreter/Environment";
+import { TokenLocation } from "../lexer";
 
 /** An argument to a BrightScript `function` or `sub`. */
-export interface Argument {
+export interface Argument extends StdlibArgument {
+    /** Where the argument exists in the parsed source file(s). */
+    readonly location: TokenLocation
+}
+
+export interface StdlibArgument {
     /** The argument's name. */
     readonly name: string,
     /** The type of the argument expected by the BrightScript runtime. */
     readonly type: Brs.ValueKind,
     /** The default value to use for the argument if none is provided. */
-    readonly defaultValue?: Expr.Expression
+    readonly defaultValue?: Expr.Expression,
 }
 
 /** A BrightScript `function` or `sub`'s signature. */
 export interface Signature {
     /** The set of arguments a function accepts. */
-    readonly args: ReadonlyArray<Argument>,
+    readonly args: ReadonlyArray<Argument> | ReadonlyArray<StdlibArgument>,
     /** The type of BrightScript value the function will return. `sub`s must use `ValueKind.Void`. */
     readonly returns: Brs.ValueKind
 }

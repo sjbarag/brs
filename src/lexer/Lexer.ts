@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 
 import { Lexeme } from "./Lexeme";
-import { Token } from "./Token";
+import { Token, TokenLocation } from "./Token";
 import { ReservedWords, KeyWords } from "./ReservedWords";
 import { BrsError } from "../Error";
 import { isAlpha, isDigit, isAlphaNumeric } from "./Characters";
@@ -75,6 +75,8 @@ export class Lexer {
         let current = 0;
         /** The one-indexed line number being parsed. */
         let line = 1;
+        /** The one-indexed column number being parsed. */
+        let column = 1;
 
         /** The BrightScript code being converted to an array of `Token`s. */
         let source = toScan;
@@ -98,8 +100,18 @@ export class Lexer {
         tokens.push({
             kind: Lexeme.Eof,
             isReserved: false,
-            line: line,
-            text: "\0"
+            text: "\0",
+            location: {
+                start: {
+                    line: line,
+                    column: column
+                },
+                end: {
+                    line: line,
+                    column: column
+                },
+                file: "derp"
+            }
         });
 
         return { tokens, errors };
@@ -189,6 +201,8 @@ export class Lexer {
                     }
                     // but always advance the line counter
                     line++;
+                    // and always reset the column counter
+                    column = 1;
                     break;
                 case "\"":
                     string();
@@ -202,7 +216,7 @@ export class Lexer {
                     } else if (isAlpha(c)) {
                         identifier();
                     } else {
-                        addError(new BrsError(`Unexpected character '${c}'`, line));
+                        addError(new BrsError(`Unexpected character '${c}'`, locationOf(c)));
                     }
                     break;
             }
@@ -280,7 +294,7 @@ export class Lexer {
 
                 if (peekNext() === "\n") {
                     // BrightScript doesn't support multi-line strings
-                    addError(new BrsError("Unterminated string at end of line", line));
+                    addError(new BrsError("Unterminated string at end of line", locationOf(source.slice(start, current))));
                     return;
                 }
                 // if (peekNext() === "\"") { advance();}
@@ -290,7 +304,7 @@ export class Lexer {
 
             if (isAtEnd()) {
                 // terminating a string with EOF is also not allowed
-                addError(new BrsError("Unterminated string at end of file", line));
+                addError(new BrsError("Unterminated string at end of file", locationOf(source.slice(start, current))));
                 return;
             }
 
@@ -508,7 +522,12 @@ export class Lexer {
                     start = current;
                     return;
                 default:
-                    addError(new BrsError(`Found unexpected conditional-compilation string '${text}'`, line));
+                    addError(
+                        new BrsError(
+                            `Found unexpected conditional-compilation string '${text}'`,
+                            locationOf(source.slice(start, current))
+                        )
+                    );
             }
         }
 
@@ -532,8 +551,27 @@ export class Lexer {
                 text: text,
                 isReserved: ReservedWords.has(text),
                 literal: literal,
-                line: line
+                location: locationOf(text)
             });
+        }
+
+        /**
+         * Creates a `TokenLocation` at the lexer's current position for the provided `text`.
+         * @param text the text to create a location for
+         * @returns the location of `text` as a `TokenLocation`.
+         */
+        function locationOf(text: string): TokenLocation {
+            return {
+                start: {
+                    line: line,
+                    column: column
+                },
+                end: {
+                    line: line,
+                    column: column + text.length - 1
+                },
+                file: "derp"
+            };
         }
     }
 }

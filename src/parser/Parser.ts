@@ -139,6 +139,7 @@ export class Parser {
         function functionDeclaration(isAnonymous: true): Expr.Function;
         function functionDeclaration(isAnonymous: false): Stmt.Function;
         function functionDeclaration(isAnonymous: boolean) {
+            let startingKeyword = peek();
             let isSub = check(Lexeme.Sub);
             let functionType = isSub ? "sub" : "function";
             let name: Identifier;
@@ -200,7 +201,7 @@ export class Parser {
                 if (haveFoundOptional && !arg.defaultValue) {
                     return addError(
                         new ParseError(
-                            { kind: Lexeme.Identifier, text: arg.name, isReserved: ReservedWords.has(arg.name), line: name.line },
+                            { kind: Lexeme.Identifier, text: arg.name, isReserved: ReservedWords.has(arg.name), location: arg.location },
                             `Argument '${arg.name}' has no default value, but comes after arguments with default values`
                         )
                     );
@@ -216,10 +217,11 @@ export class Parser {
                     new ParseError(peek(), `Expected 'end ${functionType}' to terminate ${functionType} block`)
                 );
             }
-            advance(); // consume 'end sub' or 'end function'
+            // consume 'end sub' or 'end function'
+            let endingKeyword = advance();
 
 
-            let func = new Expr.Function(args, returnType, body);
+            let func = new Expr.Function(args, returnType, body, startingKeyword, endingKeyword);
 
             if (isAnonymous) {
                 return func;
@@ -240,6 +242,7 @@ export class Parser {
 
             let name = advance();
             let type: ValueKind = ValueKind.Dynamic;
+            let typeToken: Token | undefined;
             let defaultValue;
 
             // parse argument default value
@@ -255,7 +258,7 @@ export class Parser {
                 // more intelligent comparisons to detect the 'as' sometimes-keyword here.
                 advance();
 
-                let typeToken = advance();
+                typeToken = advance();
                 let typeString = typeToken.text || "";
                 let typeValueKind = ValueKind.fromString(typeString);
 
@@ -271,7 +274,12 @@ export class Parser {
             return {
                 name: name.text || "",
                 type: type,
-                defaultValue: defaultValue
+                defaultValue: defaultValue,
+                location: {
+                    file: name.location.file,
+                    start: name.location.start,
+                    end: typeToken ? typeToken.location.end : name.location.end
+                }
             };
         }
 
@@ -397,7 +405,7 @@ export class Parser {
         }
 
         function ifStatement(): Stmt.If {
-            const startingLine = previous().line;
+            const startingLine = previous().location;
 
             const condition = expression();
             let thenBranch: Stmt.Block;
@@ -767,6 +775,7 @@ export class Parser {
                     return new Expr.Grouping(expr);
                 case match(Lexeme.LeftSquare):
                     let elements: Expression[] = [];
+                    let openingSquare = previous();
 
                     while (match(Lexeme.Newline));
 
@@ -786,9 +795,12 @@ export class Parser {
                         consume("Unmatched '[' - expected ']' after array literal", Lexeme.RightSquare);
                     }
 
+                    let closingSquare = previous();
+
                     //consume("Expected newline or ':' after array literal", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
-                    return new Expr.ArrayLiteral(elements);
+                    return new Expr.ArrayLiteral(elements, openingSquare, closingSquare);
                 case match(Lexeme.LeftBrace):
+                    let openingBrace = previous();
                     let members: Expr.AAMember[] = [];
 
                     function key() {
@@ -834,7 +846,9 @@ export class Parser {
                         consume("Unmatched '{' - expected '}' after associative array literal", Lexeme.RightBrace);
                     }
 
-                    return new Expr.AALiteral(members);
+                    let closingBrace = previous();
+
+                    return new Expr.AALiteral(members, openingBrace, closingBrace);
                 case match(Lexeme.Pos, Lexeme.Tab):
                     let token = Object.assign(previous(), { kind: Lexeme.Identifier }) as Identifier;
                     return new Expr.Variable(token);

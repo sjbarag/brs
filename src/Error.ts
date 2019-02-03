@@ -1,9 +1,20 @@
 import { BrsType, ValueKind } from "./brsTypes";
+import { TokenLocation } from "./lexer";
 
 export class BrsError extends Error {
-    constructor(message: string, line: number, file?: string) {
-        let location = file ? `${file}: ${line}` : `Line ${line}`;
-        let output = `[${location}] ${message}`;
+    constructor(message: string, location: TokenLocation) {
+        let formattedLocation: string;
+
+        if (location.start.line === location.end.line) {
+            formattedLocation = `${location.file}: ${location.start.line}:${location.start.column}`;
+            if (location.start.column !== location.end.column) {
+                formattedLocation += `-${location.end.column}`;
+            }
+        } else {
+            formattedLocation = `${location.file}: ${location.start.line}:${location.start.column}-${location.end.line}:${location.end.line}`;
+        }
+
+        let output = `[${formattedLocation}] ${message}`;
         super(output);
     }
 }
@@ -15,14 +26,17 @@ export interface TypeMismatchMetadata {
      * "Attempting to subtract non-numeric values".
      */
     message: string,
-    /** The line number on which the error occured. */
-    line: number,
     /** The value on the left-hand side of a binary operator, or the *only* value for a unary operator. */
-    left: BrsType,
+    left: TypeAndLocation,
     /** The value on the right-hand side of a binary operator. */
-    right?: BrsType,
-    /** The file in which the error occurred. */
-    file?: string
+    right?: TypeAndLocation,
+}
+
+export type TypeAndLocation = {
+    /** The type of a value involved in a type mismatch. */
+    type: BrsType,
+    /** The location at which the offending value was resolved. */
+    location: TokenLocation
 }
 
 /**
@@ -33,19 +47,18 @@ export class TypeMismatch extends BrsError {
     constructor(mismatchMetadata: TypeMismatchMetadata) {
         let messageLines = [
             mismatchMetadata.message,
-            `    left: ${ValueKind.toString(mismatchMetadata.left.kind)}`
+            `    left: ${ValueKind.toString(mismatchMetadata.left.type.kind)}`
         ];
+        let location = mismatchMetadata.left.location;
 
         if (mismatchMetadata.right) {
             messageLines.push(
-            `    right: ${ValueKind.toString(mismatchMetadata.right.kind)}`
+            `    right: ${ValueKind.toString(mismatchMetadata.right.type.kind)}`
             );
+
+            location.end = mismatchMetadata.right.location.end;
         }
 
-        super(
-            messageLines.join("\n"),
-            mismatchMetadata.line,
-            mismatchMetadata.file
-        );
+        super(messageLines.join("\n"), location);
     }
 }

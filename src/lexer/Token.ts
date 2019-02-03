@@ -13,8 +13,24 @@ export interface Token {
     isReserved: boolean;
     /** The literal value (using the BRS type system) associated with this token, if any. */
     literal?: BrsType;
-    /** The line on which this token was found. */
+    /** Where the token was found. */
+    location: TokenLocation
+}
+
+/** Represents the location at which a `Token` was found. */
+export interface TokenLocation {
+    /** The line and column at which this token began. */
+    start: LineAndColumn,
+    /** The line and column at which this token ended. */
+    end: LineAndColumn,
+    /** The name of the file in which this token was found. */
+    file: string;
+}
+
+/** A line-column pair. */
+type LineAndColumn = {
     line: number;
+    column: number;
 }
 
 /** Represents an identifier as scanned by the lexer. */

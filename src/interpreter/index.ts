@@ -753,7 +753,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
                 let messageParts = [];
 
-                let args = sig.args.map((a: Argument | StdlibArgument) => {
+                let args = sig.args.map(a => {
                     let requiredArg = `${a.name} as ${ValueKind.toString(a.type)}`;
                     if (a.defaultValue) {
                         return `[${requiredArg}]`;

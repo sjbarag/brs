@@ -22,7 +22,7 @@ export interface StdlibArgument {
 /** A BrightScript `function` or `sub`'s signature. */
 export interface Signature {
     /** The set of arguments a function accepts. */
-    readonly args: ReadonlyArray<Argument> | ReadonlyArray<StdlibArgument>,
+    readonly args: ReadonlyArray<Argument | StdlibArgument>,
     /** The type of BrightScript value the function will return. `sub`s must use `ValueKind.Void`. */
     readonly returns: Brs.ValueKind
 }

@@ -51,7 +51,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         let parser = new Parser();
         [lexer, preprocessor, parser].forEach(emitter => emitter.onError(logError));
 
-        let scanResults = lexer.scan(contents);
+        let scanResults = lexer.scan(contents, filename);
         if (scanResults.errors.length > 0) {
             return Promise.reject({
                 message: "Error occurred during lexing"
@@ -141,7 +141,7 @@ function run(contents: string, options: ExecutionOptions = defaultExecutionOptio
     lexer.onError(logError);
     parser.onError(logError);
 
-    const scanResults = lexer.scan(contents);
+    const scanResults = lexer.scan(contents, "REPL");
     if (scanResults.errors.length > 0) {
         return;
     }

@@ -17,16 +17,15 @@ export class BrsError extends Error {
         let location = this.location;
 
         let formattedLocation: string;
-        let file = location.file || "REPL";
 
         if (location.start.line === location.end.line) {
             let columns = `${location.start.column}`;
             if (location.start.column !== location.end.column) {
                 columns += `-${location.end.column}`;
             }
-            formattedLocation = `${file}(${location.start.line},${columns})`;
+            formattedLocation = `${location.file}(${location.start.line},${columns})`;
         } else {
-            formattedLocation = `${file}(${location.start.line},${location.start.column},${location.end.line},${location.end.line})`;
+            formattedLocation = `${location.file}(${location.start.line},${location.start.column},${location.end.line},${location.end.line})`;
         }
 
         return `${formattedLocation}: ${this.message}`;

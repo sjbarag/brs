@@ -111,7 +111,7 @@ export class Lexer {
                     line: line,
                     column: column
                 },
-                file: "derp"
+                file: filename
             }
         });
 

@@ -66,7 +66,7 @@ export class Lexer {
      * later be used to build an abstract syntax tree.
      *
      * @param toScan the BrightScript code to convert into tokens
-     * @param filename the name of the file
+     * @param filename the name of the file to be scanned
      * @returns an object containing an array of `errors` and an array of `tokens` to be passed to a parser.
      */
     public scan(toScan: string, filename?: string): ScanResults {
@@ -229,6 +229,7 @@ export class Lexer {
          */
         function advance(): string {
             current++;
+            column++;
             return source.charAt(current - 1);
         }
 
@@ -565,11 +566,11 @@ export class Lexer {
             return {
                 start: {
                     line: line,
-                    column: column
+                    column: column - text.length
                 },
                 end: {
                     line: line,
-                    column: column + text.length - 1
+                    column: Math.max(column - text.length, column - 1)
                 },
                 file: filename
             };

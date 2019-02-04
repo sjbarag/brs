@@ -299,7 +299,6 @@ export class Lexer {
                     addError(new BrsError("Unterminated string at end of line", locationOf(source.slice(start, current))));
                     return;
                 }
-                // if (peekNext() === "\"") { advance();}
 
                 advance();
             }
@@ -547,7 +546,8 @@ export class Lexer {
          * @param literal an optional literal value to include in the token.
          */
         function addToken(kind: Lexeme, literal?: BrsType): void {
-            let text = source.slice(start, current).trimLeft();
+            let withWhitespace = source.slice(start, current);
+            let text = withWhitespace.trimLeft() || withWhitespace;
             tokens.push({
                 kind: kind,
                 text: text,

@@ -2,24 +2,34 @@ import { BrsType, ValueKind } from "./brsTypes";
 import { Location } from "./lexer";
 
 export class BrsError extends Error {
-    constructor(message: string, location: Location) {
-        let formattedLocation: string;
+    constructor(message: string, readonly location: Location) {
+        super(message);
+    }
 
-        let file = location.file
-            ? `${location.file}:`
-            : "Line";
+    /**
+     * Formats the error into a human-readable string including filename, starting and ending line
+     * and column, and the message associated with the error, e.g.:
+     *
+     * `lorem.brs(1,1-3): Expected '(' after sub name`
+     * ```
+     */
+    format() {
+        let location = this.location;
+
+        let formattedLocation: string;
+        let file = location.file || "REPL";
 
         if (location.start.line === location.end.line) {
-            formattedLocation = `${file} ${location.start.line}:${location.start.column}`;
+            let columns = `${location.start.column}`;
             if (location.start.column !== location.end.column) {
-                formattedLocation += `-${location.end.column}`;
+                columns += `-${location.end.column}`;
             }
+            formattedLocation = `${file}(${location.start.line},${columns})`;
         } else {
-            formattedLocation = `${file} ${location.start.line}:${location.start.column}-${location.end.line}:${location.end.line}`;
+            formattedLocation = `${file}(${location.start.line},${location.start.column},${location.end.line},${location.end.line})`;
         }
 
-        let output = `[${formattedLocation}] ${message}`;
-        super(output);
+        return `${formattedLocation}: ${this.message}`;
     }
 }
 

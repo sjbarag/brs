@@ -11,7 +11,7 @@ describe("preprocessor parser", () => {
     });
 
     it("parses chunks of brightscript", () => {
-        let chunks = parser.parse([
+        let { chunks, errors } = parser.parse([
             { kind: Lexeme.Identifier, text: "someFunction", line: 1, isReserved: false },
             { kind: Lexeme.LeftParen, text: "(", line: 1, isReserved: false },
             { kind: Lexeme.RightParen, text: ")", line: 1, isReserved: false },
@@ -19,13 +19,14 @@ describe("preprocessor parser", () => {
             { kind: Lexeme.Eof, text: "\0", line: 2, isReserved: true }
         ]);
 
+        expect(errors).toEqual([]);
         expect(chunks).toBeDefined();
         expect(chunks).not.toBeNull();
         expect(chunks).toMatchSnapshot();
     });
 
     it("parses #const", () => {
-        let chunks = parser.parse([
+        let { chunks, errors } = parser.parse([
             { kind: Lexeme.HashConst, text: "#const", line: 1, isReserved: false },
             { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
             { kind: Lexeme.Equal, text: "=", line: 1, isReserved: false },
@@ -34,18 +35,20 @@ describe("preprocessor parser", () => {
             { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: false }
         ]);
 
+        expect(errors).toEqual([]);
         expect(chunks).toBeDefined();
         expect(chunks).not.toBeNull();
         expect(chunks).toMatchSnapshot();
     });
 
     it("parses #error", () => {
-        let chunks = parser.parse([
+        let { chunks, errors } = parser.parse([
             { kind: Lexeme.HashError, text: "#error", line: 1, isReserved: false },
             { kind: Lexeme.HashErrorMessage, text: "I'm an error message!", line: 1, isReserved: false },
             { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: true }
         ]);
 
+        expect(errors).toEqual([]);
         expect(chunks).toBeDefined();
         expect(chunks).not.toBeNull();
         expect(chunks).toMatchSnapshot();
@@ -53,8 +56,8 @@ describe("preprocessor parser", () => {
 
     describe("conditionals", () => {
         test("#if only", () => {
-            let chunks = parser.parse([
-                { kind: Lexeme.HashIf, text: "#if", line: 1, isReserved: false },
+            let { chunks, errors } = parser.parse([
+                { kind: Lexeme.HashIf, text: "#if", isReserved: false, location: { start: { line: 1, column: 1 }, end: { line: 1, column: 3 } } },
                 { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
                 { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
                 { kind: Lexeme.Identifier, text: "fooIsTrue", line: 2, isReserved: false },
@@ -65,14 +68,15 @@ describe("preprocessor parser", () => {
                 { kind: Lexeme.Eof, text: "\0", line: 3, isReserved: false }
             ]);
 
+            expect(errors).toEqual([]);
             expect(chunks).toBeDefined();
             expect(chunks).not.toBeNull();
             expect(chunks).toMatchSnapshot();
         });
 
         test("#if and #else", () => {
-            let chunks = parser.parse([
-                { kind: Lexeme.HashIf, text: "#if", line: 1, isReserved: false },
+            let { chunks, errors } = parser.parse([
+                { kind: Lexeme.HashIf, text: "#if", isReserved: false, location: { start: { line: 1, column: 1 }, end: { line: 1, column: 3 } } },
                 { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
                 { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
 
@@ -93,14 +97,15 @@ describe("preprocessor parser", () => {
                 { kind: Lexeme.Eof, text: "\0", line: 5, isReserved: false }
             ]);
 
+            expect(errors).toEqual([]);
             expect(chunks).toBeDefined();
             expect(chunks).not.toBeNull();
             expect(chunks).toMatchSnapshot();
         });
 
         test("#if #else if and #else", () => {
-            let chunks = parser.parse([
-                { kind: Lexeme.HashIf, text: "#if", line: 1, isReserved: false },
+            let { chunks, errors } = parser.parse([
+                { kind: Lexeme.HashIf, text: "#if", isReserved: false, location: { start: { line: 1, column: 1 }, end: { line: 1, column: 3 } } },
                 { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
                 { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
 
@@ -130,6 +135,7 @@ describe("preprocessor parser", () => {
                 { kind: Lexeme.Eof, text: "\0", line: 7, isReserved: false }
             ]);
 
+            expect(errors).toEqual([]);
             expect(chunks).toBeDefined();
             expect(chunks).not.toBeNull();
             expect(chunks).toMatchSnapshot();

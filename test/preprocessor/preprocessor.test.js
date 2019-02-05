@@ -5,14 +5,27 @@ const { BrsString, BrsBoolean } = brs.types;
 
 const { Preprocessor } = require("../../lib/preprocessor/Preprocessor");
 
+/**
+ * Convenience function that creates a `Location` object based on a startin and ending line and column.
+ *
+ * @example
+ * location([1, 2], [3, 4]) === { start: { line: 1, column: 2 }, end: { line: 3, column: 4 } }
+ */
+function location([startLine, startCol], [endLine, endCol]) {
+    return {
+        start: { line: startLine, column: startCol },
+        end: { line: endLine, column: endCol }
+    }
+}
+
 describe("preprocessor", () => {
     it("forwards brightscript chunk contents unmodified", () => {
         let unprocessed = [
-            { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
-            { kind: Lexeme.LeftParen, text: "(", line: 1, isReserved: false },
-            { kind: Lexeme.RightParen, text: ")", line: 1, isReserved: false },
-            { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
-            { kind: Lexeme.Eof, text: "\0", line: 2, isReserved: false }
+            { kind: Lexeme.Identifier, text: "foo", isReserved: false, location: location([1, 1], [1, 3]) },
+            { kind: Lexeme.LeftParen, text: "(", isReserved: false, location: location([1, 4], [1, 4]) },
+            { kind: Lexeme.RightParen, text: ")", isReserved: false, location: location([1, 5], [1, 5]) },
+            { kind: Lexeme.Newline, text: "\n", isReserved: false, location: location([1, 6], [1, 6]) },
+            { kind: Lexeme.Eof, text: "\0", isReserved: false, location: location([2, 1], [2, 1]) }
         ];
 
         let { processedTokens } = new Preprocessor().filter([
@@ -25,8 +38,8 @@ describe("preprocessor", () => {
         it("removes #const declarations from output", () => {
             let { processedTokens } = new Preprocessor().filter([
                 new Chunk.Declaration(
-                    { kind: Lexeme.Identifier, text: "lorem", line: 1, isReserved: false },
-                    { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1, isReserved: true }
+                    { kind: Lexeme.Identifier, text: "lorem", isReserved: false, location: location([1, 8], [1, 12]) },
+                    { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, isReserved: true, location: location([1, 14], [1, 19]) }
                 )
             ]);
             expect(processedTokens).toEqual([]);
@@ -37,8 +50,8 @@ describe("preprocessor", () => {
                 expect(() =>
                     new Preprocessor().filter([
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "lorem", line: 1, isReserved: false },
-                            { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1, isReserved: true }
+                            { kind: Lexeme.Identifier, text: "lorem", isReserved: false, location: location([1, 8], [1, 12]) },
+                            { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, isReserved: true, location: location([1, 14], [1, 18]) }
                         )
                     ])
                 ).not.toThrow();
@@ -48,8 +61,8 @@ describe("preprocessor", () => {
                 expect(() =>
                     new Preprocessor().filter([
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "ipsum", line: 1, isReserved: false },
-                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1, isReserved: true }
+                            { kind: Lexeme.Identifier, text: "ipsum", isReserved: false, location: location([1, 8], [1, 12]) },
+                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, isReserved: true, location: location([1, 14], [1, 18]) }
                         )
                     ])
                 ).not.toThrow();
@@ -60,12 +73,12 @@ describe("preprocessor", () => {
                     new Preprocessor().filter([
                         // 'ipsum' must be defined before it's referenced
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "ipsum", line: 1, isReserved: false },
-                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1, isReserved: true }
+                            { kind: Lexeme.Identifier, text: "ipsum", isReserved: false, location: location([1, 8], [1, 12]) },
+                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, isReserved: true, location: location([1, 14], [1, 18]) }
                         ),
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "dolor", line: 1, isReserved: false },
-                            { kind: Lexeme.Identifier, text: "ipsum", line: 1, isReserved: false }
+                            { kind: Lexeme.Identifier, text: "dolor", isReserved: false, location: location([2, 8], [2, 12]) },
+                            { kind: Lexeme.Identifier, text: "ipsum", isReserved: false, location: location([1, 14], [1, 18]) }
                         )
                     ])
                 ).not.toThrow();
@@ -75,8 +88,8 @@ describe("preprocessor", () => {
                 expect(() =>
                     new Preprocessor().filter([
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "sit", line: 1, isReserved: false },
-                            { kind: Lexeme.String, text: "good boy!", literal: new BrsString("good boy!"), line: 1, isReserved: false }
+                            { kind: Lexeme.Identifier, text: "sit", isReserved: false, location: location([1, 8], [1, 10]) },
+                            { kind: Lexeme.String, text: "good boy!", literal: new BrsString("good boy!"), isReserved: false, location: location([1, 12], [1, 23]) }
                         )
                     ])
                 ).toThrow("#const declarations can only have");
@@ -86,12 +99,12 @@ describe("preprocessor", () => {
                 expect(() =>
                     new Preprocessor().filter([
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "lorem", line: 1, isReserved: false },
-                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1, isReserved: true }
+                            { kind: Lexeme.Identifier, text: "lorem", isReserved: false, location: location([1, 8], [1, 12]) },
+                            { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, isReserved: true, location: location([1, 14], [1, 18]) }
                         ),
                         new Chunk.Declaration(
-                            { kind: Lexeme.Identifier, text: "lorem", line: 1, isReserved: false },
-                            { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1, isReserved: true }
+                            { kind: Lexeme.Identifier, text: "lorem", isReserved: false, location: location([2, 8], [2, 12]) },
+                            { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, isReserved: true, location: location([2, 14], [2, 17]) }
                         ),
                     ])
                 ).toThrow("Attempting to re-declare");
@@ -104,7 +117,7 @@ describe("preprocessor", () => {
             expect(() =>
                 new Preprocessor().filter([
                     new Chunk.Error(
-                        { kind: Lexeme.HashError, text: "#error", line: 1, isReserved: false },
+                        { kind: Lexeme.HashError, text: "#error", isReserved: false, location: location([1, 1], [1, 6]) },
                         "I'm an error message!"
                     )
                 ])
@@ -115,10 +128,10 @@ describe("preprocessor", () => {
             expect(() =>
                 new Preprocessor().filter([
                     new Chunk.If(
-                        { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1, isReserved: true },
+                        { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, isReserved: true, location: location([1, 5], [1, 10]) },
                         [
                             new Chunk.Error(
-                                { kind: Lexeme.HashError, text: "#error", line: 1, isReserved: false },
+                                { kind: Lexeme.HashError, text: "#error", isReserved: false, location: location([2, 1], [2, 6]) },
                                 "I'm an error message!"
                             )
                         ],

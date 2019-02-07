@@ -31,7 +31,7 @@ export interface Location {
 type LineAndColumn = {
     line: number;
     column: number;
-}
+};
 
 /** Represents an identifier as scanned by the lexer. */
 export interface Identifier extends Token {

@@ -184,7 +184,7 @@ export class ArrayLiteral implements Expression {
             file: this.open.location.file,
             start: this.open.location.start,
             end: this.close.location.end
-        }
+        };
     }
 }
 
@@ -212,7 +212,7 @@ export class AALiteral implements Expression {
             file: this.open.location.file,
             start: this.open.location.start,
             end: this.close.location.end
-        }
+        };
     }
 }
 

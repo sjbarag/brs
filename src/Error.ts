@@ -50,7 +50,7 @@ export type TypeAndLocation = {
     type: BrsType,
     /** The location at which the offending value was resolved. */
     location: Location
-}
+};
 
 /**
  * Creates a "type mismatch"-like error message, but with the appropriate types specified.

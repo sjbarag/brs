@@ -3,6 +3,8 @@ const preprocessor = brs.preprocessor;
 const { Lexeme } = brs.lexer;
 const { BrsBoolean } = brs.types;
 
+const { token, identifier, EOF } = require("../parser/ParserTests");
+
 describe("preprocessor parser", () => {
     let parser;
 
@@ -30,7 +32,7 @@ describe("preprocessor parser", () => {
             { kind: Lexeme.HashConst, text: "#const", line: 1, isReserved: false },
             { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
             { kind: Lexeme.Equal, text: "=", line: 1, isReserved: false },
-            { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1, isReserved: true },
+            token(Lexeme.True, "true", BrsBoolean.True),
             { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
             { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: false }
         ]);

@@ -1,5 +1,6 @@
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
+const { BrsString } = brs.types;
 
 const { token, EOF } = require("../ParserTests");
 
@@ -26,9 +27,9 @@ describe("parser", () => {
         it("parses print lists with no separator", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Print),
-                token(Lexeme.String, "Foo"),
-                token(Lexeme.String, "bar"),
-                token(Lexeme.String, "baz"),
+                token(Lexeme.String, "Foo", new BrsString("Foo")),
+                token(Lexeme.String, "bar", new BrsString("bar")),
+                token(Lexeme.String, "baz", new BrsString("baz")),
                 EOF
             ]);
 
@@ -40,11 +41,11 @@ describe("parser", () => {
         it("parses print lists with separators", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Print),
-                token(Lexeme.String, "Foo"),
+                token(Lexeme.String, "Foo", new BrsString("Foo")),
                 token(Lexeme.Semicolon),
-                token(Lexeme.String, "bar"),
-                token(Lexeme.Comma),
-                token(Lexeme.String, "baz"),
+                token(Lexeme.String, "bar", new BrsString("bar")),
+                token(Lexeme.Semicolon),
+                token(Lexeme.String, "baz", new BrsString("baz")),
                 EOF
             ]);
 

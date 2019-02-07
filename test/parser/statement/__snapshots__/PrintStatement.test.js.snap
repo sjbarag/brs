@@ -5,13 +5,22 @@ Array [
   Print {
     "expressions": Array [
       Literal {
-        "value": "Foo",
+        "value": BrsString {
+          "kind": 2,
+          "value": "Foo",
+        },
       },
       Literal {
-        "value": "bar",
+        "value": BrsString {
+          "kind": 2,
+          "value": "bar",
+        },
       },
       Literal {
-        "value": "baz",
+        "value": BrsString {
+          "kind": 2,
+          "value": "baz",
+        },
       },
     ],
   },
@@ -23,15 +32,24 @@ Array [
   Print {
     "expressions": Array [
       Literal {
-        "value": "Foo",
+        "value": BrsString {
+          "kind": 2,
+          "value": "Foo",
+        },
       },
       1,
       Literal {
-        "value": "bar",
+        "value": BrsString {
+          "kind": 2,
+          "value": "bar",
+        },
       },
-      0,
+      1,
       Literal {
-        "value": "baz",
+        "value": BrsString {
+          "kind": 2,
+          "value": "baz",
+        },
       },
     ],
   },
@@ -43,7 +61,7 @@ Array [
   Print {
     "expressions": Array [
       Literal {
-        "value": "Hello, world",
+        "value": undefined,
       },
     ],
   },

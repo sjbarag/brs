@@ -14,9 +14,9 @@ describe("parser foreach loops", () => {
     it("requires a name and target", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.ForEach, "for each"),
-            token(Lexeme.Identifier, "word"),
-            token(Lexeme.Identifier, "in"),
-            token(Lexeme.Identifier, "lipsum"),
+            identifier("word"),
+            identifier("in"),
+            identifier("lipsum"),
             token(Lexeme.Newline, "\n"),
 
             // body would go here, but it's not necessary for this test
@@ -32,11 +32,11 @@ describe("parser foreach loops", () => {
         expect(forEach).toBeInstanceOf(Stmt.ForEach);
 
         expect(forEach.item).toEqual(
-            token(Lexeme.Identifier, "word")
+            identifier("word")
         );
         expect(forEach.target).toBeInstanceOf(Expr.Variable);
         expect(forEach.target.name).toEqual(
-            token(Lexeme.Identifier, "lipsum")
+            identifier("lipsum")
         );
 
         expect(statements).toMatchSnapshot();
@@ -45,9 +45,9 @@ describe("parser foreach loops", () => {
     it("allows 'next' to terminate loop", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.ForEach, "for each"),
-            token(Lexeme.Identifier, "word"),
-            token(Lexeme.Identifier, "in"),
-            token(Lexeme.Identifier, "lipsum"),
+            identifier("word"),
+            identifier("in"),
+            identifier("lipsum"),
             token(Lexeme.Newline, "\n"),
 
             // body would go here, but it's not necessary for this test

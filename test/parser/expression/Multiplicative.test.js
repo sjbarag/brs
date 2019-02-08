@@ -14,7 +14,7 @@ describe("parser", () => {
     describe("multiplicative expressions", () => {
         it("parses left-associative multiplication chains", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Float, "3.0", new Float(3.0)),
                 token(Lexeme.Star, "*"),
@@ -32,7 +32,7 @@ describe("parser", () => {
 
         it("parses left-associative division chains", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Float, "7.0", new Float(7.0)),
                 token(Lexeme.Slash, "/"),
@@ -50,7 +50,7 @@ describe("parser", () => {
 
         it("parses left-associative modulo chains", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Float, "7.0", new Float(7.0)),
                 token(Lexeme.Mod, "MOD"),
@@ -68,7 +68,7 @@ describe("parser", () => {
 
         it("parses left-associative integer-division chains", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Float, "32.5", new Float(32.5)),
                 token(Lexeme.Backslash, "\\"),

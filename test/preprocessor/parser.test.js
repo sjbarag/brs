@@ -14,7 +14,7 @@ describe("preprocessor parser", () => {
 
     it("parses chunks of brightscript", () => {
         let { chunks, errors } = parser.parse([
-            token(Lexeme.Identifier, "someFunction"),
+            identifier("someFunction"),
             token(Lexeme.LeftParen, "("),
             token(Lexeme.RightParen, ")"),
             token(Lexeme.Newline, "\n"),
@@ -30,7 +30,7 @@ describe("preprocessor parser", () => {
     it("parses #const", () => {
         let { chunks, errors } = parser.parse([
             token(Lexeme.HashConst, "#const"),
-            token(Lexeme.Identifier, "foo"),
+            identifier("foo"),
             token(Lexeme.Equal, "="),
             token(Lexeme.True, "true", BrsBoolean.True),
             token(Lexeme.Newline, "\n"),
@@ -60,9 +60,9 @@ describe("preprocessor parser", () => {
         test("#if only", () => {
             let { chunks, errors } = parser.parse([
                 token(Lexeme.HashIf, "#if"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "fooIsTrue"),
+                identifier("fooIsTrue"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\n"),
@@ -79,10 +79,10 @@ describe("preprocessor parser", () => {
         test("#if and #else", () => {
             let { chunks, errors } = parser.parse([
                 token(Lexeme.HashIf, "#if"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Newline, "\n"),
 
-                token(Lexeme.Identifier, "fooIsTrue"),
+                identifier("fooIsTrue"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\n"),
@@ -90,7 +90,7 @@ describe("preprocessor parser", () => {
                 token(Lexeme.HashElse, "#else"),
                 token(Lexeme.Newline, "\n"),
 
-                token(Lexeme.Identifier, "fooIsFalse"),
+                identifier("fooIsFalse"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\n"),
@@ -108,19 +108,19 @@ describe("preprocessor parser", () => {
         test("#if #else if and #else", () => {
             let { chunks, errors } = parser.parse([
                 token(Lexeme.HashIf, "#if"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Newline, "\n"),
 
-                token(Lexeme.Identifier, "fooIsTrue"),
+                identifier("fooIsTrue"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\n"),
 
                 token(Lexeme.HashElseIf, "#elseif"),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.Newline, "\n"),
 
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\n"),
@@ -128,7 +128,7 @@ describe("preprocessor parser", () => {
                 token(Lexeme.HashElse, "#else"),
                 token(Lexeme.Newline, "\n"),
 
-                token(Lexeme.Identifier, "neither"),
+                identifier("neither"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\n"),

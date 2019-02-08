@@ -14,7 +14,7 @@ describe("parser", () => {
     describe("exponential expressions", () => {
         it("parses exponential operators", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.Caret, "^"),
@@ -30,7 +30,7 @@ describe("parser", () => {
 
         it("parses repeated exponential operators as left-associative", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.Caret, "^"),

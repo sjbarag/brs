@@ -18,7 +18,7 @@ describe("property getting", () => {
         test("one-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "array"),
+                    identifier("array"),
                     new Expr.ArrayLiteral([
                         new Expr.Literal(new BrsString("index0")),
                         new Expr.Literal(new BrsString("index1")),
@@ -26,9 +26,9 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "result"),
+                    identifier("result"),
                     new Expr.IndexedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "array")),
+                        new Expr.Variable(identifier("array")),
                         new Expr.Literal(new Int32(1)),
                         token(Lexeme.RightSquare, "]")
                     )
@@ -39,7 +39,7 @@ describe("property getting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "result")
+                    identifier("result")
                 )
             ).toEqual(new BrsString("index1"));
         });
@@ -47,7 +47,7 @@ describe("property getting", () => {
         test("multi-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "array"),
+                    identifier("array"),
                     new Expr.ArrayLiteral([
                         new Expr.ArrayLiteral([
                             new Expr.Literal(new BrsString("(0,0)")),
@@ -67,10 +67,10 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "result"),
+                    identifier("result"),
                     new Expr.IndexedGet(
                         new Expr.IndexedGet(
-                            new Expr.Variable(token(Lexeme.Identifier, "array")),
+                            new Expr.Variable(identifier("array")),
                             new Expr.Literal(new Int32(2)),
                             token(Lexeme.RightSquare, "]")
                         ),
@@ -84,7 +84,7 @@ describe("property getting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "result")
+                    identifier("result")
                 )
             ).toEqual(new BrsString("(2,1)"));
         });
@@ -94,7 +94,7 @@ describe("property getting", () => {
         test("one-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "aa"),
+                    identifier("aa"),
                     new Expr.AALiteral([
                         {
                             name: new BrsString("foo"),
@@ -107,10 +107,10 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "result"),
+                    identifier("result"),
                     new Expr.DottedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                        token(Lexeme.Identifier, "foo")
+                        new Expr.Variable(identifier("aa")),
+                        identifier("foo")
                     )
                 )
             ];
@@ -119,7 +119,7 @@ describe("property getting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "result")
+                    identifier("result")
                 )
             ).toEqual(new BrsString("foo's value"));
         });
@@ -127,7 +127,7 @@ describe("property getting", () => {
         test("multi-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "aa"),
+                    identifier("aa"),
                     new Expr.AALiteral([
                         {
                             name: new BrsString("foo"),
@@ -141,13 +141,13 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "result"),
+                    identifier("result"),
                     new Expr.DottedGet(
                         new Expr.DottedGet(
-                            new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                            token(Lexeme.Identifier, "foo")
+                            new Expr.Variable(identifier("aa")),
+                            identifier("foo")
                         ),
-                        token(Lexeme.Identifier, "bar")
+                        identifier("bar")
                     )
                 )
             ];
@@ -155,7 +155,7 @@ describe("property getting", () => {
             interpreter.exec(ast);
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "result")
+                    identifier("result")
                 )
             ).toEqual(new BrsString("aa.foo.bar's value"));
         });

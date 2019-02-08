@@ -14,7 +14,7 @@ describe("parser for loops", () => {
     it("accepts a 'step' clause", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.For, "for"),
-            token(Lexeme.Identifier, "i"),
+            identifier("i"),
             token(Lexeme.Equal, "="),
             token(Lexeme.Integer, "0", new Int32(0)),
             token(Lexeme.To, "to"),
@@ -40,7 +40,7 @@ describe("parser for loops", () => {
     it("defaults a missing 'step' clause to '1'", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.For, "for"),
-            token(Lexeme.Identifier, "i"),
+            identifier("i"),
             token(Lexeme.Equal, "="),
             token(Lexeme.Integer, "0", new Int32(0)),
             token(Lexeme.To, "to"),
@@ -64,7 +64,7 @@ describe("parser for loops", () => {
     it("allows 'next' to terminate loop", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.For, "for"),
-            token(Lexeme.Identifier, "i"),
+            identifier("i"),
             token(Lexeme.Equal, "="),
             token(Lexeme.Integer, "0", new Int32(0)),
             token(Lexeme.To, "to"),

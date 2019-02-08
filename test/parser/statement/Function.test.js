@@ -15,7 +15,7 @@ describe("parser", () => {
         it("parses minimal empty function declarations", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
@@ -32,7 +32,7 @@ describe("parser", () => {
         it("parses non-empty function declarations", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
@@ -52,11 +52,11 @@ describe("parser", () => {
         it("parses functions with implicit-dynamic arguments", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "add2"),
+                identifier("add2"),
                 token(Lexeme.LeftParen, "("),
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Comma, ","),
-                token(Lexeme.Identifier, "b"),
+                identifier("b"),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
                 token(Lexeme.EndFunction, "end function"),
@@ -72,15 +72,15 @@ describe("parser", () => {
         it("parses functions with typed arguments", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "repeat"),
+                identifier("repeat"),
                 token(Lexeme.LeftParen, "("),
-                token(Lexeme.Identifier, "str"),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "string"),
+                identifier("str"),
+                identifier("as"),
+                identifier("string"),
                 token(Lexeme.Comma, ","),
-                token(Lexeme.Identifier, "count"),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("count"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
                 token(Lexeme.EndFunction, "end function"),
@@ -96,22 +96,22 @@ describe("parser", () => {
         it("parses functions with default argument expressions", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "add"),
+                identifier("add"),
                 token(Lexeme.LeftParen, "("),
 
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 token(Lexeme.Comma, ","),
 
-                token(Lexeme.Identifier, "b"),
+                identifier("b"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "4", new Int32(4)),
                 token(Lexeme.Comma, ","),
 
-                token(Lexeme.Identifier, "c"),
+                identifier("c"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Plus, "+"),
                 token(Lexeme.Integer, "5", new Int32(5)),
                 token(Lexeme.RightParen, ")"),
@@ -130,23 +130,23 @@ describe("parser", () => {
         it("parses functions with typed arguments and default expressions", () => {
              let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "add"),
+                identifier("add"),
                 token(Lexeme.LeftParen, "("),
 
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "3", new Int32(3)),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.Comma, ","),
 
-                token(Lexeme.Identifier, "b"),
+                identifier("b"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Plus, "+"),
                 token(Lexeme.Integer, "5", new Int32(5)),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.RightParen, ")"),
 
                 token(Lexeme.Newline, "\\n"),
@@ -163,11 +163,11 @@ describe("parser", () => {
         it("parses return types", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "void"),
+                identifier("as"),
+                identifier("void"),
                 token(Lexeme.Newline, "\\n"),
                 token(Lexeme.EndFunction, "end function"),
                 EOF
@@ -184,7 +184,7 @@ describe("parser", () => {
         it("parses minimal sub declarations", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
@@ -201,7 +201,7 @@ describe("parser", () => {
         it("parses non-empty sub declarations", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
@@ -221,11 +221,11 @@ describe("parser", () => {
         it("parses subs with implicit-dynamic arguments", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "sub"),
-                token(Lexeme.Identifier, "add2"),
+                identifier("add2"),
                 token(Lexeme.LeftParen, "("),
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Comma, ","),
-                token(Lexeme.Identifier, "b"),
+                identifier("b"),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
                 token(Lexeme.EndFunction, "end sub"),
@@ -241,15 +241,15 @@ describe("parser", () => {
         it("parses subs with typed arguments", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "sub"),
-                token(Lexeme.Identifier, "repeat"),
+                identifier("repeat"),
                 token(Lexeme.LeftParen, "("),
-                token(Lexeme.Identifier, "str"),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "string"),
+                identifier("str"),
+                identifier("as"),
+                identifier("string"),
                 token(Lexeme.Comma, ","),
-                token(Lexeme.Identifier, "count"),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("count"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.RightParen, ")"),
                 token(Lexeme.Newline, "\\n"),
                 token(Lexeme.EndFunction, "end sub"),
@@ -265,22 +265,22 @@ describe("parser", () => {
         it("parses subs with default argument expressions", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
-                token(Lexeme.Identifier, "add"),
+                identifier("add"),
                 token(Lexeme.LeftParen, "("),
 
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 token(Lexeme.Comma, ","),
 
-                token(Lexeme.Identifier, "b"),
+                identifier("b"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "4", new Int32(4)),
                 token(Lexeme.Comma, ","),
 
-                token(Lexeme.Identifier, "c"),
+                identifier("c"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Plus, "+"),
                 token(Lexeme.Integer, "5", new Int32(5)),
                 token(Lexeme.RightParen, ")"),
@@ -299,23 +299,23 @@ describe("parser", () => {
         it("parses subs with typed arguments and default expressions", () => {
              let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
-                token(Lexeme.Identifier, "add"),
+                identifier("add"),
                 token(Lexeme.LeftParen, "("),
 
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "3", new Int32(3)),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.Comma, ","),
 
-                token(Lexeme.Identifier, "b"),
+                identifier("b"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "a"),
+                identifier("a"),
                 token(Lexeme.Plus, "+"),
                 token(Lexeme.Integer, "5", new Int32(5)),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.RightParen, ")"),
 
                 token(Lexeme.Newline, "\\n"),
@@ -332,11 +332,11 @@ describe("parser", () => {
         it("doesn't allow return types", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftParen, "("),
                 token(Lexeme.RightParen, ")"),
-                token(Lexeme.Identifier, "as"),
-                token(Lexeme.Identifier, "integer"),
+                identifier("as"),
+                identifier("integer"),
                 token(Lexeme.Newline, "\\n"),
                 token(Lexeme.EndSub, "end sub"),
                 EOF

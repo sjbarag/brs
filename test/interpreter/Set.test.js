@@ -18,7 +18,7 @@ describe("property setting", () => {
         test("one-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "array"),
+                    identifier("array"),
                     new Expr.ArrayLiteral([
                         new Expr.Literal(new BrsString("index0")),
                         new Expr.Literal(new BrsString("index1")),
@@ -26,15 +26,15 @@ describe("property setting", () => {
                     ])
                 ),
                 new Stmt.IndexedSet(
-                    new Expr.Variable(token(Lexeme.Identifier, "array")),
+                    new Expr.Variable(identifier("array")),
                     new Expr.Literal(new Int32(0)),
                     new Expr.Literal(new BrsString("new index0")),
                     token(Lexeme.RightSquare, "]")
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "result"),
+                    identifier("result"),
                     new Expr.IndexedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "array")),
+                        new Expr.Variable(identifier("array")),
                         new Expr.Literal(new Int32(0)),
                         token(Lexeme.RightSquare, "]")
                     )
@@ -45,7 +45,7 @@ describe("property setting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "result")
+                    identifier("result")
                 )
             ).toEqual(new BrsString("new index0"));
         });
@@ -53,7 +53,7 @@ describe("property setting", () => {
         test("multi-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "array"),
+                    identifier("array"),
                     new Expr.ArrayLiteral([
                         new Expr.ArrayLiteral([
                             new Expr.Literal(new BrsString("(0,0)")),
@@ -74,7 +74,7 @@ describe("property setting", () => {
                 ),
                 new Stmt.IndexedSet(
                     new Expr.IndexedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "array")),
+                        new Expr.Variable(identifier("array")),
                         new Expr.Literal(new Int32(2)),
                     ),
                     new Expr.Literal(new Int32(1)),
@@ -82,10 +82,10 @@ describe("property setting", () => {
                     token(Lexeme.RightSquare, "]")
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "result"),
+                    identifier("result"),
                     new Expr.IndexedGet(
                         new Expr.IndexedGet(
-                            new Expr.Variable(token(Lexeme.Identifier, "array")),
+                            new Expr.Variable(identifier("array")),
                             new Expr.Literal(new Int32(2)),
                             token(Lexeme.RightSquare, "]")
                         ),
@@ -99,7 +99,7 @@ describe("property setting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "result")
+                    identifier("result")
                 )
             ).toEqual(new BrsString("new (2,1)"));
         });
@@ -109,7 +109,7 @@ describe("property setting", () => {
         test("one-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "aa"),
+                    identifier("aa"),
                     new Expr.AALiteral([
                         {
                             name: new BrsString("foo"),
@@ -118,28 +118,28 @@ describe("property setting", () => {
                     ])
                 ),
                 new Stmt.DottedSet(
-                    new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                    token(Lexeme.Identifier, "foo"),
+                    new Expr.Variable(identifier("aa")),
+                    identifier("foo"),
                     new Expr.Literal(new BrsString("new foo"))
                 ),
                 new Stmt.IndexedSet(
-                    new Expr.Variable(token(Lexeme.Identifier, "aa")),
+                    new Expr.Variable(identifier("aa")),
                     new Expr.Literal(new BrsString("bar")),
                     new Expr.Literal(new BrsString("added bar")),
                     token(Lexeme.RightSquare, "]")
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "fooResult"),
+                    identifier("fooResult"),
                     new Expr.DottedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                        token(Lexeme.Identifier, "foo")
+                        new Expr.Variable(identifier("aa")),
+                        identifier("foo")
                     )
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "barResult"),
+                    identifier("barResult"),
                     new Expr.DottedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                        token(Lexeme.Identifier, "bar")
+                        new Expr.Variable(identifier("aa")),
+                        identifier("bar")
                     )
                 )
             ];
@@ -148,12 +148,12 @@ describe("property setting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "fooResult")
+                    identifier("fooResult")
                 )
             ).toEqual(new BrsString("new foo"));
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "barResult")
+                    identifier("barResult")
                 )
             ).toEqual(new BrsString("added bar"));
         });
@@ -161,7 +161,7 @@ describe("property setting", () => {
         test("multi-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "aa"),
+                    identifier("aa"),
                     new Expr.AALiteral([
                         {
                             name: new BrsString("foo"),
@@ -176,40 +176,40 @@ describe("property setting", () => {
                 ),
                 new Stmt.DottedSet(
                     new Expr.IndexedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "aa")),
+                        new Expr.Variable(identifier("aa")),
                         new Expr.Literal(new BrsString("foo")),
                         token(Lexeme.RightSquare, "]")
                     ),
-                    token(Lexeme.Identifier, "bar"),
+                    identifier("bar"),
                     new Expr.Literal(new BrsString("new aa.foo.bar"))
                 ),
                 new Stmt.IndexedSet(
                     new Expr.DottedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                        token(Lexeme.Identifier, "foo")
+                        new Expr.Variable(identifier("aa")),
+                        identifier("foo")
                     ),
                     new Expr.Literal(new BrsString("baz")),
                     new Expr.Literal(new BrsString("added aa.foo.baz")),
                     token(Lexeme.RightSquare, "]")
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "barResult"),
+                    identifier("barResult"),
                     new Expr.DottedGet(
                         new Expr.DottedGet(
-                            new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                            token(Lexeme.Identifier, "foo")
+                            new Expr.Variable(identifier("aa")),
+                            identifier("foo")
                         ),
-                        token(Lexeme.Identifier, "bar")
+                        identifier("bar")
                     )
                 ),
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "bazResult"),
+                    identifier("bazResult"),
                     new Expr.DottedGet(
                         new Expr.DottedGet(
-                            new Expr.Variable(token(Lexeme.Identifier, "aa")),
-                            token(Lexeme.Identifier, "foo")
+                            new Expr.Variable(identifier("aa")),
+                            identifier("foo")
                         ),
-                        token(Lexeme.Identifier, "baz")
+                        identifier("baz")
                     )
                 )
             ];
@@ -218,12 +218,12 @@ describe("property setting", () => {
 
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "barResult")
+                    identifier("barResult")
                 )
             ).toEqual(new BrsString("new aa.foo.bar"));
             expect(
                 interpreter.environment.get(
-                    token(Lexeme.Identifier, "bazResult")
+                    identifier("bazResult")
                 )
             ).toEqual(new BrsString("added aa.foo.baz"));
         });

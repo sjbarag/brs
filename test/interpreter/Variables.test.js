@@ -55,7 +55,7 @@ describe("interpreter variables", () => {
     it("disallows variables named after reserved words", () => {
         let ast = [
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "type"),
+                identifier("type"),
                 new Expr.Literal(new BrsString("this will fail"))
             )
         ];

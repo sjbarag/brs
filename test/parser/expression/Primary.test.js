@@ -15,14 +15,14 @@ describe("parser", () => {
     describe("primary expressions", () => {
         it("parses numeric literals", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 { kind: Lexeme.Integer, text: 5, literal: new Int32(5), line: 1 },
                 EOF
             ]);
             expect(statements).toEqual([
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "_"),
+                    identifier("_"),
                     new Expr.Literal(
                         new Int32(5)
                     )
@@ -33,14 +33,14 @@ describe("parser", () => {
 
         it("parses string literals", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.String, "hello", new BrsString("hello")),
                 EOF
             ]);
             expect(statements).toEqual([
                 new Stmt.Assignment(
-                    token(Lexeme.Identifier, "_"),
+                    identifier("_"),
                     new Expr.Literal(
                         new BrsString("hello")
                     )
@@ -51,7 +51,7 @@ describe("parser", () => {
 
         it("parses expressions in parentheses", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "1", new Int32(1)),
                 token(Lexeme.Plus, "+"),

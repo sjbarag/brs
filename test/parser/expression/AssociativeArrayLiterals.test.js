@@ -14,7 +14,7 @@ describe("parser associative array literals", () => {
     describe("empty associative arrays", () => {
         test("on one line", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftBrace, "{"),
                 token(Lexeme.RightBrace, "}"),
@@ -29,7 +29,7 @@ describe("parser associative array literals", () => {
 
         test("on multiple lines", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftBrace, "{"),
                 token(Lexeme.Newline, "\n"),
@@ -52,18 +52,18 @@ describe("parser associative array literals", () => {
     describe("filled arrays", () => {
         test("on one line", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftBrace, "{"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "1", new Int32(1)),
                 token(Lexeme.Comma, ","),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.Comma, ","),
-                token(Lexeme.Identifier, "baz"),
+                identifier("baz"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 token(Lexeme.RightBrace, "}"),
@@ -78,21 +78,21 @@ describe("parser associative array literals", () => {
 
         test("on multiple lines with commas", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftBrace, "{"),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "1", new Int32(1)),
                 token(Lexeme.Comma, ","),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.Comma, ","),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "baz"),
+                identifier("baz"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 token(Lexeme.Newline, "\n"),
@@ -108,19 +108,19 @@ describe("parser associative array literals", () => {
 
         test("on multiple lines without commas", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftBrace, "{"),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "1", new Int32(1)),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.Newline, "\n"),
-                token(Lexeme.Identifier, "baz"),
+                identifier("baz"),
                 token(Lexeme.Colon, ":"),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 token(Lexeme.Newline, "\n"),
@@ -137,7 +137,7 @@ describe("parser associative array literals", () => {
 
     it("allows a mix of quoted and unquoted keys", () => {
         let { statements, errors } = parser.parse([
-            token(Lexeme.Identifier, "_"),
+            identifier("_"),
             token(Lexeme.Equal, "="),
             token(Lexeme.LeftBrace, "{"),
             token(Lexeme.Newline, "\n"),
@@ -146,7 +146,7 @@ describe("parser associative array literals", () => {
             token(Lexeme.Integer, "1", new Int32(1)),
             token(Lexeme.Comma, ","),
             token(Lexeme.Newline, "\n"),
-            token(Lexeme.Identifier, "bar"),
+            identifier("bar"),
             token(Lexeme.Colon, ":"),
             token(Lexeme.Integer, "2", new Int32(2)),
             token(Lexeme.Comma, ","),

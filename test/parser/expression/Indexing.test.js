@@ -14,11 +14,11 @@ describe("parser indexing", () => {
     describe("one level", () => {
         test("dotted", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Dot, "."),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 EOF
             ]);
 
@@ -30,9 +30,9 @@ describe("parser indexing", () => {
 
         test("bracketed", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.RightSquare, "]"),
@@ -49,11 +49,11 @@ describe("parser indexing", () => {
     describe("multi-level", () => {
         test("dotted", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Dot, "."),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 EOF
             ]);
 
@@ -65,9 +65,9 @@ describe("parser indexing", () => {
 
         test("bracketed", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "2", new Int32(2)),
                 token(Lexeme.RightSquare, "]"),
@@ -88,16 +88,16 @@ describe("parser indexing", () => {
 
         test("mixed", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 token(Lexeme.Dot, "."),
-                token(Lexeme.Identifier, "bar"),
+                identifier("bar"),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "0", new Int32(0)),
                 token(Lexeme.RightSquare, "]"),
                 token(Lexeme.Dot, "."),
-                token(Lexeme.Identifier, "baz"),
+                identifier("baz"),
                 EOF
             ]);
 

@@ -31,21 +31,21 @@ describe("interpreter for-each loops", () => {
         const emptyBlockSpy = jest.spyOn(emptyBlock, "accept").mockImplementation(_interpreter =>
             receivedElements.push(
                 _interpreter.environment.get(
-                    token(Lexeme.Identifier, "element")
+                    identifier("element")
                 )
             )
         );
 
         const statements = [
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "array"),
+                identifier("array"),
                 new Expr.ArrayLiteral(
                     arrayMembers.map(member => new Expr.Literal(member))
                 )
             ),
             new Stmt.ForEach(
-                token(Lexeme.Identifier, "element"),
-                new Expr.Variable(token(Lexeme.Identifier, "array")),
+                identifier("element"),
+                new Expr.Variable(identifier("array")),
                 emptyBlock
             )
         ];
@@ -62,12 +62,12 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "empty"),
+                identifier("empty"),
                 new Expr.ArrayLiteral([])
             ),
             new Stmt.ForEach(
-                token(Lexeme.Identifier, "element"),
-                new Expr.Variable(token(Lexeme.Identifier, "empty")),
+                identifier("element"),
+                new Expr.Variable(identifier("empty")),
                 emptyBlock
             )
         ];
@@ -82,14 +82,14 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "array"),
+                identifier("array"),
                 new Expr.ArrayLiteral(
                     arrayMembers.map(member => new Expr.Literal(member))
                 )
             ),
             new Stmt.ForEach(
-                token(Lexeme.Identifier, "element"),
-                new Expr.Variable(token(Lexeme.Identifier, "array")),
+                identifier("element"),
+                new Expr.Variable(identifier("array")),
                 emptyBlock
             )
         ];
@@ -98,7 +98,7 @@ describe("interpreter for-each loops", () => {
 
         expect(
             interpreter.environment.get(
-                token(Lexeme.Identifier, "element")
+                identifier("element")
             )
         ).toEqual(arrayMembers[arrayMembers.length - 1]);
     });
@@ -111,14 +111,14 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "array"),
+                identifier("array"),
                 new Expr.ArrayLiteral(
                     arrayMembers.map(member => new Expr.Literal(member))
                 )
             ),
             new Stmt.ForEach(
-                token(Lexeme.Identifier, "element"),
-                new Expr.Variable(token(Lexeme.Identifier, "array")),
+                identifier("element"),
+                new Expr.Variable(identifier("array")),
                 block
             )
         ];

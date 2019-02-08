@@ -14,7 +14,7 @@ describe("parser return statements", () => {
     it("parses void returns", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.Function, "function"),
-            token(Lexeme.Identifier, "foo"),
+            identifier("foo"),
             token(Lexeme.LeftParen, "("),
             token(Lexeme.RightParen, ")"),
             token(Lexeme.Newline, "\\n"),
@@ -33,7 +33,7 @@ describe("parser return statements", () => {
     it("parses literal returns", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.Function, "function"),
-            token(Lexeme.Identifier, "foo"),
+            identifier("foo"),
             token(Lexeme.LeftParen, "("),
             token(Lexeme.RightParen, ")"),
             token(Lexeme.Newline, "\\n"),
@@ -53,12 +53,12 @@ describe("parser return statements", () => {
     it("parses expression returns", () => {
         let { statements, errors } = parser.parse([
             token(Lexeme.Function, "function"),
-            token(Lexeme.Identifier, "foo"),
+            identifier("foo"),
             token(Lexeme.LeftParen, "("),
             token(Lexeme.RightParen, ")"),
             token(Lexeme.Newline, "\\n"),
             token(Lexeme.Return, "return"),
-            token(Lexeme.Identifier, "RebootSystem"),
+            identifier("RebootSystem"),
             { kind: Lexeme.LeftParen,  text: "(", line: 2 },
             token(Lexeme.RightParen, ")"),
             token(Lexeme.Newline, "\\n"),

@@ -135,7 +135,7 @@ describe("interperter print statements", () => {
 
     it("prints uninitialized values with placeholder text", () => {
         const ast = new Stmt.Print([
-            new Expr.Variable(token(Lexeme.Identifier, "doesNotExist"))
+            new Expr.Variable(identifier("doesNotExist"))
         ]);
 
         const [ result ] = interpreter.exec([ast]);

@@ -14,7 +14,7 @@ describe("parser array literals", () => {
     describe("empty arrays", () => {
         test("on one line", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.RightSquare, "]"),
@@ -29,7 +29,7 @@ describe("parser array literals", () => {
 
         test("on multiple lines", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Newline, "\n"),
@@ -52,7 +52,7 @@ describe("parser array literals", () => {
     describe("filled arrays", () => {
         test("on one line", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "1", new Int32(1)),
@@ -72,7 +72,7 @@ describe("parser array literals", () => {
 
         test("on multiple lines with commas", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Newline, "\n"),
@@ -96,7 +96,7 @@ describe("parser array literals", () => {
 
         test("on multiple lines without commas", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Newline, "\n"),
@@ -120,7 +120,7 @@ describe("parser array literals", () => {
     describe("contents", () => {
         it("can contain primitives", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "1", new Int32(1)),
@@ -140,7 +140,7 @@ describe("parser array literals", () => {
 
         it("can contain other arrays", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                     token(Lexeme.LeftSquare, "["),
@@ -170,7 +170,7 @@ describe("parser array literals", () => {
 
         it("can contain expressions", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "1", new Int32(1)),

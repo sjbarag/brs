@@ -14,7 +14,7 @@ describe("parser", () => {
     describe("unary expressions", () => {
         it("parses unary 'not'", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Not, "not"),
                 token(Lexeme.True, "true", BrsBoolean.True),
@@ -29,7 +29,7 @@ describe("parser", () => {
 
         it("parses consecutive unary 'not'", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Not, "not"),
                 token(Lexeme.Not, "not"),
@@ -48,7 +48,7 @@ describe("parser", () => {
 
         it("parses unary '-'", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Minus, "-"),
                 token(Lexeme.Integer, "5", new Int32(5)),
@@ -63,7 +63,7 @@ describe("parser", () => {
 
         it("parses consecutive unary '-'", () => {
             let { statements, errors } = parser.parse([
-                token(Lexeme.Identifier, "_"),
+                identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Minus, "-"),
                 token(Lexeme.Minus, "-"),

@@ -17,7 +17,7 @@ describe("interpreter function declarations", () => {
     it("creates function callables", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.Void,
@@ -29,7 +29,7 @@ describe("interpreter function declarations", () => {
         interpreter.exec(statements);
 
         let storedValue = interpreter.environment.get(
-            token(Lexeme.Identifier, "foo")
+            identifier("foo")
         );
         expect(storedValue).not.toBe(BrsInvalid.Instance);
         expect(storedValue).toBeInstanceOf(Callable);
@@ -41,7 +41,7 @@ describe("interpreter function declarations", () => {
 
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.Void,
@@ -51,7 +51,7 @@ describe("interpreter function declarations", () => {
             new Stmt.Expression(
                 new Expr.Call(
                     new Expr.Variable(
-                        token(Lexeme.Identifier, "foo")
+                        identifier("foo")
                     ),
                     token(Lexeme.RightParen, ")"),
                     []
@@ -67,7 +67,7 @@ describe("interpreter function declarations", () => {
     it("returns values", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.String,
@@ -82,10 +82,10 @@ describe("interpreter function declarations", () => {
                 )
             ),
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "result"),
+                identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
-                        token(Lexeme.Identifier, "foo")
+                        identifier("foo")
                     ),
                     token(Lexeme.RightParen, ")"),
                     []
@@ -96,7 +96,7 @@ describe("interpreter function declarations", () => {
         interpreter.exec(statements);
 
         let storedResult = interpreter.environment.get(
-            token(Lexeme.Identifier, "result")
+            identifier("result")
         );
         expect(storedResult).toEqual(new BrsString("hello, world"));
     });
@@ -104,7 +104,7 @@ describe("interpreter function declarations", () => {
     it("evaluates default arguments", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "ident"),
+                identifier("ident"),
                 new Expr.Function(
                     [{
                         name: "input",
@@ -116,17 +116,17 @@ describe("interpreter function declarations", () => {
                         new Stmt.Return(
                             token(Lexeme.Return, "return"),
                             new Expr.Variable(
-                                token(Lexeme.Identifier, "input")
+                                identifier("input")
                             )
                         )
                     ])
                 )
             ),
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "result"),
+                identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
-                        token(Lexeme.Identifier, "ident")
+                        identifier("ident")
                     ),
                     token(Lexeme.RightParen, ")"),
                     []
@@ -137,19 +137,19 @@ describe("interpreter function declarations", () => {
         interpreter.exec(statements);
 
         let storedResult = interpreter.environment.get(
-            token(Lexeme.Identifier, "result")
+            identifier("result")
         );
         expect(storedResult).toEqual(new Int32(-32));
 
         expect(interpreter.environment.has(
-            token(Lexeme.Identifier, "input")
+            identifier("input")
         )).toBe(false);
     });
 
     it("enforces return value type checking", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.Int32,
@@ -164,10 +164,10 @@ describe("interpreter function declarations", () => {
                 )
             ),
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "result"),
+                identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
-                        token(Lexeme.Identifier, "foo")
+                        identifier("foo")
                     ),
                     token(Lexeme.RightParen, ")"),
                     []
@@ -181,7 +181,7 @@ describe("interpreter function declarations", () => {
     it("evaluates default arguments", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "ident"),
+                identifier("ident"),
                 new Expr.Function(
                     [{
                         name: "input",
@@ -193,17 +193,17 @@ describe("interpreter function declarations", () => {
                         new Stmt.Return(
                             token(Lexeme.Return, "return"),
                             new Expr.Variable(
-                                token(Lexeme.Identifier, "input")
+                                identifier("input")
                             )
                         )
                     ])
                 )
             ),
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "result"),
+                identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
-                        token(Lexeme.Identifier, "ident")
+                        identifier("ident")
                     ),
                     token(Lexeme.RightParen, ")"),
                     []
@@ -214,19 +214,19 @@ describe("interpreter function declarations", () => {
         interpreter.exec(statements);
 
         let storedResult = interpreter.environment.get(
-            token(Lexeme.Identifier, "result")
+            identifier("result")
         );
         expect(storedResult).toEqual(new Int32(-32));
 
         expect(interpreter.environment.has(
-            token(Lexeme.Identifier, "input")
+            identifier("input")
         )).toBe(false);
     });
 
     it("disallows functions named after reserved words", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "type"),
+                identifier("type"),
                 new Expr.Function(
                     [],
                     ValueKind.Void,
@@ -241,7 +241,7 @@ describe("interpreter function declarations", () => {
     it("allows functions to override global stdlib functions", () => {
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "UCase"),
+                identifier("UCase"),
                 new Expr.Function(
                     [], // accepts no arguments
                     ValueKind.Void, // returns nothing
@@ -259,7 +259,7 @@ describe("interpreter function declarations", () => {
 
         let statements = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "Main"),
+                identifier("Main"),
                 new Expr.Function(
                     [], // accepts no arguments
                     ValueKind.Void, // returns nothing

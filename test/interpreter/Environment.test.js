@@ -22,7 +22,7 @@ describe("Environment", () => {
         env.define(Scope.Function, "foo", val);
 
         expect(
-            env.get(token(Lexeme.Identifier, "foo"))
+            env.get(identifier("foo"))
         ).toBe(val);
     });
 
@@ -31,7 +31,7 @@ describe("Environment", () => {
         env.define(Scope.Module, "foo", val);
 
         expect(
-            env.get(token(Lexeme.Identifier, "foo"))
+            env.get(identifier("foo"))
         ).toBe(val);
     });
 
@@ -40,7 +40,7 @@ describe("Environment", () => {
         env.define(Scope.Global, "foo", val);
 
         expect(
-            env.get(token(Lexeme.Identifier, "foo"))
+            env.get(identifier("foo"))
         ).toBe(val);
     });
 
@@ -51,7 +51,7 @@ describe("Environment", () => {
         env.setM(newM);
 
         expect(
-            env.get(token(Lexeme.Identifier, "m"))
+            env.get(identifier("m"))
         ).toBe(newM);
     });
 

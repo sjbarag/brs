@@ -11,7 +11,7 @@ let interpreter;
 
 describe("interpreter for loops", () => {
     const initializeCounter = new Stmt.Assignment(
-        token(Lexeme.Identifier, "i"),
+        identifier("i"),
         new Expr.Literal(new Int32(0))
     );
 
@@ -102,7 +102,7 @@ describe("interpreter for loops", () => {
             ),
             new Stmt.Expression(
                 new Expr.Variable(
-                    token(Lexeme.Identifier, "i")
+                    identifier("i")
                 )
             )
         ];

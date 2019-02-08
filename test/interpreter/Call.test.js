@@ -29,7 +29,7 @@ describe("interpreter calls", () => {
     it("sets a new `m` pointer when called from an associative array", () => {
         const ast = [
             new Stmt.Assignment(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.AALiteral([
                     {
                         name: new BrsString("setMId"),
@@ -38,8 +38,8 @@ describe("interpreter calls", () => {
                             ValueKind.Void,
                             new Stmt.Block([
                                 new Stmt.DottedSet(
-                                    new Expr.Variable(token(Lexeme.Identifier, "m")),
-                                    token(Lexeme.Identifier, "id"),
+                                    new Expr.Variable(identifier("m")),
+                                    identifier("id"),
                                     new Expr.Literal(new BrsString("this is an ID"))
                                 )
                             ])
@@ -50,8 +50,8 @@ describe("interpreter calls", () => {
             new Stmt.Expression(
                 new Expr.Call(
                     new Expr.DottedGet(
-                        new Expr.Variable(token(Lexeme.Identifier, "foo")),
-                        token(Lexeme.Identifier, "setMId")
+                        new Expr.Variable(identifier("foo")),
+                        identifier("setMId")
                     ),
                     token(Lexeme.RightParen, ")"),
                     [ ] // no args required
@@ -61,7 +61,7 @@ describe("interpreter calls", () => {
 
         interpreter.exec(ast);
 
-        let foo = interpreter.environment.get(token(Lexeme.Identifier, "foo"));
+        let foo = interpreter.environment.get(identifier("foo"));
         expect(foo.kind).toBe(ValueKind.Object);
         expect(
             foo.get(new BrsString("id"))
@@ -112,7 +112,7 @@ describe("interpreter calls", () => {
     it("errors when return types don't match", () => {
         const ast = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.String,
@@ -141,7 +141,7 @@ describe("interpreter calls", () => {
     it("errors when returning from a void return", () => {
         const ast = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.Void,
@@ -170,7 +170,7 @@ describe("interpreter calls", () => {
     it("errors when returning void from a non-void return", () => {
         const ast = [
             new Stmt.Function(
-                token(Lexeme.Identifier, "foo"),
+                identifier("foo"),
                 new Expr.Function(
                     [],
                     ValueKind.String,

@@ -12,9 +12,9 @@ describe("parser indexed assignment", () => {
 
     it("assigns to dotted index", () => {
         let { statements, errors } = parser.parse([
-            token(Lexeme.Identifier, "foo"),
+            identifier("foo"),
             token(Lexeme.Dot, "."),
-            token(Lexeme.Identifier, "bar"),
+            identifier("bar"),
             token(Lexeme.Equal, "="),
             token(Lexeme.Function, "function"),
             token(Lexeme.LeftParen, "("),
@@ -32,7 +32,7 @@ describe("parser indexed assignment", () => {
 
     it("assigns to bracketed index", () => {
         let { statements, errors } = parser.parse([
-            token(Lexeme.Identifier, "someArray"),
+            identifier("someArray"),
             token(Lexeme.LeftSquare, "["),
             token(Lexeme.Integer, "0", new Int32(0)),
             token(Lexeme.RightSquare, "]"),

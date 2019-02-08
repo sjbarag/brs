@@ -4,21 +4,49 @@ exports[`parser variable declarations parses evaluated value assignments 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "bar",
     },
     "value": Binary {
       "left": Literal {
-        "value": 5,
+        "value": Int32 {
+          "kind": 3,
+          "value": 5,
+        },
       },
       "right": Literal {
-        "value": 3,
+        "value": Int32 {
+          "kind": 3,
+          "value": 3,
+        },
       },
       "token": Object {
+        "isReserved": false,
         "kind": 6,
-        "line": 1,
         "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": undefined,
       },
     },
   },
@@ -29,12 +57,26 @@ exports[`parser variable declarations parses literal value assignments 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "foo",
     },
     "value": Literal {
-      "value": 5,
+      "value": Int32 {
+        "kind": 3,
+        "value": 5,
+      },
     },
   },
 ]
@@ -44,14 +86,36 @@ exports[`parser variable declarations parses variable aliasing 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "baz",
     },
     "value": Variable {
       "name": Object {
+        "isReserved": false,
         "kind": 21,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "foo",
       },
     },

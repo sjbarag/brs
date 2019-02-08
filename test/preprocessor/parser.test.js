@@ -14,11 +14,11 @@ describe("preprocessor parser", () => {
 
     it("parses chunks of brightscript", () => {
         let { chunks, errors } = parser.parse([
-            { kind: Lexeme.Identifier, text: "someFunction", line: 1, isReserved: false },
-            { kind: Lexeme.LeftParen, text: "(", line: 1, isReserved: false },
-            { kind: Lexeme.RightParen, text: ")", line: 1, isReserved: false },
-            { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
-            { kind: Lexeme.Eof, text: "\0", line: 2, isReserved: true }
+            token(Lexeme.Identifier, "someFunction"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.Eof, "\0")
         ]);
 
         expect(errors).toEqual([]);
@@ -29,12 +29,12 @@ describe("preprocessor parser", () => {
 
     it("parses #const", () => {
         let { chunks, errors } = parser.parse([
-            { kind: Lexeme.HashConst, text: "#const", line: 1, isReserved: false },
-            { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
-            { kind: Lexeme.Equal, text: "=", line: 1, isReserved: false },
+            token(Lexeme.HashConst, "#const"),
+            token(Lexeme.Identifier, "foo"),
+            token(Lexeme.Equal, "="),
             token(Lexeme.True, "true", BrsBoolean.True),
-            { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
-            { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: false }
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.Eof, "\0")
         ]);
 
         expect(errors).toEqual([]);
@@ -45,9 +45,9 @@ describe("preprocessor parser", () => {
 
     it("parses #error", () => {
         let { chunks, errors } = parser.parse([
-            { kind: Lexeme.HashError, text: "#error", line: 1, isReserved: false },
-            { kind: Lexeme.HashErrorMessage, text: "I'm an error message!", line: 1, isReserved: false },
-            { kind: Lexeme.Eof, text: "\0", line: 1, isReserved: true }
+            token(Lexeme.HashError, "#error"),
+            token(Lexeme.HashErrorMessage, "I'm an error message!"),
+            token(Lexeme.Eof, "\0")
         ]);
 
         expect(errors).toEqual([]);
@@ -59,15 +59,15 @@ describe("preprocessor parser", () => {
     describe("conditionals", () => {
         test("#if only", () => {
             let { chunks, errors } = parser.parse([
-                { kind: Lexeme.HashIf, text: "#if", isReserved: false, location: { start: { line: 1, column: 1 }, end: { line: 1, column: 3 } } },
-                { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
-                { kind: Lexeme.Identifier, text: "fooIsTrue", line: 2, isReserved: false },
-                { kind: Lexeme.LeftParen, text: "(", line: 2, isReserved: false },
-                { kind: Lexeme.RightParen, text: ")", line: 2, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 2, isReserved: false },
-                { kind: Lexeme.HashEndIf, text: "#endif", line: 3, isReserved: false },
-                { kind: Lexeme.Eof, text: "\0", line: 3, isReserved: false }
+                token(Lexeme.HashIf, "#if"),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.Newline, "\n"),
+                token(Lexeme.Identifier, "fooIsTrue"),
+                token(Lexeme.LeftParen, "("),
+                token(Lexeme.RightParen, ")"),
+                token(Lexeme.Newline, "\n"),
+                token(Lexeme.HashEndIf, "#endif"),
+                token(Lexeme.Eof, "\0")
             ]);
 
             expect(errors).toEqual([]);
@@ -78,25 +78,25 @@ describe("preprocessor parser", () => {
 
         test("#if and #else", () => {
             let { chunks, errors } = parser.parse([
-                { kind: Lexeme.HashIf, text: "#if", isReserved: false, location: { start: { line: 1, column: 1 }, end: { line: 1, column: 3 } } },
-                { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
+                token(Lexeme.HashIf, "#if"),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.Identifier, text: "fooIsTrue", line: 2, isReserved: false },
-                { kind: Lexeme.LeftParen, text: "(", line: 2, isReserved: false },
-                { kind: Lexeme.RightParen, text: ")", line: 2, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 2, isReserved: false },
+                token(Lexeme.Identifier, "fooIsTrue"),
+                token(Lexeme.LeftParen, "("),
+                token(Lexeme.RightParen, ")"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.HashElse, text: "#else", line: 3, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 3, isReserved: false },
+                token(Lexeme.HashElse, "#else"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.Identifier, text: "fooIsFalse", line: 4, isReserved: false },
-                { kind: Lexeme.LeftParen, text: "(", line: 4, isReserved: false },
-                { kind: Lexeme.RightParen, text: ")", line: 4, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 4, isReserved: false },
+                token(Lexeme.Identifier, "fooIsFalse"),
+                token(Lexeme.LeftParen, "("),
+                token(Lexeme.RightParen, ")"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.HashEndIf, text: "#endif", line: 5, isReserved: false },
-                { kind: Lexeme.Eof, text: "\0", line: 5, isReserved: false }
+                token(Lexeme.HashEndIf, "#endif"),
+                token(Lexeme.Eof, "\0")
             ]);
 
             expect(errors).toEqual([]);
@@ -107,34 +107,34 @@ describe("preprocessor parser", () => {
 
         test("#if #else if and #else", () => {
             let { chunks, errors } = parser.parse([
-                { kind: Lexeme.HashIf, text: "#if", isReserved: false, location: { start: { line: 1, column: 1 }, end: { line: 1, column: 3 } } },
-                { kind: Lexeme.Identifier, text: "foo", line: 1, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 1, isReserved: false },
+                token(Lexeme.HashIf, "#if"),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.Identifier, text: "fooIsTrue", line: 2, isReserved: false },
-                { kind: Lexeme.LeftParen, text: "(", line: 2, isReserved: false },
-                { kind: Lexeme.RightParen, text: ")", line: 2, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 2, isReserved: false },
+                token(Lexeme.Identifier, "fooIsTrue"),
+                token(Lexeme.LeftParen, "("),
+                token(Lexeme.RightParen, ")"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.HashElseIf, text: "#elseif", line: 3, isReserved: false },
-                { kind: Lexeme.Identifier, text: "bar", line: 3, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 3, isReserved: false },
+                token(Lexeme.HashElseIf, "#elseif"),
+                token(Lexeme.Identifier, "bar"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.Identifier, text: "bar", line: 4, isReserved: false },
-                { kind: Lexeme.LeftParen, text: "(", line: 4, isReserved: false },
-                { kind: Lexeme.RightParen, text: ")", line: 4, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 4, isReserved: false },
+                token(Lexeme.Identifier, "bar"),
+                token(Lexeme.LeftParen, "("),
+                token(Lexeme.RightParen, ")"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.HashElse, text: "#else", line: 5, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 5, isReserved: false },
+                token(Lexeme.HashElse, "#else"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.Identifier, text: "neither", line: 6, isReserved: false },
-                { kind: Lexeme.LeftParen, text: "(", line: 6, isReserved: false },
-                { kind: Lexeme.RightParen, text: ")", line: 6, isReserved: false },
-                { kind: Lexeme.Newline, text: "\n", line: 6, isReserved: false },
+                token(Lexeme.Identifier, "neither"),
+                token(Lexeme.LeftParen, "("),
+                token(Lexeme.RightParen, ")"),
+                token(Lexeme.Newline, "\n"),
 
-                { kind: Lexeme.HashEndIf, text: "#endif", line: 7, isReserved: false },
-                { kind: Lexeme.Eof, text: "\0", line: 7, isReserved: false }
+                token(Lexeme.HashEndIf, "#endif"),
+                token(Lexeme.Eof, "\0")
             ]);
 
             expect(errors).toEqual([]);

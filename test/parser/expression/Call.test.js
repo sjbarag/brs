@@ -13,9 +13,9 @@ describe("parser call expressions", () => {
 
     it("parses named function calls", () => {
         const { statements, errors } = parser.parse([
-            { kind: Lexeme.Identifier, text: "RebootSystem", line: 1 },
+            token(Lexeme.Identifier, "RebootSystem"),
             { kind: Lexeme.LeftParen,  text: "(", line: 1 },
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
+            token(Lexeme.RightParen, ")"),
             EOF
         ]);
 
@@ -27,11 +27,11 @@ describe("parser call expressions", () => {
 
     it("allows closing parentheses on separate line", () => {
         const { statements, errors } = parser.parse([
-            { kind: Lexeme.Identifier, text: "RebootSystem", line: 1 },
+            token(Lexeme.Identifier, "RebootSystem"),
             { kind: Lexeme.LeftParen,  text: "(", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 2 },
-            { kind: Lexeme.RightParen, text: ")", line: 3 },
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.RightParen, ")"),
             EOF
         ]);
 
@@ -43,12 +43,12 @@ describe("parser call expressions", () => {
 
     it("accepts arguments", () => {
         const { statements, errors } = parser.parse([
-            { kind: Lexeme.Identifier, text: "add", line: 1 },
+            token(Lexeme.Identifier, "add"),
             { kind: Lexeme.LeftParen,  text: "(", line: 1 },
             token(Lexeme.Integer, "1", new Int32(1)),
             { kind: Lexeme.Comma,  text: ",", line: 1 },
             token(Lexeme.Integer, "2", new Int32(2)),
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
+            token(Lexeme.RightParen, ")"),
             EOF
         ]);
 

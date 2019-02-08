@@ -4,7 +4,8 @@ const { Interpreter } = require("../../lib/interpreter");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32 } = brs.types;
-const { identifier } = require("../parser/ParserTests");
+
+const { token, identifier } = require("../parser/ParserTests");
 
 let interpreter;
 let decrementSpy;
@@ -19,7 +20,7 @@ describe("interpreter while loops", () => {
         identifier("foo"),
         new Expr.Binary(
             new  Expr.Variable(identifier("foo")),
-            { kind: Lexeme.Minus, text: "-" },
+            token(Lexeme.Minus, "-"),
             new Expr.Literal(new Int32(1))
         )
     );
@@ -41,7 +42,7 @@ describe("interpreter while loops", () => {
             new Stmt.While(
                 new Expr.Binary(
                     new Expr.Variable(identifier("foo")),
-                    { kind: Lexeme.Greater, text: ">" },
+                    token(Lexeme.Greater, ">"),
                     new Expr.Literal(new Int32(0))
                 ),
                 new Stmt.Block([
@@ -58,7 +59,7 @@ describe("interpreter while loops", () => {
     it("evaluates 'condition' before every loop", () => {
         const greaterThanZero = new Expr.Binary(
             new Expr.Variable(identifier("foo")),
-            { kind: Lexeme.Greater, text: ">" },
+            token(Lexeme.Greater, ">"),
             new Expr.Literal(new Int32(0))
         );
         jest.spyOn(greaterThanZero, "accept");
@@ -84,7 +85,7 @@ describe("interpreter while loops", () => {
             new Stmt.While(
                 new Expr.Binary(
                     new Expr.Variable(identifier("foo")),
-                    { kind: Lexeme.Greater, text: ">" },
+                    token(Lexeme.Greater, ">"),
                     new Expr.Literal(new Int32(0))
                 ),
                 new Stmt.Block([

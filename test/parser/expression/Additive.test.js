@@ -14,12 +14,12 @@ describe("parser", () => {
     describe("additive expressions", () => {
         it("parses left-associative addition chains", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "1", new Int32(1)),
-                { kind: Lexeme.Plus, text: "+", line: 1 },
+                token(Lexeme.Plus, "+"),
                 token(Lexeme.Integer, "2", new Int32(2)),
-                { kind: Lexeme.Plus, text: "+", line: 1 },
+                token(Lexeme.Plus, "+"),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 EOF
             ]);
@@ -32,12 +32,12 @@ describe("parser", () => {
 
         it("parses left-associative subtraction chains", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "1", new Int32(1)),
-                { kind: Lexeme.Minus, text: "-", line: 1 },
+                token(Lexeme.Minus, "-"),
                 token(Lexeme.Integer, "2", new Int32(2)),
-                { kind: Lexeme.Minus, text: "-", line: 1 },
+                token(Lexeme.Minus, "-"),
                 token(Lexeme.Integer, "3", new Int32(3)),
                 EOF
             ]);

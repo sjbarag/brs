@@ -1,7 +1,7 @@
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { BrsBoolean, BrsString } = brs.types;
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser while statements", () => {
     let parser;
@@ -12,13 +12,13 @@ describe("parser while statements", () => {
 
     test("while without exit", () => {
         const { statements, errors } = parser.parse([
-            { kind: Lexeme.While, text: "while" },
-            { kind: Lexeme.True, literal: BrsBoolean.True, text: "true" },
-            { kind: Lexeme.Newline, text: "\n" },
-            { kind: Lexeme.Print, text: "print" },
-            { kind: Lexeme.String, literal: new BrsString("looping"), text: "looping" },
-            { kind: Lexeme.Newline, text: "\n" },
-            { kind: Lexeme.EndWhile, text: "end while" },
+            token(Lexeme.While, "while"),
+            token(Lexeme.True, "true", BrsBoolean.True),
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.Print, "print"),
+            token(Lexeme.String, "looping", new BrsString("looping")),
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.EndWhile, "end while"),
             EOF
         ]);
 
@@ -30,15 +30,15 @@ describe("parser while statements", () => {
 
     test("while with exit", () => {
         const { statements, errors } = parser.parse([
-            { kind: Lexeme.While, text: "while" },
-            { kind: Lexeme.True, literal: BrsBoolean.True, text: "true" },
-            { kind: Lexeme.Newline, text: "\n" },
-            { kind: Lexeme.Print, text: "print" },
-            { kind: Lexeme.String, literal: new BrsString("looping"), text: "looping" },
-            { kind: Lexeme.Newline, text: "\n" },
-            { kind: Lexeme.ExitWhile, text: "exit while" },
-            { kind: Lexeme.Newline, text: "\n" },
-            { kind: Lexeme.EndWhile, text: "end while" },
+            token(Lexeme.While, "while"),
+            token(Lexeme.True, "true", BrsBoolean.True,),
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.Print, "print"),
+            token(Lexeme.String, "looping", new BrsString("looping")),
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.ExitWhile, "exit while"),
+            token(Lexeme.Newline, "\n"),
+            token(Lexeme.EndWhile, "end while"),
             EOF
         ]);
 

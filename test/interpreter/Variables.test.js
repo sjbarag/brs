@@ -1,6 +1,6 @@
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
-const { identifier } = require("../parser/ParserTests");
+const { token, identifier } = require("../parser/ParserTests");
 const { Interpreter } = require("../../lib/interpreter");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
@@ -55,7 +55,7 @@ describe("interpreter variables", () => {
     it("disallows variables named after reserved words", () => {
         let ast = [
             new Stmt.Assignment(
-                { kind: Lexeme.Identifier, text: "type", isReserved: true, line: 1 },
+                token(Lexeme.Identifier, "type"),
                 new Expr.Literal(new BrsString("this will fail"))
             )
         ];

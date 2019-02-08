@@ -14,9 +14,9 @@ describe("parser", () => {
     describe("unary expressions", () => {
         it("parses unary 'not'", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Not, text: "not", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Not, "not"),
                 token(Lexeme.True, "true", BrsBoolean.True),
                 EOF
             ]);
@@ -29,13 +29,13 @@ describe("parser", () => {
 
         it("parses consecutive unary 'not'", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.Not, text: "not", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Not, "not"),
+                token(Lexeme.Not, "not"),
+                token(Lexeme.Not, "not"),
+                token(Lexeme.Not, "not"),
+                token(Lexeme.Not, "not"),
                 token(Lexeme.True, "true", BrsBoolean.True),
                 EOF
             ]);
@@ -48,9 +48,9 @@ describe("parser", () => {
 
         it("parses unary '-'", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Minus, text: "-", line: 1},
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Minus, "-"),
                 token(Lexeme.Integer, "5", new Int32(5)),
                 EOF
             ]);
@@ -63,13 +63,13 @@ describe("parser", () => {
 
         it("parses consecutive unary '-'", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Minus, text: "-", line: 1},
-                { kind: Lexeme.Minus, text: "-", line: 1},
-                { kind: Lexeme.Minus, text: "-", line: 1},
-                { kind: Lexeme.Minus, text: "-", line: 1},
-                { kind: Lexeme.Minus, text: "-", line: 1},
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Minus, "-"),
+                token(Lexeme.Minus, "-"),
+                token(Lexeme.Minus, "-"),
+                token(Lexeme.Minus, "-"),
+                token(Lexeme.Minus, "-"),
                 token(Lexeme.Integer, "5", new Int32(5)),
                 EOF
             ]);

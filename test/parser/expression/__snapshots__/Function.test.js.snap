@@ -4,8 +4,19 @@ exports[`parser function expressions parses colon-separated function declaration
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
@@ -24,13 +35,35 @@ Array [
         ],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 45,
-        "line": 3,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end function",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 57,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "function",
       },
       "parameters": Array [],
@@ -44,13 +77,56 @@ exports[`parser function expressions parses functions with default argument expr
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 45,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end function",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 57,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "function",
       },
       "parameters": Array [
         Object {
@@ -58,6 +134,17 @@ Array [
             "value": Int32 {
               "kind": 3,
               "value": 3,
+            },
+          },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
             },
           },
           "name": "a",
@@ -70,6 +157,17 @@ Array [
               "value": 4,
             },
           },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "b",
           "type": 9,
         },
@@ -77,8 +175,19 @@ Array [
           "defaultValue": Binary {
             "left": Variable {
               "name": Object {
+                "isReserved": false,
                 "kind": 21,
-                "line": 1,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "text": "a",
               },
             },
@@ -89,9 +198,31 @@ Array [
               },
             },
             "token": Object {
+              "isReserved": false,
               "kind": 8,
-              "line": 1,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "text": "+",
+            },
+          },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
             },
           },
           "name": "c",
@@ -108,22 +239,87 @@ exports[`parser function expressions parses functions with implicit-dynamic argu
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
       },
+      "end": Object {
+        "isReserved": false,
+        "kind": 45,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end function",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 57,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "function",
+      },
       "parameters": Array [
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "a",
           "type": 9,
         },
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "b",
           "type": 9,
         },
@@ -138,27 +334,103 @@ exports[`parser function expressions parses functions with typed arguments 1`] =
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
       },
+      "end": Object {
+        "isReserved": false,
+        "kind": 45,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end function",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 57,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "function",
+      },
       "parameters": Array [
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "str",
           "type": 2,
         },
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "count",
           "type": 3,
         },
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "separator",
           "type": 11,
         },
@@ -173,13 +445,56 @@ exports[`parser function expressions parses functions with typed arguments and d
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 45,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end function",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 57,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "function",
       },
       "parameters": Array [
         Object {
@@ -189,6 +504,17 @@ Array [
               "value": 3,
             },
           },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "a",
           "type": 3,
         },
@@ -196,8 +522,19 @@ Array [
           "defaultValue": Binary {
             "left": Variable {
               "name": Object {
+                "isReserved": false,
                 "kind": 21,
-                "line": 1,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "text": "a",
               },
             },
@@ -208,9 +545,31 @@ Array [
               },
             },
             "token": Object {
+              "isReserved": false,
               "kind": 8,
-              "line": 1,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "text": "+",
+            },
+          },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
             },
           },
           "name": "b",
@@ -227,8 +586,19 @@ exports[`parser function expressions parses minimal empty function expressions 1
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
@@ -236,13 +606,35 @@ Array [
         "statements": Array [],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 45,
-        "line": 2,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end function",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 57,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "function",
       },
       "parameters": Array [],
@@ -256,8 +648,19 @@ exports[`parser function expressions parses non-empty function expressions 1`] =
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
@@ -276,13 +679,35 @@ Array [
         ],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 45,
-        "line": 3,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end function",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 57,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "function",
       },
       "parameters": Array [],
@@ -296,8 +721,19 @@ exports[`parser function expressions parses return types 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
@@ -305,13 +741,35 @@ Array [
         "statements": Array [],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 45,
-        "line": 2,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end function",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 57,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "function",
       },
       "parameters": Array [],
@@ -325,8 +783,19 @@ exports[`parser sub expressions parses minimal sub expressions 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
@@ -334,13 +803,35 @@ Array [
         "statements": Array [],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 48,
-        "line": 2,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end sub",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 77,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "sub",
       },
       "parameters": Array [],
@@ -354,8 +845,19 @@ exports[`parser sub expressions parses non-empty sub expressions 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
@@ -374,13 +876,35 @@ Array [
         ],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 48,
-        "line": 3,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end sub",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 77,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "sub",
       },
       "parameters": Array [],
@@ -394,13 +918,56 @@ exports[`parser sub expressions parses subs with default argument expressions 1`
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 48,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 77,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "sub",
       },
       "parameters": Array [
         Object {
@@ -408,6 +975,17 @@ Array [
             "value": Int32 {
               "kind": 3,
               "value": 3,
+            },
+          },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
             },
           },
           "name": "a",
@@ -420,6 +998,17 @@ Array [
               "value": 4,
             },
           },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "b",
           "type": 9,
         },
@@ -427,8 +1016,19 @@ Array [
           "defaultValue": Binary {
             "left": Variable {
               "name": Object {
+                "isReserved": false,
                 "kind": 21,
-                "line": 1,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "text": "a",
               },
             },
@@ -439,9 +1039,31 @@ Array [
               },
             },
             "token": Object {
+              "isReserved": false,
               "kind": 8,
-              "line": 1,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "text": "+",
+            },
+          },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
             },
           },
           "name": "c",
@@ -458,22 +1080,87 @@ exports[`parser sub expressions parses subs with implicit-dynamic arguments 1`] 
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
       },
+      "end": Object {
+        "isReserved": false,
+        "kind": 45,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 57,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "sub",
+      },
       "parameters": Array [
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "a",
           "type": 9,
         },
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "b",
           "type": 9,
         },
@@ -488,22 +1175,87 @@ exports[`parser sub expressions parses subs with typed arguments 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
       },
+      "end": Object {
+        "isReserved": false,
+        "kind": 45,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 57,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "sub",
+      },
       "parameters": Array [
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "str",
           "type": 2,
         },
         Object {
           "defaultValue": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "count",
           "type": 3,
         },
@@ -518,13 +1270,56 @@ exports[`parser sub expressions parses subs with typed arguments and default exp
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "_",
     },
     "value": Function {
       "body": Block {
         "statements": Array [],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 48,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 77,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "sub",
       },
       "parameters": Array [
         Object {
@@ -534,6 +1329,17 @@ Array [
               "value": 3,
             },
           },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "name": "a",
           "type": 3,
         },
@@ -541,8 +1347,19 @@ Array [
           "defaultValue": Binary {
             "left": Variable {
               "name": Object {
+                "isReserved": false,
                 "kind": 21,
-                "line": 1,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "text": "a",
               },
             },
@@ -553,9 +1370,31 @@ Array [
               },
             },
             "token": Object {
+              "isReserved": false,
               "kind": 8,
-              "line": 1,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "text": "+",
+            },
+          },
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "file": undefined,
+            "start": Object {
+              "column": -9,
+              "line": -9,
             },
           },
           "name": "b",
@@ -572,8 +1411,19 @@ exports[`parser usage allows function expressions in assignment RHS 1`] = `
 Array [
   Assignment {
     "name": Object {
+      "isReserved": false,
       "kind": 21,
-      "line": 1,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "text": "anonymousFunction",
     },
     "value": Function {
@@ -592,13 +1442,35 @@ Array [
         ],
       },
       "end": Object {
+        "isReserved": false,
         "kind": 45,
-        "line": 3,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "end function",
       },
       "keyword": Object {
+        "isReserved": true,
         "kind": 57,
-        "line": 1,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": "function",
       },
       "parameters": Array [],
@@ -629,13 +1501,35 @@ Array [
             ],
           },
           "end": Object {
+            "isReserved": false,
             "kind": 45,
-            "line": 4,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "text": "end function",
           },
           "keyword": Object {
+            "isReserved": true,
             "kind": 57,
-            "line": 2,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "text": "function",
           },
           "parameters": Array [],
@@ -644,14 +1538,36 @@ Array [
       ],
       "callee": Variable {
         "name": Object {
+          "isReserved": false,
           "kind": 21,
-          "line": 1,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "text": "acceptsCallback",
         },
       },
       "closingParen": Object {
+        "isReserved": false,
         "kind": 1,
-        "line": 5,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "text": ")",
       },
     },

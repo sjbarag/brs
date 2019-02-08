@@ -5,11 +5,13 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32 } = brs.types;
 
+const { token, identifier } = require("../parser/ParserTests");
+
 let interpreter;
 
 describe("interpreter for loops", () => {
     const initializeCounter = new Stmt.Assignment(
-        { kind: Lexeme.Identifier, text: "i", line: 1 },
+        token(Lexeme.Identifier, "i"),
         new Expr.Literal(new Int32(0))
     );
 
@@ -100,7 +102,7 @@ describe("interpreter for loops", () => {
             ),
             new Stmt.Expression(
                 new Expr.Variable(
-                    { kind: Lexeme.Identifier, text: "i", line: 3 }
+                    token(Lexeme.Identifier, "i")
                 )
             )
         ];

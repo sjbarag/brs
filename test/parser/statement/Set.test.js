@@ -12,15 +12,15 @@ describe("parser indexed assignment", () => {
 
     it("assigns to dotted index", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.Identifier, text: "foo", line: 1 },
-            { kind: Lexeme.Dot, text: ".", line: 1 },
-            { kind: Lexeme.Identifier, text: "bar", line: 1 },
-            { kind: Lexeme.Equal, text: "=", line: 1 },
-            { kind: Lexeme.Function, text: "function", line: 1 },
-            { kind: Lexeme.LeftParen, text: "(", line: 1 },
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 1 },
-            { kind: Lexeme.EndFunction, text: "end function", line: 2 },
+            token(Lexeme.Identifier, "foo"),
+            token(Lexeme.Dot, "."),
+            token(Lexeme.Identifier, "bar"),
+            token(Lexeme.Equal, "="),
+            token(Lexeme.Function, "function"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.EndFunction, "end function"),
             EOF
         ]);
 
@@ -32,16 +32,16 @@ describe("parser indexed assignment", () => {
 
     it("assigns to bracketed index", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.Identifier, text: "someArray", line: 1 },
-            { kind: Lexeme.LeftSquare, text: "[", line: 1 },
+            token(Lexeme.Identifier, "someArray"),
+            token(Lexeme.LeftSquare, "["),
             token(Lexeme.Integer, "0", new Int32(0)),
-            { kind: Lexeme.RightSquare, text: "]", line: 1 },
-            { kind: Lexeme.Equal, text: "=", line: 1 },
-            { kind: Lexeme.Function, text: "function", line: 1 },
-            { kind: Lexeme.LeftParen, text: "(", line: 1 },
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 1 },
-            { kind: Lexeme.EndFunction, text: "end function", line: 2 },
+            token(Lexeme.RightSquare, "]"),
+            token(Lexeme.Equal, "="),
+            token(Lexeme.Function, "function"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.EndFunction, "end function"),
             EOF
         ]);
 

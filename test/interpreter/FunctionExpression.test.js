@@ -5,6 +5,8 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { ValueKind } = brs.types;
 
+const { token, identifier } = require("../parser/ParserTests");
+
 let interpreter;
 
 describe("interpreter function expressions", () => {
@@ -25,7 +27,7 @@ describe("interpreter function expressions", () => {
                         emptyBlock
                     )
                 ),
-                { kind: Lexeme.RightParen, text: ")", line: 2 },
+                token(Lexeme.RightParen, ")"),
                 []
             )
         ];

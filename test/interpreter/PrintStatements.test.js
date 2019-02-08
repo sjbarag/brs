@@ -1,6 +1,6 @@
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
-const { identifier } = require("../parser/ParserTests");
+const { token, identifier } = require("../parser/ParserTests");
 const { Interpreter } = require("../../lib/interpreter");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
@@ -103,7 +103,7 @@ describe("interperter print statements", () => {
             Stmt.PrintSeparator.Space,
             new Expr.Call(
                 new Expr.Variable(identifier("Pos")),
-                { kind: Lexeme.RightParen, text: ")", line: 1 },
+                token(Lexeme.RightParen, ")"),
                 [ new Expr.Literal(new Int32(0)) ]
             )
         ]);
@@ -120,7 +120,7 @@ describe("interperter print statements", () => {
             new Expr.Literal(new BrsString("foo")),
             new Expr.Call(
                 new Expr.Variable(identifier("Tab")),
-                { kind: Lexeme.RightParen, text: ")", line: 1 },
+                token(Lexeme.RightParen, ")"),
                 [ new Expr.Literal(new Int32(6)) ]
             ),
             new Expr.Literal(new BrsString("bar"))
@@ -135,7 +135,7 @@ describe("interperter print statements", () => {
 
     it("prints uninitialized values with placeholder text", () => {
         const ast = new Stmt.Print([
-            new Expr.Variable({ kind: Lexeme.Identifier, text: "doesNotExist", line: 1 })
+            new Expr.Variable(token(Lexeme.Identifier, "doesNotExist"))
         ]);
 
         const [ result ] = interpreter.exec([ast]);

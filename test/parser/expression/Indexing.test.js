@@ -14,11 +14,11 @@ describe("parser indexing", () => {
     describe("one level", () => {
         test("dotted", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                { kind: Lexeme.Dot, text: ".", line: 1 },
-                { kind: Lexeme.Identifier, text: "bar", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.Dot, "."),
+                token(Lexeme.Identifier, "bar"),
                 EOF
             ]);
 
@@ -30,12 +30,12 @@ describe("parser indexing", () => {
 
         test("bracketed", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                { kind: Lexeme.LeftSquare, text: "[", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "2", new Int32(2)),
-                { kind: Lexeme.RightSquare, text: "]", line: 1 },
+                token(Lexeme.RightSquare, "]"),
                 EOF
             ]);
 
@@ -49,11 +49,11 @@ describe("parser indexing", () => {
     describe("multi-level", () => {
         test("dotted", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                { kind: Lexeme.Dot, text: ".", line: 1 },
-                { kind: Lexeme.Identifier, text: "bar", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.Dot, "."),
+                token(Lexeme.Identifier, "bar"),
                 EOF
             ]);
 
@@ -65,18 +65,18 @@ describe("parser indexing", () => {
 
         test("bracketed", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                { kind: Lexeme.LeftSquare, text: "[", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "2", new Int32(2)),
-                { kind: Lexeme.RightSquare, text: "]", line: 1 },
-                { kind: Lexeme.LeftSquare, text: "[", line: 1 },
+                token(Lexeme.RightSquare, "]"),
+                token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "0", new Int32(0)),
-                { kind: Lexeme.RightSquare, text: "]", line: 1 },
-                { kind: Lexeme.LeftSquare, text: "[", line: 1 },
+                token(Lexeme.RightSquare, "]"),
+                token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "6", new Int32(6)),
-                { kind: Lexeme.RightSquare, text: "]", line: 1 },
+                token(Lexeme.RightSquare, "]"),
                 EOF
             ]);
 
@@ -88,16 +88,16 @@ describe("parser indexing", () => {
 
         test("mixed", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Identifier, text: "foo", line: 1 },
-                { kind: Lexeme.Dot, text: ".", line: 1 },
-                { kind: Lexeme.Identifier, text: "bar", line: 1 },
-                { kind: Lexeme.LeftSquare, text: "[", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
+                token(Lexeme.Identifier, "foo"),
+                token(Lexeme.Dot, "."),
+                token(Lexeme.Identifier, "bar"),
+                token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "0", new Int32(0)),
-                { kind: Lexeme.RightSquare, text: "]", line: 1 },
-                { kind: Lexeme.Dot, text: ".", line: 1 },
-                { kind: Lexeme.Identifier, text: "baz", line: 1 },
+                token(Lexeme.RightSquare, "]"),
+                token(Lexeme.Dot, "."),
+                token(Lexeme.Identifier, "baz"),
                 EOF
             ]);
 

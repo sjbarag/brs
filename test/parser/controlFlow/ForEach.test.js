@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Expr, Stmt } = brs.parser;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser foreach loops", () => {
     let parser;
@@ -13,15 +13,15 @@ describe("parser foreach loops", () => {
 
     it("requires a name and target", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.ForEach, text: "for each", line: 2 },
-            { kind: Lexeme.Identifier, text: "word", line: 2 },
-            { kind: Lexeme.Identifier, text: "in", line: 2 },
-            { kind: Lexeme.Identifier, text: "lipsum", line: 2 },
-            { kind: Lexeme.Newline, text: "\n", line: 2 },
+            token(Lexeme.ForEach, "for each"),
+            token(Lexeme.Identifier, "word"),
+            token(Lexeme.Identifier, "in"),
+            token(Lexeme.Identifier, "lipsum"),
+            token(Lexeme.Newline, "\n"),
 
             // body would go here, but it's not necessary for this test
-            { kind: Lexeme.EndFor, text: "end for", line: 3 },
-            { kind: Lexeme.Newline, text: "\n", line: 3 },
+            token(Lexeme.EndFor, "end for"),
+            token(Lexeme.Newline, "\n"),
             EOF
         ]);
 
@@ -32,11 +32,11 @@ describe("parser foreach loops", () => {
         expect(forEach).toBeInstanceOf(Stmt.ForEach);
 
         expect(forEach.item).toEqual(
-            { kind: Lexeme.Identifier, text: "word", line: 2 }
+            token(Lexeme.Identifier, "word")
         );
         expect(forEach.target).toBeInstanceOf(Expr.Variable);
         expect(forEach.target.name).toEqual(
-            { kind: Lexeme.Identifier, text: "lipsum", line: 2 }
+            token(Lexeme.Identifier, "lipsum")
         );
 
         expect(statements).toMatchSnapshot();
@@ -44,15 +44,15 @@ describe("parser foreach loops", () => {
 
     it("allows 'next' to terminate loop", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.ForEach, text: "for each", line: 2 },
-            { kind: Lexeme.Identifier, text: "word", line: 2 },
-            { kind: Lexeme.Identifier, text: "in", line: 2 },
-            { kind: Lexeme.Identifier, text: "lipsum", line: 2 },
-            { kind: Lexeme.Newline, text: "\n", line: 2 },
+            token(Lexeme.ForEach, "for each"),
+            token(Lexeme.Identifier, "word"),
+            token(Lexeme.Identifier, "in"),
+            token(Lexeme.Identifier, "lipsum"),
+            token(Lexeme.Newline, "\n"),
 
             // body would go here, but it's not necessary for this test
-            { kind: Lexeme.Next, text: "next", line: 3 },
-            { kind: Lexeme.Newline, text: "\n", line: 3 },
+            token(Lexeme.Next, "next"),
+            token(Lexeme.Newline, "\n"),
             EOF
         ]);
 

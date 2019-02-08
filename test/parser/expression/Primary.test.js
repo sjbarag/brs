@@ -15,14 +15,14 @@ describe("parser", () => {
     describe("primary expressions", () => {
         it("parses numeric literals", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 { kind: Lexeme.Integer, text: 5, literal: new Int32(5), line: 1 },
                 EOF
             ]);
             expect(statements).toEqual([
                 new Stmt.Assignment(
-                    { kind: Lexeme.Identifier, text: "_", line: 1 },
+                    token(Lexeme.Identifier, "_"),
                     new Expr.Literal(
                         new Int32(5)
                     )
@@ -33,14 +33,14 @@ describe("parser", () => {
 
         it("parses string literals", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 token(Lexeme.String, "hello", new BrsString("hello")),
                 EOF
             ]);
             expect(statements).toEqual([
                 new Stmt.Assignment(
-                    { kind: Lexeme.Identifier, text: "_", line: 1 },
+                    token(Lexeme.Identifier, "_"),
                     new Expr.Literal(
                         new BrsString("hello")
                     )
@@ -51,15 +51,15 @@ describe("parser", () => {
 
         it("parses expressions in parentheses", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 token(Lexeme.Integer, "1", new Int32(1)),
-                { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.LeftParen, text: "(", line: 1 },
+                token(Lexeme.Plus, "+"),
+                token(Lexeme.LeftParen, "("),
                 token(Lexeme.Integer, "2", new Int32(2)),
-                { kind: Lexeme.Star, text: "*", line: 1 },
+                token(Lexeme.Star, "*"),
                 token(Lexeme.Integer, "3", new Int32(3)),
-                { kind: Lexeme.RightParen, text: ")", line: 1 },
+                token(Lexeme.RightParen, ")"),
                 EOF
             ]);
 

@@ -14,10 +14,10 @@ describe("parser", () => {
     describe("boolean expressions", () => {
         it("parses boolean ANDs", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 token(Lexeme.True, "true", BrsBoolean.True),
-                { kind: Lexeme.And, text: "and", line: 1 },
+                token(Lexeme.And, "and"),
                 token(Lexeme.False, "false", BrsBoolean.False),
                 EOF
             ]);
@@ -30,10 +30,10 @@ describe("parser", () => {
 
         it("parses boolean ORs", () => {
             let { statements, errors } = parser.parse([
-                { kind: Lexeme.Identifier, text: "_", line: 1 },
-                { kind: Lexeme.Equal, text: "=", line: 1 },
+                token(Lexeme.Identifier, "_"),
+                token(Lexeme.Equal, "="),
                 token(Lexeme.True, "true", BrsBoolean.True),
-                { kind: Lexeme.Or, text: "or", line: 1 },
+                token(Lexeme.Or, "or"),
                 token(Lexeme.False, "false", BrsBoolean.False),
                 EOF
             ]);

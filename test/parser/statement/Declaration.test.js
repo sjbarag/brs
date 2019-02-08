@@ -1,5 +1,6 @@
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
+const { Int32 } = brs.types;
 
 const { token, identifier, EOF } = require("../ParserTests");
 
@@ -28,7 +29,7 @@ describe("parser", () => {
             let { statements, errors } = parser.parse([
                 identifier("foo"),
                 token(Lexeme.Equal),
-                token(Lexeme.Integer, 5),
+                token(Lexeme.Integer, "5", new Int32(5)),
                 EOF
             ]);
 
@@ -41,9 +42,9 @@ describe("parser", () => {
             let { statements, errors } = parser.parse([
                 identifier("bar"),
                 token(Lexeme.Equal),
-                token(Lexeme.Integer, 5),
+                token(Lexeme.Integer, "5", new Int32(5)),
                 token(Lexeme.Caret),
-                token(Lexeme.Integer, 3),
+                token(Lexeme.Integer, "3", new Int32(3)),
                 EOF
             ]);
 

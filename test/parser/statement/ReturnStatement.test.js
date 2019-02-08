@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { BrsString } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser return statements", () => {
     let parser;
@@ -13,14 +13,14 @@ describe("parser return statements", () => {
 
     it("parses void returns", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.Function, text: "function", line: 1 },
-            { kind: Lexeme.Identifier, text: "foo", line: 1 },
-            { kind: Lexeme.LeftParen, text: "(", line: 1 },
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 1 },
-            { kind: Lexeme.Return, text: "return", line: 2 },
-            { kind: Lexeme.Newline, text: "\\n", line: 2 },
-            { kind: Lexeme.EndFunction, text: "end function", line: 3 },
+            token(Lexeme.Function, "function"),
+            token(Lexeme.Identifier, "foo"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.Return, "return"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.EndFunction, "end function"),
             EOF
         ]);
 
@@ -32,15 +32,15 @@ describe("parser return statements", () => {
 
     it("parses literal returns", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.Function, text: "function", line: 1 },
-            { kind: Lexeme.Identifier, text: "foo", line: 1 },
-            { kind: Lexeme.LeftParen, text: "(", line: 1 },
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 1 },
-            { kind: Lexeme.Return, text: "return", line: 2 },
+            token(Lexeme.Function, "function"),
+            token(Lexeme.Identifier, "foo"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.Return, "return"),
             { kind: Lexeme.String, literal: new BrsString("test"), text: '"test"', line: 2 },
-            { kind: Lexeme.Newline, text: "\\n", line: 2 },
-            { kind: Lexeme.EndFunction, text: "end function", line: 3 },
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.EndFunction, "end function"),
             EOF
         ]);
 
@@ -52,17 +52,17 @@ describe("parser return statements", () => {
 
     it("parses expression returns", () => {
         let { statements, errors } = parser.parse([
-            { kind: Lexeme.Function, text: "function", line: 1 },
-            { kind: Lexeme.Identifier, text: "foo", line: 1 },
-            { kind: Lexeme.LeftParen, text: "(", line: 1 },
-            { kind: Lexeme.RightParen, text: ")", line: 1 },
-            { kind: Lexeme.Newline, text: "\\n", line: 1 },
-            { kind: Lexeme.Return, text: "return", line: 2 },
-            { kind: Lexeme.Identifier, text: "RebootSystem", line: 2 },
+            token(Lexeme.Function, "function"),
+            token(Lexeme.Identifier, "foo"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.Return, "return"),
+            token(Lexeme.Identifier, "RebootSystem"),
             { kind: Lexeme.LeftParen,  text: "(", line: 2 },
-            { kind: Lexeme.RightParen, text: ")", line: 2 },
-            { kind: Lexeme.Newline, text: "\\n", line: 2 },
-            { kind: Lexeme.EndFunction, text: "end function", line: 3 },
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.Newline, "\\n"),
+            token(Lexeme.EndFunction, "end function"),
             EOF
         ]);
 

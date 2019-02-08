@@ -9,6 +9,11 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 1,
+        "text": "]",
+      },
       "elements": Array [
         Binary {
           "left": Literal {
@@ -43,6 +48,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -57,8 +67,18 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 1,
+        "text": "]",
+      },
       "elements": Array [
         ArrayLiteral {
+          "close": Object {
+            "kind": 3,
+            "line": 1,
+            "text": "]",
+          },
           "elements": Array [
             Literal {
               "value": Int32 {
@@ -79,8 +99,18 @@ Array [
               },
             },
           ],
+          "open": Object {
+            "kind": 2,
+            "line": 1,
+            "text": "[",
+          },
         },
         ArrayLiteral {
+          "close": Object {
+            "kind": 3,
+            "line": 1,
+            "text": "]",
+          },
           "elements": Array [
             Literal {
               "value": Int32 {
@@ -101,8 +131,18 @@ Array [
               },
             },
           ],
+          "open": Object {
+            "kind": 2,
+            "line": 1,
+            "text": "[",
+          },
         },
       ],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -117,6 +157,11 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 1,
+        "text": "]",
+      },
       "elements": Array [
         Literal {
           "value": Int32 {
@@ -137,6 +182,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -151,7 +201,17 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 7,
+        "text": "]",
+      },
       "elements": Array [],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -166,7 +226,17 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 1,
+        "text": "]",
+      },
       "elements": Array [],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -181,6 +251,11 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 4,
+        "text": "]",
+      },
       "elements": Array [
         Literal {
           "value": Int32 {
@@ -201,6 +276,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -215,6 +295,11 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 4,
+        "text": "]",
+      },
       "elements": Array [
         Literal {
           "value": Int32 {
@@ -235,6 +320,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]
@@ -249,6 +339,11 @@ Array [
       "text": "_",
     },
     "value": ArrayLiteral {
+      "close": Object {
+        "kind": 3,
+        "line": 1,
+        "text": "]",
+      },
       "elements": Array [
         Literal {
           "value": Int32 {
@@ -269,6 +364,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 2,
+        "line": 1,
+        "text": "[",
+      },
     },
   },
 ]

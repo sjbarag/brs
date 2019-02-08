@@ -9,6 +9,11 @@ Array [
       "text": "_",
     },
     "value": AALiteral {
+      "close": Object {
+        "kind": 5,
+        "line": 6,
+        "text": "}",
+      },
       "elements": Array [
         Object {
           "name": BrsString {
@@ -47,6 +52,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 4,
+        "line": 1,
+        "text": "{",
+      },
     },
   },
 ]
@@ -61,7 +71,17 @@ Array [
       "text": "_",
     },
     "value": AALiteral {
+      "close": Object {
+        "kind": 5,
+        "line": 7,
+        "text": "}",
+      },
       "elements": Array [],
+      "open": Object {
+        "kind": 4,
+        "line": 1,
+        "text": "{",
+      },
     },
   },
 ]
@@ -76,7 +96,17 @@ Array [
       "text": "_",
     },
     "value": AALiteral {
+      "close": Object {
+        "kind": 5,
+        "line": 1,
+        "text": "}",
+      },
       "elements": Array [],
+      "open": Object {
+        "kind": 4,
+        "line": 1,
+        "text": "{",
+      },
     },
   },
 ]
@@ -91,6 +121,11 @@ Array [
       "text": "_",
     },
     "value": AALiteral {
+      "close": Object {
+        "kind": 5,
+        "line": 6,
+        "text": "}",
+      },
       "elements": Array [
         Object {
           "name": BrsString {
@@ -129,6 +164,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 4,
+        "line": 1,
+        "text": "{",
+      },
     },
   },
 ]
@@ -143,6 +183,11 @@ Array [
       "text": "_",
     },
     "value": AALiteral {
+      "close": Object {
+        "kind": 5,
+        "line": 6,
+        "text": "}",
+      },
       "elements": Array [
         Object {
           "name": BrsString {
@@ -181,6 +226,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 4,
+        "line": 1,
+        "text": "{",
+      },
     },
   },
 ]
@@ -195,6 +245,11 @@ Array [
       "text": "_",
     },
     "value": AALiteral {
+      "close": Object {
+        "kind": 5,
+        "line": 1,
+        "text": "}",
+      },
       "elements": Array [
         Object {
           "name": BrsString {
@@ -233,6 +288,11 @@ Array [
           },
         },
       ],
+      "open": Object {
+        "kind": 4,
+        "line": 1,
+        "text": "{",
+      },
     },
   },
 ]

@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { BrsString, Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser associative array literals", () => {
     let parser;
@@ -57,15 +57,15 @@ describe("parser associative array literals", () => {
                 { kind: Lexeme.LeftBrace, text: "{", line: 1 },
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 { kind: Lexeme.Colon, text: ":", line: 1 },
-                { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
                 { kind: Lexeme.Identifier, text: "bar", line: 1 },
                 { kind: Lexeme.Colon, text: ":", line: 1 },
-                { kind: Lexeme.Integer, text: "2", line: 1, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
                 { kind: Lexeme.Identifier, text: "baz", line: 1 },
                 { kind: Lexeme.Colon, text: ":", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.RightBrace, text: "}", line: 1 },
                 EOF
             ]);
@@ -84,17 +84,17 @@ describe("parser associative array literals", () => {
                 { kind: Lexeme.Newline, text: "\n", line: 1 },
                 { kind: Lexeme.Identifier, text: "foo", line: 2 },
                 { kind: Lexeme.Colon, text: ":", line: 2 },
-                { kind: Lexeme.Integer, text: "1", line: 2, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Comma, text: ",", line: 2 },
                 { kind: Lexeme.Newline, text: "\n", line: 2 },
                 { kind: Lexeme.Identifier, text: "bar", line: 3 },
                 { kind: Lexeme.Colon, text: ":", line: 3 },
-                { kind: Lexeme.Integer, text: "2", line: 3, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Comma, text: ",", line: 3 },
                 { kind: Lexeme.Newline, text: "\n", line: 3 },
                 { kind: Lexeme.Identifier, text: "baz", line: 4 },
                 { kind: Lexeme.Colon, text: ":", line: 4 },
-                { kind: Lexeme.Integer, text: "3", line: 4, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Newline, text: "\n", line: 5 },
                 { kind: Lexeme.RightBrace, text: "}", line: 6 },
                 EOF
@@ -114,15 +114,15 @@ describe("parser associative array literals", () => {
                 { kind: Lexeme.Newline, text: "\n", line: 1 },
                 { kind: Lexeme.Identifier, text: "foo", line: 2 },
                 { kind: Lexeme.Colon, text: ":", line: 2 },
-                { kind: Lexeme.Integer, text: "1", line: 2, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Newline, text: "\n", line: 2 },
                 { kind: Lexeme.Identifier, text: "bar", line: 3 },
                 { kind: Lexeme.Colon, text: ":", line: 3 },
-                { kind: Lexeme.Integer, text: "2", line: 3, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Newline, text: "\n", line: 3 },
                 { kind: Lexeme.Identifier, text: "baz", line: 4 },
                 { kind: Lexeme.Colon, text: ":", line: 4 },
-                { kind: Lexeme.Integer, text: "3", line: 4, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Newline, text: "\n", line: 5 },
                 { kind: Lexeme.RightBrace, text: "}", line: 6 },
                 EOF
@@ -141,19 +141,19 @@ describe("parser associative array literals", () => {
             { kind: Lexeme.Equal, text: "=", line: 1 },
             { kind: Lexeme.LeftBrace, text: "{", line: 1 },
             { kind: Lexeme.Newline, text: "\n", line: 1 },
-            { kind: Lexeme.String, text: "foo", line: 2, literal: new BrsString("foo") },
+            token(Lexeme.String, "foo", new BrsString("foo")),
             { kind: Lexeme.Colon, text: ":", line: 2 },
-            { kind: Lexeme.Integer, text: "1", line: 2, literal: new Int32(1) },
+            token(Lexeme.Integer, "1", new Int32(1)),
             { kind: Lexeme.Comma, text: ",", line: 2 },
             { kind: Lexeme.Newline, text: "\n", line: 2 },
             { kind: Lexeme.Identifier, text: "bar", line: 3 },
             { kind: Lexeme.Colon, text: ":", line: 3 },
-            { kind: Lexeme.Integer, text: "2", line: 3, literal: new Int32(2) },
+            token(Lexeme.Integer, "2", new Int32(2)),
             { kind: Lexeme.Comma, text: ",", line: 3 },
             { kind: Lexeme.Newline, text: "\n", line: 3 },
-            { kind: Lexeme.String, text: "requires-hyphens", line: 4, literal: new BrsString("requires-hypens") },
+            token(Lexeme.String, "requires-hyphens", new BrsString("requires-hypens")),
             { kind: Lexeme.Colon, text: ":", line: 4 },
-            { kind: Lexeme.Integer, text: "3", line: 4, literal: new Int32(3) },
+            token(Lexeme.Integer, "3", new Int32(3)),
             { kind: Lexeme.Newline, text: "\n", line: 5 },
             { kind: Lexeme.RightBrace, text: "}", line: 6 },
             EOF

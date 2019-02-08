@@ -25,6 +25,16 @@ Array [
       "body": Block {
         "statements": Array [],
       },
+      "end": Object {
+        "kind": 45,
+        "line": 2,
+        "text": "end function",
+      },
+      "keyword": Object {
+        "kind": 57,
+        "line": 1,
+        "text": "function",
+      },
       "parameters": Array [],
       "returns": 9,
     },
@@ -50,6 +60,16 @@ Array [
     "value": Function {
       "body": Block {
         "statements": Array [],
+      },
+      "end": Object {
+        "kind": 45,
+        "line": 2,
+        "text": "end function",
+      },
+      "keyword": Object {
+        "kind": 57,
+        "line": 1,
+        "text": "function",
       },
       "parameters": Array [],
       "returns": 9,

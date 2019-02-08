@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser", () => {
     let parser;
@@ -16,11 +16,11 @@ describe("parser", () => {
             let { statements, errors } = parser.parse([
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "1", literal: new Int32(1), line: 1 },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 EOF
             ]);
 
@@ -34,11 +34,11 @@ describe("parser", () => {
             let { statements, errors } = parser.parse([
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "1", literal: new Int32(1), line: 1 },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Minus, text: "-", line: 1 },
-                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Minus, text: "-", line: 1 },
-                { kind: Lexeme.Integer, text: "3", literal: new Int32(3), line: 1 },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 EOF
             ]);
 

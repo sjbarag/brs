@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { BrsBoolean, Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser array literals", () => {
     let parser;
@@ -55,11 +55,11 @@ describe("parser array literals", () => {
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
-                { kind: Lexeme.Integer, text: "2", line: 1, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 EOF
             ]);
@@ -76,13 +76,13 @@ describe("parser array literals", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
                 { kind: Lexeme.Newline, text: "\n", line: 1 },
-                { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
                 { kind: Lexeme.Newline, text: "\n", line: 1 },
-                { kind: Lexeme.Integer, text: "2", line: 2, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Comma, text: ",", line: 2 },
                 { kind: Lexeme.Newline, text: "\n", line: 2 },
-                { kind: Lexeme.Integer, text: "3", line: 3, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Newline, text: "\n", line: 3 },
                 { kind: Lexeme.RightSquare, text: "]", line: 4 },
                 EOF
@@ -100,11 +100,11 @@ describe("parser array literals", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
                 { kind: Lexeme.Newline, text: "\n", line: 1 },
-                { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Newline, text: "\n", line: 1 },
-                { kind: Lexeme.Integer, text: "2", line: 2, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Newline, text: "\n", line: 2 },
-                { kind: Lexeme.Integer, text: "3", line: 3, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Newline, text: "\n", line: 3 },
                 { kind: Lexeme.RightSquare, text: "]", line: 4 },
                 EOF
@@ -123,11 +123,11 @@ describe("parser array literals", () => {
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
-                { kind: Lexeme.Integer, text: "2", line: 1, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 EOF
             ]);
@@ -144,19 +144,19 @@ describe("parser array literals", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
                     { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                    { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                    token(Lexeme.Integer, "1", new Int32(1)),
                     { kind: Lexeme.Comma, text: ",", line: 1 },
-                    { kind: Lexeme.Integer, text: "2", line: 1, literal: new Int32(2) },
+                    token(Lexeme.Integer, "2", new Int32(2)),
                     { kind: Lexeme.Comma, text: ",", line: 1 },
-                    { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                    token(Lexeme.Integer, "3", new Int32(3)),
                     { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 { kind: Lexeme.Comma, text: ",", line: 1 },
                     { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                    { kind: Lexeme.Integer, text: "4", line: 1, literal: new Int32(4) },
+                    token(Lexeme.Integer, "4", new Int32(4)),
                     { kind: Lexeme.Comma, text: ",", line: 1 },
-                    { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                    token(Lexeme.Integer, "5", new Int32(5)),
                     { kind: Lexeme.Comma, text: ",", line: 1 },
-                    { kind: Lexeme.Integer, text: "6", line: 1, literal: new Int32(6) },
+                    token(Lexeme.Integer, "6", new Int32(6)),
                     { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 EOF
@@ -173,12 +173,12 @@ describe("parser array literals", () => {
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "1", line: 1, literal: new Int32(1) },
+                token(Lexeme.Integer, "1", new Int32(1)),
                 { kind: Lexeme.Plus, text: "+", line: 1},
-                { kind: Lexeme.Integer, text: "2", line: 1, literal: new Int32(2) },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
                 { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.False, text: "false", line: 1, literal: BrsBoolean.False },
+                token(Lexeme.False, "false", BrsBoolean.False),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 EOF
             ]);

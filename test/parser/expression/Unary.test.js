@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32, BrsBoolean } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser", () => {
     let parser;
@@ -17,7 +17,7 @@ describe("parser", () => {
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
+                token(Lexeme.True, "true", BrsBoolean.True),
                 EOF
             ]);
 
@@ -36,7 +36,7 @@ describe("parser", () => {
                 { kind: Lexeme.Not, text: "not", line: 1 },
                 { kind: Lexeme.Not, text: "not", line: 1 },
                 { kind: Lexeme.Not, text: "not", line: 1 },
-                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
+                token(Lexeme.True, "true", BrsBoolean.True),
                 EOF
             ]);
 
@@ -51,7 +51,7 @@ describe("parser", () => {
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Minus, text: "-", line: 1},
-                { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
+                token(Lexeme.Integer, "5", new Int32(5)),
                 EOF
             ]);
 
@@ -70,7 +70,7 @@ describe("parser", () => {
                 { kind: Lexeme.Minus, text: "-", line: 1},
                 { kind: Lexeme.Minus, text: "-", line: 1},
                 { kind: Lexeme.Minus, text: "-", line: 1},
-                { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
+                token(Lexeme.Integer, "5", new Int32(5)),
                 EOF
             ]);
 

@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser for loops", () => {
     let parser;
@@ -16,11 +16,11 @@ describe("parser for loops", () => {
             { kind: Lexeme.For, text: "for", line: 1 },
             { kind: Lexeme.Identifier, text: "i", line: 1 },
             { kind: Lexeme.Equal, text: "=", line: 1 },
-            { kind: Lexeme.Integer, text: "0", literal: new Int32(0), line: 1 },
+            token(Lexeme.Integer, "0", new Int32(0)),
             { kind: Lexeme.To, text: "to", line: 1 },
-            { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
+            token(Lexeme.Integer, "5", new Int32(5)),
             { kind: Lexeme.Step, text: "step", line: 1 },
-            { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+            token(Lexeme.Integer, "2", new Int32(2)),
             { kind: Lexeme.Newline, text: "\n", line: 1 },
             // body would go here, but it's not necessary for this test
             { kind: Lexeme.EndFor, text: "end for", line: 2 },
@@ -42,9 +42,9 @@ describe("parser for loops", () => {
             { kind: Lexeme.For, text: "for", line: 1 },
             { kind: Lexeme.Identifier, text: "i", line: 1 },
             { kind: Lexeme.Equal, text: "=", line: 1 },
-            { kind: Lexeme.Integer, text: "0", literal: new Int32(0), line: 1 },
+            token(Lexeme.Integer, "0", new Int32(0)),
             { kind: Lexeme.To, text: "to", line: 1 },
-            { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
+            token(Lexeme.Integer, "5", new Int32(5)),
             { kind: Lexeme.Newline, text: "\n", line: 1 },
             // body would go here, but it's not necessary for this test
             { kind: Lexeme.EndFor, text: "end for", line: 2 },
@@ -66,9 +66,9 @@ describe("parser for loops", () => {
             { kind: Lexeme.For, text: "for", line: 1 },
             { kind: Lexeme.Identifier, text: "i", line: 1 },
             { kind: Lexeme.Equal, text: "=", line: 1 },
-            { kind: Lexeme.Integer, text: "0", literal: new Int32(0), line: 1 },
+            token(Lexeme.Integer, "0", new Int32(0)),
             { kind: Lexeme.To, text: "to", line: 1 },
-            { kind: Lexeme.Integer, text: "5", literal: new Int32(5), line: 1 },
+            token(Lexeme.Integer, "5", new Int32(5)),
             { kind: Lexeme.Newline, text: "\n", line: 1 },
             // body would go here, but it's not necessary for this test
             { kind: Lexeme.Next, text: "next", line: 2 },

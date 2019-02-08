@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { BrsString, Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser", () => {
     let parser;
@@ -37,7 +37,7 @@ describe("parser", () => {
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
                 { kind: Lexeme.Newline, text: "\\n", line: 1 },
                 { kind: Lexeme.Print, text: "print", line: 2 },
-                { kind: Lexeme.String, text: "Lorem ipsum", line: 2, literal: new BrsString("Lorem ipsum") },
+                token(Lexeme.String, "Lorem ipsum", new BrsString("Lorem ipsum")),
                 { kind: Lexeme.Newline, text: "\\n", line: 2 },
                 { kind: Lexeme.EndFunction, text: "end function", line: 3 },
                 EOF
@@ -101,19 +101,19 @@ describe("parser", () => {
 
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
 
                 { kind: Lexeme.Identifier, text: "b", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "4", line: 1, literal: new Int32(4) },
+                token(Lexeme.Integer, "4", new Int32(4)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
 
                 { kind: Lexeme.Identifier, text: "c", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                token(Lexeme.Integer, "5", new Int32(5)),
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
 
                 { kind: Lexeme.Newline, text: "\\n", line: 1 },
@@ -135,7 +135,7 @@ describe("parser", () => {
 
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Identifier, text: "as", line: 1 },
                 { kind: Lexeme.Identifier, text: "integer", line: 1 },
                 { kind: Lexeme.Comma, text: ",", line: 1 },
@@ -144,7 +144,7 @@ describe("parser", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                token(Lexeme.Integer, "5", new Int32(5)),
                 { kind: Lexeme.Identifier, text: "as", line: 1 },
                 { kind: Lexeme.Identifier, text: "integer", line: 1 },
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
@@ -206,7 +206,7 @@ describe("parser", () => {
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
                 { kind: Lexeme.Newline, text: "\\n", line: 1 },
                 { kind: Lexeme.Print, text: "print", line: 2 },
-                { kind: Lexeme.String, text: "Lorem ipsum", line: 2, literal: new BrsString("Lorem ipsum") },
+                token(Lexeme.String, "Lorem ipsum", new BrsString("Lorem ipsum")),
                 { kind: Lexeme.Newline, text: "\\n", line: 2 },
                 { kind: Lexeme.EndSub, text: "end sub", line: 3 },
                 EOF
@@ -270,19 +270,19 @@ describe("parser", () => {
 
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
 
                 { kind: Lexeme.Identifier, text: "b", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "4", line: 1, literal: new Int32(4) },
+                token(Lexeme.Integer, "4", new Int32(4)),
                 { kind: Lexeme.Comma, text: ",", line: 1 },
 
                 { kind: Lexeme.Identifier, text: "c", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                token(Lexeme.Integer, "5", new Int32(5)),
                 { kind: Lexeme.RightParen, text: ")", line: 1 },
 
                 { kind: Lexeme.Newline, text: "\\n", line: 1 },
@@ -304,7 +304,7 @@ describe("parser", () => {
 
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.Integer, text: "3", line: 1, literal: new Int32(3) },
+                token(Lexeme.Integer, "3", new Int32(3)),
                 { kind: Lexeme.Identifier, text: "as", line: 1 },
                 { kind: Lexeme.Identifier, text: "integer", line: 1 },
                 { kind: Lexeme.Comma, text: ",", line: 1 },
@@ -313,7 +313,7 @@ describe("parser", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Identifier, text: "a", line: 1 },
                 { kind: Lexeme.Plus, text: "+", line: 1 },
-                { kind: Lexeme.Integer, text: "5", line: 1, literal: new Int32(5) },
+                token(Lexeme.Integer, "5", new Int32(5)),
                 { kind: Lexeme.Identifier, text: "as", line: 1 },
                 { kind: Lexeme.Identifier, text: "integer", line: 1 },
                 { kind: Lexeme.RightParen, text: ")", line: 1 },

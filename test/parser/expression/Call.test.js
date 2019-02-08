@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser call expressions", () => {
     let parser;
@@ -45,9 +45,9 @@ describe("parser call expressions", () => {
         const { statements, errors } = parser.parse([
             { kind: Lexeme.Identifier, text: "add", line: 1 },
             { kind: Lexeme.LeftParen,  text: "(", line: 1 },
-            { kind: Lexeme.Integer, text: "1", literal: new Int32(1) },
+            token(Lexeme.Integer, "1", new Int32(1)),
             { kind: Lexeme.Comma,  text: ",", line: 1 },
-            { kind: Lexeme.Integer, text: "2", literal: new Int32(2) },
+            token(Lexeme.Integer, "2", new Int32(2)),
             { kind: Lexeme.RightParen, text: ")", line: 1 },
             EOF
         ]);

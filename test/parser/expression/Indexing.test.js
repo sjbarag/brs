@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Int32 } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser indexing", () => {
     let parser;
@@ -34,7 +34,7 @@ describe("parser indexing", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 EOF
             ]);
@@ -69,13 +69,13 @@ describe("parser indexing", () => {
                 { kind: Lexeme.Equal, text: "=", line: 1 },
                 { kind: Lexeme.Identifier, text: "foo", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "2", literal: new Int32(2), line: 1 },
+                token(Lexeme.Integer, "2", new Int32(2)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "0", literal: new Int32(0), line: 1 },
+                token(Lexeme.Integer, "0", new Int32(0)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "6", literal: new Int32(6), line: 1 },
+                token(Lexeme.Integer, "6", new Int32(6)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 EOF
             ]);
@@ -94,7 +94,7 @@ describe("parser indexing", () => {
                 { kind: Lexeme.Dot, text: ".", line: 1 },
                 { kind: Lexeme.Identifier, text: "bar", line: 1 },
                 { kind: Lexeme.LeftSquare, text: "[", line: 1 },
-                { kind: Lexeme.Integer, text: "0", literal: new Int32(0), line: 1 },
+                token(Lexeme.Integer, "0", new Int32(0)),
                 { kind: Lexeme.RightSquare, text: "]", line: 1 },
                 { kind: Lexeme.Dot, text: ".", line: 1 },
                 { kind: Lexeme.Identifier, text: "baz", line: 1 },

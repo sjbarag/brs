@@ -2,7 +2,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { BrsBoolean } = brs.types;
 
-const { EOF } = require("../ParserTests");
+const { token, identifier, EOF } = require("../ParserTests");
 
 describe("parser", () => {
     let parser;
@@ -16,9 +16,9 @@ describe("parser", () => {
             let { statements, errors } = parser.parse([
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
+                token(Lexeme.True, "true", BrsBoolean.True),
                 { kind: Lexeme.And, text: "and", line: 1 },
-                { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1 },
+                token(Lexeme.False, "false", BrsBoolean.False),
                 EOF
             ]);
 
@@ -32,9 +32,9 @@ describe("parser", () => {
             let { statements, errors } = parser.parse([
                 { kind: Lexeme.Identifier, text: "_", line: 1 },
                 { kind: Lexeme.Equal, text: "=", line: 1 },
-                { kind: Lexeme.True, text: "true", literal: BrsBoolean.True, line: 1 },
+                token(Lexeme.True, "true", BrsBoolean.True),
                 { kind: Lexeme.Or, text: "or", line: 1 },
-                { kind: Lexeme.False, text: "false", literal: BrsBoolean.False, line: 1 },
+                token(Lexeme.False, "false", BrsBoolean.False),
                 EOF
             ]);
 

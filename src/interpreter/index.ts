@@ -22,6 +22,7 @@ import {
 } from "../brsTypes";
 
 import { Lexeme } from "../lexer";
+import { isToken } from "../lexer/Token";
 import { Expr, Stmt } from "../parser";
 import { BrsError, TypeMismatch } from "../Error";
 
@@ -30,7 +31,7 @@ import * as StdLib from "../stdlib";
 import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
-import { BlockEnd, StopReason, Runtime } from "../parser/Statement";
+import { BlockEnd, StopReason, Runtime, Expression } from "../parser/Statement";
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
@@ -188,11 +189,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitReturn(statement: Stmt.Return): never {
         if (!statement.value) {
-            throw new Stmt.ReturnValue(statement.keyword);
+            throw new Stmt.ReturnValue(statement.tokens.return);
         }
 
         let toReturn = this.evaluate(statement.value);
-        throw new Stmt.ReturnValue(statement.keyword, toReturn);
+        throw new Stmt.ReturnValue(statement.tokens.return, toReturn);
     }
 
     visitExpression(statement: Stmt.Expression): BrsType {
@@ -204,30 +205,39 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.environment.define(Scope.Function, "Tab", StdLib.Tab);
 
         statement.expressions.forEach( (printable, index) => {
-            switch (printable) {
-                case Stmt.PrintSeparator.Tab:
-                    this.stdout.write(
-                        " ".repeat(16 - (this.stdout.position() % 16))
-                    );
-                    break;
-                case Stmt.PrintSeparator.Space:
-                    if (index === statement.expressions.length - 1) {
-                        // Don't write an extra space for trailing `;` in print lists.
-                        // They're used to suppress trailing newlines in `print` statements
+            if (isToken(printable)) {
+                switch (printable.kind) {
+                    case Lexeme.Semicolon:
+                        this.stdout.write(
+                            " ".repeat(16 - (this.stdout.position() % 16))
+                        );
                         break;
-                    }
+                    case Lexeme.Comma:
+                        if (index === statement.expressions.length - 1) {
+                            // Don't write an extra space for trailing `;` in print lists.
+                            // They're used to suppress trailing newlines in `print` statements
+                            break;
+                        }
 
-                    this.stdout.write(" ");
-                    break;
-                default:
-                    this.stdout.write(
-                        this.evaluate(printable).toString()
-                    );
-                    break;
+                        this.stdout.write(" ");
+                        break;
+                    default:
+                        this.addError(
+                            new BrsError(
+                                `Found unexpected print separator '${printable.text}'`,
+                                printable.location
+                            )
+                        );
+                }
+            } else {
+                this.stdout.write(
+                    this.evaluate(printable).toString()
+                );
             }
         });
 
-        if (statement.expressions[statement.expressions.length - 1] !== Stmt.PrintSeparator.Space) {
+        let lastExpression = statement.expressions[statement.expressions.length - 1];
+        if (isToken(lastExpression) && lastExpression.kind !== Lexeme.Semicolon) {
             this.stdout.write("\n");
         }
 
@@ -878,6 +888,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         const counterName = statement.counterDeclaration.name;
         const step = new Stmt.Assignment(
+            { equals: statement.tokens.for },
             counterName,
             new Expr.Binary(
                 new Expr.Variable(counterName),

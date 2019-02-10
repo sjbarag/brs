@@ -18,6 +18,7 @@ describe("property getting", () => {
         test("one-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("array"),
                     new Expr.ArrayLiteral([
                         new Expr.Literal(new BrsString("index0")),
@@ -26,6 +27,7 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("result"),
                     new Expr.IndexedGet(
                         new Expr.Variable(identifier("array")),
@@ -47,6 +49,7 @@ describe("property getting", () => {
         test("multi-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("array"),
                     new Expr.ArrayLiteral([
                         new Expr.ArrayLiteral([
@@ -67,6 +70,7 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("result"),
                     new Expr.IndexedGet(
                         new Expr.IndexedGet(
@@ -94,6 +98,7 @@ describe("property getting", () => {
         test("one-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("aa"),
                     new Expr.AALiteral([
                         {
@@ -107,6 +112,7 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("result"),
                     new Expr.DottedGet(
                         new Expr.Variable(identifier("aa")),
@@ -127,6 +133,7 @@ describe("property getting", () => {
         test("multi-dimensional", () => {
             let ast = [
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("aa"),
                     new Expr.AALiteral([
                         {
@@ -141,6 +148,7 @@ describe("property getting", () => {
                     ])
                 ),
                 new Stmt.Assignment(
+                    { equals: token(Lexeme.Equals, "=") },
                     identifier("result"),
                     new Expr.DottedGet(
                         new Expr.DottedGet(

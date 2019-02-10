@@ -24,7 +24,7 @@ export interface Location {
     /** The line and column at which this token ended. */
     end: LineAndColumn,
     /** The name of the file in which this token was found. */
-    file?: string;
+    file: string;
 }
 
 /** A line-column pair. */

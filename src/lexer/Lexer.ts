@@ -33,10 +33,11 @@ export class Lexer {
      * an abstract syntax tree.
      *
      * @param toScan the BrightScript code to convert into tokens
+     * @param filename the name of the file to be scanned
      * @returns an object containing an array of `errors` and an array of `tokens` to be passed to a parser.
      */
-    static scan(toScan: string): ScanResults {
-        return new Lexer().scan(toScan);
+    static scan(toScan: string, filename: string = ""): ScanResults {
+        return new Lexer().scan(toScan, filename);
     }
 
     /**
@@ -69,7 +70,7 @@ export class Lexer {
      * @param filename the name of the file to be scanned
      * @returns an object containing an array of `errors` and an array of `tokens` to be passed to a parser.
      */
-    public scan(toScan: string, filename?: string): ScanResults {
+    public scan(toScan: string, filename: string): ScanResults {
         /** The zero-indexed position at which the token under consideration begins. */
         let start = 0;
         /** The zero-indexed position being examined for the token under consideration. */

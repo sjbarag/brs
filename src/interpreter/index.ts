@@ -207,12 +207,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         statement.expressions.forEach( (printable, index) => {
             if (isToken(printable)) {
                 switch (printable.kind) {
-                    case Lexeme.Semicolon:
+                    case Lexeme.Comma:
                         this.stdout.write(
                             " ".repeat(16 - (this.stdout.position() % 16))
                         );
                         break;
-                    case Lexeme.Comma:
+                    case Lexeme.Semicolon:
                         if (index === statement.expressions.length - 1) {
                             // Don't write an extra space for trailing `;` in print lists.
                             // They're used to suppress trailing newlines in `print` statements
@@ -237,7 +237,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         });
 
         let lastExpression = statement.expressions[statement.expressions.length - 1];
-        if (isToken(lastExpression) && lastExpression.kind !== Lexeme.Semicolon) {
+        if (!isToken(lastExpression) || lastExpression.kind !== Lexeme.Semicolon) {
             this.stdout.write("\n");
         }
 

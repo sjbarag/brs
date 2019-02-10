@@ -19,6 +19,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": ArrayLiteral {
       "close": Object {
         "isReserved": false,
@@ -131,6 +149,24 @@ Array [
         },
       },
       "text": "_",
+    },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
     },
     "value": ArrayLiteral {
       "close": Object {
@@ -299,6 +335,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": ArrayLiteral {
       "close": Object {
         "isReserved": false,
@@ -376,6 +430,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": ArrayLiteral {
       "close": Object {
         "isReserved": false,
@@ -434,6 +506,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": ArrayLiteral {
       "close": Object {
         "isReserved": false,
@@ -491,6 +581,24 @@ Array [
         },
       },
       "text": "_",
+    },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
     },
     "value": ArrayLiteral {
       "close": Object {
@@ -569,6 +677,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": ArrayLiteral {
       "close": Object {
         "isReserved": false,
@@ -645,6 +771,24 @@ Array [
         },
       },
       "text": "_",
+    },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
     },
     "value": ArrayLiteral {
       "close": Object {

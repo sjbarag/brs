@@ -19,6 +19,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Binary {
       "left": Binary {
         "left": Literal {
@@ -95,6 +113,24 @@ Array [
         },
       },
       "text": "_",
+    },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
     },
     "value": Binary {
       "left": Binary {
@@ -173,6 +209,24 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Binary {
       "left": Binary {
         "left": Literal {
@@ -249,6 +303,24 @@ Array [
         },
       },
       "text": "_",
+    },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
     },
     "value": Binary {
       "left": Binary {

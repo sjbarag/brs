@@ -19,8 +19,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Print {
             "expressions": Array [
@@ -31,6 +59,24 @@ Array [
                 },
               },
             ],
+            "tokens": Object {
+              "print": Object {
+                "isReserved": true,
+                "kind": 71,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
+                "text": "print",
+              },
+            },
           },
         ],
       },
@@ -92,8 +138,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -254,8 +328,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -349,8 +451,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -460,8 +590,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -601,8 +759,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -663,8 +849,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Print {
             "expressions": Array [
@@ -675,6 +889,24 @@ Array [
                 },
               },
             ],
+            "tokens": Object {
+              "print": Object {
+                "isReserved": true,
+                "kind": 71,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
+                "text": "print",
+              },
+            },
           },
         ],
       },
@@ -736,8 +968,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -798,8 +1058,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -860,8 +1148,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Print {
             "expressions": Array [
@@ -872,6 +1188,24 @@ Array [
                 },
               },
             ],
+            "tokens": Object {
+              "print": Object {
+                "isReserved": true,
+                "kind": 71,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
+                "text": "print",
+              },
+            },
           },
         ],
       },
@@ -933,8 +1267,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -1095,8 +1457,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -1190,8 +1580,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -1285,8 +1703,36 @@ Array [
       },
       "text": "_",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -1426,8 +1872,36 @@ Array [
       },
       "text": "anonymousFunction",
     },
+    "tokens": Object {
+      "equals": Object {
+        "isReserved": false,
+        "kind": 19,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "=",
+      },
+    },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Print {
             "expressions": Array [
@@ -1438,6 +1912,24 @@ Array [
                 },
               },
             ],
+            "tokens": Object {
+              "print": Object {
+                "isReserved": true,
+                "kind": 71,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
+                "text": "print",
+              },
+            },
           },
         ],
       },
@@ -1487,6 +1979,16 @@ Array [
       "args": Array [
         Function {
           "body": Block {
+            "startingLocation": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "statements": Array [
               Print {
                 "expressions": Array [
@@ -1497,6 +1999,24 @@ Array [
                     },
                   },
                 ],
+                "tokens": Object {
+                  "print": Object {
+                    "isReserved": true,
+                    "kind": 71,
+                    "literal": undefined,
+                    "location": Object {
+                      "end": Object {
+                        "column": -9,
+                        "line": -9,
+                      },
+                      "start": Object {
+                        "column": -9,
+                        "line": -9,
+                      },
+                    },
+                    "text": "print",
+                  },
+                },
               },
             ],
           },

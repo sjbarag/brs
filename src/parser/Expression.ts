@@ -154,15 +154,15 @@ export class Grouping implements Expression {
 }
 
 export class Literal implements Expression {
-    constructor(readonly value: BrsType) {}
+    constructor(readonly value: BrsType, readonly _location: Location | undefined) {}
 
     accept <R> (visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);
     }
 
     get location() {
-        return {
-            file: "",
+        return this._location || {
+            file: "(internal)",
             start: {
                 line: -1,
                 column: -1
@@ -171,7 +171,6 @@ export class Literal implements Expression {
                 line: -1,
                 column: -1
             }
-
         };
     }
 }

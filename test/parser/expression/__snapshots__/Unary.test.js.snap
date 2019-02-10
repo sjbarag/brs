@@ -123,6 +123,16 @@ Array [
                 "text": "-",
               },
               "right": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": Int32 {
                   "kind": 3,
                   "value": 5,
@@ -260,6 +270,16 @@ Array [
                 "text": "not",
               },
               "right": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": BrsBoolean {
                   "kind": 1,
                   "value": true,
@@ -329,6 +349,16 @@ Array [
         "text": "-",
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 5,
@@ -394,6 +424,16 @@ Array [
         "text": "not",
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsBoolean {
           "kind": 1,
           "value": true,

@@ -6,12 +6,32 @@ Array [
     "expression": Call {
       "args": Array [
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 1,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 2,

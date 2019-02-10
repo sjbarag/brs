@@ -14,7 +14,7 @@ export const Type = new Callable(
                 {
                     name: "version",
                     type: ValueKind.Int32,
-                    defaultValue: new Expr.Literal(new Int32(2))
+                    defaultValue: new Expr.Literal(new Int32(2), undefined)
                 }
             ],
             returns: ValueKind.String

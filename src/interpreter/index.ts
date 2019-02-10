@@ -908,7 +908,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         file: "(internal)"
                     }
                 },
-                new Expr.Literal(increment)
+                new Expr.Literal(
+                    increment,
+                    statement.increment.location
+                )
             )
         );
 

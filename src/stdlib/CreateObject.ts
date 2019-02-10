@@ -10,11 +10,11 @@ export const CreateObject = new Callable(
         signature: {
             args: [
                 { name: "objName", type: ValueKind.String },
-                { name: "arg1", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance) },
-                { name: "arg2", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance) },
-                { name: "arg3", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance) },
-                { name: "arg4", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance) },
-                { name: "arg4", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance) }
+                { name: "arg1", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance, undefined) },
+                { name: "arg2", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance, undefined) },
+                { name: "arg3", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance, undefined) },
+                { name: "arg4", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance, undefined) },
+                { name: "arg4", type: ValueKind.Dynamic, defaultValue: new Expr.Literal(BrsInvalid.Instance, undefined) }
             ],
             returns: ValueKind.Dynamic
         },

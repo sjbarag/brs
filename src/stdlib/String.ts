@@ -2,6 +2,7 @@ import { BrsType, Callable, ValueKind, BrsString, Int32, Float } from "../brsTyp
 import * as Expr from "../parser/Expression";
 import { Interpreter } from "../interpreter";
 import { BrsNumber } from "../brsTypes/BrsNumber";
+import { Lexeme } from "../lexer";
 
 /** Converts the string to all uppercase. */
 export const UCase = new Callable(
@@ -208,7 +209,7 @@ export const StrI = new Callable(
                 {
                     name: "radix",
                     type: ValueKind.Int32,
-                    defaultValue: new Expr.Literal(new Int32(10))
+                    defaultValue: new Expr.Literal(new Int32(10), undefined)
                 }
             ],
             returns: ValueKind.String
@@ -228,7 +229,7 @@ export const StrI = new Callable(
 );
 
 /**
- * Return a string from another string replacing instances of {index} with the 
+ * Return a string from another string replacing instances of {index} with the
  * respective parameter.
  */
 export const Substitute = new Callable(
@@ -247,17 +248,17 @@ export const Substitute = new Callable(
                 {
                     name: "arg1",
                     type: ValueKind.String,
-                    defaultValue: new Expr.Literal(new BrsString(""))
+                    defaultValue: new Expr.Literal(new BrsString(""), undefined)
                 },
                 {
                     name: "arg2",
                     type: ValueKind.String,
-                    defaultValue: new Expr.Literal(new BrsString(""))
+                    defaultValue: new Expr.Literal(new BrsString(""), undefined)
                 },
                 {
                     name: "arg3",
                     type: ValueKind.String,
-                    defaultValue: new Expr.Literal(new BrsString(""))
+                    defaultValue: new Expr.Literal(new BrsString(""), undefined)
                 },
             ],
             returns: ValueKind.String
@@ -281,13 +282,13 @@ export const Val = new Callable(
         signature: {
             args: [
                 {
-                    name: "s", 
+                    name: "s",
                     type: ValueKind.String
                 },
                 {
                     name: "radix",
                     type: ValueKind.Int32,
-                    defaultValue: new Expr.Literal(new Int32(10))
+                    defaultValue: new Expr.Literal(new Int32(10), undefined)
                 }
             ],
             returns: ValueKind.Dynamic
@@ -315,7 +316,7 @@ export const StrToI = new Callable(
         signature: {
             args: [
                 {
-                    name: "s", 
+                    name: "s",
                     type: ValueKind.String
                 }
             ],

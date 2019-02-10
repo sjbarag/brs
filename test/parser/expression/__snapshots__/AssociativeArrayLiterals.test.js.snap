@@ -61,6 +61,16 @@ Array [
             "value": "foo",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
@@ -73,6 +83,16 @@ Array [
             "value": "bar",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -85,6 +105,16 @@ Array [
             "value": "requires-hypens",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 3,
@@ -326,6 +356,16 @@ Array [
             "value": "foo",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
@@ -338,6 +378,16 @@ Array [
             "value": "bar",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -350,6 +400,16 @@ Array [
             "value": "baz",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 3,
@@ -439,6 +499,16 @@ Array [
             "value": "foo",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
@@ -451,6 +521,16 @@ Array [
             "value": "bar",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -463,6 +543,16 @@ Array [
             "value": "baz",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 3,
@@ -552,6 +642,16 @@ Array [
             "value": "foo",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
@@ -564,6 +664,16 @@ Array [
             "value": "bar",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -576,6 +686,16 @@ Array [
             "value": "baz",
           },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 3,

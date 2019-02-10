@@ -40,12 +40,32 @@ Array [
     "value": Binary {
       "left": Binary {
         "left": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 7,
           },
         },
         "right": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 5,
@@ -69,6 +89,16 @@ Array [
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Float {
           "kind": 5,
           "value": 3,
@@ -135,12 +165,32 @@ Array [
     "value": Binary {
       "left": Binary {
         "left": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 32.5,
           },
         },
         "right": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 5,
@@ -164,6 +214,16 @@ Array [
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Float {
           "kind": 5,
           "value": 3,
@@ -230,12 +290,32 @@ Array [
     "value": Binary {
       "left": Binary {
         "left": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 7,
           },
         },
         "right": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 5,
@@ -259,6 +339,16 @@ Array [
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Float {
           "kind": 5,
           "value": 3,
@@ -325,12 +415,32 @@ Array [
     "value": Binary {
       "left": Binary {
         "left": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 3,
           },
         },
         "right": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Float {
             "kind": 5,
             "value": 5,
@@ -354,6 +464,16 @@ Array [
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Float {
           "kind": 5,
           "value": 7,

@@ -57,12 +57,32 @@ Array [
       "elements": Array [
         Binary {
           "left": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
             },
           },
           "right": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -103,6 +123,16 @@ Array [
             "text": "not",
           },
           "right": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
@@ -205,18 +235,48 @@ Array [
           },
           "elements": Array [
             Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "value": Int32 {
                 "kind": 3,
                 "value": 1,
               },
             },
             Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "value": Int32 {
                 "kind": 3,
                 "value": 2,
               },
             },
             Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "value": Int32 {
                 "kind": 3,
                 "value": 3,
@@ -259,18 +319,48 @@ Array [
           },
           "elements": Array [
             Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "value": Int32 {
                 "kind": 3,
                 "value": 4,
               },
             },
             Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "value": Int32 {
                 "kind": 3,
                 "value": 5,
               },
             },
             Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
               "value": Int32 {
                 "kind": 3,
                 "value": 6,
@@ -372,18 +462,48 @@ Array [
       },
       "elements": Array [
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 1,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 2,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 3,
@@ -619,18 +739,48 @@ Array [
       },
       "elements": Array [
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 1,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 2,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 3,
@@ -714,18 +864,48 @@ Array [
       },
       "elements": Array [
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 1,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 2,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 3,
@@ -809,18 +989,48 @@ Array [
       },
       "elements": Array [
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 1,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 2,
           },
         },
         Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 3,

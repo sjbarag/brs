@@ -39,12 +39,32 @@ Array [
     },
     "value": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsBoolean {
           "kind": 1,
           "value": true,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsBoolean {
           "kind": 1,
           "value": false,
@@ -110,12 +130,32 @@ Array [
     },
     "value": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsBoolean {
           "kind": 1,
           "value": true,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsBoolean {
           "kind": 1,
           "value": false,

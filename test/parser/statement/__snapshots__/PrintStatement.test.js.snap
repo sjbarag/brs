@@ -5,18 +5,48 @@ Array [
   Print {
     "expressions": Array [
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsString {
           "kind": 2,
           "value": "Foo",
         },
       },
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsString {
           "kind": 2,
           "value": "bar",
         },
       },
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsString {
           "kind": 2,
           "value": "baz",
@@ -50,6 +80,16 @@ Array [
   Print {
     "expressions": Array [
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsString {
           "kind": 2,
           "value": "Foo",
@@ -72,6 +112,16 @@ Array [
         "text": undefined,
       },
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsString {
           "kind": 2,
           "value": "bar",
@@ -94,6 +144,16 @@ Array [
         "text": undefined,
       },
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": BrsString {
           "kind": 2,
           "value": "baz",
@@ -127,6 +187,16 @@ Array [
   Print {
     "expressions": Array [
       Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": undefined,
       },
     ],

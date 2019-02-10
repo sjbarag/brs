@@ -55,6 +55,16 @@ Array [
         "text": "]",
       },
       "index": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 6,
@@ -78,6 +88,16 @@ Array [
           "text": "]",
         },
         "index": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 0,
@@ -101,6 +121,16 @@ Array [
             "text": "]",
           },
           "index": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -280,6 +310,16 @@ Array [
           "text": "]",
         },
         "index": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "value": Int32 {
             "kind": 3,
             "value": 0,
@@ -382,6 +422,16 @@ Array [
         "text": "]",
       },
       "index": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,

@@ -362,7 +362,7 @@ export class Parser {
                 increment = expression();
             } else {
                 // BrightScript for/to/step loops default to a step of 1 if no `step` is provided
-                increment = new Expr.Literal(new Int32(1));
+                increment = new Expr.Literal(new Int32(1), peek().location);
             }
             while(match(Lexeme.Newline));
 
@@ -824,9 +824,9 @@ export class Parser {
 
         function primary(): Expression {
             switch (true) {
-                case match(Lexeme.False): return new Expr.Literal(BrsBoolean.False);
-                case match(Lexeme.True): return new Expr.Literal(BrsBoolean.True);
-                case match(Lexeme.Invalid): return new Expr.Literal(BrsInvalid.Instance);
+                case match(Lexeme.False): return new Expr.Literal(BrsBoolean.False, previous().location);
+                case match(Lexeme.True): return new Expr.Literal(BrsBoolean.True, previous().location);
+                case match(Lexeme.Invalid): return new Expr.Literal(BrsInvalid.Instance, previous().location);
                 case match(
                     Lexeme.Integer,
                     Lexeme.LongInteger,
@@ -834,7 +834,7 @@ export class Parser {
                     Lexeme.Double,
                     Lexeme.String
                 ):
-                    return new Expr.Literal(previous().literal!);
+                    return new Expr.Literal(previous().literal!, previous().location);
                 case match(Lexeme.Identifier):
                     return new Expr.Variable(previous() as Identifier);
                 case match(Lexeme.LeftParen):

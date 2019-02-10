@@ -114,7 +114,7 @@ function logBrsErr(functionName: string, err: Error): void {
 export const FormatJson = new Callable("FormatJson", {
     signature: { returns: ValueKind.String, args: [
         { name: "x", type: ValueKind.Object },
-        { name: "flags", type: ValueKind.Int32, defaultValue: new Literal(new Int32(0)) }
+        { name: "flags", type: ValueKind.Int32, defaultValue: new Literal(new Int32(0), undefined) }
     ]},
     impl: (interpreter: Interpreter, x: BrsType, _flags: Int32) => {
         try {

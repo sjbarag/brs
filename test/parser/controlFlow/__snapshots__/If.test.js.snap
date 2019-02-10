@@ -5,12 +5,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -34,6 +54,16 @@ Array [
       },
     },
     "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -52,7 +82,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
@@ -65,12 +123,32 @@ Array [
       Object {
         "condition": Binary {
           "left": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
             },
           },
           "right": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -94,6 +172,16 @@ Array [
           },
         },
         "thenBranch": Block {
+          "startingLocation": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "statements": Array [
             Assignment {
               "name": Object {
@@ -112,7 +200,35 @@ Array [
                 },
                 "text": "foo",
               },
+              "tokens": Object {
+                "equals": Object {
+                  "isReserved": false,
+                  "kind": 19,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                    "start": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                  },
+                  "text": "=",
+                },
+              },
               "value": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": Int32 {
                   "kind": 3,
                   "value": 3,
@@ -136,7 +252,35 @@ Array [
                 },
                 "text": "bar",
               },
+              "tokens": Object {
+                "equals": Object {
+                  "isReserved": false,
+                  "kind": 19,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                    "start": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                  },
+                  "text": "=",
+                },
+              },
               "value": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": BrsBoolean {
                   "kind": 1,
                   "value": true,
@@ -148,6 +292,16 @@ Array [
       },
     ],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -166,7 +320,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -174,6 +356,44 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [
+        Object {
+          "isReserved": false,
+          "kind": 43,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
+          "text": "else if",
+        },
+      ],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
     },
   },
 ]
@@ -184,12 +404,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -215,6 +455,16 @@ Array [
     "elseBranch": undefined,
     "elseIfs": Array [],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -233,7 +483,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -257,7 +535,35 @@ Array [
             },
             "text": "bar",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -265,6 +571,57 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": Object {
+        "isReserved": false,
+        "kind": 47,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "end if",
+      },
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 79,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "then",
+      },
     },
   },
 ]
@@ -275,12 +632,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -304,6 +681,16 @@ Array [
       },
     },
     "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -322,7 +709,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
@@ -346,7 +761,35 @@ Array [
             },
             "text": "bar",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -357,6 +800,16 @@ Array [
     },
     "elseIfs": Array [],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -375,7 +828,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -383,6 +864,42 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 79,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "then",
+      },
     },
   },
 ]
@@ -393,12 +910,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -422,6 +959,16 @@ Array [
       },
     },
     "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -440,7 +987,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
@@ -453,12 +1028,32 @@ Array [
       Object {
         "condition": Binary {
           "left": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
             },
           },
           "right": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -482,6 +1077,16 @@ Array [
           },
         },
         "thenBranch": Block {
+          "startingLocation": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "statements": Array [
             Assignment {
               "name": Object {
@@ -500,7 +1105,35 @@ Array [
                 },
                 "text": "foo",
               },
+              "tokens": Object {
+                "equals": Object {
+                  "isReserved": false,
+                  "kind": 19,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                    "start": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                  },
+                  "text": "=",
+                },
+              },
               "value": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": Int32 {
                   "kind": 3,
                   "value": 3,
@@ -524,7 +1157,35 @@ Array [
                 },
                 "text": "bar",
               },
+              "tokens": Object {
+                "equals": Object {
+                  "isReserved": false,
+                  "kind": 19,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                    "start": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                  },
+                  "text": "=",
+                },
+              },
               "value": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": BrsBoolean {
                   "kind": 1,
                   "value": true,
@@ -536,6 +1197,16 @@ Array [
       },
     ],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -554,7 +1225,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -562,6 +1261,59 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [
+        Object {
+          "isReserved": false,
+          "kind": 43,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
+          "text": "else if",
+        },
+      ],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 79,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "then",
+      },
     },
   },
 ]
@@ -572,12 +1324,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -601,6 +1373,16 @@ Array [
       },
     },
     "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -619,7 +1401,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
@@ -632,12 +1442,32 @@ Array [
       Object {
         "condition": Binary {
           "left": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
             },
           },
           "right": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -661,6 +1491,16 @@ Array [
           },
         },
         "thenBranch": Block {
+          "startingLocation": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "statements": Array [
             Assignment {
               "name": Object {
@@ -679,7 +1519,35 @@ Array [
                 },
                 "text": "same",
               },
+              "tokens": Object {
+                "equals": Object {
+                  "isReserved": false,
+                  "kind": 19,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                    "start": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                  },
+                  "text": "=",
+                },
+              },
               "value": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": BrsBoolean {
                   "kind": 1,
                   "value": true,
@@ -691,6 +1559,16 @@ Array [
       },
     ],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -709,7 +1587,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -717,6 +1623,27 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
     },
   },
 ]
@@ -727,12 +1654,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -758,6 +1705,16 @@ Array [
     "elseBranch": undefined,
     "elseIfs": Array [],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -776,7 +1733,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -784,6 +1769,42 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 79,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "then",
+      },
     },
   },
 ]
@@ -794,12 +1815,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -823,6 +1864,16 @@ Array [
       },
     },
     "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -841,7 +1892,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": false,
@@ -852,6 +1931,16 @@ Array [
     },
     "elseIfs": Array [],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -870,7 +1959,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -878,6 +1995,42 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 79,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "then",
+      },
     },
   },
 ]
@@ -888,12 +2041,32 @@ Array [
   If {
     "condition": Binary {
       "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 1,
         },
       },
       "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "value": Int32 {
           "kind": 3,
           "value": 2,
@@ -917,6 +2090,16 @@ Array [
       },
     },
     "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -935,7 +2118,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -948,12 +2159,32 @@ Array [
       Object {
         "condition": Binary {
           "left": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 1,
             },
           },
           "right": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": Int32 {
               "kind": 3,
               "value": 2,
@@ -977,6 +2208,16 @@ Array [
           },
         },
         "thenBranch": Block {
+          "startingLocation": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
           "statements": Array [
             Assignment {
               "name": Object {
@@ -995,7 +2236,35 @@ Array [
                 },
                 "text": "same",
               },
+              "tokens": Object {
+                "equals": Object {
+                  "isReserved": false,
+                  "kind": 19,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                    "start": Object {
+                      "column": -9,
+                      "line": -9,
+                    },
+                  },
+                  "text": "=",
+                },
+              },
               "value": Literal {
+                "_location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                },
                 "value": BrsBoolean {
                   "kind": 1,
                   "value": true,
@@ -1007,6 +2276,16 @@ Array [
       },
     ],
     "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": -9,
+          "line": -9,
+        },
+        "start": Object {
+          "column": -9,
+          "line": -9,
+        },
+      },
       "statements": Array [
         Assignment {
           "name": Object {
@@ -1025,7 +2304,35 @@ Array [
             },
             "text": "foo",
           },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 19,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+                "start": Object {
+                  "column": -9,
+                  "line": -9,
+                },
+              },
+              "text": "=",
+            },
+          },
           "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "value": BrsBoolean {
               "kind": 1,
               "value": true,
@@ -1033,6 +2340,42 @@ Array [
           },
         },
       ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 62,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 79,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "then",
+      },
     },
   },
 ]

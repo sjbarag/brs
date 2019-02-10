@@ -166,6 +166,7 @@ Array [
               },
             },
             "value": Literal {
+              "_location": undefined,
               "value": BrsString {
                 "kind": 2,
                 "value": "test",

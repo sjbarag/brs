@@ -46,7 +46,8 @@ describe("parser", () => {
                     { equals },
                     identifier("_"),
                     new Expr.Literal(
-                        new BrsString("hello")
+                        new BrsString("hello"),
+                        token(Lexeme.String, "hello").location
                     )
                 )
             ]);

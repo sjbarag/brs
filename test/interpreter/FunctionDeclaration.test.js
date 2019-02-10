@@ -71,17 +71,21 @@ describe("interpreter function declarations", () => {
                 new Expr.Function(
                     [],
                     ValueKind.String,
-                    new Stmt.Block([
-                        new Stmt.Return(
-                            token(Lexeme.Return, "return"),
-                            new Expr.Literal(
-                                new BrsString("hello, world")
+                    new Stmt.Block(
+                        [
+                            new Stmt.Return(
+                                { return: token(Lexeme.Return, "return") },
+                                new Expr.Literal(
+                                    new BrsString("hello, world")
+                                )
                             )
-                        )
-                    ])
+                        ],
+                        token(Lexeme.Newline, "\n")
+                    )
                 )
             ),
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
@@ -119,10 +123,13 @@ describe("interpreter function declarations", () => {
                                 identifier("input")
                             )
                         )
-                    ])
+                    ]),
+                    token(Lexeme.Function, "function"),
+                    token(Lexeme.EndFunction, "end function")
                 )
             ),
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
@@ -153,17 +160,23 @@ describe("interpreter function declarations", () => {
                 new Expr.Function(
                     [],
                     ValueKind.Int32,
-                    new Stmt.Block([
-                        new Stmt.Return(
-                            token(Lexeme.Return, "return"),
-                            new Expr.Literal(
-                                new BrsString("not a number")
+                    new Stmt.Block(
+                        [
+                            new Stmt.Return(
+                                { return: token(Lexeme.Return, "return") },
+                                new Expr.Literal(
+                                    new BrsString("not a number")
+                                )
                             )
-                        )
-                    ])
+                        ],
+                        token(Lexeme.Newline, "\n")
+                    ),
+                    token(Lexeme.Function, "function"),
+                    token(Lexeme.EndFunction, "end function")
                 )
             ),
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(
@@ -189,17 +202,21 @@ describe("interpreter function declarations", () => {
                         defaultValue: new Expr.Literal(new Int32(-32))
                     }],
                     ValueKind.Int32,
-                    new Stmt.Block([
-                        new Stmt.Return(
-                            token(Lexeme.Return, "return"),
-                            new Expr.Variable(
-                                identifier("input")
+                    new Stmt.Block(
+                        [
+                            new Stmt.Return(
+                                { return: token(Lexeme.Return, "return") },
+                                new Expr.Variable(
+                                    identifier("input")
+                                )
                             )
-                        )
-                    ])
+                        ],
+                        token(Lexeme.Newline, "\n")
+                    )
                 )
             ),
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("result"),
                 new Expr.Call(
                     new Expr.Variable(

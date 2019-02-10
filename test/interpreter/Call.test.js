@@ -29,6 +29,7 @@ describe("interpreter calls", () => {
     it("sets a new `m` pointer when called from an associative array", () => {
         const ast = [
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("foo"),
                 new Expr.AALiteral([
                     {
@@ -116,12 +117,15 @@ describe("interpreter calls", () => {
                 new Expr.Function(
                     [],
                     ValueKind.String,
-                    new Stmt.Block([
-                        new Stmt.Return(
-                            token(Lexeme.Return, "return"),
-                            new Expr.Literal(new Int32(5))
-                        )
-                    ])
+                    new Stmt.Block(
+                        [
+                            new Stmt.Return(
+                                { return: token(Lexeme.Return, "return") },
+                                new Expr.Literal(new Int32(5))
+                            )
+                        ],
+                        token(Lexeme.Newline, "\n")
+                    )
                 )
             ),
             new Stmt.Expression(
@@ -145,12 +149,15 @@ describe("interpreter calls", () => {
                 new Expr.Function(
                     [],
                     ValueKind.Void,
-                    new Stmt.Block([
-                        new Stmt.Return(
-                            token(Lexeme.Return, "return"),
-                            new Expr.Literal(new Int32(5))
-                        )
-                    ])
+                    new Stmt.Block(
+                        [
+                            new Stmt.Return(
+                                { return: token(Lexeme.Return, "return") },
+                                new Expr.Literal(new Int32(5))
+                            )
+                        ],
+                        token(Lexeme.Newline, "\n")
+                    )
                 )
             ),
             new Stmt.Expression(
@@ -174,11 +181,14 @@ describe("interpreter calls", () => {
                 new Expr.Function(
                     [],
                     ValueKind.String,
-                    new Stmt.Block([
-                        new Stmt.Return(
-                            token(Lexeme.Return, "return")
-                        )
-                    ])
+                    new Stmt.Block(
+                        [
+                            new Stmt.Return(
+                                { return: token(Lexeme.Return, "return") }
+                            )
+                        ],
+                        token(Lexeme.Newline, "\n")
+                    )
                 )
             ),
             new Stmt.Expression(

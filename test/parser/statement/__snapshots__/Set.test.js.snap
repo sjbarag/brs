@@ -45,6 +45,16 @@ Array [
     },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {
@@ -125,6 +135,16 @@ Array [
     },
     "value": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [],
       },
       "end": Object {

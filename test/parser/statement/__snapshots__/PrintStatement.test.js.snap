@@ -23,6 +23,24 @@ Array [
         },
       },
     ],
+    "tokens": Object {
+      "print": Object {
+        "isReserved": false,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": undefined,
+      },
+    },
   },
 ]
 `;
@@ -37,14 +55,44 @@ Array [
           "value": "Foo",
         },
       },
-      1,
+      Object {
+        "isReserved": false,
+        "kind": 30,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": undefined,
+      },
       Literal {
         "value": BrsString {
           "kind": 2,
           "value": "bar",
         },
       },
-      1,
+      Object {
+        "isReserved": false,
+        "kind": 30,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": undefined,
+      },
       Literal {
         "value": BrsString {
           "kind": 2,
@@ -52,6 +100,24 @@ Array [
         },
       },
     ],
+    "tokens": Object {
+      "print": Object {
+        "isReserved": false,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": undefined,
+      },
+    },
   },
 ]
 `;
@@ -64,6 +130,24 @@ Array [
         "value": undefined,
       },
     ],
+    "tokens": Object {
+      "print": Object {
+        "isReserved": false,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": undefined,
+      },
+    },
   },
 ]
 `;

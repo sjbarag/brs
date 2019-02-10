@@ -5,23 +5,35 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Return {
-            "keyword": Object {
-              "isReserved": true,
-              "kind": 73,
-              "literal": undefined,
-              "location": Object {
-                "end": Object {
-                  "column": -9,
-                  "line": -9,
+            "tokens": Object {
+              "return": Object {
+                "isReserved": true,
+                "kind": 73,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
                 },
-                "start": Object {
-                  "column": -9,
-                  "line": -9,
-                },
+                "text": "return",
               },
-              "text": "return",
             },
             "value": Call {
               "args": Array [],
@@ -123,23 +135,35 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Return {
-            "keyword": Object {
-              "isReserved": true,
-              "kind": 73,
-              "literal": undefined,
-              "location": Object {
-                "end": Object {
-                  "column": -9,
-                  "line": -9,
+            "tokens": Object {
+              "return": Object {
+                "isReserved": true,
+                "kind": 73,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
                 },
-                "start": Object {
-                  "column": -9,
-                  "line": -9,
-                },
+                "text": "return",
               },
-              "text": "return",
             },
             "value": Literal {
               "value": BrsString {
@@ -210,23 +234,35 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
         "statements": Array [
           Return {
-            "keyword": Object {
-              "isReserved": true,
-              "kind": 73,
-              "literal": undefined,
-              "location": Object {
-                "end": Object {
-                  "column": -9,
-                  "line": -9,
+            "tokens": Object {
+              "return": Object {
+                "isReserved": true,
+                "kind": 73,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
+                  "start": Object {
+                    "column": -9,
+                    "line": -9,
+                  },
                 },
-                "start": Object {
-                  "column": -9,
-                  "line": -9,
-                },
+                "text": "return",
               },
-              "text": "return",
             },
             "value": undefined,
           },

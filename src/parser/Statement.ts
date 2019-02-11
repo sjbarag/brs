@@ -153,6 +153,8 @@ export class If implements Statement {
         readonly tokens: {
             if: Token,
             then?: Token,
+            // TODO: figure a decent way to represent the if/then + elseif/then pairs to enable a
+            // linter to check for the lack of `then` with this AST. maybe copy ESTree's format?
             elseIfs?: Token[],
             else?: Token,
             endIf?: Token

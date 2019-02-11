@@ -186,7 +186,7 @@ export class If implements Statement {
             file: this.tokens.if.location.file,
             start: this.tokens.if.location.start,
             end: this.getEndLocation().end
-        }
+        };
     }
 }
 
@@ -232,7 +232,7 @@ export class Print implements Statement {
             file: this.tokens.print.location.file,
             start: this.tokens.print.location.start,
             end: end
-        }
+        };
     }
 }
 

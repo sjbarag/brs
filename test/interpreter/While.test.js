@@ -12,11 +12,13 @@ let decrementSpy;
 
 describe("interpreter while loops", () => {
     const initializeFoo = new Stmt.Assignment(
+        { equals: token(Lexeme.Equals, "=") },
         identifier("foo"),
         new Expr.Literal(new Int32(5))
     );
 
     const decrementFoo = new Stmt.Assignment(
+        { equals: token(Lexeme.Equals, "=") },
         identifier("foo"),
         new Expr.Binary(
             new  Expr.Variable(identifier("foo")),
@@ -40,6 +42,10 @@ describe("interpreter while loops", () => {
         const statements = [
             initializeFoo,
             new Stmt.While(
+                {
+                    while: token(Lexeme.While, "while"),
+                    endWhile: token(Lexeme.EndWhile, "end while")
+                },
                 new Expr.Binary(
                     new Expr.Variable(identifier("foo")),
                     token(Lexeme.Greater, ">"),
@@ -67,6 +73,10 @@ describe("interpreter while loops", () => {
         const statements = [
             initializeFoo,
             new Stmt.While(
+                {
+                    while: token(Lexeme.While, "while"),
+                    endWhile: token(Lexeme.EndWhile, "end while")
+                },
                 greaterThanZero,
                 new Stmt.Block([
                     decrementFoo
@@ -83,6 +93,10 @@ describe("interpreter while loops", () => {
         const statements = [
             initializeFoo,
             new Stmt.While(
+                {
+                    while: token(Lexeme.While, "while"),
+                    endWhile: token(Lexeme.EndWhile, "end while")
+                },
                 new Expr.Binary(
                     new Expr.Variable(identifier("foo")),
                     token(Lexeme.Greater, ">"),

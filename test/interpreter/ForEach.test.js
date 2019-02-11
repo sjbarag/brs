@@ -38,12 +38,18 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("array"),
                 new Expr.ArrayLiteral(
                     arrayMembers.map(member => new Expr.Literal(member))
                 )
             ),
             new Stmt.ForEach(
+                {
+                    forEach: token(Lexeme.ForEach, "for each"),
+                    in: identifier("in"),
+                    endFor: token(Lexeme.EndFor, "end for")
+                },
                 identifier("element"),
                 new Expr.Variable(identifier("array")),
                 emptyBlock
@@ -62,10 +68,16 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("empty"),
                 new Expr.ArrayLiteral([])
             ),
             new Stmt.ForEach(
+                {
+                    forEach: token(Lexeme.ForEach, "for each"),
+                    in: identifier("in"),
+                    endFor: token(Lexeme.EndFor, "end for")
+                },
                 identifier("element"),
                 new Expr.Variable(identifier("empty")),
                 emptyBlock
@@ -82,12 +94,18 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("array"),
                 new Expr.ArrayLiteral(
                     arrayMembers.map(member => new Expr.Literal(member))
                 )
             ),
             new Stmt.ForEach(
+                {
+                    forEach: token(Lexeme.ForEach, "for each"),
+                    in: identifier("in"),
+                    endFor: token(Lexeme.EndFor, "end for")
+                },
                 identifier("element"),
                 new Expr.Variable(identifier("array")),
                 emptyBlock
@@ -111,12 +129,18 @@ describe("interpreter for-each loops", () => {
 
         const statements = [
             new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
                 identifier("array"),
                 new Expr.ArrayLiteral(
                     arrayMembers.map(member => new Expr.Literal(member))
                 )
             ),
             new Stmt.ForEach(
+                {
+                    forEach: token(Lexeme.ForEach, "for each"),
+                    in: identifier("in"),
+                    endFor: token(Lexeme.EndFor, "end for")
+                },
                 identifier("element"),
                 new Expr.Variable(identifier("array")),
                 block

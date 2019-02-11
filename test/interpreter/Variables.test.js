@@ -9,12 +9,15 @@ const { Int32, BrsString, BrsInvalid } = brs.types;
 let interpreter;
 
 describe("interpreter variables", () => {
+    let tokens = { equals: token(Lexeme.Equals, "=") };
+
     beforeEach(() => {
         interpreter = new Interpreter();
     });
 
     it("returns 'invalid' for assignments", () => {
         let ast = new Stmt.Assignment(
+            tokens,
             identifier("foo"),
             new Expr.Literal(new Int32(5))
         );
@@ -26,6 +29,7 @@ describe("interpreter variables", () => {
     it("stores assigned values in variable scope", () => {
         let six = new Int32(6)
         let ast = new Stmt.Assignment(
+            tokens,
             identifier("bar"),
             new Expr.Literal(six)
         );
@@ -40,6 +44,7 @@ describe("interpreter variables", () => {
     it("retrieves variables from variable scope", () => {
         let seven = new Int32(7);
         let assign = new Stmt.Assignment(
+            tokens,
             identifier("baz"),
             new Expr.Literal(seven)
         );
@@ -55,6 +60,7 @@ describe("interpreter variables", () => {
     it("disallows variables named after reserved words", () => {
         let ast = [
             new Stmt.Assignment(
+                tokens,
                 identifier("type"),
                 new Expr.Literal(new BrsString("this will fail"))
             )

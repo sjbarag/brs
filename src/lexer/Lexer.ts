@@ -77,8 +77,8 @@ export class Lexer {
         let current = 0;
         /** The one-indexed line number being parsed. */
         let line = 1;
-        /** The one-indexed column number being parsed. */
-        let column = 1;
+        /** The zero-indexed column number being parsed. */
+        let column = 0;
 
         /** The BrightScript code being converted to an array of `Token`s. */
         let source = toScan;
@@ -110,7 +110,7 @@ export class Lexer {
                 },
                 end: {
                     line: line,
-                    column: column
+                    column: column + 1
                 },
                 file: filename
             }
@@ -204,7 +204,7 @@ export class Lexer {
                     // but always advance the line counter
                     line++;
                     // and always reset the column counter
-                    column = 1;
+                    column = 0;
                     break;
                 case "\"":
                     string();
@@ -561,7 +561,7 @@ export class Lexer {
         /**
          * Creates a `TokenLocation` at the lexer's current position for the provided `text`.
          * @param text the text to create a location for
-         * @returns the location of `text` as a `TokenLocation`.
+         * @returns the location of `text` as a `TokenLocation`
          */
         function locationOf(text: string): Location {
             return {
@@ -571,7 +571,7 @@ export class Lexer {
                 },
                 end: {
                     line: line,
-                    column: Math.max(column - text.length, column - 1)
+                    column: Math.max(column - text.length + 1, column)
                 },
                 file: filename
             };

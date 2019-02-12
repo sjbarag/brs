@@ -22,7 +22,16 @@ export interface Token {
 export interface Location {
     /** The line and column at which this token began. */
     start: LineAndColumn,
-    /** The line and column at which this token ended. */
+    /**
+     * The line and column at which this token ended.
+     * *NOTE*: The ending column follows the one-past-last convention, to allow direct use with
+     * `String.prototype.substring` and similar.
+     * @example
+     * // For input `foo = 1 + 2`
+     * // (columns): 0   4   8
+     *
+     * foo.location.end === { line: 1, column: 3 };
+     */
     end: LineAndColumn,
     /** The name of the file in which this token was found. */
     file: string;
@@ -30,7 +39,9 @@ export interface Location {
 
 /** A line-column pair. */
 type LineAndColumn = {
+    /** A *one-indexed* line number. */
     line: number;
+    /** A *zero-indexed* column number. */
     column: number;
 };
 

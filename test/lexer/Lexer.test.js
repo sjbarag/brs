@@ -328,16 +328,16 @@ describe("lexer", () => {
         it("tracks starting and ending columns", () => {
             let { tokens } = Lexer.scan(`sub foo()\n    print "bar"\nend sub`);
             expect(tokens.map(t => [ t.location.start.column, t.location.end.column ])).toEqual([
-                [1, 3],   // sub
-                [5, 7],   // foo
-                [8, 8],   // (
-                [9, 9],   // )
-                [10, 10], // \n
-                [5, 9],   // print
-                [11, 15], // "bar"
-                [16, 16], // \n
-                [1, 7],   // end sub
-                [8, 8]    // EOF
+                [0, 3],   // sub
+                [4, 7],   // foo
+                [7, 8],   // (
+                [8, 9],   // )
+                [9, 10], // \n
+                [4, 9],   // print
+                [10, 15], // "bar"
+                [15, 16], // \n
+                [0, 7],   // end sub
+                [7, 8]    // EOF
             ]);
         });
     });

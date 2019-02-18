@@ -434,4 +434,96 @@ describe("parser", () => {
             expect(statements).toMatchSnapshot();
         });
     });
+
+    test("location tracking", () => {
+        /**
+         *    0   0   0   1   1
+         *    0   4   8   2   6
+         *  +------------------
+         * 1| _ = sub foo()
+         * 2|
+         * 3| end sub
+         */
+        let { statements, errors } = parser.parse([
+            {
+                kind: Lexeme.Identifier,
+                text: "_",
+                isReserved: false,
+                location: {
+                    start: { line: 1, column: 0 },
+                    end: { line: 1, column: 1 }
+                }
+            },
+            {
+                kind: Lexeme.Equal,
+                text: "=",
+                isReserved: false,
+                location: {
+                    start: { line: 1, column: 2 },
+                    end: { line: 1, column: 3 }
+                }
+            },
+            {
+                kind: Lexeme.Sub,
+                text: "sub",
+                isReserved: true,
+                location: {
+                    start: { line: 1, column: 4 },
+                    end: { line: 1, column: 7 }
+                }
+            },
+            {
+                kind: Lexeme.LeftParen,
+                text: "(",
+                isReserved: false,
+                location: {
+                    start: { line: 1, column: 11 },
+                    end: { line: 1, column: 12 }
+                }
+            },
+            {
+                kind: Lexeme.RightParen,
+                text: ")",
+                isReserved: false,
+                location: {
+                    start: { line: 1, column: 12 },
+                    end: { line: 1, column: 13 }
+                }
+            },
+            {
+                kind: Lexeme.Newline,
+                text: "\n",
+                isReserved: false,
+                location: {
+                    start: { line: 1, column: 13 },
+                    end: { line: 1, column: 14 }
+                }
+            },
+            {
+                kind: Lexeme.EndSub,
+                text: "end sub",
+                isReserved: false,
+                location: {
+                    start: { line: 3, column: 0 },
+                    end: { line: 3, column: 7 }
+                }
+            },
+            {
+                kind: Lexeme.Eof,
+                text: "\0",
+                isReserved: false,
+                location: {
+                    start: { line: 3, column: 7 },
+                    end: { line: 3, column: 8 },
+                }
+            }
+        ]);
+
+        expect(errors).toEqual([]);
+        expect(statements.length).toBe(1)
+        expect(statements[0].value.location).toEqual({
+            start: { line: 1, column: 4 },
+            end: { line: 3, column: 7 }
+        });
+    });
 });

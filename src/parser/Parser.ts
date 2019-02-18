@@ -118,6 +118,9 @@ export class Parser {
 
         function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
             try {
+                // consume any leading newlines
+                while(match(Lexeme.Newline));
+
                 if (check(Lexeme.Sub, Lexeme.Function)) {
                     return functionDeclaration(false);
                 }

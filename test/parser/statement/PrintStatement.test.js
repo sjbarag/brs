@@ -19,6 +19,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();
@@ -33,6 +34,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();
@@ -49,6 +51,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();

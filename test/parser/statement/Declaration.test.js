@@ -12,6 +12,22 @@ describe("parser", () => {
     });
 
     describe("variable declarations", () => {
+        it("allows newlines before assignments", () => {
+            let { statements, errors } = parser.parse([
+                token(Lexeme.Newline),
+                token(Lexeme.Newline),
+                token(Lexeme.Newline),
+                identifier("hasNewlines"),
+                token(Lexeme.Equal),
+                token(Lexeme.True),
+                EOF
+            ]);
+
+            expect(errors).toEqual([]);
+            expect(statements).toBeDefined();
+            expect(statements).not.toBeNull();
+        });
+
         it("allows newlines after assignments", () => {
             let { statements, errors } = parser.parse([
                 identifier("hasNewlines"),
@@ -21,6 +37,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
         });
@@ -33,6 +50,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();
@@ -48,6 +66,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();
@@ -61,6 +80,7 @@ describe("parser", () => {
                 EOF
             ]);
 
+            expect(errors).toEqual([]);
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();

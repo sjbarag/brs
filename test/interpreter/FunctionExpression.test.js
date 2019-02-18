@@ -21,6 +21,10 @@ describe("interpreter function expressions", () => {
         let statements = [
             new Expr.Call(
                 new Expr.Grouping(
+                    {
+                        left: token(Lexeme.LeftParen),
+                        right: token(Lexeme.RightParen)
+                    },
                     new Expr.Function(
                         [],
                         ValueKind.Void,

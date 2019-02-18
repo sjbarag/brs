@@ -841,9 +841,13 @@ export class Parser {
                 case match(Lexeme.Identifier):
                     return new Expr.Variable(previous() as Identifier);
                 case match(Lexeme.LeftParen):
+                    let left = previous();
                     let expr = expression();
-                    consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
-                    return new Expr.Grouping(expr);
+                    let right = consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
+                    return new Expr.Grouping(
+                        { left, right },
+                        expr
+                    );
                 case match(Lexeme.LeftSquare):
                     let elements: Expression[] = [];
                     let openingSquare = previous();

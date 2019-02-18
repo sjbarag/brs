@@ -136,6 +136,10 @@ export class IndexedGet implements Expression {
 export class Grouping implements Expression {
 
     constructor(
+        readonly tokens: {
+            left: Token,
+            right: Token
+        },
         readonly expression: Expression
     ) {}
 
@@ -144,12 +148,11 @@ export class Grouping implements Expression {
     }
 
     get location() {
-        let loc = this.expression.location;
-
-        loc.start.column--;
-        loc.end.column++;
-
-        return loc;
+        return {
+            file: this.tokens.left.location.file,
+            start: this.tokens.left.location.start,
+            end: this.tokens.right.location.end
+        };
     }
 }
 

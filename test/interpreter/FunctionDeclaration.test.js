@@ -3,7 +3,7 @@ const Stmt = require("../../lib/parser/Statement");
 const { Interpreter } = require("../../lib/interpreter");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
-const { Int32, BrsString, BrsInvalid, Callable, ValueKind } = brs.types;
+const { Int32, BrsString, BrsInvalid, Callable, ValueKind, StdlibArgument } = brs.types;
 
 const { token, identifier } = require("../parser/ParserTests");
 
@@ -110,11 +110,7 @@ describe("interpreter function declarations", () => {
             new Stmt.Function(
                 identifier("ident"),
                 new Expr.Function(
-                    [{
-                        name: "input",
-                        type: ValueKind.Int32,
-                        defaultValue: new Expr.Literal(new Int32(-32))
-                    }],
+                    [ new StdlibArgument("input", ValueKind.Int32, new Int32(-32)) ],
                     ValueKind.Int32,
                     new Stmt.Block([
                         new Stmt.Return(
@@ -196,11 +192,7 @@ describe("interpreter function declarations", () => {
             new Stmt.Function(
                 identifier("ident"),
                 new Expr.Function(
-                    [{
-                        name: "input",
-                        type: ValueKind.Int32,
-                        defaultValue: new Expr.Literal(new Int32(-32))
-                    }],
+                    [ new StdlibArgument("input", ValueKind.Int32, new Int32(-32)) ],
                     ValueKind.Int32,
                     new Stmt.Block(
                         [

@@ -13,7 +13,8 @@ import {
     BrsString,
     Int32,
     ValueKind,
-    Argument
+    Argument,
+    StdlibArgument
 } from "../brsTypes";
 
 /** Set of all keywords that end blocks. */
@@ -204,7 +205,7 @@ export class Parser {
                 if (haveFoundOptional && !arg.defaultValue) {
                     return addError(
                         new ParseError(
-                            { kind: Lexeme.Identifier, text: arg.name, isReserved: ReservedWords.has(arg.name), location: arg.location },
+                            { kind: Lexeme.Identifier, text: arg.name.text, isReserved: ReservedWords.has(arg.name.text), location: arg.location },
                             `Argument '${arg.name}' has no default value, but comes after arguments with default values`
                         )
                     );
@@ -262,12 +263,11 @@ export class Parser {
                 advance();
 
                 typeToken = advance();
-                let typeString = typeToken.text || "";
-                let typeValueKind = ValueKind.fromString(typeString);
+                let typeValueKind = ValueKind.fromString(typeToken.text);
 
                 if (!typeValueKind) {
                     return addError(
-                        new ParseError(typeToken, `Function parameter '${name.text}' is of invalid type '${typeString}'`)
+                        new ParseError(typeToken, `Function parameter '${name.text}' is of invalid type '${typeToken.text}'`)
                     );
                 }
 
@@ -275,8 +275,11 @@ export class Parser {
             }
 
             return {
-                name: name.text || "",
-                type: type,
+                name: name,
+                type: {
+                    kind: type,
+                    location: typeToken ? typeToken.location : StdlibArgument.InternalLocation
+                },
                 defaultValue: defaultValue,
                 location: {
                     file: name.location.file,

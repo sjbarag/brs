@@ -5,7 +5,6 @@ import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import { BrsArray } from "./BrsArray";
-import { BrsObjects } from "./BrsObjects";
 
 /** A member of an `AssociativeArray` in BrightScript. */
 export interface AAMember {

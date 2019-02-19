@@ -25,26 +25,40 @@ export interface Argument {
     readonly defaultValue?: Expr.Expression,
 }
 
+/**
+ * A variant of the `Argument` interface intended for use only when creating standard library
+ * functions.
+ */
 export class StdlibArgument implements Argument {
     readonly location: Argument["location"];
     readonly name: Argument["name"];
     readonly type: Argument["type"];
     readonly defaultValue: Argument["defaultValue"];
 
+    /**
+     * Creates an `Argument` without requiring locations to be specified.
+     * @param name the name of the argument, used for presentation to users
+     * @param type the type of value accepted at runtime
+     * @param defaultValue the optional default value to use for this argument if one isn't
+     *                     provided at runtime
+     */
     constructor(name: string, type: Brs.ValueKind, defaultValue?: Brs.BrsType) {
-        const internalLocation = {
-            file: "(stdlib)",
-            start: { line: -1, column: -1 },
-            end: { line: -1, column: -1 }
-        };
 
-        this.location = internalLocation;
-        this.name = { text: name, location: internalLocation };
-        this.type = { kind: type, location: internalLocation };
+        this.location = StdlibArgument.InternalLocation;
+        this.name = { text: name, location: StdlibArgument.InternalLocation };
+        this.type = { kind: type, location: StdlibArgument.InternalLocation };
         if (defaultValue) {
-            this.defaultValue = new Expr.Literal(defaultValue, internalLocation);
+            this.defaultValue = new Expr.Literal(defaultValue, StdlibArgument.InternalLocation);
         }
     }
+
+    /** A fake location exists only within the BRS runtime. */
+    static InternalLocation = {
+        file: "(stdlib)",
+        start: { line: -1, column: -1 },
+        end: { line: -1, column: -1 }
+    };
+
 }
 
 /** A BrightScript `function` or `sub`'s signature. */

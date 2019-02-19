@@ -241,8 +241,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "a",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "a",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": Literal {
@@ -272,8 +300,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "b",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "b",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": Binary {
@@ -339,8 +395,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "c",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "c",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
       ],
       "returns": 9,
@@ -446,8 +530,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "a",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "a",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": undefined,
@@ -462,8 +574,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "b",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "b",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
       ],
       "returns": 9,
@@ -569,8 +709,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "str",
-          "type": 2,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "str",
+          },
+          "type": Object {
+            "kind": 2,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": undefined,
@@ -585,8 +752,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "count",
-          "type": 3,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "count",
+          },
+          "type": Object {
+            "kind": 3,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": undefined,
@@ -601,8 +795,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "separator",
-          "type": 11,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "separator",
+          },
+          "type": Object {
+            "kind": 11,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
       ],
       "returns": 9,
@@ -723,8 +944,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "a",
-          "type": 3,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "a",
+          },
+          "type": Object {
+            "kind": 3,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": Binary {
@@ -790,8 +1038,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "b",
-          "type": 3,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "b",
+          },
+          "type": Object {
+            "kind": 3,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
       ],
       "returns": 9,
@@ -1440,8 +1715,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "a",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "a",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": Literal {
@@ -1471,8 +1774,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "b",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "b",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": Binary {
@@ -1538,8 +1869,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "c",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "c",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
       ],
       "returns": 10,
@@ -1645,8 +2004,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "a",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "a",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": undefined,
@@ -1661,8 +2048,36 @@ Array [
               "line": -9,
             },
           },
-          "name": "b",
-          "type": 9,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "b",
+          },
+          "type": Object {
+            "kind": 9,
+            "location": Object {
+              "end": Object {
+                "column": -1,
+                "line": -1,
+              },
+              "file": "(stdlib)",
+              "start": Object {
+                "column": -1,
+                "line": -1,
+              },
+            },
+          },
         },
       ],
       "returns": 9,
@@ -1768,8 +2183,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "str",
-          "type": 2,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "str",
+          },
+          "type": Object {
+            "kind": 2,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": undefined,
@@ -1784,8 +2226,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "count",
-          "type": 3,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "count",
+          },
+          "type": Object {
+            "kind": 3,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
       ],
       "returns": 9,
@@ -1906,8 +2375,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "a",
-          "type": 3,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "a",
+          },
+          "type": Object {
+            "kind": 3,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
         Object {
           "defaultValue": Binary {
@@ -1973,8 +2469,35 @@ Array [
               "line": -9,
             },
           },
-          "name": "b",
-          "type": 3,
+          "name": Object {
+            "isReserved": false,
+            "kind": 21,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "b",
+          },
+          "type": Object {
+            "kind": 3,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+          },
         },
       ],
       "returns": 10,

@@ -1,7 +1,7 @@
 import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { BrsType } from "..";
-import { Callable } from "../Callable";
+import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import { BrsArray } from "./BrsArray";
@@ -126,7 +126,7 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
         {
             signature: {
                 args: [
-                    { name: "str", type: ValueKind.String }
+                    new StdlibArgument("str", ValueKind.String)
                 ],
                 returns: ValueKind.Boolean
             },
@@ -145,8 +145,8 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
         {
             signature: {
                 args: [
-                    { name: "key", type: ValueKind.String },
-                    { name: "value", type: ValueKind.Dynamic }
+                    new StdlibArgument("key", ValueKind.String),
+                    new StdlibArgument("value", ValueKind.Dynamic)
                 ],
                 returns: ValueKind.Void
             },
@@ -177,7 +177,7 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
         {
             signature: {
                 args: [
-                    { name: "str", type: ValueKind.String }
+                    new StdlibArgument("str", ValueKind.String)
                 ],
                 returns: ValueKind.Boolean
             },
@@ -193,7 +193,7 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
         {
             signature: {
                 args: [
-                    { name: "obj", type: ValueKind.Object }
+                    new StdlibArgument("obj", ValueKind.Object)
                 ],
                 returns: ValueKind.Void
             },
@@ -247,7 +247,7 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
         {
             signature: {
                 args: [
-                    { name: "key", type: ValueKind.String }
+                    new StdlibArgument("key", ValueKind.String)
                 ],
                 returns: ValueKind.Dynamic
             },

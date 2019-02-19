@@ -17,8 +17,6 @@ import {
     SignatureAndMismatches,
     MismatchReason,
     Callable,
-    Argument,
-    StdlibArgument
 } from "../brsTypes";
 
 import { Lexeme } from "../lexer";
@@ -764,7 +762,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 let messageParts = [];
 
                 let args = sig.args.map(a => {
-                    let requiredArg = `${a.name} as ${ValueKind.toString(a.type)}`;
+                    let requiredArg = `${a.name} as ${ValueKind.toString(a.type.kind)}`;
                     if (a.defaultValue) {
                         return `[${requiredArg}]`;
                     } else {

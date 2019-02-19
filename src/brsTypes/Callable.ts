@@ -5,24 +5,52 @@ import { Scope } from "../interpreter/Environment";
 import { Location } from "../lexer";
 
 /** An argument to a BrightScript `function` or `sub`. */
-export interface Argument extends StdlibArgument {
+export interface Argument {
     /** Where the argument exists in the parsed source file(s). */
-    readonly location: Location
-}
+    readonly location: Location,
 
-export interface StdlibArgument {
     /** The argument's name. */
-    readonly name: string,
+    readonly name: {
+        text: string,
+        location: Location
+    },
+
     /** The type of the argument expected by the BrightScript runtime. */
-    readonly type: Brs.ValueKind,
+    readonly type: {
+        kind: Brs.ValueKind
+        location: Location
+    },
+
     /** The default value to use for the argument if none is provided. */
     readonly defaultValue?: Expr.Expression,
+}
+
+export class StdlibArgument implements Argument {
+    readonly location: Argument["location"];
+    readonly name: Argument["name"];
+    readonly type: Argument["type"];
+    readonly defaultValue: Argument["defaultValue"];
+
+    constructor(name: string, type: Brs.ValueKind, defaultValue?: Brs.BrsType) {
+        const internalLocation = {
+            file: "(stdlib)",
+            start: { line: -1, column: -1 },
+            end: { line: -1, column: -1 }
+        };
+
+        this.location = internalLocation;
+        this.name = { text: name, location: internalLocation };
+        this.type = { kind: type, location: internalLocation };
+        if (defaultValue) {
+            this.defaultValue = new Expr.Literal(defaultValue, internalLocation);
+        }
+    }
 }
 
 /** A BrightScript `function` or `sub`'s signature. */
 export interface Signature {
     /** The set of arguments a function accepts. */
-    readonly args: ReadonlyArray<Argument | StdlibArgument>,
+    readonly args: ReadonlyArray<Argument>,
     /** The type of BrightScript value the function will return. `sub`s must use `ValueKind.Void`. */
     readonly returns: Brs.ValueKind
 }
@@ -125,7 +153,7 @@ export class Callable implements Brs.BrsValue {
                     mutableArgs[index] = subInterpreter.evaluate(param.defaultValue);
                 }
 
-                subInterpreter.environment.define(Scope.Function, param.name, mutableArgs[index]);
+                subInterpreter.environment.define(Scope.Function, param.name.text, mutableArgs[index]);
             });
 
             // then return whatever the selected implementation would return
@@ -207,14 +235,14 @@ export class Callable implements Brs.BrsValue {
             let expected = sig.args[index];
             let received = args[index];
 
-            if (expected.type === Brs.ValueKind.Dynamic || expected.type === Brs.ValueKind.Object) { return; }
+            if (expected.type.kind === Brs.ValueKind.Dynamic || expected.type.kind === Brs.ValueKind.Object) { return; }
 
-            if (expected.type !== received.kind) {
+            if (expected.type.kind !== received.kind) {
                 reasons.push({
                     reason: MismatchReason.ArgumentTypeMismatch,
-                    expected: Brs.ValueKind.toString(expected.type),
+                    expected: Brs.ValueKind.toString(expected.type.kind),
                     received: Brs.ValueKind.toString(received.kind),
-                    argName: expected.name
+                    argName: expected.name.text
                 });
             }
         });

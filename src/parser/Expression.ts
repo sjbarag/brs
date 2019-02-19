@@ -1,5 +1,5 @@
 import { Token, Identifier, Location } from "../lexer";
-import { BrsType, Argument, ValueKind, BrsString } from "../brsTypes";
+import { BrsType, Argument, ValueKind, BrsString, _StdlibArgument } from "../brsTypes";
 import { Block } from "./Statement";
 
 export interface Visitor<T> {

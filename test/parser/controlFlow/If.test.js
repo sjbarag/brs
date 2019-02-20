@@ -263,4 +263,8 @@ describe("parser if statements", () => {
             expect(statements).toMatchSnapshot();
         });
     });
+
+    // TODO: Improve `if` statement structure to allow a linter to require a `uthenu` keyword for
+    // all `if` statements, then test location tracking
+    test.todo("location tracking");
 });

@@ -45,16 +45,20 @@ jobs:
       - image: node:11
 
   "Publish nightly build":
+    working_directory: ~/circleci
     docker:
       - image: node:10
     steps:
       - checkout
       - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/circleci/.npmrc
+      - run:
           name: Install dependencies
           command: yarn
       - run:
           name: Publish
-          command: echo "Publish goes here"
+          command: yarn publish --new-version `date +%F` --tag nightly --dry-run
 
 workflows:
   version: 2

@@ -58,7 +58,7 @@ jobs:
           command: yarn
       - run:
           name: Publish
-          command: yarn publish --new-version `date +%F` --tag nightly --dry-run
+          command: yarn publish --new-version `yarn getNightlyVersion` --tag nightly --dry-run
 
 workflows:
   version: 2

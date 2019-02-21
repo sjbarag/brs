@@ -27,28 +27,27 @@ jobs:
   "Node 6":
     <<: *build-lint-test
     docker:
-      - image: node:6
+      - image: circleci/node:6
 
   "Node 8":
     <<: *build-lint-test
     docker:
-      - image: node:8
+      - image: circleci/node:8
 
   "Node 10":
     <<: *build-lint-test
     docker:
-      - image: node:10
+      - image: circleci/node:10
 
   "Node 11":
     <<: *build-lint-test
     docker:
-      - image: node:11
+      - image: circleci/node:11
 
   "Publish nightly build":
     working_directory: ~/circleci
     docker:
-      - image: node:10
-        user: npm-publisher
+      - image: circleci/node:10
     steps:
       - checkout
       - run:

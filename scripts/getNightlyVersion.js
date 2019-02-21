@@ -38,8 +38,6 @@ if (match == null) {
     process.exit(1);
 }
 
-console.log(match);
-
 const now = new Date();
 const today = now.toISOString().replace(/:|T|\.|-/g, "").slice(0, 8);
 

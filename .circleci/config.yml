@@ -57,8 +57,11 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
+          name: Set version
+          command: yarn version --no-git-tag-version --new-version `node scripts/getNightlyVersion.js`
+      - run:
           name: Publish
-          command: yarn publish --non-interactive --new-version `node scripts/getNightlyVersion.js` --tag nightly --dry-run
+          command: npm publish --tag nightly --dry-run
 
 workflows:
   version: 2
@@ -69,25 +72,25 @@ workflows:
       - "Node 10"
       - "Node 11"
 
-  #"Nightly build":
-  #  triggers:
-  #    - schedule:
-  #        # eventually use:
-  #        # cron: 05 7 * * *
-  #        cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
-  #        filters:
-  #          branches:
-  #            only:
-  #              - add-nightly-builds
-  #  jobs:
-  #    - "Node 6"
-  #    - "Node 8"
-  #    - "Node 10"
-  #    - "Node 11"
-  #    - "Publish nightly build":
-  #        requires:
-  #          - "Node 6"
-  #          - "Node 8"
-  #          - "Node 10"
-  #          - "Node 11"
+  "Nightly build":
+    triggers:
+      - schedule:
+          # eventually use:
+          # cron: 05 7 * * *
+          cron: "0,5,10,15,20,25,30,35,40,45,50,55 16 * * *"
+          filters:
+            branches:
+              only:
+                - add-nightly-builds
+    jobs:
+      - "Node 6"
+      - "Node 8"
+      - "Node 10"
+      - "Node 11"
+      - "Publish nightly build":
+          requires:
+            - "Node 6"
+            - "Node 8"
+            - "Node 10"
+            - "Node 11"
 

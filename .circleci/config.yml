@@ -48,6 +48,7 @@ jobs:
     working_directory: ~/circleci
     docker:
       - image: node:10
+      - user: npm-publisher
     steps:
       - checkout
       - run:

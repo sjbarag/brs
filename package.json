@@ -14,8 +14,7 @@
     "clean": "rimraf ./lib ./types",
     "test": "jest",
     "lint": "tslint --project .",
-    "prepublishOnly": "npm-run-all --serial clean build lint test",
-    "getNightlyVersion": "scripts/getNightlyVersion.js"
+    "prepublishOnly": "npm-run-all --serial clean build lint test"
   },
   "files": [
     "./bin/",

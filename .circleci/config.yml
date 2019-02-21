@@ -52,7 +52,7 @@ jobs:
       - checkout
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/circleci/.npmrc
+          command: echo "//registry.npmjs.com/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run:
           name: Install dependencies
           command: yarn
@@ -69,25 +69,25 @@ workflows:
       - "Node 10"
       - "Node 11"
 
-  "Nightly build":
-    triggers:
-      - schedule:
-          # eventually use:
-          # cron: 05 7 * * *
-          cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
-          filters:
-            branches:
-              only:
-                - add-nightly-builds
-    jobs:
-      - "Node 6"
-      - "Node 8"
-      - "Node 10"
-      - "Node 11"
-      - "Publish nightly build":
-          requires:
-            - "Node 6"
-            - "Node 8"
-            - "Node 10"
-            - "Node 11"
+  #"Nightly build":
+  #  triggers:
+  #    - schedule:
+  #        # eventually use:
+  #        # cron: 05 7 * * *
+  #        cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
+  #        filters:
+  #          branches:
+  #            only:
+  #              - add-nightly-builds
+  #  jobs:
+  #    - "Node 6"
+  #    - "Node 8"
+  #    - "Node 10"
+  #    - "Node 11"
+  #    - "Publish nightly build":
+  #        requires:
+  #          - "Node 6"
+  #          - "Node 8"
+  #          - "Node 10"
+  #          - "Node 11"
 

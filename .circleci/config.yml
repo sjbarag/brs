@@ -44,7 +44,7 @@ jobs:
     docker:
       - image: node:11
 
-  "Publish Nightly":
+  "Publish nightly build":
     docker:
       - image: node:10
     steps:
@@ -65,7 +65,7 @@ workflows:
       - "Node 10"
       - "Node 11"
 
-  "Nightly builds":
+  "Nightly build":
     triggers:
       - schedule:
           # eventually use:
@@ -80,7 +80,7 @@ workflows:
       - "Node 8"
       - "Node 10"
       - "Node 11"
-      - "Publish Nightly":
+      - "Publish nightly build":
           requires:
             - "Node 6"
             - "Node 8"

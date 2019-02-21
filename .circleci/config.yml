@@ -42,7 +42,19 @@ jobs:
   "Node 11":
     <<: *build-lint-test
     docker:
-        - image: node:11
+      - image: node:11
+
+  "Publish Nightly":
+    docker:
+      - image: node:10
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Publish
+          command: echo "Publish goes here"
 
 workflows:
   version: 2
@@ -52,3 +64,26 @@ workflows:
       - "Node 8"
       - "Node 10"
       - "Node 11"
+
+  "Nightly builds":
+    triggers:
+      - schedule:
+          # eventually use:
+          # cron: 05 7 * * *
+          cron: "* * * * *"
+          filters:
+            branches:
+              only:
+                - add-nightly-builds
+    jobs:
+      - "Node 6"
+      - "Node 8"
+      - "Node 10"
+      - "Node 11"
+      - "Publish Nightly":
+          requires:
+            - "Node 6"
+            - "Node 8"
+            - "Node 10"
+            - "Node 11"
+

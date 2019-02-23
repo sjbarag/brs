@@ -303,7 +303,7 @@ export class Parser {
         }
 
         function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
-            let name = advance();
+            let name = advance() as Identifier;
             let operator = consume(
                 `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${name.text}'`,
                 ...assignmentOperators
@@ -314,15 +314,18 @@ export class Parser {
                 consume("Expected newline or ':' after assignment", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof, ...additionalterminators);
             }
 
-            switch (operator.kind) {
-                case Lexeme.Equal:
-                    return new Stmt.Assignment(
-                        { equals: operator },
-                        name as Identifier,
-                        value
-                    );
-                default:
-                    throw new Error("non-equals assignment operators aren't supported yet");
+            if (operator.kind === Lexeme.Equal) {
+                return new Stmt.Assignment(
+                    { equals: operator },
+                    name,
+                    value
+                );
+            } else {
+                return new Stmt.Assignment(
+                    { equals: operator },
+                    name,
+                    new Expr.Binary(new Expr.Variable(name), operator, value)
+                );
             }
         }
 

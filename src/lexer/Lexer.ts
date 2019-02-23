@@ -145,7 +145,17 @@ export class Lexer {
                 case "]": addToken(Lexeme.RightSquare); break;
                 case ",": addToken(Lexeme.Comma); break;
                 case ".": addToken(Lexeme.Dot); break;
-                case "+": addToken(Lexeme.Plus); break;
+                case "+":
+                    switch (peek()) {
+                        case "=":
+                            advance();
+                            addToken(Lexeme.PlusEqual);
+                            break;
+                        default:
+                            addToken(Lexeme.Plus);
+                            break;
+                    }
+                    break;
                 case "-": addToken(Lexeme.Minus); break;
                 case "*": addToken(Lexeme.Star); break;
                 case "/": addToken(Lexeme.Slash); break;

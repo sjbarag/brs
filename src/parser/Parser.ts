@@ -39,7 +39,7 @@ const assignmentOperators = [
     Lexeme.BackslashEqual,
     Lexeme.LeftShiftEqual,
     Lexeme.RightShiftEqual
-]
+];
 
 /** The results of a Parser's parsing pass. */
 interface ParseResults {

@@ -61,7 +61,7 @@ jobs:
           command: yarn version --no-git-tag-version --new-version `node scripts/getNightlyVersion.js`
       - run:
           name: Publish
-          command: npm publish --tag nightly --dry-run
+          command: npm publish --tag nightly
 
 workflows:
   version: 2
@@ -76,8 +76,8 @@ workflows:
     triggers:
       - schedule:
           # eventually use:
-          # cron: 05 7 * * *
-          cron: "0,5,10,15,20,25,30,35,40,45,50,55 16 * * *"
+          cron: 05 7 * * *
+          # cron: "0,5,10,15,20,25,30,35,40,45,50,55 16 * * *"
           filters:
             branches:
               only:

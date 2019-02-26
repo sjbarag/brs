@@ -57,11 +57,8 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
-          name: Set version
-          command: yarn version --no-git-tag-version --new-version `node scripts/getNightlyVersion.js`
-      - run:
           name: Publish
-          command: cat ~/.npmrc && npm publish --tag nightly
+          command: yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly
 
 workflows:
   version: 2

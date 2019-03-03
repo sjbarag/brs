@@ -21,7 +21,6 @@ export enum Lexeme {
     RightShift, // >>
 
     // assignment operators
-    CaretEqual,      // ^=
     MinusEqual,      // -=
     PlusEqual,       // +=
     StarEqual,       // *=
@@ -102,7 +101,6 @@ export enum Lexeme {
     Step,
     Sub,
     Tab,
-    Then,
     To,
     True,
     Type,

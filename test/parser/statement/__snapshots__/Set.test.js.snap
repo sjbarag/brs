@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser indexed assignment assigns to bracketed index 1`] = `
+exports[`parser indexed assignment bracketed assignment 1`] = `
 Array [
   IndexedSet {
     "closingSquare": Object {
@@ -106,7 +106,7 @@ Array [
 ]
 `;
 
-exports[`parser indexed assignment assigns to dotted index 1`] = `
+exports[`parser indexed assignment dotted assignment 1`] = `
 Array [
   DottedSet {
     "name": Object {

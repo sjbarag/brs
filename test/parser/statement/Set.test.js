@@ -39,7 +39,6 @@ describe("parser indexed assignment", () => {
                token(Lexeme.StarEqual, "*="),
                token(Lexeme.Integer, "5", new Int32(5)),
                token(Lexeme.Newline, "\\n"),
-               token(Lexeme.EndFunction, "end function"),
                EOF
            ]);
 
@@ -78,12 +77,8 @@ describe("parser indexed assignment", () => {
                 token(Lexeme.LeftSquare, "["),
                 token(Lexeme.Integer, "0", new Int32(0)),
                 token(Lexeme.RightSquare, "]"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.Function, "function"),
-                token(Lexeme.LeftParen, "("),
-                token(Lexeme.RightParen, ")"),
-                token(Lexeme.Newline, "\\n"),
-                token(Lexeme.EndFunction, "end function"),
+                token(Lexeme.StarEqual, "*="),
+                token(Lexeme.Integer, "3", new Int32(3)),
                 EOF
             ]);
 

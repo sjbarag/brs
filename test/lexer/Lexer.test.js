@@ -342,8 +342,8 @@ describe("lexer", () => {
         });
     });
 
-    describe('for each loop', () => {
-        it('supports various types of spacing between the two keywords', () => {
+    describe('two word keywords', () => {
+        it('supports various spacing between for each', () => {
             var k = 2;
             let { tokens } = Lexer.scan('for each for  each for    each for\teach for\t each for \teach for \t each');
             console.log(tokens);
@@ -355,6 +355,21 @@ describe("lexer", () => {
                 Lexeme.ForEach,
                 Lexeme.ForEach,
                 Lexeme.ForEach,
+                Lexeme.Eof
+            ]);
+        });
+        it('supports various spacing between else if', () => {
+            var k = 2;
+            let { tokens } = Lexer.scan('else if else  if else    if else\tif else\t if else \tif else \t if');
+            console.log(tokens);
+            expect(tokens.map(t => t.kind)).toEqual([
+                Lexeme.ElseIf,
+                Lexeme.ElseIf,
+                Lexeme.ElseIf,
+                Lexeme.ElseIf,
+                Lexeme.ElseIf,
+                Lexeme.ElseIf,
+                Lexeme.ElseIf,
                 Lexeme.Eof
             ]);
         });

@@ -341,4 +341,23 @@ describe("lexer", () => {
             ]);
         });
     });
+
+    describe('for each loop', () => {
+        it('supports various types of spacing between the two keywords', () => {
+            var k = 2;
+            let { tokens } = Lexer.scan('for each for  each for    each for\teach for\t each for \teach for \t each');
+            console.log(tokens);
+            expect(tokens.map(t => t.kind)).toEqual([
+                Lexeme.ForEach,
+                Lexeme.ForEach,
+                Lexeme.ForEach,
+                Lexeme.ForEach,
+                Lexeme.ForEach,
+                Lexeme.ForEach,
+                Lexeme.ForEach,
+                Lexeme.Eof
+            ]);
+        });
+    });
+
 }); // lexer

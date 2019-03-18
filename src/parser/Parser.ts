@@ -174,6 +174,17 @@ export class Parser {
             } else {
                 name = consume(`Expected ${functionType.text} name after '${functionType.text}'`, Lexeme.Identifier) as Identifier;
                 leftParen = consume(`Expected '(' after ${functionType.text} name`, Lexeme.LeftParen);
+
+                //prevent functions from ending with type designators
+                let lastChar = name.text[name.text.length - 1];
+                if (["$", "%", "!", "#"].indexOf(lastChar) > -1) {
+                    //Since function type is first word, force the first char to upper case to match style of other error messages
+                    let properFunctionName = functionType.text[0].toUpperCase() + functionType.text.substring(1);
+                    //this error should not prevent parsing, but should still show up in the list of errors
+                    try {
+                        addError(new ParseError(name, `${properFunctionName} name cannot end with type designator '${lastChar}'`));
+                    } catch (e) { }
+                }
             }
 
             let args: Argument[] = [];
@@ -244,7 +255,7 @@ export class Parser {
             } else {
                 // only consume trailing newlines in the statement context; expressions
                 // expect to handle their own trailing whitespace
-                while(match(Lexeme.Newline));
+                while (match(Lexeme.Newline));
                 return new Stmt.Function(name!, func);
             }
         }
@@ -373,7 +384,7 @@ export class Parser {
         function exitWhile(): Stmt.ExitWhile {
             let keyword = advance();
             consume("Expected newline after 'exit while'", Lexeme.Newline);
-            while (match(Lexeme.Newline)) {}
+            while (match(Lexeme.Newline)) { }
             return new Stmt.ExitWhile({ exitWhile: keyword });
         }
 
@@ -392,7 +403,7 @@ export class Parser {
                 // BrightScript for/to/step loops default to a step of 1 if no `step` is provided
                 increment = new Expr.Literal(new Int32(1), peek().location);
             }
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             let body = block(Lexeme.EndFor, Lexeme.Next);
             if (!body) {
@@ -401,7 +412,7 @@ export class Parser {
                 );
             }
             let endFor = advance();
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             // WARNING: BrightScript doesn't delete the loop initial value after a for/to loop! It just
             // stays around in scope with whatever value it was when the loop exited.

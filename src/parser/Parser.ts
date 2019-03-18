@@ -723,6 +723,11 @@ export class Parser {
                 const dec = declaration();
                 if (dec) {
                     statements.push(dec);
+                } else {
+                    // //couldn't find a declaration. Try discarding the line entirely for now
+                    // while (!check(Lexeme.Newline) && !isAtEnd()) {
+                    //     advance();
+                    // }
                 }
             }
 

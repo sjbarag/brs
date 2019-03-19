@@ -195,6 +195,29 @@ describe("parser", () => {
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();
         });
+
+        it('does not allow type designators at end of name', () => {
+            const { tokens } = brs.lexer.Lexer.scan(`
+                function StringFunc#()
+                    return 1
+                end function
+
+                function IntegerFunc%()
+                    return 1
+                end function
+
+                function FloatFunc!()
+                    return 1
+                end function
+
+                function DoubleFunc#()
+                    return 1
+                end function
+            `);
+            const { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toEqual(4);
+            expect({ errors, statements }).toMatchSnapshot();
+        });
     });
 
     describe("sub declarations", () => {
@@ -377,6 +400,25 @@ describe("parser", () => {
             ]);
 
             expect(errors.length).not.toBe(0);
+        });
+
+        it('does not allow type designators at end of name', () => {
+            const { tokens } = brs.lexer.Lexer.scan(`
+                sub StringSub#()
+                end sub
+
+                sub IntegerSub%()
+                end sub
+
+                sub FloatSub!()
+                end sub
+
+                sub DoubleSub#()
+                end sub
+            `);
+            const { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toEqual(4);
+            expect({ errors, statements }).toMatchSnapshot();
         });
     });
 });

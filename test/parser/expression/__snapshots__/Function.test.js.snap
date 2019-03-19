@@ -72,7 +72,7 @@ Array [
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
-                "kind": 78,
+                "kind": 77,
                 "literal": undefined,
                 "location": Object {
                   "end": Object {
@@ -92,7 +92,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -108,7 +108,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -182,7 +182,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -198,7 +198,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -486,7 +486,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -502,7 +502,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -665,7 +665,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -681,7 +681,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -885,7 +885,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -901,7 +901,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1128,7 +1128,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1144,7 +1144,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1237,7 +1237,7 @@ Array [
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
-                "kind": 78,
+                "kind": 77,
                 "literal": undefined,
                 "location": Object {
                   "end": Object {
@@ -1257,7 +1257,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1273,7 +1273,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1347,7 +1347,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1363,7 +1363,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1437,7 +1437,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 55,
+        "kind": 54,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1453,7 +1453,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 82,
+        "kind": 81,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1546,7 +1546,7 @@ Array [
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
-                "kind": 78,
+                "kind": 77,
                 "literal": undefined,
                 "location": Object {
                   "end": Object {
@@ -1566,7 +1566,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 55,
+        "kind": 54,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1582,7 +1582,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 82,
+        "kind": 81,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1656,7 +1656,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 55,
+        "kind": 54,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1672,7 +1672,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 82,
+        "kind": 81,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1960,7 +1960,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1976,7 +1976,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2139,7 +2139,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2155,7 +2155,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2359,7 +2359,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 55,
+        "kind": 54,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2375,7 +2375,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 82,
+        "kind": 81,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2621,7 +2621,7 @@ Array [
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
-                "kind": 78,
+                "kind": 77,
                 "literal": undefined,
                 "location": Object {
                   "end": Object {
@@ -2641,7 +2641,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 52,
+        "kind": 51,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2657,7 +2657,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 64,
+        "kind": 63,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2718,7 +2718,7 @@ Array [
                 "tokens": Object {
                   "print": Object {
                     "isReserved": true,
-                    "kind": 78,
+                    "kind": 77,
                     "literal": undefined,
                     "location": Object {
                       "end": Object {
@@ -2738,7 +2738,7 @@ Array [
           },
           "end": Object {
             "isReserved": false,
-            "kind": 52,
+            "kind": 51,
             "literal": undefined,
             "location": Object {
               "end": Object {
@@ -2754,7 +2754,7 @@ Array [
           },
           "keyword": Object {
             "isReserved": true,
-            "kind": 64,
+            "kind": 63,
             "literal": undefined,
             "location": Object {
               "end": Object {

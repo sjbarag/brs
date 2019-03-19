@@ -1,0 +1,407 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser \`end\` keyword can be used as a property name on objects 1`] = `
+Array [
+  Function {
+    "func": Function {
+      "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": 26,
+            "line": 3,
+          },
+          "file": "",
+          "start": Object {
+            "column": 20,
+            "line": 3,
+          },
+        },
+        "statements": Array [
+          Assignment {
+            "name": Object {
+              "isReserved": false,
+              "kind": 28,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 26,
+                  "line": 3,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 20,
+                  "line": 3,
+                },
+              },
+              "text": "person",
+            },
+            "tokens": Object {
+              "equals": Object {
+                "isReserved": false,
+                "kind": 26,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 28,
+                    "line": 3,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 27,
+                    "line": 3,
+                  },
+                },
+                "text": "=",
+              },
+            },
+            "value": AALiteral {
+              "close": Object {
+                "isReserved": false,
+                "kind": 5,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 21,
+                    "line": 5,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 20,
+                    "line": 5,
+                  },
+                },
+                "text": "}",
+              },
+              "elements": Array [
+                Object {
+                  "name": BrsString {
+                    "kind": 2,
+                    "value": "end",
+                  },
+                  "value": Literal {
+                    "_location": Object {
+                      "end": Object {
+                        "column": 33,
+                        "line": 4,
+                      },
+                      "file": "",
+                      "start": Object {
+                        "column": 29,
+                        "line": 4,
+                      },
+                    },
+                    "value": BrsBoolean {
+                      "kind": 1,
+                      "value": true,
+                    },
+                  },
+                },
+              ],
+              "open": Object {
+                "isReserved": false,
+                "kind": 4,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 30,
+                    "line": 3,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 29,
+                    "line": 3,
+                  },
+                },
+                "text": "{",
+              },
+            },
+          },
+        ],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 54,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 23,
+            "line": 6,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 6,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 81,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 19,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 2,
+          },
+        },
+        "text": "sub",
+      },
+      "parameters": Array [],
+      "returns": 10,
+    },
+    "name": Object {
+      "isReserved": false,
+      "kind": 28,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 20,
+          "line": 2,
+        },
+      },
+      "text": "Main",
+    },
+  },
+]
+`;
+
+exports[`parser \`end\` keyword does not produce errors 1`] = `
+Array [
+  Function {
+    "func": Function {
+      "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": 23,
+            "line": 3,
+          },
+          "file": "",
+          "start": Object {
+            "column": 20,
+            "line": 3,
+          },
+        },
+        "statements": Array [
+          End {
+            "tokens": Object {
+              "end": Object {
+                "isReserved": false,
+                "kind": 28,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 23,
+                    "line": 3,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 20,
+                    "line": 3,
+                  },
+                },
+                "text": "end",
+              },
+            },
+          },
+        ],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 54,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 23,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 4,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 81,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 19,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 2,
+          },
+        },
+        "text": "sub",
+      },
+      "parameters": Array [],
+      "returns": 10,
+    },
+    "name": Object {
+      "isReserved": false,
+      "kind": 28,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 20,
+          "line": 2,
+        },
+      },
+      "text": "Main",
+    },
+  },
+]
+`;
+
+exports[`parser \`end\` keyword is not allowed as a standalone variable 1`] = `
+Array [
+  Function {
+    "func": Function {
+      "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": 24,
+            "line": 3,
+          },
+          "file": "",
+          "start": Object {
+            "column": 21,
+            "line": 3,
+          },
+        },
+        "statements": Array [
+          Assignment {
+            "name": Object {
+              "isReserved": false,
+              "kind": 28,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 24,
+                  "line": 3,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 21,
+                  "line": 3,
+                },
+              },
+              "text": "end",
+            },
+            "tokens": Object {
+              "equals": Object {
+                "isReserved": false,
+                "kind": 26,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 26,
+                    "line": 3,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 25,
+                    "line": 3,
+                  },
+                },
+                "text": "=",
+              },
+            },
+            "value": Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": 31,
+                  "line": 3,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 27,
+                  "line": 3,
+                },
+              },
+              "value": BrsBoolean {
+                "kind": 1,
+                "value": true,
+              },
+            },
+          },
+        ],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 54,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 23,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 4,
+          },
+        },
+        "text": "end sub",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 81,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 19,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 2,
+          },
+        },
+        "text": "sub",
+      },
+      "parameters": Array [],
+      "returns": 10,
+    },
+    "name": Object {
+      "isReserved": false,
+      "kind": 28,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 20,
+          "line": 2,
+        },
+      },
+      "text": "Main",
+    },
+  },
+]
+`;

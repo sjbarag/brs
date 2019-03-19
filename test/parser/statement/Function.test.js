@@ -24,19 +24,9 @@ describe("parser", () => {
             `);
             let { statements, errors } = parser.parse(tokens);
             expect(errors.length).toBe(1);
-            expect(errors[0].location).toMatchObject({
-                start: {
-                    line: 4,
-                    column: 16
-                },
-                end: {
-                    line: 4,
-                    column: 23
-                }
-            });
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
-            expect(statements).toMatchSnapshot();
+            expect({ errors, statements }).toMatchSnapshot();
         });
 
         it("parses minimal empty function declarations", () => {
@@ -155,7 +145,7 @@ describe("parser", () => {
         });
 
         it("parses functions with typed arguments and default expressions", () => {
-             let { statements, errors } = parser.parse([
+            let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
                 identifier("add"),
                 token(Lexeme.LeftParen, "("),
@@ -220,19 +210,9 @@ describe("parser", () => {
             `);
             let { statements, errors } = parser.parse(tokens);
             expect(errors.length).toBe(1);
-            expect(errors[0].location).toMatchObject({
-                start: {
-                    line: 4,
-                    column: 16
-                },
-                end: {
-                    line: 4,
-                    column: 28
-                }
-            });
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
-            expect(statements).toMatchSnapshot();
+            expect({ errors, statements }).toMatchSnapshot();
         });
 
         it("parses minimal sub declarations", () => {
@@ -351,7 +331,7 @@ describe("parser", () => {
         });
 
         it("parses subs with typed arguments and default expressions", () => {
-             let { statements, errors } = parser.parse([
+            let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
                 identifier("add"),
                 token(Lexeme.LeftParen, "("),

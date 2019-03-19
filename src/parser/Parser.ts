@@ -801,21 +801,21 @@ export class Parser {
         }
 
         function exponential(): Expression {
-            let expr = unary();
+            let expr = prefixUnary();
 
             while (match(Lexeme.Caret)) {
                 let operator = previous();
-                let right = unary();
+                let right = prefixUnary();
                 expr = new Expr.Binary(expr, operator, right);
             }
 
             return expr;
         }
 
-        function unary(): Expression {
+        function prefixUnary(): Expression {
             if (match(Lexeme.Not, Lexeme.Minus)) {
                 let operator = previous();
-                let right = unary();
+                let right = prefixUnary();
                 return new Expr.Unary(operator, right);
             }
 

@@ -17,6 +17,7 @@ import {
     SignatureAndMismatches,
     MismatchReason,
     Callable,
+    BrsNumber,
 } from "../brsTypes";
 
 import { Lexeme } from "../lexer";
@@ -1153,6 +1154,39 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         return BrsInvalid.Instance;
+    }
+
+    visitIncrement(expression: Expr.Increment) {
+        let target = this.evaluate(expression.value);
+
+        if (!isBrsNumber(target)) {
+            let operation = expression.token.kind === Lexeme.PlusPlus ? "increment" : "decrement";
+            return this.addError(
+                new BrsError(
+                    `Attempting to ${operation} value of non-numeric type ${ValueKind.toString(target.kind)}`,
+                    expression.location
+                )
+            );
+        }
+
+        let result: BrsNumber;
+        if (expression.token.kind === Lexeme.PlusPlus){
+            result = target.add(new Int32(1));
+        } else {
+            result = target.subtract(new Int32(1));
+        }
+
+        if (expression instanceof Expr.Variable) {
+            // store the result of the operation
+            this.environment.define(Scope.Function, expression.name.text, result);
+
+            // then return it
+            return result;
+        } else if (expression instanceof Expr.DottedGet || expression instanceof Expr.IndexedGet) {
+            // TODO: figure out
+            expression.obj++--;
+
+        }
     }
 
     visitVariable(expression: Expr.Variable) {

@@ -345,7 +345,6 @@ describe("lexer", () => {
     describe('two word keywords', () => {
         it('supports various spacing between for each', () => {
             let { tokens } = Lexer.scan('for each for  each for    each for\teach for\t each for \teach for \t each');
-            console.log(tokens);
             expect(tokens.map(t => t.kind)).toEqual([
                 Lexeme.ForEach,
                 Lexeme.ForEach,
@@ -359,7 +358,6 @@ describe("lexer", () => {
         });
         it('supports various spacing between else if', () => {
             let { tokens } = Lexer.scan('else if else  if else    if else\tif else\t if else \tif else \t if');
-            console.log(tokens);
             expect(tokens.map(t => t.kind)).toEqual([
                 Lexeme.ElseIf,
                 Lexeme.ElseIf,

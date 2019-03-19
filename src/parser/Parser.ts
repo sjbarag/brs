@@ -4,7 +4,7 @@ import * as Expr from "./Expression";
 type Expression = Expr.Expression;
 import * as Stmt from "./Statement";
 type Statement = Stmt.Statement;
-import { Lexeme, Token, Identifier, ReservedWords } from "../lexer";
+import { Lexeme, Token, Identifier, ReservedWords, ReservedWordsUsableAsProperty } from "../lexer";
 import { ParseError } from "./ParseError";
 
 import {
@@ -127,6 +127,16 @@ export class Parser {
                 statements: [],
                 errors: errors
             };
+        }
+
+        /**
+         * A simple wrapper around `check` to make tests for a `end` identifier.
+         * `end` is a keyword, but not reserved, so associative arrays can have properties
+         * called `end`; the parser takes on this task.
+         * @returns `true` if the next token is an identifier with text `end`, otherwise `false`
+         */
+        function checkEnd() {
+            return check(Lexeme.Identifier) && peek().text.toLowerCase() === "end";
         }
 
         function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
@@ -303,6 +313,10 @@ export class Parser {
 
         function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
             let name = advance() as Identifier;
+            //add error if this is a reserved word
+            if (ReservedWordsUsableAsProperty.has(name.text.toLowerCase())) {
+                try { addError(new ParseError(name, `Cannot use reserved word "${name.text}" as an identifier`)); } catch (e) { }
+            }
             let operator = consume(
                 `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${name.text}'`,
                 ...assignmentOperators
@@ -342,6 +356,8 @@ export class Parser {
             if (check(Lexeme.ForEach)) { return forEachStatement(); }
 
             if (check(Lexeme.ExitFor)) { return exitFor(); }
+
+            if (checkEnd()) { return endStatement(); }
 
             if (match(Lexeme.Return)) { return returnStatement(); }
 
@@ -708,6 +724,18 @@ export class Parser {
             while(match(Lexeme.Newline));
 
             return new Stmt.Return(tokens, toReturn);
+        }
+
+        /**
+         * Parses an `end` statement
+         * @returns an AST representation of an `end` statement.
+         */
+        function endStatement(): Stmt.End {
+            let tokens = { end: advance() };
+
+            while (match(Lexeme.Newline));
+
+            return new Stmt.End(tokens);
         }
 
         /**

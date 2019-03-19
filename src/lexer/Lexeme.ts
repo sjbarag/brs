@@ -68,7 +68,6 @@ export enum Lexeme {
     Dim,
     Else,
     ElseIf,
-    End,
     EndFunction,
     EndFor,
     EndIf,

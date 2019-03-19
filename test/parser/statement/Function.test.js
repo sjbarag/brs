@@ -199,47 +199,7 @@ describe("parser", () => {
             `);
             const { statements, errors } = parser.parse(tokens);
             expect(errors.length).toEqual(4);
-            expect(errors[0].location).toMatchObject({
-                start: {
-                    line: 2,
-                    column: 25
-                },
-                end: {
-                    line: 2,
-                    column: 36
-                }
-            });
-            expect(errors[1].location).toMatchObject({
-                start: {
-                    line: 6,
-                    column: 25
-                },
-                end: {
-                    line: 6,
-                    column: 37
-                }
-            });
-            expect(errors[2].location).toMatchObject({
-                start: {
-                    line: 10,
-                    column: 25
-                },
-                end: {
-                    line: 10,
-                    column: 35
-                }
-            });
-            expect(errors[3].location).toMatchObject({
-                start: {
-                    line: 14,
-                    column: 25
-                },
-                end: {
-                    line: 14,
-                    column: 36
-                }
-            });
-            expect(statements).toMatchSnapshot();
+            expect({ errors, statements }).toMatchSnapshot();
         });
     });
 
@@ -424,47 +384,7 @@ describe("parser", () => {
             `);
             const { statements, errors } = parser.parse(tokens);
             expect(errors.length).toEqual(4);
-            expect(errors[0].location).toMatchObject({
-                start: {
-                    line: 2,
-                    column: 20
-                },
-                end: {
-                    line: 2,
-                    column: 30
-                }
-            });
-            expect(errors[1].location).toMatchObject({
-                start: {
-                    line: 5,
-                    column: 20
-                },
-                end: {
-                    line: 5,
-                    column: 31
-                }
-            });
-            expect(errors[2].location).toMatchObject({
-                start: {
-                    line: 8,
-                    column: 20
-                },
-                end: {
-                    line: 8,
-                    column: 29
-                }
-            });
-            expect(errors[3].location).toMatchObject({
-                start: {
-                    line: 11,
-                    column: 20
-                },
-                end: {
-                    line: 11,
-                    column: 30
-                }
-            });
-            expect(statements).toMatchSnapshot();
+            expect({ errors, statements }).toMatchSnapshot();
         });
     });
 });

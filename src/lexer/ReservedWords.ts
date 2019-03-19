@@ -99,7 +99,7 @@ export const KeyWords: {[key: string]: L} = {
 };
 
 /**
- * Certain reserved words can be se 
+ * These reserved words can be used as object properties (but NOT as standalone vars)
  */
 export const ReservedWordsUsableAsProperty = new Set([
     "end"

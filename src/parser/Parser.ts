@@ -319,7 +319,8 @@ export class Parser {
             let name = advance() as Identifier;
             //add error if this is a reserved word
             if (ReservedWordsUsableAsProperty.has(name.text.toLowerCase())) {
-                try { addError(new ParseError(name, `Cannot use reserved word "${name.text}" as an identifier`)); } catch (e) { }
+                //don't throw...this is fully recoverable
+                addError(name, `Cannot use reserved word "${name.text}" as an identifier`);
             }
             let operator = consume(
                 `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${name.text}'`,

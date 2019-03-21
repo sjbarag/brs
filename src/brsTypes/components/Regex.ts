@@ -1,8 +1,9 @@
-import { BrsValue, ValueKind, BrsString, BrsBoolean } from "../BrsType";
+import { BrsBoolean, BrsInvalid, BrsString, BrsValue, ValueKind } from "../BrsType";
 import { BrsComponent } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
+import { BrsArray } from "./BrsArray";
 
 export class Regex extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
@@ -31,7 +32,7 @@ export class Regex extends BrsComponent implements BrsValue {
         {
             signature: {
                 args: [
-                    new StdlibArgument("str", ValueKind.String),
+                    new StdlibArgument("str", ValueKind.String)
                 ],
                 returns: ValueKind.Boolean
             },
@@ -45,11 +46,22 @@ export class Regex extends BrsComponent implements BrsValue {
         "match",
         {
             signature: {
-                args: [],
-                returns: ValueKind.Boolean
+                args: [
+                    new StdlibArgument("str", ValueKind.String)
+                ],
+                returns: ValueKind.Object
             },
             impl: (interpreter: Interpreter, str: BrsString) => {
-                return BrsBoolean.False;
+                const result = this.jsRegex.exec(str.value);
+                let arr = [];
+                if (result !== null) {
+                    for (let i = 0; i < result.length; i++) {
+                        let item = result[i] ? new BrsString(result[i]) : BrsInvalid.Instance;
+                        arr.push(item);
+                    }
+                }
+
+                return new BrsArray(arr);
             }
         }
     );

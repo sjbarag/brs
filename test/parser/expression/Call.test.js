@@ -34,7 +34,6 @@ describe("parser call expressions", () => {
             end sub 
         `);
         const { statements, errors } = parser.parse(tokens);
-        //there should only be at least one error, on the `DoThin` line
         expect(errors.length).toBeGreaterThan(0);
 
         //ALL of the errors should be on the `DoThin` line
@@ -42,6 +41,22 @@ describe("parser call expressions", () => {
         for (let lineNumber of lineNumbers) {
             expect(lineNumber).toEqual(3);
         }
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('does not invalidate the next statement on a multi-statement line', () => {
+        const { tokens } = brs.lexer.Lexer.scan(`
+            sub DoThingOne()
+                DoThin:name = "bob"
+            end sub
+            sub DoThingTwo()
+            end sub 
+        `);
+        const { statements, errors } = parser.parse(tokens);
+        //there should only be 1 error
+        expect(errors.length).toEqual(1);
+        //the error should be BEFORE the `name = "bob"` statement
+        expect(errors[0].location.end.column).toBeLessThan(24);
         expect(statements).toMatchSnapshot();
     });
 

@@ -135,6 +135,17 @@ describe("parser associative array literals", () => {
         });
     });
 
+    it('allows separating properties with colons', ()=>{
+        const { tokens } = brs.lexer.Lexer.scan(`
+            sub Main()
+                person = {name: "Bob":::::age:50}
+            end sub 
+        `);
+        let { statements, errors } = parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
     it("allows a mix of quoted and unquoted keys", () => {
         let { statements, errors } = parser.parse([
             identifier("_"),

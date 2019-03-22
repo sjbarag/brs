@@ -23,7 +23,7 @@ export interface Expression {
      * @param visitor the `Visitor` that will handle the enclosing `Expression`
      * @returns the BrightScript value resulting from evaluating the expression
      */
-    accept <R> (visitor: Visitor<R>): R;
+    accept<R>(visitor: Visitor<R>): R;
 
     /** The starting and ending location of the expression. */
     location: Location;
@@ -36,8 +36,7 @@ export class Binary implements Expression {
         readonly right: Expression
     ) { }
 
-
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitBinary(this);
     }
 
@@ -57,9 +56,9 @@ export class Call implements Expression {
         readonly callee: Expression,
         readonly closingParen: Token,
         readonly args: Expression[]
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitCall(this);
     }
 
@@ -79,9 +78,9 @@ export class Function implements Expression {
         readonly body: Block,
         readonly keyword: Token,
         readonly end: Token
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitAnonymousFunction(this);
     }
 
@@ -98,9 +97,9 @@ export class DottedGet implements Expression {
     constructor(
         readonly obj: Expression,
         readonly name: Identifier
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitDottedGet(this);
     }
 
@@ -118,9 +117,9 @@ export class IndexedGet implements Expression {
         readonly obj: Expression,
         readonly index: Expression,
         readonly closingSquare: Token,
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitIndexedGet(this);
     }
 
@@ -141,9 +140,9 @@ export class Grouping implements Expression {
             right: Token
         },
         readonly expression: Expression
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitGrouping(this);
     }
 
@@ -157,9 +156,9 @@ export class Grouping implements Expression {
 }
 
 export class Literal implements Expression {
-    constructor(readonly value: BrsType, readonly _location: Location | undefined) {}
+    constructor(readonly value: BrsType, readonly _location: Location | undefined) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);
     }
 
@@ -183,9 +182,9 @@ export class ArrayLiteral implements Expression {
         readonly elements: Expression[],
         readonly open: Token,
         readonly close: Token
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitArrayLiteral(this);
     }
 
@@ -201,9 +200,9 @@ export class ArrayLiteral implements Expression {
 /** A member of an associative array literal. */
 export interface AAMember {
     /** The name of the member. */
-    name: BrsString,
+    name: BrsString;
     /** The expression evaluated to determine the member's initial value. */
-    value: Expression
+    value: Expression;
 }
 
 export class AALiteral implements Expression {
@@ -211,9 +210,9 @@ export class AALiteral implements Expression {
         readonly elements: AAMember[],
         readonly open: Token,
         readonly close: Token
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): R {
+    accept<R>(visitor: Visitor<R>): R {
         return visitor.visitAALiteral(this);
     }
 
@@ -230,7 +229,7 @@ export class Unary implements Expression {
     constructor(
         readonly operator: Token,
         readonly right: Expression
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitUnary(this);
@@ -248,7 +247,7 @@ export class Unary implements Expression {
 export class Variable implements Expression {
     constructor(
         readonly name: Identifier
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitVariable(this);

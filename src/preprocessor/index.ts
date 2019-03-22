@@ -34,7 +34,6 @@ export class Preprocessor {
         this.events.once("err", errorHandler);
     }
 
-
     constructor() {
         // plumb errors from the internal parser and preprocessor out to the public interface for convenience
         this.parser.events.on("err", (err) => this.events.emit("err", err));

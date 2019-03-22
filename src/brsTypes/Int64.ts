@@ -47,7 +47,6 @@ export class Int64 implements Numeric, Comparable {
         return i64;
     }
 
-
     add(rhs: BrsNumber): BrsNumber {
         switch (rhs.kind) {
             case ValueKind.Int32:

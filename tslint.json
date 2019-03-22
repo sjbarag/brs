@@ -1,4 +1,10 @@
 {
+    "rulesDirectory": [
+        "node_modules/tslint-eslint-rules/dist/rules"
+    ],
+    "extends": [
+        "tslint:recommended"
+    ],
     "defaultSeverity": "error",
     "jsRules": {},
     "rules": {
@@ -8,7 +14,10 @@
         "await-promise": [true, "warn"],
         "ban-comma-operator": true,
         "curly": [true, "ignore-same-line"],
-        "no-debugger": [true, "warn"],
+        "no-debugger": {
+            "options": [true],
+            "severity": "warning"
+        },
         "no-for-in-array": true,
         "no-implicit-dependencies": true,
         "no-switch-case-fall-through": true,
@@ -22,7 +31,39 @@
         "new-parens": true,
         "no-angle-bracket-type-assertion": true,
         "quotemark": [true, "double"],
-        "semicolon": [true, "ignore-interfaces"]
-    },
-    "rulesDirectory": []
+        "semicolon": true,
+        "ter-arrow-spacing": true,
+        "ter-indent": [
+            true,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "ter-no-irregular-whitespace": true,
+        "ter-no-mixed-spaces-and-tabs": true,
+        "trailing-comma": false,
+        "ordered-imports": false,
+        "prefer-const": false,
+        "radix": false,
+        "max-line-length": false,
+        "object-literal-sort-keys": false,
+        "no-console": false,
+        "member-ordering": false,
+        "arrow-parens": false,
+        "max-classes-per-file": false,
+        "interface-name": [true, "never-prefix"],
+        "variable-name": false,
+        "member-access": false,
+        "ban-types": false,
+        "no-bitwise": false,
+        "no-namespace": false,
+        "object-literal-shorthand": [true, "never"],
+        "comment-format": false,
+        "no-empty": false,
+        "no-shadowed-variable": false,
+        "object-literal-key-quotes": [true, "as-needed"],
+        "no-unsafe-finally": false,
+        "array-bracket-spacing": [true, "never"]
+    }
 }

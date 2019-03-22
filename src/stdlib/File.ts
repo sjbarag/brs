@@ -269,4 +269,3 @@ export const WriteAsciiFile = new Callable(
         }
     }
 );
-

@@ -111,7 +111,7 @@ export class Int32 implements Numeric, Comparable {
                 );
             case ValueKind.Int64:
                 return new Int64(
-                    Math.trunc(this.getValue()  / rhs.getValue().toNumber())
+                    Math.trunc(this.getValue() / rhs.getValue().toNumber())
                 );
         }
     }

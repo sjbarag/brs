@@ -7,22 +7,22 @@ import { Location } from "../lexer";
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
     /** Where the argument exists in the parsed source file(s). */
-    readonly location: Location,
+    readonly location: Location;
 
     /** The argument's name. */
     readonly name: {
         text: string,
         location: Location
-    },
+    };
 
     /** The type of the argument expected by the BrightScript runtime. */
     readonly type: {
         kind: Brs.ValueKind
         location: Location
-    },
+    };
 
     /** The default value to use for the argument if none is provided. */
-    readonly defaultValue?: Expr.Expression,
+    readonly defaultValue?: Expr.Expression;
 }
 
 /**
@@ -64,41 +64,41 @@ export class StdlibArgument implements Argument {
 /** A BrightScript `function` or `sub`'s signature. */
 export interface Signature {
     /** The set of arguments a function accepts. */
-    readonly args: ReadonlyArray<Argument>,
+    readonly args: ReadonlyArray<Argument>;
     /** The type of BrightScript value the function will return. `sub`s must use `ValueKind.Void`. */
-    readonly returns: Brs.ValueKind
+    readonly returns: Brs.ValueKind;
 }
 
 /** A BrightScript function signature paired with its implementation. */
-type SignatureAndImplementation = {
+interface SignatureAndImplementation {
     /** A BrightScript function's signature. */
-    signature: Signature,
+    signature: Signature;
     /** The implementation corresponding to `signature`. */
-    impl: CallableImplementation
-};
+    impl: CallableImplementation;
+}
 
 type SignatureMismatch = AnonymousMismatch | ArgumentMismatch;
 
 /** A mismatch between a BrightScript function's signature and its received arguments. */
 export interface AnonymousMismatch {
     /** The type of mismatch that was received. */
-    reason: MismatchReason.TooFewArguments | MismatchReason.TooManyArguments,
+    reason: MismatchReason.TooFewArguments | MismatchReason.TooManyArguments;
     /** The number of arguments that was expected. */
-    expected: string,
+    expected: string;
     /** The number of arguments that was actually received. */
-    received: string
+    received: string;
 }
 
 /** A mismatch between a function argument's expected type and its runtime type. */
 export interface ArgumentMismatch {
     /** The type of mismatch that was received. */
-    reason: MismatchReason.ArgumentTypeMismatch,
+    reason: MismatchReason.ArgumentTypeMismatch;
     /** The BrightScript type that was expected for argument `argName`. */
-    expected: string,
+    expected: string;
     /** The BrightScript type that was actually received. */
-    received: string
+    received: string;
     /** The name of the argument that had a type mismatch. */
-    argName: string
+    argName: string;
 }
 
 /** The set of possible reasons why a signature and runtime arguments don't match. */
@@ -112,12 +112,12 @@ export enum MismatchReason {
 }
 
 /** A BrightScript function's signature, paired with a set of detected signature mismatches. */
-export type SignatureAndMismatches = {
+export interface SignatureAndMismatches {
     /** A BrightScript function's signature. */
-    signature: Signature,
+    signature: Signature;
     /** The set of mismatches between `signature` and the detected mismatches. */
-    mismatches: SignatureMismatch[]
-};
+    mismatches: SignatureMismatch[];
+}
 
 /*
  * Note that TypeScript's `--strictFunctionTypes` compiler argument prevents the `args` parameter
@@ -243,7 +243,6 @@ export class Callable implements Brs.BrsValue {
                 received: args.length.toString()
             });
         }
-
 
         sig.args.slice(0, Math.min(sig.args.length, args.length)).forEach((_value, index) => {
             let expected = sig.args[index];

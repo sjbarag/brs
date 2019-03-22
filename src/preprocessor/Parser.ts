@@ -7,9 +7,9 @@ import * as CC from "./Chunk";
 /** The results of a chunk-parser's parsing pass. */
 export interface ChunkParserResult {
     /** The chunks produced by the chunk-parser. */
-    chunks: ReadonlyArray<CC.Chunk>,
+    chunks: ReadonlyArray<CC.Chunk>;
     /** The errors encountered by the chunk-parser. */
-    errors: ReadonlyArray<ParseError>
+    errors: ReadonlyArray<ParseError>;
 }
 
 /** * Parses `Tokens` into chunks of tokens, excluding conditional compilation directives. */
@@ -176,7 +176,7 @@ export class Parser {
 
         function eof(): CC.BrightScript | undefined {
             if (isAtEnd()) {
-                return new CC.BrightScript([ peek() ]);
+                return new CC.BrightScript([peek()]);
             } else {
                 return undefined;
             }

@@ -37,9 +37,9 @@ import { BrsComponent } from "../brsTypes/components/BrsComponent";
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
     /** The base path for  */
-    root: string,
-    stdout: NodeJS.WriteStream,
-    stderr: NodeJS.WriteStream
+    root: string;
+    stdout: NodeJS.WriteStream;
+    stderr: NodeJS.WriteStream;
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
@@ -153,7 +153,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 }
             });
             if (maybeMain.kind === ValueKind.Callable) {
-                results = [ maybeMain.call(this) ];
+                results = [maybeMain.call(this)];
             }
         } catch (err) {
             throw err;
@@ -202,7 +202,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // the `tab` function is only in-scope while executing print statements
         this.environment.define(Scope.Function, "Tab", StdLib.Tab);
 
-        statement.expressions.forEach( (printable, index) => {
+        statement.expressions.forEach((printable, index) => {
             if (isToken(printable)) {
                 switch (printable.kind) {
                     case Lexeme.Comma:
@@ -277,11 +277,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
          * @returns `true` if `left` and `right` are allowed to be compared to each other with `operator`,
          *          otherwise `false`.
          */
-        function canCompare(left: BrsType, operator: Lexeme, right: BrsType ): boolean {
+        function canCompare(left: BrsType, operator: Lexeme, right: BrsType): boolean {
             if (left.kind === ValueKind.Invalid || right.kind === ValueKind.Invalid) {
                 // anything can be checked for *equality* with `invalid`, but greater than / less than comparisons
                 // are type mismatches
-                return operator === Lexeme.Equal || operator=== Lexeme.LessGreater;
+                return operator === Lexeme.Equal || operator === Lexeme.LessGreater;
             }
 
             // and only primitive non-invalid values can be compared to each other (i.e. no `foo <> []`)
@@ -797,7 +797,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             let messages;
             if (mismatchedSignatures.length === 1) {
                 header = `Provided arguments don't match ${functionName}'s signature.`;
-                messages = [ formatMismatch(mismatchedSignatures[0]) ];
+                messages = [formatMismatch(mismatchedSignatures[0])];
             } else {
                 header = `Provided arguments don't match any of ${functionName}'s signatures.`;
                 messages = mismatchedSignatures.map(formatMismatch);
@@ -959,7 +959,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return this.addError(
                 new BrsError(
                     `Attempting to iterate across values of non-iterable type ` +
-                        ValueKind.toString(target.kind),
+                    ValueKind.toString(target.kind),
                     statement.item.location
                 )
             );

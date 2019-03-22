@@ -8,9 +8,9 @@ import { BrsError } from "../Error";
 /** The results of a Preprocessor's filtering pass. */
 export interface FilterResults {
     /** The tokens remaining after preprocessing. */
-    processedTokens: ReadonlyArray<Token>,
+    processedTokens: ReadonlyArray<Token>;
     /** The encountered during preprocessing. */
-    errors: ReadonlyArray<BrsError>
+    errors: ReadonlyArray<BrsError>;
 }
 
 /**
@@ -48,7 +48,7 @@ export class Preprocessor implements CC.Visitor {
         this.constants = new Map(bsConst);
         return {
             processedTokens: chunks.map(chunk => chunk.accept(this)).reduce(
-                (allTokens: Token[], chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ],
+                (allTokens: Token[], chunkTokens: Token[]) => [...allTokens, ...chunkTokens],
                 []
             ),
             errors: this.errors
@@ -122,22 +122,22 @@ export class Preprocessor implements CC.Visitor {
     visitIf(chunk: CC.If): Token[] {
         if (this.evaluateCondition(chunk.condition)) {
             return chunk.thenChunks
-                    .map(chunk => chunk.accept(this))
-                    .reduce((allTokens, chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ], []);
+                .map(c => c.accept(this))
+                .reduce((allTokens, chunkTokens: Token[]) => [...allTokens, ...chunkTokens], []);
         } else {
             for (const elseIf of chunk.elseIfs) {
                 if (this.evaluateCondition(elseIf.condition)) {
                     return elseIf.thenChunks
-                        .map(chunk => chunk.accept(this))
-                        .reduce((allTokens, chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ], []);
+                        .map(c => c.accept(this))
+                        .reduce((allTokens, chunkTokens: Token[]) => [...allTokens, ...chunkTokens], []);
                 }
             }
         }
 
         if (chunk.elseChunks) {
             return chunk.elseChunks
-                .map(chunk => chunk.accept(this))
-                .reduce((allTokens, chunkTokens: Token[]) => [ ...allTokens, ...chunkTokens ], []);
+                .map(c => c.accept(this))
+                .reduce((allTokens, chunkTokens: Token[]) => [...allTokens, ...chunkTokens], []);
         }
 
         return [];

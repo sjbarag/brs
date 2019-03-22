@@ -3,7 +3,7 @@ import { BrsError } from "../Error";
 import { Token } from "../lexer";
 
 export interface BlockEnd {
-    kind: StopReason
+    kind: StopReason;
 }
 
 export enum StopReason {
@@ -24,7 +24,7 @@ export class ExitWhileReason implements BlockEnd {
 export class ReturnValue implements BlockEnd {
     readonly kind = StopReason.Return;
 
-    constructor(readonly location: Token, readonly value?: BrsType) {}
+    constructor(readonly location: Token, readonly value?: BrsType) { }
 }
 
 export class Runtime extends BrsError implements BlockEnd {

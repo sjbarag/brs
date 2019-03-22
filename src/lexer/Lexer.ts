@@ -18,9 +18,9 @@ import {
 /** The results of a Lexer's scanning pass. */
 interface ScanResults {
     /** The tokens produced by the Lexer. */
-    tokens: Token[],
+    tokens: Token[];
     /** The errors encountered by the Lexer. */
-    errors: BrsError[]
+    errors: BrsError[];
 }
 
 export class Lexer {
@@ -116,9 +116,7 @@ export class Lexer {
             }
         });
 
-        return { tokens, errors };
-
-
+        return { tokens: tokens, errors: errors };
 
         /**
          * Determines whether or not the lexer as reached the end of its input.
@@ -240,7 +238,7 @@ export class Lexer {
                             break;
                         case ">":
                             advance();
-                            switch(peek()){
+                            switch (peek()) {
                                 case "=":
                                     advance();
                                     addToken(Lexeme.RightShiftEqual);
@@ -354,7 +352,7 @@ export class Lexer {
         function string() {
             while (!isAtEnd()) {
                 if (peek() === "\"") {
-                    if( peekNext() === "\"") {
+                    if (peekNext() === "\"") {
                         // skip over two consecutive `"` characters to handle escaped `"` literals
                         advance();
                     } else {
@@ -659,4 +657,3 @@ export class Lexer {
         }
     }
 }
-

@@ -20,7 +20,7 @@ export class BrsComponent {
 
     protected registerMethods(methods: Callable[]) {
         this.methods = new Map(
-            methods.map(m => [ m.name!, m ] as [ string, Callable ])
+            methods.map(m => [m.name!, m] as [string, Callable])
         );
     }
 

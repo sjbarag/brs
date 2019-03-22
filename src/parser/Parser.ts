@@ -43,9 +43,9 @@ const assignmentOperators = [
 /** The results of a Parser's parsing pass. */
 interface ParseResults {
     /** The statements produced by the parser. */
-    statements: Stmt.Statement[],
+    statements: Stmt.Statement[];
     /** The errors encountered by the Parser. */
-    errors: ParseError[]
+    errors: ParseError[];
 }
 
 export class Parser {
@@ -100,18 +100,17 @@ export class Parser {
         let errors: ParseError[] = [];
 
         /**
-         * Add an error to the parse results. 
+         * Add an error to the parse results.
          * @param token - the token where the error occurred
          * @param message - the message for this error
          * @returns an error object that can be thrown if the calling code needs to abort parsing
          */
-        const addError = (token:Token, message:string) => {
+        const addError = (token: Token, message: string) => {
             let err = new ParseError(token, message);
             errors.push(err);
             this.events.emit("err", err);
             return err;
         };
-
 
         if (toParse.length === 0) {
             return {
@@ -128,7 +127,7 @@ export class Parser {
                 }
             }
 
-            return { statements, errors };
+            return { statements: statements, errors: errors };
         } catch (parseError) {
             return {
                 statements: [],
@@ -139,7 +138,7 @@ export class Parser {
         function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
             try {
                 // consume any leading newlines
-                while(match(Lexeme.Newline));
+                while (match(Lexeme.Newline));
 
                 if (check(Lexeme.Sub, Lexeme.Function)) {
                     return functionDeclaration(false);
@@ -148,7 +147,7 @@ export class Parser {
                 // BrightScript is like python, in that variables can be declared without a `var`,
                 // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
                 // out what to do with it.
-                if ( check(Lexeme.Identifier) && checkNext(...assignmentOperators)) {
+                if (check(Lexeme.Identifier) && checkNext(...assignmentOperators)) {
                     return assignment(...additionalTerminators);
                 }
 
@@ -246,7 +245,7 @@ export class Parser {
             let endingKeyword = advance();
             let expectedEndKind = isSub ? Lexeme.EndSub : Lexeme.EndFunction;
 
-            //if `function` is ended with `end sub`, or `sub` is ended with `end function`, then 
+            //if `function` is ended with `end sub`, or `sub` is ended with `end function`, then
             //add an error but don't hard-fail so the AST can continue more gracefully
             if (endingKeyword.kind !== expectedEndKind) {
                 addError(endingKeyword, `Expected 'end ${functionType.text}' to terminate ${functionType.text} block`);
@@ -449,7 +448,7 @@ export class Parser {
                 throw addError(peek(), "Expected 'end for' or 'next' to terminate for-loop block");
             }
             let endFor = advance();
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             return new Stmt.ForEach(
                 {
@@ -466,7 +465,7 @@ export class Parser {
         function exitFor(): Stmt.ExitFor {
             let keyword = advance();
             consume("Expected newline after 'exit for'", Lexeme.Newline);
-            while (match(Lexeme.Newline)) {}
+            while (match(Lexeme.Newline)) { }
             return new Stmt.ExitFor({ exitFor: keyword });
         }
 
@@ -561,7 +560,7 @@ export class Parser {
                 }
                 thenBranch = new Stmt.Block([thenStatement], peek().location);
 
-                while(match(Lexeme.ElseIf)) {
+                while (match(Lexeme.ElseIf)) {
                     let elseIf = previous();
                     let elseIfCondition = expression();
                     if (checkThen()) {
@@ -571,7 +570,7 @@ export class Parser {
 
                     let elseIfThen = declaration(Lexeme.ElseIf, Lexeme.Else);
                     if (!elseIfThen) {
-                        throw addError(peek(),`Expected a statement to follow '${elseIf.text} ...condition... then'`);
+                        throw addError(peek(), `Expected a statement to follow '${elseIf.text} ...condition... then'`);
                     }
 
                     elseIfBranches.push({
@@ -623,7 +622,6 @@ export class Parser {
                 let left = expr;
                 let operator = advance();
                 let right = expression();
-
 
                 // Create a dotted or indexed "set" based on the left-hand side's type
                 if (left instanceof Expr.IndexedGet) {
@@ -686,12 +684,12 @@ export class Parser {
             let tokens = { return: previous() };
 
             if (check(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof)) {
-                while(match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
+                while (match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
                 return new Stmt.Return(tokens);
             }
 
             let toReturn = expression();
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             return new Stmt.Return(tokens, toReturn);
         }
@@ -842,7 +840,7 @@ export class Parser {
 
         function finishCall(callee: Expression): Expression {
             let args = [];
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             if (!check(Lexeme.RightParen)) {
                 do {
@@ -857,7 +855,6 @@ export class Parser {
 
             while (match(Lexeme.Newline));
             const closingParen = consume("Expected ')' after function call arguments", Lexeme.RightParen);
-
 
             return new Expr.Call(callee, closingParen, args);
         }
@@ -882,7 +879,7 @@ export class Parser {
                     let expr = expression();
                     let right = consume("Unmatched '(' - expected ')' after expression", Lexeme.RightParen);
                     return new Expr.Grouping(
-                        { left, right },
+                        { left: left, right: right },
                         expr
                     );
                 case match(Lexeme.LeftSquare):
@@ -1053,4 +1050,3 @@ export class Parser {
         }
     }
 }
-

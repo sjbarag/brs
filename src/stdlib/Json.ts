@@ -1,7 +1,6 @@
 import { AssociativeArray } from "../brsTypes/components/AssociativeArray";
 import { BrsArray } from "../brsTypes/components/BrsArray";
 import { Interpreter } from "../interpreter";
-import { Literal } from "../parser/Expression";
 
 import {
     BrsBoolean,
@@ -27,27 +26,27 @@ function brsValueOf(x: any): BrsType {
     if (x === null) { return BrsInvalid.Instance; }
     let t: string = typeof x;
     switch (t) {
-    case "boolean":
-        return BrsBoolean.from(x);
-    case "string":
-        return new BrsString(x);
-    case "number":
-        if (Number.isInteger(x)) {
-            return x >= -2_147_483_648 && x <= 2_147_483_647 ? new Int32(x) : new Int64(x);
-        }
-        return new Float(x);
-    case "object":
-        if (Array.isArray(x)) {
-            return new BrsArray(x.map(brsValueOf));
-        }
-        return new AssociativeArray(
-            Object.getOwnPropertyNames(x).map((k: string) => ({
-                name: new BrsString(k),
-                value: brsValueOf(x[k])
-            }))
-        );
-    default:
-        throw new Error(`brsValueOf not implemented for: ${x} <${t}>`);
+        case "boolean":
+            return BrsBoolean.from(x);
+        case "string":
+            return new BrsString(x);
+        case "number":
+            if (Number.isInteger(x)) {
+                return x >= -2_147_483_648 && x <= 2_147_483_647 ? new Int32(x) : new Int64(x);
+            }
+            return new Float(x);
+        case "object":
+            if (Array.isArray(x)) {
+                return new BrsArray(x.map(brsValueOf));
+            }
+            return new AssociativeArray(
+                Object.getOwnPropertyNames(x).map((k: string) => ({
+                    name: new BrsString(k),
+                    value: brsValueOf(x[k])
+                }))
+            );
+        default:
+            throw new Error(`brsValueOf not implemented for: ${x} <${t}>`);
     }
 }
 
@@ -71,38 +70,38 @@ function visit(x: BrsAggregate, visited: Set<BrsAggregate>): void {
  */
 function jsonOf(interpreter: Interpreter, x: BrsType, visited: Set<BrsAggregate> = new Set()): string {
     switch (x.kind) {
-    case ValueKind.Invalid:
-        return "null";
-    case ValueKind.String:
-        return `"${x.toString()}"`;
-    case ValueKind.Boolean:
-    case ValueKind.Double:
-    case ValueKind.Float:
-    case ValueKind.Int32:
-    case ValueKind.Int64:
-        return x.toString();
-    case ValueKind.Object:
-        if (x instanceof AssociativeArray) {
-            visit(x, visited);
-            return `{${x.getElements().map((k: BrsString) => {
-                return `"${k.toString()}":${jsonOf(interpreter, x.get(k), visited)}`;
-            }).join(",")}}`;
-        }
-        if (x instanceof BrsArray) {
-            visit(x, visited);
-            return `[${x.getElements().map((el: BrsType) => {
-                return jsonOf(interpreter, el, visited);
-            }).join(",")}]`;
-        }
-        break;
-    case ValueKind.Callable:
-    case ValueKind.Uninitialized:
-        break;
-    default:
-        // Exhaustive check as per:
-        // https://basarat.gitbooks.io/typescript/content/docs/types/discriminated-unions.html
-        const _: never = x;
-        break;
+        case ValueKind.Invalid:
+            return "null";
+        case ValueKind.String:
+            return `"${x.toString()}"`;
+        case ValueKind.Boolean:
+        case ValueKind.Double:
+        case ValueKind.Float:
+        case ValueKind.Int32:
+        case ValueKind.Int64:
+            return x.toString();
+        case ValueKind.Object:
+            if (x instanceof AssociativeArray) {
+                visit(x, visited);
+                return `{${x.getElements().map((k: BrsString) => {
+                    return `"${k.toString()}":${jsonOf(interpreter, x.get(k), visited)}`;
+                }).join(",")}}`;
+            }
+            if (x instanceof BrsArray) {
+                visit(x, visited);
+                return `[${x.getElements().map((el: BrsType) => {
+                    return jsonOf(interpreter, el, visited);
+                }).join(",")}]`;
+            }
+            break;
+        case ValueKind.Callable:
+        case ValueKind.Uninitialized:
+            break;
+        default:
+            // Exhaustive check as per:
+            // https://basarat.gitbooks.io/typescript/content/docs/types/discriminated-unions.html
+            const _: never = x;
+            break;
     }
     throw new Error(`jsonOf not implemented for: ${x}`);
 }
@@ -113,10 +112,12 @@ function logBrsErr(functionName: string, err: Error): void {
 }
 
 export const FormatJson = new Callable("FormatJson", {
-    signature: { returns: ValueKind.String, args: [
-        new StdlibArgument("x", ValueKind.Object),
-        new StdlibArgument("flags", ValueKind.Int32, new Int32(0))
-    ]},
+    signature: {
+        returns: ValueKind.String, args: [
+            new StdlibArgument("x", ValueKind.Object),
+            new StdlibArgument("flags", ValueKind.Int32, new Int32(0))
+        ]
+    },
     impl: (interpreter: Interpreter, x: BrsType, _flags: Int32) => {
         try {
             return new BrsString(jsonOf(interpreter, x));
@@ -130,9 +131,11 @@ export const FormatJson = new Callable("FormatJson", {
 });
 
 export const ParseJson = new Callable("ParseJson", {
-    signature: { returns: ValueKind.Dynamic, args: [
-        new StdlibArgument("jsonString", ValueKind.String)
-    ]},
+    signature: {
+        returns: ValueKind.Dynamic, args: [
+            new StdlibArgument("jsonString", ValueKind.String)
+        ]
+    },
     impl: (_: Interpreter, jsonString: BrsString) => {
         try {
             let s: string = jsonString.toString().trim();

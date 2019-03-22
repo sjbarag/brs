@@ -105,7 +105,7 @@ export interface Comparable {
 /** Internal representation of a string in BrightScript. */
 export class BrsString implements BrsValue, Comparable {
     readonly kind = ValueKind.String;
-    constructor(readonly value: string) {}
+    constructor(readonly value: string) { }
 
     lessThan(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {
@@ -140,7 +140,7 @@ export class BrsString implements BrsValue, Comparable {
 /** Internal representation of a boolean in BrightScript. */
 export class BrsBoolean implements BrsValue, Comparable {
     readonly kind = ValueKind.Boolean;
-    private constructor(private readonly value: boolean) {}
+    private constructor(private readonly value: boolean) { }
 
     toBoolean(): boolean {
         return this.value;

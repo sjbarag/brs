@@ -30,7 +30,7 @@ export interface Statement {
      * @returns a BrightScript value (typically `invalid`) and the reason why
      *          the statement exited (typically `StopReason.End`)
      */
-    accept <R> (visitor: Visitor<R>): BrsType;
+    accept<R>(visitor: Visitor<R>): BrsType;
 
     /** The starting and ending location of the expression. */
     location: Location;
@@ -43,7 +43,7 @@ export class Assignment implements Statement {
         },
         readonly name: Identifier,
         readonly value: Expr.Expression
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitAssignment(this);
@@ -59,7 +59,7 @@ export class Assignment implements Statement {
 }
 
 export class Block implements Statement {
-    constructor(readonly statements: ReadonlyArray<Statement>, readonly startingLocation: Location) {}
+    constructor(readonly statements: ReadonlyArray<Statement>, readonly startingLocation: Location) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitBlock(this);
@@ -67,8 +67,8 @@ export class Block implements Statement {
 
     get location() {
         let end = this.statements.length
-                ? this.statements[this.statements.length - 1].location.end
-                : this.startingLocation.start;
+            ? this.statements[this.statements.length - 1].location.end
+            : this.startingLocation.start;
 
         return {
             file: this.startingLocation.file,
@@ -79,7 +79,7 @@ export class Block implements Statement {
 }
 
 export class Expression implements Statement {
-    constructor(readonly expression: Expr.Expression) {}
+    constructor(readonly expression: Expr.Expression) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExpression(this);
@@ -95,7 +95,7 @@ export class ExitFor implements Statement {
         readonly tokens: {
             exitFor: Token
         }
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExitFor(this);
@@ -112,7 +112,7 @@ export class ExitWhile implements Statement {
         readonly tokens: {
             exitWhile: Token
         }
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExitWhile(this);
@@ -123,12 +123,11 @@ export class ExitWhile implements Statement {
     }
 }
 
-
 export class Function implements Statement {
     constructor(
         readonly name: Identifier,
         readonly func: Expr.Function
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitNamedFunction(this);
@@ -144,8 +143,8 @@ export class Function implements Statement {
 }
 
 export interface ElseIf {
-    condition: Expr.Expression,
-    thenBranch: Block
+    condition: Expr.Expression;
+    thenBranch: Block;
 }
 
 export class If implements Statement {
@@ -163,7 +162,7 @@ export class If implements Statement {
         readonly thenBranch: Block,
         readonly elseIfs: ElseIf[],
         readonly elseBranch?: Block,
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIf(this);
@@ -194,12 +193,12 @@ export class If implements Statement {
 export namespace PrintSeparator {
     /** Used to indent the current `print` position to the next 16-character-width output zone. */
     export interface Tab extends Token {
-        kind: Lexeme.Comma
+        kind: Lexeme.Comma;
     }
 
     /** Used to insert a single whitespace character at the current `print` position. */
     export interface Space extends Token {
-        kind: Lexeme.Semicolon
+        kind: Lexeme.Semicolon;
     }
 }
 
@@ -217,7 +216,7 @@ export class Print implements Statement {
             print: Token
         },
         readonly expressions: (Expr.Expression | Token)[]
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitPrint(this);
@@ -225,8 +224,8 @@ export class Print implements Statement {
 
     get location() {
         let end = this.expressions.length
-                ? this.expressions[this.expressions.length - 1].location.end
-                : this.tokens.print.location.end;
+            ? this.expressions[this.expressions.length - 1].location.end
+            : this.tokens.print.location.end;
 
         return {
             file: this.tokens.print.location.file,
@@ -242,7 +241,7 @@ export class Return implements Statement {
             return: Token
         },
         readonly value?: Expr.Expression
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitReturn(this);
@@ -269,7 +268,7 @@ export class For implements Statement {
         readonly finalValue: Expr.Expression,
         readonly increment: Expr.Expression,
         readonly body: Block
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitFor(this);
@@ -294,7 +293,7 @@ export class ForEach implements Statement {
         readonly item: Token,
         readonly target: Expr.Expression,
         readonly body: Block
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitForEach(this);
@@ -317,7 +316,7 @@ export class While implements Statement {
         },
         readonly condition: Expr.Expression,
         readonly body: Block
-    ) {}
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitWhile(this);
@@ -334,10 +333,10 @@ export class While implements Statement {
 
 export class DottedSet implements Statement {
     constructor(
-       readonly obj: Expr.Expression,
-       readonly name: Identifier,
-       readonly value: Expr.Expression
-    ) {}
+        readonly obj: Expr.Expression,
+        readonly name: Identifier,
+        readonly value: Expr.Expression
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitDottedSet(this);
@@ -354,11 +353,11 @@ export class DottedSet implements Statement {
 
 export class IndexedSet implements Statement {
     constructor(
-       readonly obj: Expr.Expression,
-       readonly index: Expr.Expression,
-       readonly value: Expr.Expression,
-       readonly closingSquare: Token
-    ) {}
+        readonly obj: Expr.Expression,
+        readonly index: Expr.Expression,
+        readonly value: Expr.Expression,
+        readonly closingSquare: Token
+    ) { }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIndexedSet(this);

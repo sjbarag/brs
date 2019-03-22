@@ -16,14 +16,14 @@ export interface Visitor {
  * but typically has a one-to-many relationship with tokens in the input BrightScript files.
  */
 export interface Chunk {
-    accept (visitor: Visitor): Token[];
+    accept(visitor: Visitor): Token[];
 }
 
 /** A series of BrightScript tokens that will be parsed and interpreted directly. */
 export class BrightScript implements Chunk {
-    constructor(readonly tokens: Token[]) {}
+    constructor(readonly tokens: Token[]) { }
 
-    accept (visitor: Visitor) {
+    accept(visitor: Visitor) {
         return visitor.visitBrightScript(this);
     }
 }
@@ -41,9 +41,9 @@ export class Declaration implements Chunk {
     constructor(
         readonly name: Token,
         readonly value: Token
-    ) {}
+    ) { }
 
-    accept (visitor: Visitor) {
+    accept(visitor: Visitor) {
         return visitor.visitDeclaration(this);
     }
 }
@@ -53,8 +53,8 @@ export class Declaration implements Chunk {
  * `condition` evaluates to `true`.
  */
 export interface HashElseIf {
-    condition: Token,
-    thenChunks: Chunk[]
+    condition: Token;
+    thenChunks: Chunk[];
 }
 
 /**
@@ -76,9 +76,9 @@ export class If implements Chunk {
         readonly thenChunks: Chunk[],
         readonly elseIfs: HashElseIf[],
         readonly elseChunks?: Chunk[]
-    ) {}
+    ) { }
 
-    accept (visitor: Visitor) {
+    accept(visitor: Visitor) {
         return visitor.visitIf(this);
     }
 }
@@ -90,9 +90,9 @@ export class If implements Chunk {
  * #error Some message describing the error goes here.
  */
 export class Error implements Chunk {
-    constructor(readonly hashError: Token, readonly message: string) {}
+    constructor(readonly hashError: Token, readonly message: string) { }
 
-    accept (visitor: Visitor) {
+    accept(visitor: Visitor) {
         return visitor.visitError(this);
     }
 }

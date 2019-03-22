@@ -43,7 +43,8 @@
     "jest-junit": "^6.1.0",
     "npm-run-all": "^4.1.2",
     "rimraf": "^2.6.2",
-    "tslint": "^5.11.0",
+    "tslint": "^5.14.0",
+    "tslint-eslint-rules": "^5.4.0",
     "tslint-language-service": "^0.9.9",
     "typescript": "3"
   },

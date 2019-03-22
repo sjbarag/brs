@@ -9,9 +9,9 @@ import { BrsArray } from "./BrsArray";
 /** A member of an `AssociativeArray` in BrightScript. */
 export interface AAMember {
     /** The member's name. */
-    name: BrsString,
+    name: BrsString;
     /** The value associated with `name`. */
-    value: BrsType
+    value: BrsType;
 }
 
 export class AssociativeArray extends BrsComponent implements BrsValue, BrsIterable {
@@ -44,7 +44,7 @@ export class AssociativeArray extends BrsComponent implements BrsValue, BrsItera
             "<Component: roAssociativeArray> =",
             "{",
             ...Array.from(this.elements.keys())
-                    .map(key => `    ${key}: ${this.elements.get(key)!.toString(this)}`),
+                .map(key => `    ${key}: ${this.elements.get(key)!.toString(this)}`),
             "}"
         ].join("\n");
     }

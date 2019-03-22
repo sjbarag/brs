@@ -18,7 +18,6 @@ export { PP as preprocessor };
 import * as _parser from "./parser";
 export { _parser as parser };
 
-
 /**
  * Executes a BrightScript file by path and writes its output to the streams
  * provided in `options`.
@@ -65,7 +64,6 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
             });
         }
 
-
         let parseResults = parser.parse(preprocessResults.processedTokens);
         if (parseResults.errors.length > 0) {
             return Promise.reject({
@@ -85,7 +83,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     // combine statements from all files into one array
     let statements = parsedFiles.map(file => file.value || []).reduce(
-        (allStatements, fileStatements) => [ ...allStatements, ...fileStatements ],
+        (allStatements, fileStatements) => [...allStatements, ...fileStatements],
         []
     );
 

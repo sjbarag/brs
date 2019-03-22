@@ -34,8 +34,11 @@ export class AstPrinter implements Expr.Visitor<string> {
         return this.parenthesize("group", e.expression);
     }
     visitLiteral(e: Expr.Literal): string {
-        if (e.value == null) { return "invalid"; }
-        else { return e.value.toString(); }
+        if (e.value == null) {
+            return "invalid";
+        } else {
+            return e.value.toString();
+        }
     }
     visitArrayLiteral(e: Expr.ArrayLiteral): string {
         return JSON.stringify(e, undefined, 2);

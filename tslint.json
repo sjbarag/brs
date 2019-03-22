@@ -25,7 +25,7 @@
         "triple-equals": [true, "allow-null-check"],
         "use-isnan": true,
         "indent": [true, "spaces", 4],
-        "linebreak-style": [true, "LF"],
+        "linebreak-style": false,
         "array-type": [true, "array"],
         "jsdoc-format": true,
         "new-parens": true,

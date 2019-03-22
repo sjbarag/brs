@@ -12,6 +12,23 @@ describe("parser", () => {
     });
 
     describe("function declarations", () => {
+        it('recovers when using `end sub` instead of `end function`', () => {
+            const { tokens } = brs.lexer.Lexer.scan(`
+                function Main()
+                    print "Hello world"
+                end sub
+                
+                sub DoSomething()
+                
+                end sub 
+            `);
+            let { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toBe(1);
+            expect(statements).toBeDefined();
+            expect(statements).not.toBeNull();
+            expect({ errors, statements }).toMatchSnapshot();
+        });
+
         it("parses minimal empty function declarations", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
@@ -128,7 +145,7 @@ describe("parser", () => {
         });
 
         it("parses functions with typed arguments and default expressions", () => {
-             let { statements, errors } = parser.parse([
+            let { statements, errors } = parser.parse([
                 token(Lexeme.Function, "function"),
                 identifier("add"),
                 token(Lexeme.LeftParen, "("),
@@ -178,9 +195,49 @@ describe("parser", () => {
             expect(statements).not.toBeNull();
             expect(statements).toMatchSnapshot();
         });
+
+        it('does not allow type designators at end of name', () => {
+            const { tokens } = brs.lexer.Lexer.scan(`
+                function StringFunc#()
+                    return 1
+                end function
+
+                function IntegerFunc%()
+                    return 1
+                end function
+
+                function FloatFunc!()
+                    return 1
+                end function
+
+                function DoubleFunc#()
+                    return 1
+                end function
+            `);
+            const { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toEqual(4);
+            expect({ errors, statements }).toMatchSnapshot();
+        });
     });
 
     describe("sub declarations", () => {
+        it('recovers when using `end function` instead of `end sub`', () => {
+            const { tokens } = brs.lexer.Lexer.scan(`
+                sub Main()
+                    print "Hello world"
+                end function
+                
+                sub DoSomething()
+                
+                end sub 
+            `);
+            let { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toBe(1);
+            expect(statements).toBeDefined();
+            expect(statements).not.toBeNull();
+            expect({ errors, statements }).toMatchSnapshot();
+        });
+
         it("parses minimal sub declarations", () => {
             let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
@@ -297,7 +354,7 @@ describe("parser", () => {
         });
 
         it("parses subs with typed arguments and default expressions", () => {
-             let { statements, errors } = parser.parse([
+            let { statements, errors } = parser.parse([
                 token(Lexeme.Sub, "sub"),
                 identifier("add"),
                 token(Lexeme.LeftParen, "("),
@@ -343,6 +400,25 @@ describe("parser", () => {
             ]);
 
             expect(errors.length).not.toBe(0);
+        });
+
+        it('does not allow type designators at end of name', () => {
+            const { tokens } = brs.lexer.Lexer.scan(`
+                sub StringSub#()
+                end sub
+
+                sub IntegerSub%()
+                end sub
+
+                sub FloatSub!()
+                end sub
+
+                sub DoubleSub#()
+                end sub
+            `);
+            const { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toEqual(4);
+            expect({ errors, statements }).toMatchSnapshot();
         });
     });
 });

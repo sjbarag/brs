@@ -108,11 +108,15 @@ export class Regex extends BrsComponent implements BrsValue {
         "split",
         {
             signature: {
-                args: [],
-                returns: ValueKind.Boolean
+                args: [
+                    new StdlibArgument("str", ValueKind.String)
+                ],
+                returns: ValueKind.Object
             },
             impl: (interpreter: Interpreter, str: BrsString) => {
-                return BrsBoolean.False;
+                let items = this.jsRegex[Symbol.split](str.value);
+                let brsItems = items.map( item => new BrsString(item));
+                return new BrsArray(brsItems);
             }
         }
     );

@@ -38,6 +38,7 @@ describe("Regex", () => {
             expect(str2).toBe(BrsBoolean.False);
         });
     });
+
     describe("match", () => {
         it("doesn't match string", () => {
             let rgx = new Regex(new BrsString("(a|(z))(bc)"));
@@ -67,8 +68,42 @@ describe("Regex", () => {
             expect(result.get(new Int32(3)).value).toBe("bc");
         });
     });
-    // describe("replace");
-    // describe("replaceAll");
-    // describe("split");
+
+    describe("replace", () => {
+        it("replaces first matched instance from string", () => {
+            let rgx = new Regex(new BrsString("-"));
+            let replace = rgx.getMethod("replace");
+            expect(replace).toBeTruthy();
+
+            let result = replace.call(interpreter, new BrsString("2010-01-01"), new BrsString("."));
+            expect(result.kind).toBe(ValueKind.String);
+            expect(result.value).toBe("2010.01-01");
+        })
+    });
+
+    describe("replaceAll", () => {
+        it("replaces all matched instances from string", () => {
+            let rgx = new Regex(new BrsString("-"));
+            let replaceAll = rgx.getMethod("replaceall");
+            expect(replaceAll).toBeTruthy();
+
+            let result = replaceAll.call(interpreter, new BrsString("2010-01-01"), new BrsString("."));
+            expect(result.kind).toBe(ValueKind.String);
+            expect(result.value).toBe("2010.01.01");
+        })
+    });
+
+    describe("split", () => {
+        it("splits in the correct number of items", () => {
+            let rgx = new Regex(new BrsString(","));
+            let split = rgx.getMethod("split");
+            expect(split).toBeTruthy();
+
+            let result = split.call(interpreter, new BrsString("one, two, three, four"));
+            let count = result.getMethod("count").call(interpreter);
+            expect(result.kind).toBe(ValueKind.Object);
+            expect(count.value).toBe(4);
+        })
+    });
     // describe("matchAll");
 });

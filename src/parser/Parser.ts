@@ -108,7 +108,7 @@ export class Parser {
          * @param message - the message for this error
          * @returns an error object that can be thrown if the calling code needs to abort parsing
          */
-        const addError = (token:Token, message:string) => {
+        const addError = (token: Token, message: string) => {
             let err = new ParseError(token, message);
             errors.push(err);
             this.events.emit("err", err);
@@ -150,7 +150,7 @@ export class Parser {
         function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
             try {
                 // consume any leading newlines
-                while(match(Lexeme.Newline));
+                while (match(Lexeme.Newline));
 
                 if (check(Lexeme.Sub, Lexeme.Function)) {
                     return functionDeclaration(false);
@@ -163,7 +163,7 @@ export class Parser {
                 // BrightScript is like python, in that variables can be declared without a `var`,
                 // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
                 // out what to do with it.
-                if ( check(Lexeme.Identifier) && checkNext(...assignmentOperators)) {
+                if (check(Lexeme.Identifier) && checkNext(...assignmentOperators)) {
                     return assignment(...additionalTerminators);
                 }
 
@@ -358,7 +358,7 @@ export class Parser {
             return check(Lexeme.Identifier) && peek().text.toLowerCase() === "library";
         }
 
-        function statement(...additionalterminators: BlockTerminator[]): Statement {
+        function statement(...additionalterminators: BlockTerminator[]): Statement | undefined {
             if (checkLibrary()) { return libraryStatement(); }
 
             if (check(Lexeme.If)) { return ifStatement(); }
@@ -487,30 +487,44 @@ export class Parser {
         function exitFor(): Stmt.ExitFor {
             let keyword = advance();
             consume("Expected newline after 'exit for'", Lexeme.Newline);
-            while (match(Lexeme.Newline)) {}
+            while (match(Lexeme.Newline)) { }
             return new Stmt.ExitFor({ exitFor: keyword });
         }
 
-        function libraryStatement(): Stmt.Library {
+        function libraryStatement(): Stmt.Library | undefined {
             let libraryStatement = new Stmt.Library({
                 library: advance(),
                 filePath: advance()
             });
 
-            let isAtRootLevel = functionDeclarationLevel === 0;
+            //if the filePath token is not a string, something is wrong with this statement
+            if (libraryStatement.tokens.filePath.kind !== Lexeme.String) {
+                addErrorAtLocation(libraryStatement.tokens.filePath.location, `Expected string after ${libraryStatement.tokens.library.text} keyword`);
 
-            //libraries must be at the very top of the file before any other declarations.
-            let isAtTopOfFile = true;
-            for (let statement of statements) {
-                //if we found a non-library statement, this statement is not at the top of the file
-                if (!(statement instanceof Stmt.Library)) {
-                    isAtTopOfFile = false;
+                //consume all tokens until the end of the line
+                let invalidTokens = consumeUntil(Lexeme.Newline, Lexeme.Eof);
+
+                //add an error for every invalid token
+                for (let invalidToken of invalidTokens) {
+                    addErrorAtLocation(invalidToken.location, `Found unexpected token '${invalidToken.text}'`);
                 }
-            }
+            } else {
 
-            //libraries must be a root-level statement (i.e. NOT nested inside of functions)
-            if (!isAtRootLevel || !isAtTopOfFile) {
-                addErrorAtLocation(libraryStatement.location, "Library statements may only appear at the top of a file");
+                let isAtRootLevel = functionDeclarationLevel === 0;
+
+                //libraries must be at the very top of the file before any other declarations.
+                let isAtTopOfFile = true;
+                for (let statement of statements) {
+                    //if we found a non-library statement, this statement is not at the top of the file
+                    if (!(statement instanceof Stmt.Library)) {
+                        isAtTopOfFile = false;
+                    }
+                }
+
+                //libraries must be a root-level statement (i.e. NOT nested inside of functions)
+                if (!isAtRootLevel || !isAtTopOfFile) {
+                    addErrorAtLocation(libraryStatement.location, "Library statements may only appear at the top of a file");
+                }
             }
             //consume to the next newline
             while (match(Lexeme.Newline));
@@ -608,7 +622,7 @@ export class Parser {
                 }
                 thenBranch = new Stmt.Block([thenStatement], peek().location);
 
-                while(match(Lexeme.ElseIf)) {
+                while (match(Lexeme.ElseIf)) {
                     let elseIf = previous();
                     let elseIfCondition = expression();
                     if (checkThen()) {
@@ -618,7 +632,7 @@ export class Parser {
 
                     let elseIfThen = declaration(Lexeme.ElseIf, Lexeme.Else);
                     if (!elseIfThen) {
-                        throw addError(peek(),`Expected a statement to follow '${elseIf.text} ...condition... then'`);
+                        throw addError(peek(), `Expected a statement to follow '${elseIf.text} ...condition... then'`);
                     }
 
                     elseIfBranches.push({
@@ -733,12 +747,12 @@ export class Parser {
             let tokens = { return: previous() };
 
             if (check(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof)) {
-                while(match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
+                while (match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
                 return new Stmt.Return(tokens);
             }
 
             let toReturn = expression();
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             return new Stmt.Return(tokens, toReturn);
         }
@@ -889,7 +903,7 @@ export class Parser {
 
         function finishCall(callee: Expression): Expression {
             let args = [];
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             if (!check(Lexeme.RightParen)) {
                 do {
@@ -1025,6 +1039,20 @@ export class Parser {
             }
 
             return false;
+        }
+
+        /**
+         * Consume tokens until one of the `stopLexemes` is encountered
+         * @param lexemes 
+         * @return - the list of tokens consumed, EXCLUDING the `stopLexeme` (you can use `peek()` to see which one it was)
+         */
+        function consumeUntil(...stopLexemes: Lexeme[]) {
+            let result = [] as Token[];
+            //take tokens until we encounter one of the stopLexemes
+            while (stopLexemes.indexOf(peek().kind) === -1) {
+                result.push(advance());
+            }
+            return result;
         }
 
         function consume(message: string, ...lexemes: Lexeme[]): Token {

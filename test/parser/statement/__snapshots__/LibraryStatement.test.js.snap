@@ -245,6 +245,127 @@ Object {
 }
 `;
 
+exports[`parser library statements still parses entire file after invalid library statement 1`] = `
+Object {
+  "errors": Array [
+    [Error: Expected string after library keyword],
+    [Error: Found unexpected token 'dog'],
+    [Error: Found unexpected token 'mouse'],
+  ],
+  "statements": Array [
+    Library {
+      "tokens": Object {
+        "filePath": Object {
+          "isReserved": false,
+          "kind": 28,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": 23,
+              "line": 2,
+            },
+            "file": "",
+            "start": Object {
+              "column": 20,
+              "line": 2,
+            },
+          },
+          "text": "cat",
+        },
+        "library": Object {
+          "isReserved": false,
+          "kind": 28,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": 19,
+              "line": 2,
+            },
+            "file": "",
+            "start": Object {
+              "column": 12,
+              "line": 2,
+            },
+          },
+          "text": "library",
+        },
+      },
+    },
+    Function {
+      "func": Function {
+        "body": Block {
+          "startingLocation": Object {
+            "end": Object {
+              "column": 19,
+              "line": 4,
+            },
+            "file": "",
+            "start": Object {
+              "column": 12,
+              "line": 4,
+            },
+          },
+          "statements": Array [],
+        },
+        "end": Object {
+          "isReserved": false,
+          "kind": 55,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": 19,
+              "line": 4,
+            },
+            "file": "",
+            "start": Object {
+              "column": 12,
+              "line": 4,
+            },
+          },
+          "text": "end sub",
+        },
+        "keyword": Object {
+          "isReserved": true,
+          "kind": 82,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": 15,
+              "line": 3,
+            },
+            "file": "",
+            "start": Object {
+              "column": 12,
+              "line": 3,
+            },
+          },
+          "text": "sub",
+        },
+        "parameters": Array [],
+        "returns": 10,
+      },
+      "name": Object {
+        "isReserved": false,
+        "kind": 28,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 3,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 3,
+          },
+        },
+        "text": "main",
+      },
+    },
+  ],
+}
+`;
+
 exports[`parser library statements supports library statements at top of file 1`] = `
 Object {
   "errors": Array [],

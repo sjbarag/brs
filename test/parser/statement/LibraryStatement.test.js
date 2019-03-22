@@ -22,7 +22,7 @@ describe("parser library statements", () => {
         expect({ errors, statements }).toMatchSnapshot();
     });
 
-    it('adds recoverable error for library statements NOT at top of file', () => {
+    it('adds error for library statements NOT at top of file', () => {
         const { tokens } = brs.lexer.Lexer.scan(`
             sub main()
             end sub
@@ -33,7 +33,7 @@ describe("parser library statements", () => {
         expect({ errors, statements }).toMatchSnapshot();
     });
 
-    it('adds recoverable error for library statements inside of function body', () => {
+    it('adds error for library statements inside of function body', () => {
         const { tokens } = brs.lexer.Lexer.scan(`
             sub main()
                 Library "v30/bslCore.brs"
@@ -41,6 +41,20 @@ describe("parser library statements", () => {
         `);
         const { statements, errors } = parser.parse(tokens);
         expect(errors.length).toEqual(1);
+        expect({ errors, statements }).toMatchSnapshot();
+    });
+
+    it('still parses entire file after invalid library statement', () => {
+        const { tokens } = brs.lexer.Lexer.scan(`
+            library cat dog mouse
+            sub main()
+            end sub
+        `);
+        const { statements, errors } = parser.parse(tokens);
+        //3 errors, one for each of the invalid tokens after the `library` keyword
+        expect(errors.length).toEqual(3);
+        //2 statements (library and sub)
+        expect(statements.length).toEqual(2);
         expect({ errors, statements }).toMatchSnapshot();
     });
 });

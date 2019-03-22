@@ -372,3 +372,26 @@ export class IndexedSet implements Statement {
         };
     }
 }
+
+
+export class Library implements Statement {
+    constructor(
+        readonly tokens: {
+            library: Token,
+            filePath: Token
+        }
+    ) {
+
+    }
+    accept<R>(visitor: Visitor<R>): BrsType {
+        throw new Error("Library is not implemented");
+    }
+
+    get location() {
+        return {
+            file: this.tokens.library.location.file,
+            start: this.tokens.library.location.start,
+            end: this.tokens.filePath.location.end
+        };
+    }
+}

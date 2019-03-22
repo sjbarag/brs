@@ -378,7 +378,7 @@ export class Library implements Statement {
     constructor(
         readonly tokens: {
             library: Token,
-            filePath: Token
+            filePath: Token | undefined
         }
     ) {
 
@@ -391,7 +391,7 @@ export class Library implements Statement {
         return {
             file: this.tokens.library.location.file,
             start: this.tokens.library.location.start,
-            end: this.tokens.filePath.location.end
+            end: this.tokens.filePath ? this.tokens.filePath.location.end : this.tokens.library.location.end
         };
     }
 }

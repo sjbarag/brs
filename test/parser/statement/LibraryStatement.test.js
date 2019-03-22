@@ -51,10 +51,49 @@ describe("parser library statements", () => {
             end sub
         `);
         const { statements, errors } = parser.parse(tokens);
-        //3 errors, one for each of the invalid tokens after the `library` keyword
-        expect(errors.length).toEqual(3);
-        //2 statements (library and sub)
-        expect(statements.length).toEqual(2);
+        expect(errors.length).toBeGreaterThan(0);
+        expect({ errors, statements }).toMatchSnapshot();
+    });
+
+    it('does not prevent usage of `library` as varible name', () => {
+        const { tokens } = brs.lexer.Lexer.scan(`
+            sub main()
+                library = "Gotham City Library"
+            end sub
+        `);
+        const { statements, errors } = parser.parse(tokens);
+        //make sure the assignment is present in the function body
+        let assignment = statements[0].func.body.statements[0];
+        expect(assignment).toBeInstanceOf(brs.parser.Stmt.Assignment)
+        expect(assignment.name.text).toEqual('library');
+        expect({ errors, statements }).toMatchSnapshot();
+    });
+
+    it('does not prevent usage of `library` as object property name', () => {
+        const { tokens } = brs.lexer.Lexer.scan(`
+            sub main()
+                buildings = {
+                    library: "Gotham City Library"
+                }
+            end sub
+        `);
+        const { statements, errors } = parser.parse(tokens);
+        //make sure the assignment is present in the function body
+        expect(statements[0].func.body.statements[0].value.elements[0].name.value).toEqual('library');
+        expect({ errors, statements }).toMatchSnapshot();
+    });
+
+    it('parses rest of file with ONLY the library keyword present at root level', () => {
+        const { tokens } = brs.lexer.Lexer.scan(`
+            library
+            sub main()
+                library = "Your Library"
+            end sub
+        `);
+        const { statements, errors } = parser.parse(tokens);
+        expect(errors.length).toEqual(1);
+        //function statement should still exist
+        expect(statements[statements.length - 1]).toBeInstanceOf(brs.parser.Stmt.Function);
         expect({ errors, statements }).toMatchSnapshot();
     });
 });

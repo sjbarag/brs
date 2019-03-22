@@ -98,6 +98,10 @@ export class Parser {
         //the depth of the calls to function declarations. Helps some checks know if they are at the root or not.
         let functionDeclarationLevel = 0;
 
+        function isAtRootLevel() {
+            return functionDeclarationLevel === 0;
+        }
+
         let statements: Statement[] = [];
 
         let errors: ParseError[] = [];
@@ -362,7 +366,20 @@ export class Parser {
         }
 
         function checkLibrary() {
-            return check(Lexeme.Identifier) && peek().text.toLowerCase() === "library";
+            let isLibraryIdentifier = check(Lexeme.Identifier) && peek().text.toLowerCase() === "library";
+            //if we are at the top level, any line that starts with "library" should be considered a library statement
+            if (isAtRootLevel() && isLibraryIdentifier) {
+                return true;
+            }
+            //not at root level, library statements are all invalid here, but try to detect if the tokens look
+            //like a library statement (and let the libraryStatement function handle emitting the errors)
+            else if (isLibraryIdentifier && checkNext(Lexeme.String)) {
+                return true;
+            }
+            //definitely not a library statement
+            else {
+                return false;
+            }
         }
 
         function statement(...additionalterminators: BlockTerminator[]): Statement | undefined {
@@ -501,37 +518,41 @@ export class Parser {
         function libraryStatement(): Stmt.Library | undefined {
             let libraryStatement = new Stmt.Library({
                 library: advance(),
-                filePath: advance()
+                //grab the next token only if it's a string
+                filePath: peek().kind === Lexeme.String ? advance() : undefined
             });
 
-            //if the filePath token is not a string, something is wrong with this statement
-            if (libraryStatement.tokens.filePath.kind !== Lexeme.String) {
-                addErrorAtLocation(libraryStatement.tokens.filePath.location, `Expected string after ${libraryStatement.tokens.library.text} keyword`);
+            //no token following library keyword token
+            if (!libraryStatement.tokens.filePath && peek().kind === Lexeme.Newline) {
+                addErrorAtLocation(libraryStatement.tokens.library.location, `Missing string literal after ${libraryStatement.tokens.library.text} keyword`);
+            }
+            //does not have a string literal as next token
+            else if (!libraryStatement.tokens.filePath && peek().kind === Lexeme.Newline) {
+                addErrorAtLocation(peek().location, `Expected string literal after ${libraryStatement.tokens.library.text} keyword`);
 
-                //consume all tokens until the end of the line
-                let invalidTokens = consumeUntil(Lexeme.Newline, Lexeme.Eof);
+            }
 
+            //consume all tokens until the end of the line
+            let invalidTokens = consumeUntil(Lexeme.Newline, Lexeme.Eof);
+
+            if (invalidTokens.length > 0) {
                 //add an error for every invalid token
                 for (let invalidToken of invalidTokens) {
-                    addErrorAtLocation(invalidToken.location, `Found unexpected token '${invalidToken.text}'`);
+                    addErrorAtLocation(invalidToken.location, `Found unexpected token '${invalidToken.text}' after library statement`);
                 }
-            } else {
-
-                let isAtRootLevel = functionDeclarationLevel === 0;
-
-                //libraries must be at the very top of the file before any other declarations.
-                let isAtTopOfFile = true;
-                for (let statement of statements) {
-                    //if we found a non-library statement, this statement is not at the top of the file
-                    if (!(statement instanceof Stmt.Library)) {
-                        isAtTopOfFile = false;
-                    }
+            }
+            //libraries must be at the very top of the file before any other declarations.
+            let isAtTopOfFile = true;
+            for (let statement of statements) {
+                //if we found a non-library statement, this statement is not at the top of the file
+                if (!(statement instanceof Stmt.Library)) {
+                    isAtTopOfFile = false;
                 }
+            }
 
-                //libraries must be a root-level statement (i.e. NOT nested inside of functions)
-                if (!isAtRootLevel || !isAtTopOfFile) {
-                    addErrorAtLocation(libraryStatement.location, "Library statements may only appear at the top of a file");
-                }
+            //libraries must be a root-level statement (i.e. NOT nested inside of functions)
+            if (!isAtRootLevel() || !isAtTopOfFile) {
+                addErrorAtLocation(libraryStatement.location, "Library statements may only appear at the top of a file");
             }
             //consume to the next newline
             while (match(Lexeme.Newline));

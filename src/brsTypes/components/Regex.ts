@@ -70,11 +70,15 @@ export class Regex extends BrsComponent implements BrsValue {
         "replace",
         {
             signature: {
-                args: [],
-                returns: ValueKind.Boolean
+                args: [
+                    new StdlibArgument("str", ValueKind.String),
+                    new StdlibArgument("str", ValueKind.String)
+                ],
+                returns: ValueKind.String
             },
-            impl: (interpreter: Interpreter, str: BrsString) => {
-                return BrsBoolean.False;
+            impl: (interpreter: Interpreter, str: BrsString, replacement: BrsString) => {
+                const newStr = this.jsRegex[Symbol.replace](str.value, replacement.value);
+                return new BrsString(newStr);
             }
         }
     );
@@ -83,11 +87,19 @@ export class Regex extends BrsComponent implements BrsValue {
         "replaceall",
         {
             signature: {
-                args: [],
-                returns: ValueKind.Boolean
+                args: [
+                    new StdlibArgument("str", ValueKind.String),
+                    new StdlibArgument("str", ValueKind.String)
+                ],
+                returns: ValueKind.String
             },
-            impl: (interpreter: Interpreter, str: BrsString) => {
-                return BrsBoolean.False;
+            impl: (interpreter: Interpreter, str: BrsString, replacement: BrsString) => {
+                const source = this.jsRegex.source;
+                const flags = this.jsRegex.flags + "g";
+                this.jsRegex = new RegExp(source, flags);
+                const newStr = this.jsRegex[Symbol.replace](str.value, replacement.value);
+
+                return new BrsString(newStr);
             }
         }
     );

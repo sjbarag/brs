@@ -135,13 +135,32 @@ describe("parser associative array literals", () => {
         });
     });
 
-    it('allows separating properties with colons', ()=>{
-        const { tokens } = brs.lexer.Lexer.scan(`
-            sub Main()
-                person = {name: "Bob":::::age:50}
-            end sub 
-        `);
-        let { statements, errors } = parser.parse(tokens);
+    it('allows separating properties with colons', () => {
+        let { statements, errors } = parser.parse([
+            token(Lexeme.Sub, 'sub'),
+            identifier('main'),
+            token(Lexeme.LeftParen, '('),
+            token(Lexeme.RightParen, ')'),
+            token(Lexeme.Newline, '\n'),
+            identifier('person'),
+            token(Lexeme.Equal, '='),
+            token(Lexeme.LeftBrace, '{'),
+            identifier('name'),
+            token(Lexeme.Colon, ':'),
+            token(Lexeme.String, "Bob", new BrsString("Bob")),
+            token(Lexeme.Colon, ':'),
+            token(Lexeme.Colon, ':'),
+            token(Lexeme.Colon, ':'),
+            token(Lexeme.Colon, ':'),
+            token(Lexeme.Colon, ':'),
+            identifier('age'),
+            token(Lexeme.Colon, ':'),
+            token(Lexeme.Integer, "50", new Int32(3)),
+            token(Lexeme.RightBrace, '}'),
+            token(Lexeme.Newline, '\n'),
+            token(Lexeme.EndSub, 'end sub'),
+            EOF
+        ]);
         expect(errors.length).toEqual(0);
         expect(statements).toMatchSnapshot();
     });

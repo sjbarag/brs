@@ -7,11 +7,12 @@ import { BrsArray } from "./BrsArray";
 
 export class Regex extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
+    readonly supportedFlags = "ims";
     private jsRegex : RegExp;
 
     constructor(expression: BrsString, flags = new BrsString("")) {
         super("roRegex");
-        this.jsRegex = new RegExp(expression.value, flags.value);
+        this.jsRegex = new RegExp(expression.value, this.parseFlags(flags.value));
 
         this.registerMethods([
             this.isMatch,
@@ -25,6 +26,25 @@ export class Regex extends BrsComponent implements BrsValue {
 
     toString(parent?: BrsType): string {
         return "<Component: roRegex>";
+    }
+
+    private parseFlags(inputFlags: string): string {
+        let parsedFlags = "";
+        if (inputFlags.length === 0) {
+            return parsedFlags;
+        }
+
+        for (const flag of inputFlags) {
+            if (flag === "x") {
+                console.warn("'x' flag is not implemented yet, ignoring flag.");
+            } else if(this.supportedFlags.indexOf(flag) === -1) {
+                throw new Error(`${flag} is not supported.`);
+            } else {
+                parsedFlags += flag;
+            }
+        }
+
+        return parsedFlags;
     }
 
     private parseReplacementPattern(pattern: string): string {

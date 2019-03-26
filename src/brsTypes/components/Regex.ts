@@ -27,6 +27,10 @@ export class Regex extends BrsComponent implements BrsValue {
         return "<Component: roRegex>";
     }
 
+    private parseReplacementPattern(pattern: string): string {
+        return pattern.replace(/\\/g, "\$");
+    }
+
     private isMatch = new Callable(
         "ismatch",
         {
@@ -77,7 +81,8 @@ export class Regex extends BrsComponent implements BrsValue {
                 returns: ValueKind.String
             },
             impl: (interpreter: Interpreter, str: BrsString, replacement: BrsString) => {
-                const newStr = this.jsRegex[Symbol.replace](str.value, replacement.value);
+                let replacementPattern = this.parseReplacementPattern(replacement.value);
+                const newStr = this.jsRegex[Symbol.replace](str.value, replacementPattern);
                 return new BrsString(newStr);
             }
         }
@@ -125,11 +130,23 @@ export class Regex extends BrsComponent implements BrsValue {
         "matchall",
         {
             signature: {
-                args: [],
-                returns: ValueKind.Boolean
+                args: [
+                    new StdlibArgument("str", ValueKind.String)
+                ],
+                returns: ValueKind.Object
             },
             impl: (interpreter: Interpreter, str: BrsString) => {
-                return BrsBoolean.False;
+                const source = this.jsRegex.source;
+                const flags = this.jsRegex.flags + "g";
+                this.jsRegex = new RegExp(source, flags);
+                let arr = [];
+                let matches:any;
+
+                while ((matches = this.jsRegex.exec(str.value)) !== null) {
+                    let item = matches[0] ? new BrsString(matches[0]) : BrsInvalid.Instance;
+                    arr.push(new BrsArray([ item ]));
+                }
+                return new BrsArray(arr);
             }
         }
     );

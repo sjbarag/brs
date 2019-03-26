@@ -28,6 +28,12 @@ export class Regex extends BrsComponent implements BrsValue {
         return "<Component: roRegex>";
     }
 
+    /**
+     * Checks and parses the flags to avoid passing flags
+     * that are not supported
+     * @param inputFlags Flags passed to constructor
+     * @returns parsed flags
+     */
     private parseFlags(inputFlags: string): string {
         let parsedFlags = "";
         if (inputFlags.length === 0) {
@@ -47,10 +53,17 @@ export class Regex extends BrsComponent implements BrsValue {
         return parsedFlags;
     }
 
+    /**
+     * Transforms positional pattern replacements to javascript syntax
+     * by replacing backslashes with dollar symbols
+     * @param pattern Pattern to replace
+     * @returns Replaced string
+     */
     private parseReplacementPattern(pattern: string): string {
         return pattern.replace(/\\/g, "\$");
     }
 
+    /** Returns whether the string matched the regex or not */
     private isMatch = new Callable(
         "ismatch",
         {
@@ -61,11 +74,12 @@ export class Regex extends BrsComponent implements BrsValue {
                 returns: ValueKind.Boolean
             },
             impl: (interpreter: Interpreter, str: BrsString) => {
-                return this.jsRegex.test(str.value) ? BrsBoolean.True : BrsBoolean.False;
+                return BrsBoolean.from(this.jsRegex.test(str.value));
             }
         }
     );
 
+    /** Returns an array of matches */
     private match = new Callable(
         "match",
         {
@@ -77,12 +91,9 @@ export class Regex extends BrsComponent implements BrsValue {
             },
             impl: (interpreter: Interpreter, str: BrsString) => {
                 const result = this.jsRegex.exec(str.value);
-                let arr = [];
+                let arr: (BrsString | BrsInvalid)[] = [];
                 if (result !== null) {
-                    for (let i = 0; i < result.length; i++) {
-                        let item = result[i] ? new BrsString(result[i]) : BrsInvalid.Instance;
-                        arr.push(item);
-                    }
+                    arr = result.map(match => match ? new BrsString(match) : BrsInvalid.Instance);
                 }
 
                 return new BrsArray(arr);
@@ -90,13 +101,14 @@ export class Regex extends BrsComponent implements BrsValue {
         }
     );
 
+    /** Returns a new string with first match replaced */
     private replace = new Callable(
         "replace",
         {
             signature: {
                 args: [
                     new StdlibArgument("str", ValueKind.String),
-                    new StdlibArgument("str", ValueKind.String)
+                    new StdlibArgument("replacement", ValueKind.String)
                 ],
                 returns: ValueKind.String
             },
@@ -108,13 +120,14 @@ export class Regex extends BrsComponent implements BrsValue {
         }
     );
 
+    /** Returns a new string with all matches replaced */
     private replaceAll = new Callable(
         "replaceall",
         {
             signature: {
                 args: [
                     new StdlibArgument("str", ValueKind.String),
-                    new StdlibArgument("str", ValueKind.String)
+                    new StdlibArgument("replacement", ValueKind.String)
                 ],
                 returns: ValueKind.String
             },
@@ -129,6 +142,7 @@ export class Regex extends BrsComponent implements BrsValue {
         }
     );
 
+    /** Returns an array of strings split by match */
     private split = new Callable(
         "split",
         {
@@ -146,6 +160,7 @@ export class Regex extends BrsComponent implements BrsValue {
         }
     );
 
+    /** Returns an array of array with all matches found */
     private matchAll = new Callable(
         "matchall",
         {
@@ -160,7 +175,7 @@ export class Regex extends BrsComponent implements BrsValue {
                 const flags = this.jsRegex.flags + "g";
                 this.jsRegex = new RegExp(source, flags);
                 let arr = [];
-                let matches:any;
+                let matches: string[] | null;
 
                 while ((matches = this.jsRegex.exec(str.value)) !== null) {
                     let item = matches[0] ? new BrsString(matches[0]) : BrsInvalid.Instance;

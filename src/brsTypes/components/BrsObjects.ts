@@ -9,5 +9,5 @@ export const BrsObjects = new Map<string, Function>([
     [ "roassociativearray", () => new AssociativeArray([]) ],
     [ "roarray", () => new BrsArray([]) ],
     [ "rotimespan", () => new Timespan() ],
-    [ "roRegex", (expression: BrsString, flags: BrsString) => new Regex(expression, flags) ],
+    [ "roregex", (expression: BrsString, flags: BrsString) => new Regex(expression, flags) ],
 ]);

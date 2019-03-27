@@ -1,0 +1,21 @@
+sub main()
+    regex = createObject("roRegex", "hello_[0-9]*_world", "i")
+
+    print "HeLlO_123_WoRlD is match of hello_[0-9]*_world: " regex.ismatch("HeLlO_123_WoRlD")
+    print "goodbye_123_WoRlD isn't match of hello_[0-9]*_world: " regex.ismatch("HeLlO_123_WoRlD")
+
+    regex = createObject("roRegex", ",", "i")
+
+    print "Replacing ',' in 2019,03,26 by '-' on first occurrence: " regex.replace("2019,03,26", "-")
+    print "Replacing ',' in 2019,03,26 by '-' on all occurrences: " regex.replaceall("2019,03,26", "-")
+    print "Split by ','" regex.split("2019,03,26")
+
+    regex = createObject("roRegex", "\d+", "i")
+
+    print "First match" regex.match("123 456 789")
+    matches = regex.matchall("123 456 789")
+    print "All matches: "
+    print matches[0]
+    print matches[1]
+    print matches[2]
+end sub

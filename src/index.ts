@@ -78,7 +78,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         let parseResults = parser.parse(preprocessResults.processedTokens);
         if (parseResults.errors.length > 0) {
             return Promise.reject({
-                message: "Error occurred parsing"
+                message: "Error occurred during parsing"
             });
         } else if (options.stopAfter === "parser") {
             console.log(JSON.stringify(parseResults.statements, null, 2));

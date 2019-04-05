@@ -56,6 +56,11 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
             return Promise.reject({
                 message: "Error occurred during lexing"
             });
+        } else if (options.stopAfter === "lexer") {
+            console.log(JSON.stringify(scanResults.tokens, null, 2));
+            return Promise.reject({
+                message: "Execution stopped early because of `--stop-after` argument."
+            });
         }
 
         let preprocessResults = preprocessor.preprocess(scanResults.tokens, manifest);
@@ -63,13 +68,22 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
             return Promise.reject({
                 message: "Error occurred during pre-processing"
             });
+        } else if (options.stopAfter === "preprocessor") {
+            console.log(JSON.stringify(preprocessResults.processedTokens, null ,2));
+            return Promise.reject({
+                message: "Execution stopped early because of `--stop-after` argument."
+            });
         }
-
 
         let parseResults = parser.parse(preprocessResults.processedTokens);
         if (parseResults.errors.length > 0) {
             return Promise.reject({
                 message: "Error occurred parsing"
+            });
+        } else if (options.stopAfter === "parser") {
+            console.log(JSON.stringify(parseResults.statements, null, 2));
+            return Promise.reject({
+                message: "Execution stopped early because of `--stop-after` argument."
             });
         }
 

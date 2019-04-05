@@ -39,7 +39,8 @@ export interface ExecutionOptions {
     /** The base path for  */
     root: string,
     stdout: NodeJS.WriteStream,
-    stderr: NodeJS.WriteStream
+    stderr: NodeJS.WriteStream,
+    stopAfter?: "lexer" | "preprocessor" | "parser"
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */

@@ -379,7 +379,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -576,7 +576,7 @@ Array [
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
-        "kind": 53,
+        "kind": 54,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -592,7 +592,7 @@ Array [
       },
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -870,7 +870,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1284,7 +1284,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1629,7 +1629,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -1775,7 +1775,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2001,7 +2001,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -2346,7 +2346,7 @@ Array [
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
-        "kind": 68,
+        "kind": 69,
         "literal": undefined,
         "location": Object {
           "end": Object {

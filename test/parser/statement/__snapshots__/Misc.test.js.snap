@@ -281,12 +281,12 @@ Array [
       "body": Block {
         "startingLocation": Object {
           "end": Object {
-            "column": 24,
+            "column": 23,
             "line": 3,
           },
           "file": "",
           "start": Object {
-            "column": 21,
+            "column": 20,
             "line": 3,
           },
         },
@@ -298,12 +298,12 @@ Array [
               "literal": undefined,
               "location": Object {
                 "end": Object {
-                  "column": 24,
+                  "column": 23,
                   "line": 3,
                 },
                 "file": "",
                 "start": Object {
-                  "column": 21,
+                  "column": 20,
                   "line": 3,
                 },
               },
@@ -316,12 +316,12 @@ Array [
                 "literal": undefined,
                 "location": Object {
                   "end": Object {
-                    "column": 26,
+                    "column": 25,
                     "line": 3,
                   },
                   "file": "",
                   "start": Object {
-                    "column": 25,
+                    "column": 24,
                     "line": 3,
                   },
                 },
@@ -331,12 +331,12 @@ Array [
             "value": Literal {
               "_location": Object {
                 "end": Object {
-                  "column": 31,
+                  "column": 30,
                   "line": 3,
                 },
                 "file": "",
                 "start": Object {
-                  "column": 27,
+                  "column": 26,
                   "line": 3,
                 },
               },

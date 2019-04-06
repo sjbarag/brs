@@ -32,6 +32,7 @@ describe("parser", () => {
         });
 
         it('is not allowed as a standalone variable', () => {
+            //this test depends on token locations, so use the lexer to generate those locations.
             let { tokens } = brs.lexer.Lexer.scan(`
                 sub Main()
                     end = true
@@ -39,13 +40,12 @@ describe("parser", () => {
             `);
             let { statements, errors } = parser.parse(tokens);
             expect(errors.length).toEqual(1);
-            expect(errors[0].location.start.line).toEqual(3)
-            //TODO - re-enable this test once the `end` identifier location bug is fixed
-            // //specifically check for the error location, because the identifier location was wrong in the past
-            // expect(errors[0].location).toEqual({
-            //     start: { line: 3, column: 20 },
-            //     end: { line: 3, column: 23 }
-            // });
+            //specifically check for the error location, because the identifier location was wrong in the past
+            expect(errors[0].location).toEqual({
+                file: "",
+                start: { line: 3, column: 20 },
+                end: { line: 3, column: 23 }
+            });
             expect(statements).toMatchSnapshot();
         });
     });

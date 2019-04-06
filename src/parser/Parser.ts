@@ -990,7 +990,7 @@ export class Parser {
 
         /**
          * Consume tokens until one of the `stopLexemes` is encountered
-         * @param lexemes 
+         * @param lexemes
          * @return - the list of tokens consumed, EXCLUDING the `stopLexeme` (you can use `peek()` to see which one it was)
          */
         function consumeUntil(...stopLexemes: Lexeme[]) {

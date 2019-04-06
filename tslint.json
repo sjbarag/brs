@@ -14,6 +14,7 @@
         "await-promise": [true, "warn"],
         "ban-comma-operator": true,
         "curly": [true, "ignore-same-line"],
+        "no-conditional-assignment": false,
         "no-debugger": {
             "options": [true],
             "severity": "warning"

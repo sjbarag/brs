@@ -279,7 +279,7 @@ Array [
       },
       "end": Object {
         "isReserved": false,
-        "kind": 55,
+        "kind": 54,
         "literal": undefined,
         "location": Object {
           "end": Object {
@@ -295,7 +295,7 @@ Array [
       },
       "keyword": Object {
         "isReserved": true,
-        "kind": 82,
+        "kind": 81,
         "literal": undefined,
         "location": Object {
           "end": Object {

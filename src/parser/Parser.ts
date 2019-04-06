@@ -704,9 +704,20 @@ export class Parser {
 
             const statements: Statement[] = [];
             while (!check(...terminators) && !isAtEnd()) {
-                const dec = declaration();
+                //grab the location of the current token
+                let loopCurrent = current;
+                let dec = declaration();
+
                 if (dec) {
                     statements.push(dec);
+                } else {
+                    //something went wrong. reset to the top of the loop
+                    current = loopCurrent;
+
+                    //scrap the entire line
+                    consumeUntil(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof);
+                    //trash the newline character so we start the next iteraion on the next line
+                    advance();
                 }
             }
 
@@ -937,8 +948,8 @@ export class Parser {
                             value: expression()
                         });
 
-                        while (match(Lexeme.Comma, Lexeme.Newline)) {
-                            while (match(Lexeme.Newline));
+                        while (match(Lexeme.Comma, Lexeme.Newline, Lexeme.Colon)) {
+                            while (match(Lexeme.Newline, Lexeme.Colon));
 
                             if (check(Lexeme.RightBrace)) {
                                 break;
@@ -975,6 +986,20 @@ export class Parser {
             }
 
             return false;
+        }
+
+        /**
+         * Consume tokens until one of the `stopLexemes` is encountered
+         * @param lexemes 
+         * @return - the list of tokens consumed, EXCLUDING the `stopLexeme` (you can use `peek()` to see which one it was)
+         */
+        function consumeUntil(...stopLexemes: Lexeme[]) {
+            let result = [] as Token[];
+            //take tokens until we encounter one of the stopLexemes
+            while (stopLexemes.indexOf(peek().kind) === -1) {
+                result.push(advance());
+            }
+            return result;
         }
 
         function consume(message: string, ...lexemes: Lexeme[]): Token {

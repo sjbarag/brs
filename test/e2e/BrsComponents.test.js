@@ -21,7 +21,7 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roArray.brs", () => {
-        return execute([ resourceFile("components", "roArray.brs") ], outputStreams).then(() => {
+        return execute([resourceFile("components", "roArray.brs")], outputStreams).then(() => {
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
             ).toEqual([
@@ -35,7 +35,7 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roAssociativeArray.brs", () => {
-        return execute([ resourceFile("components", "roAssociativeArray.brs") ], outputStreams).then(() => {
+        return execute([resourceFile("components", "roAssociativeArray.brs")], outputStreams).then(() => {
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
             ).toEqual([
@@ -51,12 +51,32 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roTimespan.brs", () => {
-        return execute([ resourceFile("components", "roTimespan.brs") ], outputStreams).then(() => {
+        return execute([resourceFile("components", "roTimespan.brs")], outputStreams).then(() => {
             expect(
                 allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
             ).toEqual([
-                "can return seconds from date until now: ",  "373447701",
+                "can return seconds from date until now: ", "373447701",
                 "can return 2077252342 for date that can't be parsed: ", "2077252342"
+            ]);
+        });
+    });
+
+    test("components/roRegex.brs", () => {
+        return execute([resourceFile("components", "roRegex.brs")], outputStreams).then(() => {
+            expect(
+                allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")
+            ).toEqual([
+                "HeLlO_123_WoRlD is match of hello_[0-9]*_world: ", "true",
+                "goodbye_123_WoRlD isn't match of hello_[0-9]*_world: ", "true",
+                "Replacing ',' in 2019,03,26 by '-' on first occurrence: ", "2019-03,26",
+                "Replacing ',' in 2019,03,26 by '-' on all occurrences: ", "2019-03-26",
+                "Split by ',': [ ", "2019", " ", "03", " ", "26", " ]",
+                "First match: [ ", "123", " ]",
+                "All matches: [ ",
+                "[ ", "123", " ]",
+                "[ ", "456", " ]",
+                "[ ", "789", " ]",
+                " ]"
             ]);
         });
     });

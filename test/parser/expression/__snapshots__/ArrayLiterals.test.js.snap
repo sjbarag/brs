@@ -108,7 +108,7 @@ Array [
         Unary {
           "operator": Object {
             "isReserved": true,
-            "kind": 74,
+            "kind": 73,
             "literal": undefined,
             "location": Object {
               "end": Object {

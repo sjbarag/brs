@@ -1182,10 +1182,31 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
             // then return it
             return result;
-        } else if (expression instanceof Expr.DottedGet || expression instanceof Expr.IndexedGet) {
-            // TODO: figure out
-            expression.obj++--;
-
+        } else if (expression instanceof Expr.DottedGet) {
+            // immediately execute a dotted "set" statement
+            this.execute(
+                new Stmt.DottedSet(
+                    expression.obj,
+                    expression.name,
+                    new Expr.Literal(result, expression.location)
+                )
+            );
+            return BrsInvalid.Instance;
+        } else if (expression instanceof Expr.IndexedGet) {
+            // immediately execute a dotted "set" statement
+            this.execute(
+                new Stmt.IndexedSet(
+                    expression.obj,
+                    expression.index,
+                    new Expr.Literal(result, expression.location),
+                    expression.closingSquare
+                )
+            );
+            return BrsInvalid.Instance;
+        } else {
+            // only named variables and dotted/indexed "get"s result in the resulting value being stored,
+            // so just return the new value here
+            return result;
         }
     }
 

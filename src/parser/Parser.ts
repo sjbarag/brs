@@ -825,6 +825,10 @@ export class Parser {
         function postfixUnary(): Expression {
             let expr = call();
             if (match(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                    throw addError(peek(), "Consecutive increment/decrement operators are not allowed");
+                }
+
                 return new Expr.Increment(expr, previous());
             }
 

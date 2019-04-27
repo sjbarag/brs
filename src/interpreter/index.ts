@@ -1179,9 +1179,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         if (expression instanceof Expr.Variable) {
             // store the result of the operation
             this.environment.define(Scope.Function, expression.name.text, result);
-
-            // then return it
-            return result;
         } else if (expression instanceof Expr.DottedGet) {
             // immediately execute a dotted "set" statement
             this.execute(
@@ -1191,7 +1188,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     new Expr.Literal(result, expression.location)
                 )
             );
-            return BrsInvalid.Instance;
         } else if (expression instanceof Expr.IndexedGet) {
             // immediately execute a dotted "set" statement
             this.execute(
@@ -1202,12 +1198,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     expression.closingSquare
                 )
             );
-            return BrsInvalid.Instance;
-        } else {
-            // only named variables and dotted/indexed "get"s result in the resulting value being stored,
-            // so just return the new value here
-            return result;
         }
+
+        // always return the new value
+        return result;
     }
 
     visitVariable(expression: Expr.Variable) {

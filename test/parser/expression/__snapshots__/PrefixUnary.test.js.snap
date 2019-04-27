@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parser unary expressions parses consecutive unary '-' 1`] = `
+exports[`parser prefix unary expressions parses consecutive unary '-' 1`] = `
 Array [
   Assignment {
     "name": Object {
@@ -147,7 +147,7 @@ Array [
 ]
 `;
 
-exports[`parser unary expressions parses consecutive unary 'not' 1`] = `
+exports[`parser prefix unary expressions parses consecutive unary 'not' 1`] = `
 Array [
   Assignment {
     "name": Object {
@@ -294,7 +294,7 @@ Array [
 ]
 `;
 
-exports[`parser unary expressions parses unary '-' 1`] = `
+exports[`parser prefix unary expressions parses unary '-' 1`] = `
 Array [
   Assignment {
     "name": Object {
@@ -369,7 +369,7 @@ Array [
 ]
 `;
 
-exports[`parser unary expressions parses unary 'not' 1`] = `
+exports[`parser prefix unary expressions parses unary 'not' 1`] = `
 Array [
   Assignment {
     "name": Object {

@@ -1176,26 +1176,26 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             result = target.subtract(new Int32(1));
         }
 
-        if (expression instanceof Expr.Variable) {
+        if (expression.value instanceof Expr.Variable) {
             // store the result of the operation
-            this.environment.define(Scope.Function, expression.name.text, result);
-        } else if (expression instanceof Expr.DottedGet) {
+            this.environment.define(Scope.Function, expression.value.name.text, result);
+        } else if (expression.value instanceof Expr.DottedGet) {
             // immediately execute a dotted "set" statement
             this.execute(
                 new Stmt.DottedSet(
-                    expression.obj,
-                    expression.name,
+                    expression.value.obj,
+                    expression.value.name,
                     new Expr.Literal(result, expression.location)
                 )
             );
-        } else if (expression instanceof Expr.IndexedGet) {
+        } else if (expression.value instanceof Expr.IndexedGet) {
             // immediately execute a dotted "set" statement
             this.execute(
                 new Stmt.IndexedSet(
-                    expression.obj,
-                    expression.index,
+                    expression.value.obj,
+                    expression.value.index,
                     new Expr.Literal(result, expression.location),
-                    expression.closingSquare
+                    expression.value.closingSquare
                 )
             );
         }

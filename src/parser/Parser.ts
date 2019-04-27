@@ -100,7 +100,7 @@ export class Parser {
         let errors: ParseError[] = [];
 
         /**
-         * Add an error to the parse results. 
+         * Add an error to the parse results.
          * @param token - the token where the error occurred
          * @param message - the message for this error
          * @returns an error object that can be thrown if the calling code needs to abort parsing
@@ -246,7 +246,7 @@ export class Parser {
             let endingKeyword = advance();
             let expectedEndKind = isSub ? Lexeme.EndSub : Lexeme.EndFunction;
 
-            //if `function` is ended with `end sub`, or `sub` is ended with `end function`, then 
+            //if `function` is ended with `end sub`, or `sub` is ended with `end function`, then
             //add an error but don't hard-fail so the AST can continue more gracefully
             if (endingKeyword.kind !== expectedEndKind) {
                 addError(endingKeyword, `Expected 'end ${functionType.text}' to terminate ${functionType.text} block`);
@@ -819,11 +819,20 @@ export class Parser {
                 return new Expr.Unary(operator, right);
             }
 
-            return call();
+            return postfixUnary();
+        }
+
+        function postfixUnary(): Expression {
+            let expr = call();
+            if (match(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                return new Expr.Increment(expr, previous());
+            }
+
+            return expr;
         }
 
         function call(): Expression {
-            let expr = primary();
+            let expr = postfixUnary();
 
             while (true) {
                 if (match(Lexeme.LeftParen)) {
@@ -993,7 +1002,7 @@ export class Parser {
 
         /**
          * Consume tokens until one of the `stopLexemes` is encountered
-         * @param lexemes 
+         * @param lexemes
          * @return - the list of tokens consumed, EXCLUDING the `stopLexeme` (you can use `peek()` to see which one it was)
          */
         function consumeUntil(...stopLexemes: Lexeme[]) {

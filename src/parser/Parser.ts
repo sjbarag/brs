@@ -832,7 +832,7 @@ export class Parser {
         }
 
         function call(): Expression {
-            let expr = postfixUnary();
+            let expr = primary();
 
             while (true) {
                 if (match(Lexeme.LeftParen)) {

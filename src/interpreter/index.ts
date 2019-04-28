@@ -1123,40 +1123,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return BrsInvalid.Instance;
     }
 
-    visitUnary(expression: Expr.Unary) {
-        let right = this.evaluate(expression.right);
-
-        switch (expression.operator.kind) {
-            case Lexeme.Minus:
-                if (isBrsNumber(right)) {
-                    return right.multiply(new Int32(-1));
-                } else {
-                    return this.addError(
-                        new BrsError(
-                            `Attempting to negate non-numeric value.
-                            value type: ${ValueKind.toString(right.kind)}`,
-                            expression.operator.location
-                        )
-                    );
-                }
-            case Lexeme.Not:
-                if (isBrsBoolean(right)) {
-                    return right.not();
-                } else {
-                    return this.addError(
-                        new BrsError(
-                            `Attempting to NOT non-boolean value.
-                            value type: ${ValueKind.toString(right.kind)}`,
-                            expression.operator.location
-                        )
-                    );
-                }
-        }
-
-        return BrsInvalid.Instance;
-    }
-
-    visitIncrement(expression: Expr.Increment) {
+    visitIncrement(expression: Stmt.Increment) {
         let target = this.evaluate(expression.value);
 
         if (!isBrsNumber(target)) {
@@ -1189,7 +1156,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 )
             );
         } else if (expression.value instanceof Expr.IndexedGet) {
-            // immediately execute a dotted "set" statement
+            // immediately execute an indexed "set" statement
             this.execute(
                 new Stmt.IndexedSet(
                     expression.value.obj,
@@ -1200,8 +1167,41 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             );
         }
 
-        // always return the new value
-        return result;
+        // always return `invalid`, because ++/-- are purely side-effects in BrightScript
+        return BrsInvalid.Instance;
+    }
+
+    visitUnary(expression: Expr.Unary) {
+        let right = this.evaluate(expression.right);
+
+        switch (expression.operator.kind) {
+            case Lexeme.Minus:
+                if (isBrsNumber(right)) {
+                    return right.multiply(new Int32(-1));
+                } else {
+                    return this.addError(
+                        new BrsError(
+                            `Attempting to negate non-numeric value.
+                            value type: ${ValueKind.toString(right.kind)}`,
+                            expression.operator.location
+                        )
+                    );
+                }
+            case Lexeme.Not:
+                if (isBrsBoolean(right)) {
+                    return right.not();
+                } else {
+                    return this.addError(
+                        new BrsError(
+                            `Attempting to NOT non-boolean value.
+                            value type: ${ValueKind.toString(right.kind)}`,
+                            expression.operator.location
+                        )
+                    );
+                }
+        }
+
+        return BrsInvalid.Instance;
     }
 
     visitVariable(expression: Expr.Variable) {

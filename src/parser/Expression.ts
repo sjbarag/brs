@@ -3,7 +3,6 @@ import { BrsType, Argument, ValueKind, BrsString } from "../brsTypes";
 import { Block } from "./Statement";
 
 export interface Visitor<T> {
-    visitIncrement(expression: Increment): T;
     visitBinary(expression: Binary): T;
     visitCall(expression: Call): T;
     visitAnonymousFunction(func: Function): T;
@@ -28,25 +27,6 @@ export interface Expression {
 
     /** The starting and ending location of the expression. */
     location: Location;
-}
-
-export class Increment implements Expression {
-    constructor(
-        readonly value: Expression,
-        readonly token: Token
-    ) {}
-
-    accept <R> (visitor: Visitor<R>): R {
-        return visitor.visitIncrement(this);
-    }
-
-    get location() {
-        return {
-            file: this.value.location.file,
-            start: this.value.location.start,
-            end: this.token.location.end
-        };
-    }
 }
 
 export class Binary implements Expression {

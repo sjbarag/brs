@@ -603,9 +603,25 @@ export class Parser {
             );
         }
 
-        function setStatement(...additionalTerminators: BlockTerminator[]): Stmt.DottedSet | Stmt.IndexedSet | Stmt.Expression {
-            function _expressionStatement(): Stmt.Expression {
+        function setStatement(...additionalTerminators: BlockTerminator[]): Stmt.DottedSet | Stmt.IndexedSet | Stmt.Expression | Stmt.Increment {
+            /**
+             * Attempts to find an expression-statement or an increment statement.
+             * While calls are valid expressions _and_ statements, increment (e.g. `foo++`)
+             * statements aren't valid expressions. They _do_ however fall under the same parsing
+             * priority as standalone function calls though, so we cann parse them in the same way.
+             */
+            function _expressionStatement(): Stmt.Expression | Stmt.Increment {
                 let expressionStart = peek();
+
+                if (match(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                    if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                        throw addError(peek(), "Consecutive increment/decrement operators are not allowed");
+                    } else if (expr instanceof Expr.Call) {
+                        throw addError(expressionStart, "Increment/decrement operators are not allowed on the result of a function call");
+                    }
+
+                    return new Stmt.Increment(expr, previous());
+                }
 
                 if (!check(...additionalTerminators)) {
                     consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
@@ -819,20 +835,7 @@ export class Parser {
                 return new Expr.Unary(operator, right);
             }
 
-            return postfixUnary();
-        }
-
-        function postfixUnary(): Expression {
-            let expr = call();
-            if (match(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
-                if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
-                    throw addError(peek(), "Consecutive increment/decrement operators are not allowed");
-                }
-
-                return new Expr.Increment(expr, previous());
-            }
-
-            return expr;
+            return call();
         }
 
         function call(): Expression {

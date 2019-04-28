@@ -49,7 +49,7 @@ export class AstPrinter implements Expr.Visitor<string> {
     visitIndexedSet(e: Stmt.IndexedSet): string {
         return JSON.stringify(e, undefined, 2);
     }
-    visitIncrement(e: Expr.Increment): string {
+    visitIncrement(e: Stmt.Increment): string {
         return JSON.stringify(e, undefined, 2);
     }
     visitUnary(e: Expr.Unary): string {

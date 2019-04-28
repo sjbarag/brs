@@ -13,8 +13,6 @@ describe("parser postfix unary expressions", () => {
 
     it("parses postfix '++' for variables", () => {
         let { statements, errors } = parser.parse([
-            identifier("_"),
-            token(Lexeme.Equal, "="),
             identifier("foo"),
             token(Lexeme.PlusPlus, "++"),
             EOF
@@ -28,8 +26,6 @@ describe("parser postfix unary expressions", () => {
 
     it("parses postfix '--' for dotted get expressions", () => {
         let { statements, errors } = parser.parse([
-            identifier("_"),
-            token(Lexeme.Equal, "="),
             identifier("obj"),
             token(Lexeme.Dot, "."),
             identifier("property"),
@@ -45,8 +41,6 @@ describe("parser postfix unary expressions", () => {
 
     it("parses postfix '++' for indexed get expressions", () => {
         let { statements, errors } = parser.parse([
-            identifier("_"),
-            token(Lexeme.Equal, "="),
             identifier("obj"),
             token(Lexeme.LeftSquare, "["),
             identifier("property"),
@@ -62,9 +56,7 @@ describe("parser postfix unary expressions", () => {
     });
 
     it("disallows consecutive postfix operators", () => {
-        let { statements, errors } = parser.parse([
-            identifier("_"),
-            token(Lexeme.Equal, "="),
+        let { errors } = parser.parse([
             identifier("foo"),
             token(Lexeme.PlusPlus, "++"),
             token(Lexeme.PlusPlus, "++"),
@@ -77,40 +69,45 @@ describe("parser postfix unary expressions", () => {
         });
     });
 
+    it("disallows postfix '--' for function call results", () => {
+        let { errors } = parser.parse([
+            identifier("func"),
+            token(Lexeme.LeftParen, "("),
+            token(Lexeme.RightParen, ")"),
+            token(Lexeme.MinusMinus, "--"),
+            EOF
+        ]);
+
+        expect(errors).toHaveLength(1);
+        expect(errors[0]).toMatchObject({
+            message: expect.stringMatching("Increment/decrement operators are not allowed on the result of a function call")
+        });
+    });
 
     test("location tracking", () => {
         /**
-         *    0   0   0   1   1
-         *    0   4   8   2   6
-         *  +------------------
-         * 1| three = four--
+         *    0   0   0   1
+         *    0   4   8   2
+         *  +--------------
+         * 1| someNumber++
          */
         let { statements, errors } = parser.parse([
             {
                 kind: Lexeme.Identifier,
-                text: "three",
+                text: "someNumber",
                 isReserved: false,
                 location: {
                     start: { line: 1, column: 0 },
-                    end: { line: 1, column: 5 }
+                    end: { line: 1, column: 10 }
                 }
             },
             {
-                kind: Lexeme.Equal,
-                text: "=",
+                kind: Lexeme.PlusPlus,
+                text: "++",
                 isReserved: false,
                 location: {
-                    start: { line: 1, column: 6 },
-                    end: { line: 1, column: 7 }
-                }
-            },
-            {
-                kind: Lexeme.Identifier,
-                text: "four",
-                isReserved: false,
-                location: {
-                    start: { line: 1, column: 8 },
-                    end: { line: 1, column: 12 }
+                    start: { line: 1, column: 10 },
+                    end: { line: 1, column: 12 },
                 }
             },
             {
@@ -118,16 +115,16 @@ describe("parser postfix unary expressions", () => {
                 text: "\0",
                 isReserved: false,
                 location: {
-                    start: { line: 1, column: 13 },
-                    end: { line: 1, column: 14 }
+                    start: { line: 1, column: 12 },
+                    end: { line: 1, column: 13 }
                 }
             }
         ]);
 
         expect(errors).toEqual([]);
         expect(statements).toHaveLength(1);
-        expect(statements[0].value.location).toEqual({
-            start: { line: 1, column: 8 },
+        expect(statements[0].location).toMatchObject({
+            start: { line: 1, column: 0 },
             end: { line: 1, column: 12 }
         });
     });

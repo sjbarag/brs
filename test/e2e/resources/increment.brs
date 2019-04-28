@@ -3,7 +3,11 @@ sub main()
     aa = { foo: 3 }
     arr = [13]
 
-    print var++
-    print aa.foo--
-    print arr[0]++
+    var++
+    aa.foo--
+    arr[0]++
+
+    print var    ' => 6
+    print aa.foo ' => 2
+    print arr[0] ' => 14
 end sub

@@ -20,13 +20,11 @@ describe("interpreter increment/decrement operators", () => {
                 identifier("foo"),
                 new Expr.Literal(new Int32(4))
             ),
-            new Stmt.Expression(
-                new Expr.Increment(
-                    new Expr.Variable(
-                        identifier("foo")
-                    ),
-                    token(Lexeme.PlusPlus, "++")
-                )
+            new Stmt.Increment(
+                new Expr.Variable(
+                    identifier("foo")
+                ),
+                token(Lexeme.PlusPlus, "++")
             )
         ];
 
@@ -46,13 +44,11 @@ describe("interpreter increment/decrement operators", () => {
                 identifier("foo"),
                 new Expr.Literal(new Int32(4))
             ),
-            new Stmt.Expression(
-                new Expr.Increment(
-                    new Expr.Variable(
-                        identifier("foo")
-                    ),
-                    token(Lexeme.MinusMinus, "--")
-                )
+            new Stmt.Increment(
+                new Expr.Variable(
+                    identifier("foo")
+                ),
+                token(Lexeme.MinusMinus, "--")
             )
         ];
 
@@ -78,14 +74,12 @@ describe("interpreter increment/decrement operators", () => {
                     token(Lexeme.RightBrace, "}")
                 )
             ),
-            new Stmt.Expression(
-                new Expr.Increment(
-                    new Expr.DottedGet(
-                        new Expr.Variable( identifier("aa")),
-                        identifier("foo")
-                    ),
-                    token(Lexeme.PlusPlus, "++")
-                )
+            new Stmt.Increment(
+                new Expr.DottedGet(
+                    new Expr.Variable( identifier("aa")),
+                    identifier("foo")
+                ),
+                token(Lexeme.PlusPlus, "++")
             ),
             new Stmt.Assignment(
                 { equals: token(Lexeme.Equals, "=") },
@@ -119,15 +113,13 @@ describe("interpreter increment/decrement operators", () => {
                     token(Lexeme.RightSquare, "]")
                 )
             ),
-            new Stmt.Expression(
-                new Expr.Increment(
-                    new Expr.IndexedGet(
-                        new Expr.Variable( identifier("arr")),
-                        new Expr.Literal(new Int32(0)),
-                        token(Lexeme.RightSquare, "]")
-                    ),
-                    token(Lexeme.MinusMinus, "--")
-                )
+            new Stmt.Increment(
+                new Expr.IndexedGet(
+                    new Expr.Variable( identifier("arr")),
+                    new Expr.Literal(new Int32(0)),
+                    token(Lexeme.RightSquare, "]")
+                ),
+                token(Lexeme.MinusMinus, "--")
             ),
             new Stmt.Assignment(
                 { equals: token(Lexeme.Equals, "=") },

@@ -1137,7 +1137,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         let result: BrsNumber;
-        if (expression.token.kind === Lexeme.PlusPlus){
+        if (expression.token.kind === Lexeme.PlusPlus) {
             result = target.add(new Int32(1));
         } else {
             result = target.subtract(new Int32(1));

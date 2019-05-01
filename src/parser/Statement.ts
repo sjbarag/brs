@@ -194,9 +194,9 @@ export class Increment implements Statement {
     constructor(
         readonly value: Expr.Expression,
         readonly token: Token
-    ) {}
+    ) { }
 
-    accept <R> (visitor: Visitor<R>): BrsType {
+    accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIncrement(this);
     }
 
@@ -208,7 +208,6 @@ export class Increment implements Statement {
         };
     }
 }
-
 
 /** The set of all accepted `print` statement separators. */
 export namespace PrintSeparator {

@@ -49,6 +49,13 @@ export const ReservedWords = new Set([
     "while"
 ]);
 
+export const AllowedProperties = [
+    L.And,
+    L.Or,
+    L.Next,
+    L.End
+];
+
 /**
  * The set of keywords in the refrence BrightScript runtime. Any of these that *are not* reserved
  * words can be used within a BrightScript file for other purposes, e.g. `tab`.

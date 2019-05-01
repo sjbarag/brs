@@ -4,7 +4,7 @@ import * as Expr from "./Expression";
 type Expression = Expr.Expression;
 import * as Stmt from "./Statement";
 type Statement = Stmt.Statement;
-import { Lexeme, Token, Identifier, ReservedWords } from "../lexer";
+import { Lexeme, Token, Identifier, ReservedWords, AllowedProperties } from "../lexer";
 import { ParseError } from "./ParseError";
 
 import {
@@ -857,9 +857,12 @@ export class Parser {
                 } else if (match(Lexeme.Dot)) {
                     while (match(Lexeme.Newline));
 
-                    let name = consume("Expected property name after '.'", Lexeme.Identifier) as Identifier;
+                    let name = consume("Expected property name after '.'", Lexeme.Identifier, ...AllowedProperties);
 
-                    expr = new Expr.DottedGet(expr, name);
+                    // force it into an identifier so the AST makes some sense
+                    name.kind = Lexeme.Identifier;
+
+                    expr = new Expr.DottedGet(expr, name as Identifier);
                 } else {
                     break;
                 }
@@ -945,7 +948,7 @@ export class Parser {
 
                     function key() {
                         let k;
-                        if (check(Lexeme.Identifier)) {
+                        if (check(Lexeme.Identifier, ...AllowedProperties)) {
                             k = new BrsString(advance().text!);
                         } else if (check(Lexeme.String)) {
                             k = advance().literal! as BrsString;

@@ -202,11 +202,8 @@ export class Parser {
             rightParen = advance();
 
             let maybeAs = peek();
-            if (check(Lexeme.Identifier) && maybeAs.text && maybeAs.text.toLowerCase() === "as") {
+            if (check(Lexeme.Identifier) && maybeAs.text.toLowerCase() === "as") {
                 advance();
-                if (isSub) {
-                    throw addError(previous(), "'Sub' functions are always void returns, and can't have 'as' clauses");
-                }
 
                 let typeToken = advance();
                 let typeString = typeToken.text || "";
@@ -612,14 +609,18 @@ export class Parser {
             function _expressionStatement(): Stmt.Expression | Stmt.Increment {
                 let expressionStart = peek();
 
-                if (match(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                    let operator = advance();
+
                     if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
                         throw addError(peek(), "Consecutive increment/decrement operators are not allowed");
                     } else if (expr instanceof Expr.Call) {
                         throw addError(expressionStart, "Increment/decrement operators are not allowed on the result of a function call");
                     }
 
-                    return new Stmt.Increment(expr, previous());
+                    while (match(Lexeme.Newline, Lexeme.Colon));
+
+                    return new Stmt.Increment(expr, operator);
                 }
 
                 if (!check(...additionalTerminators)) {

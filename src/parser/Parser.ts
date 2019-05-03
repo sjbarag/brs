@@ -48,7 +48,6 @@ const allowedProperties = [
     Lexeme.Box,
     Lexeme.CreateObject,
     Lexeme.Dim,
-    Lexeme.Double,
     Lexeme.Else,
     Lexeme.ElseIf,
     Lexeme.End,
@@ -64,18 +63,15 @@ const allowedProperties = [
     Lexeme.False,
     Lexeme.For,
     Lexeme.ForEach,
-    Lexeme.Float,
     Lexeme.Function,
     Lexeme.GetGlobalAA,
     Lexeme.GetLastRunCompileError,
     Lexeme.GetLastRunRunTimeError,
     Lexeme.Goto,
     Lexeme.If,
-    Lexeme.Integer,
     Lexeme.Invalid,
     Lexeme.Let,
     Lexeme.LineNum,
-    Lexeme.LongInteger,
     Lexeme.Next,
     Lexeme.Not,
     Lexeme.ObjFun,
@@ -85,7 +81,6 @@ const allowedProperties = [
     Lexeme.Rem,
     Lexeme.Return,
     Lexeme.Step,
-    Lexeme.String,
     Lexeme.Sub,
     Lexeme.Tab,
     Lexeme.To,
@@ -98,14 +93,9 @@ const allowedProperties = [
  * List of Lexeme that are allowed as local var identifiers
  */
 const allowedIdentifiers = [
-    Lexeme.Double,
     Lexeme.EndFor,
     Lexeme.ExitFor,
-    Lexeme.Float,
-    Lexeme.ForEach,
-    Lexeme.Integer,
-    Lexeme.LongInteger,
-    Lexeme.String
+    Lexeme.ForEach
 ];
 
 /**

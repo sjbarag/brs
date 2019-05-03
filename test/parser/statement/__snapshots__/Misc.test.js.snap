@@ -3898,3 +3898,5 @@ Array [
   },
 ]
 `;
+
+exports[`parser most reserved words are not allowed as local var identifiers 1`] = `Array []`;

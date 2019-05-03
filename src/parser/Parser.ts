@@ -100,7 +100,7 @@ export class Parser {
         let errors: ParseError[] = [];
 
         /**
-         * Add an error to the parse results. 
+         * Add an error to the parse results.
          * @param token - the token where the error occurred
          * @param message - the message for this error
          * @returns an error object that can be thrown if the calling code needs to abort parsing
@@ -213,11 +213,8 @@ export class Parser {
             rightParen = advance();
 
             let maybeAs = peek();
-            if (check(Lexeme.Identifier) && maybeAs.text && maybeAs.text.toLowerCase() === "as") {
+            if (check(Lexeme.Identifier) && maybeAs.text.toLowerCase() === "as") {
                 advance();
-                if (isSub) {
-                    throw addError(previous(), "'Sub' functions are always void returns, and can't have 'as' clauses");
-                }
 
                 let typeToken = advance();
                 let typeString = typeToken.text || "";
@@ -256,7 +253,7 @@ export class Parser {
             let endingKeyword = advance();
             let expectedEndKind = isSub ? Lexeme.EndSub : Lexeme.EndFunction;
 
-            //if `function` is ended with `end sub`, or `sub` is ended with `end function`, then 
+            //if `function` is ended with `end sub`, or `sub` is ended with `end function`, then
             //add an error but don't hard-fail so the AST can continue more gracefully
             if (endingKeyword.kind !== expectedEndKind) {
                 addError(endingKeyword, `Expected 'end ${functionType.text}' to terminate ${functionType.text} block`);
@@ -620,9 +617,29 @@ export class Parser {
             );
         }
 
-        function setStatement(...additionalTerminators: BlockTerminator[]): Stmt.DottedSet | Stmt.IndexedSet | Stmt.Expression {
-            function _expressionStatement(): Stmt.Expression {
+        function setStatement(...additionalTerminators: BlockTerminator[]): Stmt.DottedSet | Stmt.IndexedSet | Stmt.Expression | Stmt.Increment {
+            /**
+             * Attempts to find an expression-statement or an increment statement.
+             * While calls are valid expressions _and_ statements, increment (e.g. `foo++`)
+             * statements aren't valid expressions. They _do_ however fall under the same parsing
+             * priority as standalone function calls though, so we cann parse them in the same way.
+             */
+            function _expressionStatement(): Stmt.Expression | Stmt.Increment {
                 let expressionStart = peek();
+
+                if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                    let operator = advance();
+
+                    if (check(Lexeme.PlusPlus, Lexeme.MinusMinus)) {
+                        throw addError(peek(), "Consecutive increment/decrement operators are not allowed");
+                    } else if (expr instanceof Expr.Call) {
+                        throw addError(expressionStart, "Increment/decrement operators are not allowed on the result of a function call");
+                    }
+
+                    while (match(Lexeme.Newline, Lexeme.Colon));
+
+                    return new Stmt.Increment(expr, operator);
+                }
 
                 if (!check(...additionalTerminators)) {
                     consume("Expected newline or ':' after expression statement", Lexeme.Newline, Lexeme.Colon, Lexeme.Eof);
@@ -830,21 +847,21 @@ export class Parser {
         }
 
         function exponential(): Expression {
-            let expr = unary();
+            let expr = prefixUnary();
 
             while (match(Lexeme.Caret)) {
                 let operator = previous();
-                let right = unary();
+                let right = prefixUnary();
                 expr = new Expr.Binary(expr, operator, right);
             }
 
             return expr;
         }
 
-        function unary(): Expression {
+        function prefixUnary(): Expression {
             if (match(Lexeme.Not, Lexeme.Minus)) {
                 let operator = previous();
-                let right = unary();
+                let right = prefixUnary();
                 return new Expr.Unary(operator, right);
             }
 
@@ -1022,7 +1039,7 @@ export class Parser {
 
         /**
          * Consume tokens until one of the `stopLexemes` is encountered
-         * @param lexemes 
+         * @param lexemes
          * @return - the list of tokens consumed, EXCLUDING the `stopLexeme` (you can use `peek()` to see which one it was)
          */
         function consumeUntil(...stopLexemes: Lexeme[]) {

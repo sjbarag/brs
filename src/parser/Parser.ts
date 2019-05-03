@@ -4,7 +4,7 @@ import * as Expr from "./Expression";
 type Expression = Expr.Expression;
 import * as Stmt from "./Statement";
 type Statement = Stmt.Statement;
-import { Lexeme, Token, Identifier, ReservedWords, ReservedWordsUsableAsProperty } from "../lexer";
+import { Lexeme, Token, Identifier, ReservedWords } from "../lexer";
 import { ParseError } from "./ParseError";
 
 import {
@@ -39,6 +39,121 @@ const assignmentOperators = [
     Lexeme.LeftShiftEqual,
     Lexeme.RightShiftEqual
 ];
+
+/**
+ * List of Lexeme that are permitted as property names
+ */
+const allowedProperties = [
+    Lexeme.And,
+    Lexeme.Box,
+    Lexeme.CreateObject,
+    Lexeme.Dim,
+    Lexeme.Double,
+    Lexeme.Else,
+    Lexeme.ElseIf,
+    Lexeme.End,
+    Lexeme.EndFunction,
+    Lexeme.EndFor,
+    Lexeme.EndIf,
+    Lexeme.EndSub,
+    Lexeme.EndWhile,
+    Lexeme.Eval,
+    Lexeme.Exit,
+    Lexeme.ExitFor,
+    Lexeme.ExitWhile,
+    Lexeme.False,
+    Lexeme.For,
+    Lexeme.ForEach,
+    Lexeme.Float,
+    Lexeme.Function,
+    Lexeme.GetGlobalAA,
+    Lexeme.GetLastRunCompileError,
+    Lexeme.GetLastRunRunTimeError,
+    Lexeme.Goto,
+    Lexeme.If,
+    Lexeme.Integer,
+    Lexeme.Invalid,
+    Lexeme.Let,
+    Lexeme.LineNum,
+    Lexeme.LongInteger,
+    Lexeme.Next,
+    Lexeme.Not,
+    Lexeme.ObjFun,
+    Lexeme.Or,
+    Lexeme.Pos,
+    Lexeme.Print,
+    Lexeme.Rem,
+    Lexeme.Return,
+    Lexeme.Step,
+    Lexeme.String,
+    Lexeme.Sub,
+    Lexeme.Tab,
+    Lexeme.To,
+    Lexeme.True,
+    Lexeme.Type,
+    Lexeme.While,
+];
+
+/**
+ * List of Lexeme that are allowed as local var identifiers
+ */
+const allowedIdentifiers = [
+    Lexeme.Double,
+    Lexeme.EndFor,
+    Lexeme.ExitFor,
+    Lexeme.Float,
+    Lexeme.ForEach,
+    Lexeme.Integer,
+    Lexeme.LongInteger,
+    Lexeme.String
+];
+
+/**
+ * List of string versions of Lexeme that are NOT allowed as local var identifiers.
+ * Used to throw more helpful "you can't use a reserved word as an identifier" errors.
+ */
+export const disallowedIdentifiers = [
+    Lexeme.And,
+    Lexeme.Box,
+    Lexeme.CreateObject,
+    Lexeme.Dim,
+    Lexeme.Else,
+    Lexeme.ElseIf,
+    Lexeme.End,
+    Lexeme.EndFunction,
+    Lexeme.EndIf,
+    Lexeme.EndSub,
+    Lexeme.EndWhile,
+    Lexeme.Eval,
+    Lexeme.Exit,
+    Lexeme.ExitWhile,
+    Lexeme.False,
+    Lexeme.For,
+    Lexeme.Function,
+    Lexeme.GetGlobalAA,
+    Lexeme.GetLastRunCompileError,
+    Lexeme.GetLastRunRunTimeError,
+    Lexeme.Goto,
+    Lexeme.If,
+    Lexeme.Invalid,
+    Lexeme.Let,
+    Lexeme.LineNum,
+    Lexeme.Next,
+    Lexeme.Not,
+    Lexeme.ObjFun,
+    Lexeme.Or,
+    Lexeme.Pos,
+    Lexeme.Print,
+    Lexeme.Rem,
+    Lexeme.Return,
+    Lexeme.Step,
+    Lexeme.Sub,
+    Lexeme.Tab,
+    Lexeme.To,
+    Lexeme.True,
+    Lexeme.Type,
+    Lexeme.While,
+].map(x => Lexeme[x].toLowerCase());
 
 /** The results of a Parser's parsing pass. */
 interface ParseResults {
@@ -105,7 +220,7 @@ export class Parser {
          * @param message - the message for this error
          * @returns an error object that can be thrown if the calling code needs to abort parsing
          */
-        const addError = (token:Token, message:string) => {
+        const addError = (token: Token, message: string) => {
             let err = new ParseError(token, message);
             errors.push(err);
             this.events.emit("err", err);
@@ -149,7 +264,7 @@ export class Parser {
         function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
             try {
                 // consume any leading newlines
-                while(match(Lexeme.Newline));
+                while (match(Lexeme.Newline));
 
                 if (check(Lexeme.Sub, Lexeme.Function)) {
                     return functionDeclaration(false);
@@ -158,7 +273,7 @@ export class Parser {
                 // BrightScript is like python, in that variables can be declared without a `var`,
                 // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
                 // out what to do with it.
-                if ( check(Lexeme.Identifier) && checkNext(...assignmentOperators)) {
+                if (check(Lexeme.Identifier, ...allowedIdentifiers) && checkNext(...assignmentOperators)) {
                     return assignment(...additionalTerminators);
                 }
 
@@ -321,8 +436,8 @@ export class Parser {
 
         function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
             let name = advance() as Identifier;
-            //add error if this is a reserved word
-            if (ReservedWordsUsableAsProperty.has(name.text.toLowerCase())) {
+            //add error if name is a reserved word that cannot be used as an identifier
+            if (disallowedIdentifiers.indexOf(name.text.toLowerCase()) > -1) {
                 //don't throw...this is fully recoverable
                 addError(name, `Cannot use reserved word "${name.text}" as an identifier`);
             }
@@ -463,7 +578,7 @@ export class Parser {
                 throw addError(peek(), "Expected 'end for' or 'next' to terminate for-loop block");
             }
             let endFor = advance();
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             return new Stmt.ForEach(
                 {
@@ -480,7 +595,7 @@ export class Parser {
         function exitFor(): Stmt.ExitFor {
             let keyword = advance();
             consume("Expected newline after 'exit for'", Lexeme.Newline);
-            while (match(Lexeme.Newline)) {}
+            while (match(Lexeme.Newline)) { }
             return new Stmt.ExitFor({ exitFor: keyword });
         }
 
@@ -575,7 +690,7 @@ export class Parser {
                 }
                 thenBranch = new Stmt.Block([thenStatement], peek().location);
 
-                while(match(Lexeme.ElseIf)) {
+                while (match(Lexeme.ElseIf)) {
                     let elseIf = previous();
                     let elseIfCondition = expression();
                     if (checkThen()) {
@@ -585,7 +700,7 @@ export class Parser {
 
                     let elseIfThen = declaration(Lexeme.ElseIf, Lexeme.Else);
                     if (!elseIfThen) {
-                        throw addError(peek(),`Expected a statement to follow '${elseIf.text} ...condition... then'`);
+                        throw addError(peek(), `Expected a statement to follow '${elseIf.text} ...condition... then'`);
                     }
 
                     elseIfBranches.push({
@@ -720,12 +835,12 @@ export class Parser {
             let tokens = { return: previous() };
 
             if (check(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof)) {
-                while(match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
+                while (match(Lexeme.Colon, Lexeme.Newline, Lexeme.Eof));
                 return new Stmt.Return(tokens);
             }
 
             let toReturn = expression();
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             return new Stmt.Return(tokens, toReturn);
         }
@@ -886,9 +1001,12 @@ export class Parser {
                 } else if (match(Lexeme.Dot)) {
                     while (match(Lexeme.Newline));
 
-                    let name = consume("Expected property name after '.'", Lexeme.Identifier) as Identifier;
+                    let name = consume("Expected property name after '.'", Lexeme.Identifier, ...allowedProperties);
 
-                    expr = new Expr.DottedGet(expr, name);
+                    // force it into an identifier so the AST makes some sense
+                    name.kind = Lexeme.Identifier;
+
+                    expr = new Expr.DottedGet(expr, name as Identifier);
                 } else {
                     break;
                 }
@@ -899,7 +1017,7 @@ export class Parser {
 
         function finishCall(callee: Expression): Expression {
             let args = [];
-            while(match(Lexeme.Newline));
+            while (match(Lexeme.Newline));
 
             if (!check(Lexeme.RightParen)) {
                 do {
@@ -974,7 +1092,7 @@ export class Parser {
 
                     function key() {
                         let k;
-                        if (check(Lexeme.Identifier)) {
+                        if (check(Lexeme.Identifier, ...allowedProperties)) {
                             k = new BrsString(advance().text!);
                         } else if (check(Lexeme.String)) {
                             k = advance().literal! as BrsString;

@@ -97,10 +97,3 @@ export const KeyWords: {[key: string]: L} = {
     true: L.True,
     while: L.While,
 };
-
-/**
- * These reserved words can be used as object properties (but NOT as standalone vars)
- */
-export const ReservedWordsUsableAsProperty = new Set([
-    "end"
-]);

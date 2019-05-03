@@ -248,7 +248,7 @@ export class Lexer {
                             break;
                         case ">":
                             advance();
-                            switch(peek()){
+                            switch (peek()) {
                                 case "=":
                                     advance();
                                     addToken(Lexeme.RightShiftEqual);
@@ -671,4 +671,3 @@ export class Lexer {
         }
     }
 }
-

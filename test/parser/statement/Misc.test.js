@@ -49,4 +49,37 @@ describe("parser", () => {
             expect(statements).toMatchSnapshot();
         });
     });
+
+    it('certain reserved words are allowed as local var identifiers', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            sub Main()
+                endfor = true
+                double = true
+                exitfor = true
+                float = true
+                foreach = true
+                integer = true
+                longinteger = true
+                string = true
+            end sub
+        `);
+        let { statements, errors } = parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('most reserved words are not allowed as local var identifiers', () => {
+        for (var i = 0; i < brs.parser.Parser.disallowedIdentifiers; i++) {
+            var identifier = brs.parser.Parser.disallowedIdentifiers[i];
+            //use the lexer to generate tokens because there are many different Lexeme types represented in this list
+            let { tokens } = brs.lexer.lexer.scan(`
+                sub main()
+                    ${identifier} = true
+                end sub
+            `);
+            let { statements, errors } = parser.parse(tokens);
+            expect(errors.length).toBeGreaterThan(0);
+            expect(statements).toMatchSnapshot();
+        }
+    });
 });

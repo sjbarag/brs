@@ -72,7 +72,7 @@ describe("parser", () => {
         for (var i = 0; i < brs.parser.Parser.disallowedIdentifiers; i++) {
             var identifier = brs.parser.Parser.disallowedIdentifiers[i];
             //use the lexer to generate tokens because there are many different Lexeme types represented in this list
-            let { tokens } = brs.lexer.lexer.scan(`
+            let { tokens } = brs.lexer.Lexer.scan(`
                 sub main()
                     ${identifier} = true
                 end sub
@@ -81,5 +81,69 @@ describe("parser", () => {
             expect(errors.length).toBeGreaterThan(0);
             expect(statements).toMatchSnapshot();
         }
+    });
+
+    it('allows whitelisted reserved words as object properties', () => {
+        //use the lexer to generate token list because...this list is huge.
+        let { tokens } = brs.lexer.Lexer.scan(`
+            sub Main()
+                person = {}
+                person.and = true
+                person.box = true
+                person.createobject = true
+                person.dim = true
+                person.double = true
+                person.each = true
+                person.else = true
+                person.elseif = true
+                person.end = true
+                person.endfor = true
+                person.endfunction = true
+                person.endif = true
+                person.endsub = true
+                person.endwhile = true
+                person.eval = true
+                person.exit = true
+                person.exitfor = true
+                person.exitwhile = true
+                person.false = true
+                person.float = true
+                person.for = true
+                person.foreach = true
+                person.function = true
+                person.getglobalaa = true
+                person.getlastruncompileerror = true
+                person.getlastrunruntimeerror = true
+                person.goto = true
+                person.if = true
+                person.integer = true
+                person.invalid = true
+                person.let = true
+                person.line_num = true
+                person.longinteger = true
+                person.next = true
+                person.not = true
+                person.objfun = true
+                person.or = true
+                person.pos = true
+                person.print = true
+                person.rem = true
+                person.return = true
+                person.run = true
+                person.step = true
+                person.stop = true
+                person.string = true
+                person.sub = true
+                person.tab = true
+                person.then = true
+                person.to = true
+                person.true = true
+                person.type = true
+                person.while = true
+            end sub
+        `);
+        let { statements, errors } = parser.parse(tokens);
+        expect(errors.length).toBe(0);
+        expect(statements).toMatchSnapshot();
     });
 });

@@ -157,7 +157,7 @@ describe("parser", () => {
         });
 
         it("parses functions with typed arguments and default expressions", () => {
-             let { statements, errors } = parser.parse([
+            let { statements, errors } = parser.parse([
                 identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Function, "function"),
@@ -337,7 +337,7 @@ describe("parser", () => {
         });
 
         it("parses subs with typed arguments and default expressions", () => {
-             let { statements, errors } = parser.parse([
+            let { statements, errors } = parser.parse([
                 identifier("_"),
                 token(Lexeme.Equal, "="),
                 token(Lexeme.Sub, "sub"),

@@ -40,6 +40,111 @@ const assignmentOperators = [
     Lexeme.RightShiftEqual
 ];
 
+/**
+ * List of Lexeme that are permitted as property names
+ */
+const allowedProperties = [
+    Lexeme.And,
+    Lexeme.Box,
+    Lexeme.CreateObject,
+    Lexeme.Dim,
+    Lexeme.Else,
+    Lexeme.ElseIf,
+    Lexeme.End,
+    Lexeme.EndFunction,
+    Lexeme.EndFor,
+    Lexeme.EndIf,
+    Lexeme.EndSub,
+    Lexeme.EndWhile,
+    Lexeme.Eval,
+    Lexeme.Exit,
+    Lexeme.ExitFor,
+    Lexeme.ExitWhile,
+    Lexeme.False,
+    Lexeme.For,
+    Lexeme.ForEach,
+    Lexeme.Function,
+    Lexeme.GetGlobalAA,
+    Lexeme.GetLastRunCompileError,
+    Lexeme.GetLastRunRunTimeError,
+    Lexeme.Goto,
+    Lexeme.If,
+    Lexeme.Invalid,
+    Lexeme.Let,
+    Lexeme.LineNum,
+    Lexeme.Next,
+    Lexeme.Not,
+    Lexeme.ObjFun,
+    Lexeme.Or,
+    Lexeme.Pos,
+    Lexeme.Print,
+    Lexeme.Rem,
+    Lexeme.Return,
+    Lexeme.Step,
+    Lexeme.Sub,
+    Lexeme.Tab,
+    Lexeme.To,
+    Lexeme.True,
+    Lexeme.Type,
+    Lexeme.While,
+];
+
+/**
+ * List of Lexeme that are allowed as local var identifiers
+ */
+const allowedIdentifiers = [
+    Lexeme.EndFor,
+    Lexeme.ExitFor,
+    Lexeme.ForEach
+];
+
+/**
+ * List of string versions of Lexeme that are NOT allowed as local var identifiers.
+ * Used to throw more helpful "you can't use a reserved word as an identifier" errors.
+ */
+export const disallowedIdentifiers = [
+    Lexeme.And,
+    Lexeme.Box,
+    Lexeme.CreateObject,
+    Lexeme.Dim,
+    Lexeme.Else,
+    Lexeme.ElseIf,
+    Lexeme.End,
+    Lexeme.EndFunction,
+    Lexeme.EndIf,
+    Lexeme.EndSub,
+    Lexeme.EndWhile,
+    Lexeme.Eval,
+    Lexeme.Exit,
+    Lexeme.ExitWhile,
+    Lexeme.False,
+    Lexeme.For,
+    Lexeme.Function,
+    Lexeme.GetGlobalAA,
+    Lexeme.GetLastRunCompileError,
+    Lexeme.GetLastRunRunTimeError,
+    Lexeme.Goto,
+    Lexeme.If,
+    Lexeme.Invalid,
+    Lexeme.Let,
+    Lexeme.LineNum,
+    Lexeme.Next,
+    Lexeme.Not,
+    Lexeme.ObjFun,
+    Lexeme.Or,
+    Lexeme.Pos,
+    Lexeme.Print,
+    Lexeme.Rem,
+    Lexeme.Return,
+    Lexeme.Step,
+    Lexeme.Sub,
+    Lexeme.Tab,
+    Lexeme.To,
+    Lexeme.True,
+    Lexeme.Type,
+    Lexeme.While,
+].map(x => Lexeme[x].toLowerCase());
+
 /** The results of a Parser's parsing pass. */
 interface ParseResults {
     /** The statements produced by the parser. */
@@ -135,6 +240,16 @@ export class Parser {
             };
         }
 
+        /**
+         * A simple wrapper around `check` to make tests for a `end` identifier.
+         * `end` is a keyword, but not reserved, so associative arrays can have properties
+         * called `end`; the parser takes on this task.
+         * @returns `true` if the next token is an identifier with text `end`, otherwise `false`
+         */
+        function checkEnd() {
+            return check(Lexeme.Identifier) && peek().text.toLowerCase() === "end";
+        }
+
         function declaration(...additionalTerminators: BlockTerminator[]): Statement | undefined {
             try {
                 // consume any leading newlines
@@ -147,7 +262,7 @@ export class Parser {
                 // BrightScript is like python, in that variables can be declared without a `var`,
                 // `let`, (...) keyword. As such, we must check the token *after* an identifier to figure
                 // out what to do with it.
-                if (check(Lexeme.Identifier) && checkNext(...assignmentOperators)) {
+                if (check(Lexeme.Identifier, ...allowedIdentifiers) && checkNext(...assignmentOperators)) {
                     return assignment(...additionalTerminators);
                 }
 
@@ -310,6 +425,11 @@ export class Parser {
 
         function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
             let name = advance() as Identifier;
+            //add error if name is a reserved word that cannot be used as an identifier
+            if (disallowedIdentifiers.indexOf(name.text.toLowerCase()) > -1) {
+                //don't throw...this is fully recoverable
+                addError(name, `Cannot use reserved word "${name.text}" as an identifier`);
+            }
             let operator = consume(
                 `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${name.text}'`,
                 ...assignmentOperators
@@ -349,6 +469,8 @@ export class Parser {
             if (check(Lexeme.ForEach)) { return forEachStatement(); }
 
             if (check(Lexeme.ExitFor)) { return exitFor(); }
+
+            if (checkEnd()) { return endStatement(); }
 
             if (match(Lexeme.Return)) { return returnStatement(); }
 
@@ -712,6 +834,18 @@ export class Parser {
         }
 
         /**
+         * Parses an `end` statement
+         * @returns an AST representation of an `end` statement.
+         */
+        function endStatement(): Stmt.End {
+            let tokens = { end: advance() };
+
+            while (match(Lexeme.Newline));
+
+            return new Stmt.End(tokens);
+        }
+
+        /**
          * Parses a block, looking for a specific terminating Lexeme to denote completion.
          * @param terminators the token(s) that signifies the end of this block; all other terminators are
          *                    ignored.
@@ -855,9 +989,12 @@ export class Parser {
                 } else if (match(Lexeme.Dot)) {
                     while (match(Lexeme.Newline));
 
-                    let name = consume("Expected property name after '.'", Lexeme.Identifier) as Identifier;
+                    let name = consume("Expected property name after '.'", Lexeme.Identifier, ...allowedProperties);
 
-                    expr = new Expr.DottedGet(expr, name);
+                    // force it into an identifier so the AST makes some sense
+                    name.kind = Lexeme.Identifier;
+
+                    expr = new Expr.DottedGet(expr, name as Identifier);
                 } else {
                     break;
                 }
@@ -942,7 +1079,7 @@ export class Parser {
 
                     function key() {
                         let k;
-                        if (check(Lexeme.Identifier)) {
+                        if (check(Lexeme.Identifier, ...allowedProperties)) {
                             k = new BrsString(advance().text!);
                         } else if (check(Lexeme.String)) {
                             k = advance().literal! as BrsString;

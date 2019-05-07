@@ -655,7 +655,7 @@ export class Parser {
             }
 
             //consume all tokens until the end of the line
-            let invalidTokens = consumeUntil(Lexeme.Newline, Lexeme.Eof);
+            let invalidTokens = consumeUntil(Lexeme.Newline, Lexeme.Eof, Lexeme.Colon);
 
             if (invalidTokens.length > 0) {
                 //add an error for every invalid token
@@ -677,8 +677,8 @@ export class Parser {
             if (!isAtRootLevel() || !isAtTopOfFile) {
                 addErrorAtLocation(libraryStatement.location, "Library statements may only appear at the top of a file");
             }
-            //consume to the next newline
-            while (match(Lexeme.Newline));
+            //consume to the next newline, eof, or colon
+            while (match(Lexeme.Newline, Lexeme.Eof, Lexeme.Colon));
             return libraryStatement;
         }
 

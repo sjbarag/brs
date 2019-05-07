@@ -22,6 +22,17 @@ describe("parser library statements", () => {
         expect({ errors, statements }).toMatchSnapshot();
     });
 
+    it('supports multiple library statements separated by colon', () => {
+        const { tokens } = brs.lexer.Lexer.scan(`
+            Library "v30/bslCore.brs" : Library "v30/bslCore.brs"
+            sub main()
+            end sub
+        `);
+        const { statements, errors } = parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect({ errors, statements }).toMatchSnapshot();
+    });
+
     it('adds error for library statements NOT at top of file', () => {
         const { tokens } = brs.lexer.Lexer.scan(`
             sub main()

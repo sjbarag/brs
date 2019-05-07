@@ -641,11 +641,11 @@ export class Parser {
             let libraryStatement = new Stmt.Library({
                 library: advance(),
                 //grab the next token only if it's a string
-                filePath: peek().kind === Lexeme.String ? advance() : undefined
+                filePath: check(Lexeme.String) ? advance() : undefined
             });
 
             //no token following library keyword token
-            if (!libraryStatement.tokens.filePath && peek().kind === Lexeme.Newline) {
+            if (!libraryStatement.tokens.filePath && check(Lexeme.Newline, Lexeme.Colon)) {
                 addErrorAtLocation(libraryStatement.tokens.library.location, `Missing string literal after ${libraryStatement.tokens.library.text} keyword`);
             }
             //does not have a string literal as next token
@@ -663,6 +663,7 @@ export class Parser {
                     addErrorAtLocation(invalidToken.location, `Found unexpected token '${invalidToken.text}' after library statement`);
                 }
             }
+
             //libraries must be at the very top of the file before any other declarations.
             let isAtTopOfFile = true;
             for (let statement of statements) {

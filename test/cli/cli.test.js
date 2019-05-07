@@ -9,8 +9,8 @@ describe("cli", () => {
         let rootDir = path.join(__dirname, "resources");
 
         return execFile(
-            path.join(process.cwd(), "bin", "cli.js"),
-            [
+            'node', [
+                path.join(process.cwd(), "bin", "cli.js"),
                 "--root", rootDir,
                 path.join(rootDir, "requires-manifest.brs")
             ]
@@ -21,8 +21,11 @@ describe("cli", () => {
 
     it("defaults --root to process.cwd()", () => {
         return execFile(
-            path.join(process.cwd(), "bin", "cli.js"),
-            [ "requires-manifest.brs" ],
+            'node',
+            [
+                path.join(process.cwd(), "bin", "cli.js"),
+                "requires-manifest.brs"
+            ],
             { cwd: path.join(__dirname, "resources") }
         ).then((stdout, stderr) => {
             expect(stdout.trim()).toEqual("hi from foo()");

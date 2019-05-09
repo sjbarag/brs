@@ -264,6 +264,23 @@ describe("parser if statements", () => {
         });
     });
 
+    it('supports trailing colons after conditional statements', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            sub main()
+                if 1 > 0:
+                    print "positive!"
+                else if 1 < 0:
+                    print "negative!"
+                else:
+                    print "tHaT NuMbEr iS ZeRo"
+                end if
+            end sub
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
     // TODO: Improve `if` statement structure to allow a linter to require a `uthenu` keyword for
     // all `if` statements, then test location tracking
     test.todo("location tracking");

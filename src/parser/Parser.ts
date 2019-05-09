@@ -618,6 +618,9 @@ export class Parser {
                 then = advance();
             }
 
+            //consume any trailing colons
+            while (check(Lexeme.Colon)) { advance(); }
+
             if (match(Lexeme.Newline)) {
                 // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
                 // a trailing "end if"
@@ -643,6 +646,10 @@ export class Parser {
                         // `then` is optional after `else if ...condition...`, so only advance to the next token if `then` is present
                         advance();
                     }
+
+                    //consume any trailing colons
+                    while (check(Lexeme.Colon)) { advance(); }
+
                     match(Lexeme.Newline);
                     let elseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
                     if (!elseIfThen) {
@@ -661,6 +668,9 @@ export class Parser {
                 }
 
                 if (match(Lexeme.Else)) {
+                    //consume any trailing colons
+                    while (check(Lexeme.Colon)) { advance(); }
+
                     match(Lexeme.Newline);
                     elseBranch = block(Lexeme.EndIf);
                     advance(); // skip past "end if"

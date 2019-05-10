@@ -26,7 +26,6 @@ describe("parser if statements", () => {
                 EOF
             ]);
 
-
             expect(errors).toEqual([])
             expect(statements).toBeDefined();
             expect(statements).not.toBeNull();
@@ -122,24 +121,14 @@ describe("parser if statements", () => {
 
     describe("block if", () => {
         it("parses if only", () => {
-            let { statements, errors } = parser.parse([
-                token(Lexeme.If, "if"),
-                token(Lexeme.Integer, "1", new Int32(1)),
-                token(Lexeme.Less, "<"),
-                token(Lexeme.Integer, "2", new Int32(2)),
-                identifier("THEN"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                identifier("bar"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.EndIf, "end if"),
-                EOF
-            ]);
+            //because the parser depends on line numbers for certain if statements, this needs to be location-aware
+            let { tokens } = brs.lexer.Lexer.scan(`
+                if 1 < 2 THEN
+                    foo = true
+                    bar = true
+                end if
+            `);
+            let { statements, errors } = parser.parse(tokens);
 
             expect(errors).toEqual([])
             expect(statements).toBeDefined();
@@ -280,6 +269,97 @@ describe("parser if statements", () => {
         expect(errors.length).toEqual(0);
         expect(statements).toMatchSnapshot();
     });
+
+    it('supports trailing colons for one-line if statements', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if 1 < 2: return true: end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors).toHaveLength(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('catches one-line if statement missing first colon', () => {
+        //missing colon after 2
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if 1 < 2 return true : end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toBeGreaterThan(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('catches one-line if statement missing second colon', () => {
+        //missing colon after `2`
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if 1 < 2 : return true end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toBeGreaterThan(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('catches one-line if statement with colon and missing end if', () => {
+        //missing colon after `2`
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if 1 < 2: return true
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toBeGreaterThan(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('catches one-line if statement with colon and missing end if', () => {
+        debugger;
+        //missing 'end if'
+        let { tokens } = brs.lexer.Lexer.scan(`
+            function missingendif()
+                if true : return true
+            end function
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        console.log(errors);
+        expect(errors.length).toEqual(1);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('supports if statement with condition and action on one line, but end if on separate line', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if 1 < 2: return true
+            end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('supports colon after return in single-line if statement', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if false : print "true" : end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('supports if elseif endif single line', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if true: print "8 worked": else if true: print "not run": else: print "not run": end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('supports one-line functions inside of one-line if statement', () => {
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if true then : test = sub() : print "yes" : end sub : end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toEqual(0);
+        expect(statements).toMatchSnapshot();
+    });
+
 
     // TODO: Improve `if` statement structure to allow a linter to require a `uthenu` keyword for
     // all `if` statements, then test location tracking

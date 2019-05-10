@@ -406,12 +406,13 @@ Array [
       "left": Literal {
         "_location": Object {
           "end": Object {
-            "column": -9,
-            "line": -9,
+            "column": 20,
+            "line": 2,
           },
+          "file": "",
           "start": Object {
-            "column": -9,
-            "line": -9,
+            "column": 19,
+            "line": 2,
           },
         },
         "value": Int32 {
@@ -422,12 +423,13 @@ Array [
       "right": Literal {
         "_location": Object {
           "end": Object {
-            "column": -9,
-            "line": -9,
+            "column": 24,
+            "line": 2,
           },
+          "file": "",
           "start": Object {
-            "column": -9,
-            "line": -9,
+            "column": 23,
+            "line": 2,
           },
         },
         "value": Int32 {
@@ -441,12 +443,13 @@ Array [
         "literal": undefined,
         "location": Object {
           "end": Object {
-            "column": -9,
-            "line": -9,
+            "column": 22,
+            "line": 2,
           },
+          "file": "",
           "start": Object {
-            "column": -9,
-            "line": -9,
+            "column": 21,
+            "line": 2,
           },
         },
         "text": "<",
@@ -457,12 +460,13 @@ Array [
     "thenBranch": Block {
       "startingLocation": Object {
         "end": Object {
-          "column": -9,
-          "line": -9,
+          "column": 23,
+          "line": 3,
         },
+        "file": "",
         "start": Object {
-          "column": -9,
-          "line": -9,
+          "column": 20,
+          "line": 3,
         },
       },
       "statements": Array [
@@ -473,12 +477,13 @@ Array [
             "literal": undefined,
             "location": Object {
               "end": Object {
-                "column": -9,
-                "line": -9,
+                "column": 23,
+                "line": 3,
               },
+              "file": "",
               "start": Object {
-                "column": -9,
-                "line": -9,
+                "column": 20,
+                "line": 3,
               },
             },
             "text": "foo",
@@ -490,12 +495,13 @@ Array [
               "literal": undefined,
               "location": Object {
                 "end": Object {
-                  "column": -9,
-                  "line": -9,
+                  "column": 25,
+                  "line": 3,
                 },
+                "file": "",
                 "start": Object {
-                  "column": -9,
-                  "line": -9,
+                  "column": 24,
+                  "line": 3,
                 },
               },
               "text": "=",
@@ -504,12 +510,13 @@ Array [
           "value": Literal {
             "_location": Object {
               "end": Object {
-                "column": -9,
-                "line": -9,
+                "column": 30,
+                "line": 3,
               },
+              "file": "",
               "start": Object {
-                "column": -9,
-                "line": -9,
+                "column": 26,
+                "line": 3,
               },
             },
             "value": BrsBoolean {
@@ -525,12 +532,13 @@ Array [
             "literal": undefined,
             "location": Object {
               "end": Object {
-                "column": -9,
-                "line": -9,
+                "column": 23,
+                "line": 4,
               },
+              "file": "",
               "start": Object {
-                "column": -9,
-                "line": -9,
+                "column": 20,
+                "line": 4,
               },
             },
             "text": "bar",
@@ -542,12 +550,13 @@ Array [
               "literal": undefined,
               "location": Object {
                 "end": Object {
-                  "column": -9,
-                  "line": -9,
+                  "column": 25,
+                  "line": 4,
                 },
+                "file": "",
                 "start": Object {
-                  "column": -9,
-                  "line": -9,
+                  "column": 24,
+                  "line": 4,
                 },
               },
               "text": "=",
@@ -556,12 +565,13 @@ Array [
           "value": Literal {
             "_location": Object {
               "end": Object {
-                "column": -9,
-                "line": -9,
+                "column": 30,
+                "line": 4,
               },
+              "file": "",
               "start": Object {
-                "column": -9,
-                "line": -9,
+                "column": 26,
+                "line": 4,
               },
             },
             "value": BrsBoolean {
@@ -580,12 +590,13 @@ Array [
         "literal": undefined,
         "location": Object {
           "end": Object {
-            "column": -9,
-            "line": -9,
+            "column": 22,
+            "line": 5,
           },
+          "file": "",
           "start": Object {
-            "column": -9,
-            "line": -9,
+            "column": 16,
+            "line": 5,
           },
         },
         "text": "end if",
@@ -596,12 +607,13 @@ Array [
         "literal": undefined,
         "location": Object {
           "end": Object {
-            "column": -9,
-            "line": -9,
+            "column": 18,
+            "line": 2,
           },
+          "file": "",
           "start": Object {
-            "column": -9,
-            "line": -9,
+            "column": 16,
+            "line": 2,
           },
         },
         "text": "if",
@@ -612,12 +624,13 @@ Array [
         "literal": undefined,
         "location": Object {
           "end": Object {
-            "column": -9,
-            "line": -9,
+            "column": 29,
+            "line": 2,
           },
+          "file": "",
           "start": Object {
-            "column": -9,
-            "line": -9,
+            "column": 25,
+            "line": 2,
           },
         },
         "text": "THEN",
@@ -1314,6 +1327,413 @@ Array [
         },
         "text": "then",
       },
+    },
+  },
+]
+`;
+
+exports[`parser if statements catches one-line if statement missing first colon 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 15,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 19,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "isReserved": false,
+        "kind": 24,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 17,
+            "line": 2,
+          },
+        },
+        "text": "<",
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 41,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 35,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Return {
+          "tokens": Object {
+            "return": Object {
+              "isReserved": true,
+              "kind": 82,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 27,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 21,
+                  "line": 2,
+                },
+              },
+              "text": "return",
+            },
+          },
+          "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": 32,
+                "line": 2,
+              },
+              "file": "",
+              "start": Object {
+                "column": 28,
+                "line": 2,
+              },
+            },
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
+    },
+  },
+]
+`;
+
+exports[`parser if statements catches one-line if statement missing second colon 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 15,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 19,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "isReserved": false,
+        "kind": 24,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 17,
+            "line": 2,
+          },
+        },
+        "text": "<",
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 29,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 23,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Return {
+          "tokens": Object {
+            "return": Object {
+              "isReserved": true,
+              "kind": 82,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 29,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 23,
+                  "line": 2,
+                },
+              },
+              "text": "return",
+            },
+          },
+          "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": 34,
+                "line": 2,
+              },
+              "file": "",
+              "start": Object {
+                "column": 30,
+                "line": 2,
+              },
+            },
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": Object {
+        "isReserved": false,
+        "kind": 56,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 41,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 35,
+            "line": 2,
+          },
+        },
+        "text": "end if",
+      },
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
+    },
+  },
+]
+`;
+
+exports[`parser if statements catches one-line if statement with colon and missing end if 1`] = `Array []`;
+
+exports[`parser if statements catches one-line if statement with colon and missing end if 2`] = `
+Array [
+  Function {
+    "func": Function {
+      "body": Block {
+        "startingLocation": Object {
+          "end": Object {
+            "column": 18,
+            "line": 3,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 3,
+          },
+        },
+        "statements": Array [
+          Return {
+            "tokens": Object {
+              "return": Object {
+                "isReserved": true,
+                "kind": 82,
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 32,
+                    "line": 3,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 26,
+                    "line": 3,
+                  },
+                },
+                "text": "return",
+              },
+            },
+            "value": Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": 37,
+                  "line": 3,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 33,
+                  "line": 3,
+                },
+              },
+              "value": BrsBoolean {
+                "kind": 1,
+                "value": true,
+              },
+            },
+          },
+        ],
+      },
+      "end": Object {
+        "isReserved": false,
+        "kind": 54,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 24,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 4,
+          },
+        },
+        "text": "end function",
+      },
+      "keyword": Object {
+        "isReserved": true,
+        "kind": 66,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "function",
+      },
+      "parameters": Array [],
+      "returns": 9,
+    },
+    "name": Object {
+      "isReserved": false,
+      "kind": 30,
+      "literal": undefined,
+      "location": Object {
+        "end": Object {
+          "column": 33,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 21,
+          "line": 2,
+        },
+      },
+      "text": "missingendif",
     },
   },
 ]
@@ -2381,6 +2801,754 @@ Array [
 ]
 `;
 
+exports[`parser if statements supports colon after return in single-line if statement 1`] = `
+Array [
+  If {
+    "condition": Literal {
+      "_location": Object {
+        "end": Object {
+          "column": 20,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 15,
+          "line": 2,
+        },
+      },
+      "value": BrsBoolean {
+        "kind": 1,
+        "value": false,
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 28,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 23,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Print {
+          "expressions": Array [
+            Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": 35,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 29,
+                  "line": 2,
+                },
+              },
+              "value": BrsString {
+                "kind": 2,
+                "value": "true",
+              },
+            },
+          ],
+          "tokens": Object {
+            "print": Object {
+              "isReserved": true,
+              "kind": 80,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 23,
+                  "line": 2,
+                },
+              },
+              "text": "print",
+            },
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": Object {
+        "isReserved": false,
+        "kind": 56,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 44,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 38,
+            "line": 2,
+          },
+        },
+        "text": "end if",
+      },
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
+    },
+  },
+]
+`;
+
+exports[`parser if statements supports if elseif endif single line 1`] = `
+Array [
+  If {
+    "condition": Literal {
+      "_location": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 15,
+          "line": 2,
+        },
+      },
+      "value": BrsBoolean {
+        "kind": 1,
+        "value": true,
+      },
+    },
+    "elseBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 81,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 76,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Print {
+          "expressions": Array [
+            Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": 91,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 82,
+                  "line": 2,
+                },
+              },
+              "value": BrsString {
+                "kind": 2,
+                "value": "not run",
+              },
+            },
+          ],
+          "tokens": Object {
+            "print": Object {
+              "isReserved": true,
+              "kind": 80,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 81,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 76,
+                  "line": 2,
+                },
+              },
+              "text": "print",
+            },
+          },
+        },
+      ],
+    },
+    "elseIfs": Array [
+      Object {
+        "condition": Literal {
+          "_location": Object {
+            "end": Object {
+              "column": 51,
+              "line": 2,
+            },
+            "file": "",
+            "start": Object {
+              "column": 47,
+              "line": 2,
+            },
+          },
+          "value": BrsBoolean {
+            "kind": 1,
+            "value": true,
+          },
+        },
+        "thenBranch": Block {
+          "startingLocation": Object {
+            "end": Object {
+              "column": 58,
+              "line": 2,
+            },
+            "file": "",
+            "start": Object {
+              "column": 53,
+              "line": 2,
+            },
+          },
+          "statements": Array [
+            Print {
+              "expressions": Array [
+                Literal {
+                  "_location": Object {
+                    "end": Object {
+                      "column": 68,
+                      "line": 2,
+                    },
+                    "file": "",
+                    "start": Object {
+                      "column": 59,
+                      "line": 2,
+                    },
+                  },
+                  "value": BrsString {
+                    "kind": 2,
+                    "value": "not run",
+                  },
+                },
+              ],
+              "tokens": Object {
+                "print": Object {
+                  "isReserved": true,
+                  "kind": 80,
+                  "literal": undefined,
+                  "location": Object {
+                    "end": Object {
+                      "column": 58,
+                      "line": 2,
+                    },
+                    "file": "",
+                    "start": Object {
+                      "column": 53,
+                      "line": 2,
+                    },
+                  },
+                  "text": "print",
+                },
+              },
+            },
+          ],
+        },
+      },
+    ],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 26,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 21,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Print {
+          "expressions": Array [
+            Literal {
+              "_location": Object {
+                "end": Object {
+                  "column": 37,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 27,
+                  "line": 2,
+                },
+              },
+              "value": BrsString {
+                "kind": 2,
+                "value": "8 worked",
+              },
+            },
+          ],
+          "tokens": Object {
+            "print": Object {
+              "isReserved": true,
+              "kind": 80,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 26,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 21,
+                  "line": 2,
+                },
+              },
+              "text": "print",
+            },
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [
+        Object {
+          "isReserved": false,
+          "kind": 52,
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": 46,
+              "line": 2,
+            },
+            "file": "",
+            "start": Object {
+              "column": 39,
+              "line": 2,
+            },
+          },
+          "text": "else if",
+        },
+      ],
+      "endIf": undefined,
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
+    },
+  },
+]
+`;
+
+exports[`parser if statements supports if statement with condition and action on one line, but end if on separate line 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 15,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 19,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "isReserved": false,
+        "kind": 24,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 17,
+            "line": 2,
+          },
+        },
+        "text": "<",
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 28,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 22,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Return {
+          "tokens": Object {
+            "return": Object {
+              "isReserved": true,
+              "kind": 82,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 22,
+                  "line": 2,
+                },
+              },
+              "text": "return",
+            },
+          },
+          "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": 33,
+                "line": 2,
+              },
+              "file": "",
+              "start": Object {
+                "column": 29,
+                "line": 2,
+              },
+            },
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": Object {
+        "isReserved": false,
+        "kind": 56,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 3,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 3,
+          },
+        },
+        "text": "end if",
+      },
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
+    },
+  },
+]
+`;
+
+exports[`parser if statements supports one-line functions inside of one-line if statement 1`] = `
+Array [
+  If {
+    "condition": Literal {
+      "_location": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 15,
+          "line": 2,
+        },
+      },
+      "value": BrsBoolean {
+        "kind": 1,
+        "value": true,
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 31,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 27,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Assignment {
+          "name": Object {
+            "isReserved": false,
+            "kind": 30,
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": 31,
+                "line": 2,
+              },
+              "file": "",
+              "start": Object {
+                "column": 27,
+                "line": 2,
+              },
+            },
+            "text": "test",
+          },
+          "tokens": Object {
+            "equals": Object {
+              "isReserved": false,
+              "kind": 28,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 33,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 32,
+                  "line": 2,
+                },
+              },
+              "text": "=",
+            },
+          },
+          "value": Function {
+            "body": Block {
+              "startingLocation": Object {
+                "end": Object {
+                  "column": 47,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 42,
+                  "line": 2,
+                },
+              },
+              "statements": Array [
+                Print {
+                  "expressions": Array [
+                    Literal {
+                      "_location": Object {
+                        "end": Object {
+                          "column": 53,
+                          "line": 2,
+                        },
+                        "file": "",
+                        "start": Object {
+                          "column": 48,
+                          "line": 2,
+                        },
+                      },
+                      "value": BrsString {
+                        "kind": 2,
+                        "value": "yes",
+                      },
+                    },
+                  ],
+                  "tokens": Object {
+                    "print": Object {
+                      "isReserved": true,
+                      "kind": 80,
+                      "literal": undefined,
+                      "location": Object {
+                        "end": Object {
+                          "column": 47,
+                          "line": 2,
+                        },
+                        "file": "",
+                        "start": Object {
+                          "column": 42,
+                          "line": 2,
+                        },
+                      },
+                      "text": "print",
+                    },
+                  },
+                },
+              ],
+            },
+            "end": Object {
+              "isReserved": false,
+              "kind": 57,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 63,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 56,
+                  "line": 2,
+                },
+              },
+              "text": "end sub",
+            },
+            "keyword": Object {
+              "isReserved": true,
+              "kind": 84,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 37,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 34,
+                  "line": 2,
+                },
+              },
+              "text": "sub",
+            },
+            "parameters": Array [],
+            "returns": 10,
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": Object {
+        "isReserved": false,
+        "kind": 56,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 72,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 66,
+            "line": 2,
+          },
+        },
+        "text": "end if",
+      },
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": Object {
+        "isReserved": true,
+        "kind": 30,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 24,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 20,
+            "line": 2,
+          },
+        },
+        "text": "then",
+      },
+    },
+  },
+]
+`;
+
 exports[`parser if statements supports trailing colons after conditional statements 1`] = `
 Array [
   Function {
@@ -2770,6 +3938,159 @@ Array [
         },
       },
       "text": "main",
+    },
+  },
+]
+`;
+
+exports[`parser if statements supports trailing colons for one-line if statements 1`] = `
+Array [
+  If {
+    "condition": Binary {
+      "left": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 15,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 1,
+        },
+      },
+      "right": Literal {
+        "_location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 19,
+            "line": 2,
+          },
+        },
+        "value": Int32 {
+          "kind": 3,
+          "value": 2,
+        },
+      },
+      "token": Object {
+        "isReserved": false,
+        "kind": 24,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 18,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 17,
+            "line": 2,
+          },
+        },
+        "text": "<",
+      },
+    },
+    "elseBranch": undefined,
+    "elseIfs": Array [],
+    "thenBranch": Block {
+      "startingLocation": Object {
+        "end": Object {
+          "column": 28,
+          "line": 2,
+        },
+        "file": "",
+        "start": Object {
+          "column": 22,
+          "line": 2,
+        },
+      },
+      "statements": Array [
+        Return {
+          "tokens": Object {
+            "return": Object {
+              "isReserved": true,
+              "kind": 82,
+              "literal": undefined,
+              "location": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 2,
+                },
+                "file": "",
+                "start": Object {
+                  "column": 22,
+                  "line": 2,
+                },
+              },
+              "text": "return",
+            },
+          },
+          "value": Literal {
+            "_location": Object {
+              "end": Object {
+                "column": 33,
+                "line": 2,
+              },
+              "file": "",
+              "start": Object {
+                "column": 29,
+                "line": 2,
+              },
+            },
+            "value": BrsBoolean {
+              "kind": 1,
+              "value": true,
+            },
+          },
+        },
+      ],
+    },
+    "tokens": Object {
+      "elseIfs": Array [],
+      "endIf": Object {
+        "isReserved": false,
+        "kind": 56,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 41,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 35,
+            "line": 2,
+          },
+        },
+        "text": "end if",
+      },
+      "if": Object {
+        "isReserved": true,
+        "kind": 71,
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 14,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 2,
+          },
+        },
+        "text": "if",
+      },
+      "then": undefined,
     },
   },
 ]

@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
-import pify from "pify";
+import { promisify } from "util";
 
-const exists = pify(fs.exists, { errorFirst: false });
-const readFile = pify(fs.readFile);
+const exists = promisify(fs.exists);
+const readFile = promisify(fs.readFile);
 
 /** The set of possible value types in a `manifest` file's `key=value` pair. */
 export type ManifestValue = number | string | boolean;
@@ -60,7 +60,7 @@ export async function getManifest(rootDir: string): Promise<Manifest> {
             return [key, maybeNumber];
         });
 
-    return new Map<string, ManifestValue>(keyValuePairs);
+    return Promise.resolve(new Map<string, ManifestValue>(keyValuePairs));
 }
 
 /**

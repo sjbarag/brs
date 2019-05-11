@@ -225,9 +225,9 @@ export class Parser {
         };
 
         /**
-         * Add an error at the given location. 
-         * @param location 
-         * @param message 
+         * Add an error at the given location.
+         * @param location
+         * @param message
          */
         const addErrorAtLocation = (location: Location, message: string) => {
             addError({ location: location } as any, message);
@@ -490,14 +490,9 @@ export class Parser {
             //if we are at the top level, any line that starts with "library" should be considered a library statement
             if (isAtRootLevel() && isLibraryIdentifier) {
                 return true;
-            }
-            //not at root level, library statements are all invalid here, but try to detect if the tokens look
-            //like a library statement (and let the libraryStatement function handle emitting the errors)
-            else if (isLibraryIdentifier && checkNext(Lexeme.String)) {
+            } else if (isLibraryIdentifier && checkNext(Lexeme.String)) {
                 return true;
-            }
-            //definitely not a library statement
-            else {
+            } else {
                 return false;
             }
         }
@@ -647,9 +642,7 @@ export class Parser {
             //no token following library keyword token
             if (!libraryStatement.tokens.filePath && check(Lexeme.Newline, Lexeme.Colon)) {
                 addErrorAtLocation(libraryStatement.tokens.library.location, `Missing string literal after ${libraryStatement.tokens.library.text} keyword`);
-            }
-            //does not have a string literal as next token
-            else if (!libraryStatement.tokens.filePath && peek().kind === Lexeme.Newline) {
+            } else if (!libraryStatement.tokens.filePath && peek().kind === Lexeme.Newline) {
                 addErrorAtLocation(peek().location, `Expected string literal after ${libraryStatement.tokens.library.text} keyword`);
 
             }

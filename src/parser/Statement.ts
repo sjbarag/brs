@@ -413,7 +413,6 @@ export class IndexedSet implements Statement {
     }
 }
 
-
 export class Library implements Statement {
     constructor(
         readonly tokens: {

@@ -137,30 +137,16 @@ describe("parser if statements", () => {
         });
 
         it("parses if-else", () => {
-            let { statements, errors } = parser.parse([
-                token(Lexeme.If, "if"),
-                token(Lexeme.Integer, "1", new Int32(1)),
-                token(Lexeme.Less, "<"),
-                token(Lexeme.Integer, "2", new Int32(2)),
-                identifier("then"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.Else, "else"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.False, "false", BrsBoolean.False),
-                token(Lexeme.Newline, "\n"),
-                identifier("bar"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "false", BrsBoolean.False),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.EndIf, "end if"),
-                EOF
-            ]);
+            //this test requires token locations, so use the lexer
+            let { tokens } = brs.lexer.Lexer.scan(`
+                if 1 < 2 then 
+                    foo = true
+                else
+                    foo = false
+                    bar = false
+                end if
+            `);
+            let { statements, errors } = parser.parse(tokens);
 
             expect(errors).toEqual([])
             expect(statements).toBeDefined();
@@ -169,41 +155,18 @@ describe("parser if statements", () => {
         });
 
         it("parses if-elseif-else", () => {
-            let { statements, errors } = parser.parse([
-                token(Lexeme.If, "if"),
-                token(Lexeme.Integer, "1", new Int32(1)),
-                token(Lexeme.Less, "<"),
-                token(Lexeme.Integer, "2", new Int32(2)),
-                identifier("then"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.ElseIf, "else if"),
-                token(Lexeme.Integer, "1", new Int32(1)),
-                token(Lexeme.Greater, ">"),
-                token(Lexeme.Integer, "2", new Int32(2)),
-                identifier("then"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.Integer, "3", new Int32(3)),
-                token(Lexeme.Newline, "\n"),
-                identifier("bar"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.Else, "else"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.False, "false", BrsBoolean.False),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.EndIf, "end if"),
-                token(Lexeme.Newline, "\n"),
-                EOF
-            ]);
+            //this test requires token locations, so use the lexer
+            let { tokens } = brs.lexer.Lexer.scan(`
+                if 1 < 2 then
+                    foo = true
+                else if 1 > 2 then
+                    foo = 3
+                    bar = true
+                else
+                    foo = false
+                end if
+            `);
+            let { statements, errors } = parser.parse(tokens);
 
             expect(errors).toEqual([])
             expect(statements).toBeDefined();
@@ -212,39 +175,18 @@ describe("parser if statements", () => {
         });
 
         it("allows 'then' to be skipped", () => {
-            let { statements, errors } = parser.parse([
-                token(Lexeme.If, "if"),
-                token(Lexeme.Integer, "1", new Int32(1)),
-                token(Lexeme.Less, "<"),
-                token(Lexeme.Integer, "2", new Int32(2)),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.ElseIf, "else if"),
-                token(Lexeme.Integer, "1", new Int32(1)),
-                token(Lexeme.Greater, ">"),
-                token(Lexeme.Integer, "2", new Int32(2)),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.Integer, "3", new Int32(3)),
-                token(Lexeme.Newline, "\n"),
-                identifier("bar"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.True, "true", BrsBoolean.True),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.Else, "else"),
-                token(Lexeme.Newline, "\n"),
-                identifier("foo"),
-                token(Lexeme.Equal, "="),
-                token(Lexeme.False, "false", BrsBoolean.False),
-                token(Lexeme.Newline, "\n"),
-                token(Lexeme.EndIf, "end if"),
-                token(Lexeme.Newline, "\n"),
-                EOF
-            ]);
+            //this test requires token locations, so use the lexer
+            let { tokens } = brs.lexer.Lexer.scan(`
+                if 1 < 2
+                    foo = true
+                else if 1 > 2
+                    foo = 3
+                    bar = true
+                else
+                    foo = false
+                end if
+            `);
+            let { statements, errors } = parser.parse(tokens);
 
             expect(errors).toEqual([])
             expect(statements).toBeDefined();
@@ -293,6 +235,16 @@ describe("parser if statements", () => {
         //missing colon after `2`
         let { tokens } = brs.lexer.Lexer.scan(`
             if 1 < 2 : return true end if
+        `);
+        let { statements, errors } = brs.parser.Parser.parse(tokens);
+        expect(errors.length).toBeGreaterThan(0);
+        expect(statements).toMatchSnapshot();
+    });
+
+    it('catches one-line if statement with else missing colons', () => {
+        //missing colon after `2`
+        let { tokens } = brs.lexer.Lexer.scan(`
+            if 1 < 2 : return true: else return false end if
         `);
         let { statements, errors } = brs.parser.Parser.parse(tokens);
         expect(errors.length).toBeGreaterThan(0);

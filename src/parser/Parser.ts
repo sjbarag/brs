@@ -782,7 +782,16 @@ export class Parser {
 
                     match(Lexeme.Newline);
                     elseBranch = block(Lexeme.EndIf);
-                    advance(); // skip past "end if"
+                    let endIfToken = advance(); // skip past "end if"
+
+                    //ensure that single-line `if` statements have a colon right before 'end if'
+                    if (ifToken.location.start.line === endIfToken.location.start.line) {
+                        let index = tokens.indexOf(endIfToken);
+                        let previousToken = tokens[index - 1];
+                        if (previousToken.kind !== Lexeme.Colon) {
+                            addError(endIfToken, "Expected ':' to preceed 'end if'");
+                        }
+                    }
                     match(Lexeme.Newline);
                 } else {
                     match(Lexeme.Newline);
@@ -790,7 +799,7 @@ export class Parser {
                         `Expected 'end if' to close 'if' statement started on line ${startingLine}`,
                         Lexeme.EndIf
                     );
-                    
+
                     //ensure that single-line `if` statements have a colon right before 'end if'
                     if (ifToken.location.start.line === endIfToken.location.start.line) {
                         let index = tokens.indexOf(endIfToken);

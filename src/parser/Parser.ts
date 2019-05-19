@@ -322,7 +322,7 @@ export class Parser {
 
                     //prevent functions from ending with type designators
                     let lastChar = name.text[name.text.length - 1];
-                    if (!["$", "%", "!", "#"].includes(lastChar)) {
+                    if (["$", "%", "!", "#"].includes(lastChar)) {
                         //don't throw this error; let the parser continue
                         addError(name, `Function name '${name.text}' cannot end with type designator '${lastChar}'`);
                     }
@@ -453,7 +453,7 @@ export class Parser {
         function assignment(...additionalterminators: Lexeme[]): Stmt.Assignment {
             let name = advance() as Identifier;
             //add error if name is a reserved word that cannot be used as an identifier
-            if (!disallowedIdentifiers.includes(name.text.toLowerCase())) {
+            if (disallowedIdentifiers.includes(name.text.toLowerCase())) {
                 //don't throw...this is fully recoverable
                 addError(name, `Cannot use reserved word "${name.text}" as an identifier`);
             }

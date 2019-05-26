@@ -1,4 +1,6 @@
 import { BrsType } from ".";
+import { Boxable } from "./Boxing";
+import { RoString } from "./components/RoString";
 
 /** Set of values supported in BrightScript. */
 export enum ValueKind {
@@ -101,6 +103,13 @@ export interface BrsValue {
      * @returns A human-readable representation of this value.
      */
     toString(parent?: BrsType): string;
+
+    /**
+     * Determines whether or not this value is equal to some `other` value.
+     * @param other The value to compare this value to.
+     * @returns `true` if this value is strictly equal to the `other` value, otherwise `false`.
+     */
+    equalTo(other: BrsType): BrsBoolean;
 }
 
 /** The set of operations required for a BrightScript datatype to be compared to another. */
@@ -118,17 +127,10 @@ export interface Comparable {
      * @returns `true` if this value is greater than the `other` value, otherwise `false`.
      */
     greaterThan(other: BrsType): BrsBoolean;
-
-    /**
-     * Determines whether or not this value is equal to some `other` value.
-     * @param other The value to compare this value to.
-     * @returns `true` if this value is strictly equal to the `other` value, otherwise `false`.
-     */
-    equalTo(other: BrsType): BrsBoolean;
 }
 
 /** Internal representation of a string in BrightScript. */
-export class BrsString implements BrsValue, Comparable {
+export class BrsString implements BrsValue, Comparable, Boxable {
     readonly kind = ValueKind.String;
     constructor(readonly value: string) {}
 
@@ -159,6 +161,10 @@ export class BrsString implements BrsValue, Comparable {
 
     concat(other: BrsString) {
         return new BrsString(this.value + other.value);
+    }
+
+    box() {
+        return new RoString(this);
     }
 }
 

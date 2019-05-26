@@ -18,6 +18,7 @@ import {
     MismatchReason,
     Callable,
     BrsNumber,
+    Comparable,
 } from "../brsTypes";
 
 import { Lexeme } from "../lexer";
@@ -34,6 +35,7 @@ import { Runtime } from "../parser/Statement";
 import { RoAssociativeArray } from "../brsTypes/components/RoAssociativeArray";
 import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
+import { isBoxable } from "../brsTypes/Boxing";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -313,7 +315,16 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
          * @returns `true` if `left` and `right` are allowed to be compared to each other with `operator`,
          *          otherwise `false`.
          */
-        function canCompare(left: BrsType, operator: Lexeme, right: BrsType): boolean {
+        function canCompare(params: {
+            left: BrsType;
+            operator: Lexeme;
+            right: BrsType;
+        }): params is {
+            left: BrsType & Comparable;
+            operator: Lexeme;
+            right: BrsType & Comparable;
+        } {
+            let { left, operator, right } = params;
             if (left.kind === ValueKind.Invalid || right.kind === ValueKind.Invalid) {
                 // anything can be checked for *equality* with `invalid`, but greater than / less than comparisons
                 // are type mismatches
@@ -458,7 +469,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     );
                 }
             case Lexeme.Greater:
-                if (!canCompare(left, lexeme, right)) {
+                if (!canCompare({ left, operator: lexeme, right })) {
                     return this.addError(
                         new TypeMismatch({
                             message: "Attempting to compare non-primitive values.",
@@ -742,6 +753,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     expression.callee instanceof Expr.IndexedGet
                 ) {
                     let maybeM = this.evaluate(expression.callee.obj);
+                    maybeM = isBoxable(maybeM) ? maybeM.box() : maybeM;
+
                     if (maybeM.kind === ValueKind.Object) {
                         if (maybeM instanceof RoAssociativeArray) {
                             mPointer = maybeM;
@@ -880,20 +893,25 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             } catch (err) {
                 return this.addError(new BrsError(err.message, expression.name.location));
             }
-        } else if (source instanceof BrsComponent) {
+        }
+
+        let boxedSource = isBoxable(source) ? source.box() : source;
+        if (boxedSource instanceof BrsComponent) {
             try {
-                return source.getMethod(expression.name.text) || BrsInvalid.Instance;
+                return boxedSource.getMethod(expression.name.text) || BrsInvalid.Instance;
             } catch (err) {
                 return this.addError(new BrsError(err.message, expression.name.location));
             }
         } else {
-            throw new TypeMismatch({
-                message: "Attempting to retrieve property from non-iterable value",
-                left: {
-                    type: source,
-                    location: expression.location,
-                },
-            });
+            return this.addError(
+                new TypeMismatch({
+                    message: "Attempting to retrieve property from non-iterable value",
+                    left: {
+                        type: source,
+                        location: expression.location,
+                    },
+                })
+            );
         }
     }
 

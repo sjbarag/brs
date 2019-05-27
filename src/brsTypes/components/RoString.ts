@@ -43,12 +43,12 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
 
     private split = new Callable("split", {
         signature: {
-            args: [new StdlibArgument("s", ValueKind.String)],
+            args: [new StdlibArgument("separator", ValueKind.String)],
             returns: ValueKind.Object,
         },
-        impl: (_interpreter: Interpreter, s: BrsString) => {
+        impl: (_interpreter: Interpreter, separator: BrsString) => {
             return new RoArray(
-                this.intrinsic.value.split(s.value).map(section => new BrsString(section))
+                this.intrinsic.value.split(separator.value).map(section => new BrsString(section))
             );
         },
     });

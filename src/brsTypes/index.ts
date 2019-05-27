@@ -7,7 +7,6 @@ import {
     Comparable,
     BrsValue,
 } from "./BrsType";
-import { BrsObject } from "./components";
 import { RoArray } from "./components/RoArray";
 import { RoAssociativeArray } from "./components/RoAssociativeArray";
 import { Int32 } from "./Int32";

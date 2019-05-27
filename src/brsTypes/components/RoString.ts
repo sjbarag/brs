@@ -6,6 +6,7 @@ import { Interpreter } from "../../interpreter";
 import { BrsType } from "..";
 import { Unboxable } from "../Boxing";
 import { Int32 } from "../Int32";
+import { Float } from "../Float";
 
 export class RoString extends BrsComponent implements BrsValue, Unboxable {
     readonly kind = ValueKind.Object;
@@ -28,6 +29,9 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             this.mid,
             this.instr,
             this.replace,
+            this.trim,
+            this.toInt,
+            this.toFloat,
             this.split,
         ]);
     }
@@ -204,6 +208,42 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             return new BrsString(
                 this.intrinsic.value.replace(new RegExp(from.value, "g"), to.value)
             );
+        },
+    });
+
+    /**
+     * Returns the string with any leading and trailing whitespace characters (space, TAB, LF, CR,
+     * VT, FF, NO-BREAK SPACE, et al) removed.
+     */
+    private trim = new Callable("Trim", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(this.intrinsic.value.trim());
+        },
+    });
+
+    /** Returns the value of the string interpreted as a decimal number. */
+    private toInt = new Callable("ToInt", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: _interpreter => {
+            return Int32.fromString(this.intrinsic.value);
+        },
+    });
+
+    /** Returns the value of the string interpreted as a floating point number. */
+    private toFloat = new Callable("ToFloat", {
+        signature: {
+            args: [],
+            returns: ValueKind.Float,
+        },
+        impl: _interpreter => {
+            return Float.fromString(this.intrinsic.value);
         },
     });
 

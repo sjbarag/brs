@@ -36,6 +36,7 @@ import { RoAssociativeArray } from "../brsTypes/components/RoAssociativeArray";
 import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
 import { isBoxable } from "../brsTypes/Boxing";
+import { DottedGet } from "../parser/Expression";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -716,10 +717,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitCall(expression: Expr.Call) {
         let functionName = "[anonymous function]";
-        if (expression.callee instanceof Expr.Variable) {
-            if (expression.callee.name.text) {
-                functionName = expression.callee.name.text;
-            }
+        // TODO: autobox
+        if (
+            expression.callee instanceof Expr.Variable ||
+            expression.callee instanceof Expr.DottedGet
+        ) {
+            functionName = expression.callee.name.text;
         }
 
         // evaluate the function to call (it could be the result of another function call)

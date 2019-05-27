@@ -11,12 +11,7 @@ export interface Unboxable {
 }
 
 export function isBoxable(value: BrsType): value is BrsType & Boxable {
-    switch (value.kind) {
-        case ValueKind.String:
-            return true;
-        default:
-            return false;
-    }
+    return "box" in value;
 }
 
 export function isUnboxable(value: BrsType): value is BrsType & Unboxable {

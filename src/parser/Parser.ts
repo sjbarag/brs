@@ -800,7 +800,7 @@ export class Parser {
 
                 //keep track of the current error count, because if the then branch fails,
                 //we will trash them in favor of a single error on if
-                var errorsLengthBeforeBlock = errors.length;
+                let errorsLengthBeforeBlock = errors.length;
 
                 // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
                 // a trailing "end if"
@@ -1059,7 +1059,7 @@ export class Parser {
 
             //print statements can be empty, so look for empty print conditions
             if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {
-                var emptyStringLiteral = new Expr.Literal(new BrsString(""), printKeyword.location);
+                let emptyStringLiteral = new Expr.Literal(new BrsString(""), printKeyword.location);
                 values.push(emptyStringLiteral);
             } else {
                 values.push(expression());

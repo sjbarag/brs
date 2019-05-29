@@ -547,6 +547,24 @@ export class Parser {
             }
         }
 
+        /**
+         * Check to see if the next set of tokens look like a label
+         */
+        function checkLabel() {
+            //labels must be on their own line (which means there was a newline or we are at the beginning of the program
+            if (current > 0 && checkPrevious(Lexeme.Newline) === false) {
+                return false;
+            }
+
+            //labels are specifically detected when there's an identifier, a colon, then a newline or eof.
+            //If this check gets more greedy, it causes other issues.
+            return (
+                check(Lexeme.Identifier) &&
+                checkNext(Lexeme.Colon) &&
+                checkNextNext(Lexeme.Newline, Lexeme.Eof)
+            );
+        }
+
         function statement(...additionalterminators: BlockTerminator[]): Statement | undefined {
             if (checkLibrary()) {
                 return libraryStatement();
@@ -586,6 +604,14 @@ export class Parser {
 
             if (match(Lexeme.Return)) {
                 return returnStatement();
+            }
+
+            if (check(Lexeme.Goto)) {
+                return gotoStatement();
+            }
+
+            if (checkLabel()) {
+                return labelStatement();
             }
 
             // TODO: support multi-statements
@@ -1103,6 +1129,36 @@ export class Parser {
         }
 
         /**
+         * Parses a `goto` statement
+         * @returns an AST representation of an `goto` statement.
+         */
+        function labelStatement() {
+            let tokens = {
+                identifier: advance(),
+                colon: advance(),
+            };
+
+            consume("Labels must be declared on their own line", Lexeme.Newline, Lexeme.Eof);
+
+            return new Stmt.Label(tokens);
+        }
+
+        /**
+         * Parses a `goto` statement
+         * @returns an AST representation of an `goto` statement.
+         */
+        function gotoStatement() {
+            let tokens = {
+                goto: advance(),
+                label: consume("Expected label identifier after goto keyword", Lexeme.Identifier),
+            };
+
+            while (match(Lexeme.Newline, Lexeme.Colon));
+
+            return new Stmt.Goto(tokens);
+        }
+
+        /**
          * Parses an `end` statement
          * @returns an AST representation of an `end` statement.
          */
@@ -1473,6 +1529,21 @@ export class Parser {
             return previous();
         }
 
+        /**
+         * Check that the previous token matches one of the specified Lexemes
+         * @param lexemes
+         */
+        function checkPrevious(...lexemes: Lexeme[]) {
+            if (current === 0) {
+                return false;
+            } else {
+                current--;
+                var result = check(...lexemes);
+                current++;
+                return result;
+            }
+        }
+
         function check(...lexemes: Lexeme[]) {
             if (isAtEnd()) {
                 return false;
@@ -1487,6 +1558,13 @@ export class Parser {
             }
 
             return lexemes.some(lexeme => peekNext().kind === lexeme);
+        }
+
+        function checkNextNext(...lexemes: Lexeme[]) {
+            current++;
+            var result = checkNext(...lexemes);
+            current--;
+            return result;
         }
 
         function isAtEnd() {

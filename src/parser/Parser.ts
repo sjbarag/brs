@@ -1059,7 +1059,7 @@ export class Parser {
 
             //print statements can be empty, so look for empty print conditions
             if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {
-                var emptyStringLiteral = new Expr.Literal(new Int32(1), printKeyword.location);
+                var emptyStringLiteral = new Expr.Literal(new BrsString(""), printKeyword.location);
                 values.push(emptyStringLiteral);
             } else {
                 values.push(expression());

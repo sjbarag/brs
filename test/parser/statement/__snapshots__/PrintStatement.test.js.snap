@@ -237,9 +237,9 @@ Array [
             "line": -9,
           },
         },
-        "value": Int32 {
-          "kind": 3,
-          "value": 1,
+        "value": BrsString {
+          "kind": 2,
+          "value": "",
         },
       },
     ],

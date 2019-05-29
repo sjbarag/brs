@@ -1056,7 +1056,14 @@ export class Parser {
                 | Expr.Expression
                 | Stmt.PrintSeparator.Tab
                 | Stmt.PrintSeparator.Space)[] = [];
-            values.push(expression());
+
+            //print statements can be empty, so look for empty print conditions
+            if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {
+                var emptyStringLiteral = new Expr.Literal(new Int32(1), printKeyword.location);
+                values.push(emptyStringLiteral);
+            } else {
+                values.push(expression());
+            }
 
             while (!check(Lexeme.Newline, Lexeme.Colon, ...additionalterminators) && !isAtEnd()) {
                 if (check(Lexeme.Semicolon)) {

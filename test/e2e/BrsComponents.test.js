@@ -69,6 +69,15 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/roSGNode.brs", async () => {
+        await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "<Component: roSGNode>",
+            "invalid",
+        ]);
+    });
+
     test("components/roRegex.brs", async () => {
         await execute([resourceFile("components", "roRegex.brs")], outputStreams);
 

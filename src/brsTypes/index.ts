@@ -16,6 +16,7 @@ export * from "./Double";
 export * from "./components/RoArray";
 export * from "./components/RoAssociativeArray";
 export * from "./components/Timespan";
+export * from "./components/RoSGNode";
 export * from "./components/BrsObjects";
 export * from "./components/RoRegex";
 export * from "./Callable";

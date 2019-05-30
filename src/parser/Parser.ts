@@ -78,6 +78,7 @@ const allowedProperties = [
     Lexeme.Rem,
     Lexeme.Return,
     Lexeme.Step,
+    Lexeme.Stop,
     Lexeme.Sub,
     Lexeme.Tab,
     Lexeme.To,
@@ -552,6 +553,10 @@ export class Parser {
                 return libraryStatement();
             }
 
+            if (check(Lexeme.Stop)) {
+                return stopStatement();
+            }
+
             if (check(Lexeme.If)) {
                 return ifStatement();
             }
@@ -800,7 +805,7 @@ export class Parser {
 
                 //keep track of the current error count, because if the then branch fails,
                 //we will trash them in favor of a single error on if
-                var errorsLengthBeforeBlock = errors.length;
+                let errorsLengthBeforeBlock = errors.length;
 
                 // we're parsing a multi-line ("block") form of the BrightScript if/then/else and must find
                 // a trailing "end if"
@@ -1056,7 +1061,14 @@ export class Parser {
                 | Expr.Expression
                 | Stmt.PrintSeparator.Tab
                 | Stmt.PrintSeparator.Space)[] = [];
-            values.push(expression());
+
+            //print statements can be empty, so look for empty print conditions
+            if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {
+                let emptyStringLiteral = new Expr.Literal(new BrsString(""), printKeyword.location);
+                values.push(emptyStringLiteral);
+            } else {
+                values.push(expression());
+            }
 
             while (!check(Lexeme.Newline, Lexeme.Colon, ...additionalterminators) && !isAtEnd()) {
                 if (check(Lexeme.Semicolon)) {
@@ -1106,12 +1118,23 @@ export class Parser {
          * Parses an `end` statement
          * @returns an AST representation of an `end` statement.
          */
-        function endStatement(): Stmt.End {
+        function endStatement() {
             let tokens = { end: advance() };
 
             while (match(Lexeme.Newline));
 
             return new Stmt.End(tokens);
+        }
+        /**
+         * Parses a `stop` statement
+         * @returns an AST representation of a `stop` statement
+         */
+        function stopStatement() {
+            let tokens = { stop: advance() };
+
+            while (match(Lexeme.Newline, Lexeme.Colon));
+
+            return new Stmt.Stop(tokens);
         }
 
         /**

@@ -23,6 +23,11 @@ describe("lexer", () => {
         ]);
     });
 
+    it("gives the `stop` keyword its own Lexeme", () => {
+        let { tokens } = Lexer.scan("stop");
+        expect(tokens.map(t => t.kind)).toEqual([Lexeme.Stop, Lexeme.Eof]);
+    });
+
     it("aliases '?' to 'print'", () => {
         let { tokens } = Lexer.scan("?2");
         expect(tokens.map(t => t.kind)).toEqual([Lexeme.Print, Lexeme.Integer, Lexeme.Eof]);
@@ -336,11 +341,13 @@ describe("lexer", () => {
         });
 
         it("reads conditional directives", () => {
-            let { tokens } = Lexer.scan("#if #else if #else #end if");
+            let { tokens } = Lexer.scan("#if #else if #elseif #else #end if #endif");
             expect(tokens.map(t => t.kind)).toEqual([
                 Lexeme.HashIf,
                 Lexeme.HashElseIf,
+                Lexeme.HashElseIf,
                 Lexeme.HashElse,
+                Lexeme.HashEndIf,
                 Lexeme.HashEndIf,
                 Lexeme.Eof,
             ]);

@@ -37,7 +37,7 @@ export async function getManifest(rootDir: string): Promise<Manifest> {
  * @returns a Promise that resolves to a map of string to JavaScript number, string, or boolean,
  *          representing the manifest file's contents
  */
-export async function parseManifest(contents: string) {
+export function parseManifest(contents: string) {
     let keyValuePairs = contents
         // for each line
         .split("\n")

@@ -74,7 +74,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             ],
             returns: ValueKind.Void,
         },
-        impl: (_interpreter, Interpreter, s: BrsString, len: Int32) => {
+        impl: (_interpreter, s: BrsString, len: Int32) => {
             this.intrinsic = new BrsString(s.value.substr(0, len.getValue()));
             return BrsInvalid.Instance;
         },
@@ -89,7 +89,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             ],
             returns: ValueKind.Void,
         },
-        impl: (_interpreter, Interpreter, s: BrsString, len: Int32) => {
+        impl: (_interpreter, s: BrsString, len: Int32) => {
             this.intrinsic = this.intrinsic.concat(
                 new BrsString(s.value.substr(0, len.getValue()))
             );
@@ -114,7 +114,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             args: [new StdlibArgument("len", ValueKind.Int32)],
             returns: ValueKind.String,
         },
-        impl: (_interpreter: Interpreter, len: Int32) => {
+        impl: (_interpreter, len: Int32) => {
             return new BrsString(this.intrinsic.value.substr(0, len.getValue()));
         },
     });
@@ -125,7 +125,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             args: [new StdlibArgument("len", ValueKind.Int32)],
             returns: ValueKind.String,
         },
-        impl: (_interpreter: Interpreter, len: Int32) => {
+        impl: (_interpreter, len: Int32) => {
             let source = this.intrinsic.value;
             return new BrsString(source.substr(source.length - len.getValue()));
         },
@@ -142,7 +142,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
                 args: [new StdlibArgument("start_index", ValueKind.Int32)],
                 returns: ValueKind.String,
             },
-            impl: (_interpreter: Interpreter, startIndex: Int32) => {
+            impl: (_interpreter, startIndex: Int32) => {
                 return new BrsString(this.intrinsic.value.substr(startIndex.getValue()));
             },
         },
@@ -159,7 +159,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
                 ],
                 returns: ValueKind.String,
             },
-            impl: (_interpreter: Interpreter, startIndex: Int32, numChars: Int32) => {
+            impl: (_interpreter, startIndex: Int32, numChars: Int32) => {
                 let source = this.intrinsic.value;
                 return new BrsString(
                     this.intrinsic.value.substr(startIndex.getValue(), numChars.getValue())
@@ -176,7 +176,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
                 args: [new StdlibArgument("substring", ValueKind.String)],
                 returns: ValueKind.Int32,
             },
-            impl: (_interpreter: Interpreter, substring: BrsString) => {
+            impl: (_interpreter, substring: BrsString) => {
                 return new Int32(this.intrinsic.value.indexOf(substring.value));
             },
         },
@@ -192,7 +192,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
                 ],
                 returns: ValueKind.Int32,
             },
-            impl: (_interpreter: Interpreter, startIndex: Int32, substring: BrsString) => {
+            impl: (_interpreter, startIndex: Int32, substring: BrsString) => {
                 return new Int32(
                     this.intrinsic.value.indexOf(substring.value, startIndex.getValue())
                 );
@@ -282,7 +282,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             args: [new StdlibArgument("separator", ValueKind.String)],
             returns: ValueKind.Object,
         },
-        impl: (_interpreter: Interpreter, separator: BrsString) => {
+        impl: (_interpreter, separator: BrsString) => {
             return new RoArray(
                 this.intrinsic.value.split(separator.value).map(section => new BrsString(section))
             );

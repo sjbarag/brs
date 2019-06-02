@@ -8,17 +8,6 @@ import { Unboxable } from "../Boxing";
 import { Int32 } from "../Int32";
 import { Float } from "../Float";
 
-function isRfc3986Unreserved(char: string) {
-    return (
-        (char >= "a" && char <= "z") ||
-        (char >= "A" && char <= "Z") ||
-        char === "-" ||
-        char === "." ||
-        char === "_" ||
-        char === "~"
-    );
-}
-
 export class RoString extends BrsComponent implements BrsValue, Unboxable {
     readonly kind = ValueKind.Object;
     private intrinsic: BrsString;
@@ -57,11 +46,11 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
 
     equalTo(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {
-            return BrsBoolean.from(other.box().intrinsic === this.intrinsic);
+            return BrsBoolean.from(other.value === this.intrinsic.value);
         }
 
         if (other instanceof RoString) {
-            return BrsBoolean.from(other.intrinsic === this.intrinsic);
+            return BrsBoolean.from(other.intrinsic.value === this.intrinsic.value);
         }
 
         return BrsBoolean.False;

@@ -212,17 +212,37 @@ describe("RoString", () => {
                 expect(instr).toBeInstanceOf(Callable);
             });
 
-            it("returns the index of the first occurrence", () => {
-                expect(instr.call(interpreter, new BrsString("day"))).toEqual(new Int32(3));
+            describe("without start_index", () => {
+                it("returns the index of the first occurrence", () => {
+                    expect(instr.call(interpreter, new BrsString("day"))).toEqual(new Int32(3));
+                });
+
+                it("returns -1 for not-found substrings", () => {
+                    expect(instr.call(interpreter, new BrsString("Fonzie"))).toEqual(new Int32(-1));
+                });
+
+                it.todo("returns 0 for empty substrings");
+                // TODO: compare to RBI
+                // () => expect(instr.call(interpreter, new BrsString(""))).toEqual(new Int32(-1));
             });
 
-            it("returns -1 for not-found substrings", () => {
-                expect(instr.call(interpreter, new BrsString("Fonzie"))).toEqual(new Int32(-1));
-            });
+            describe("with start_index", () => {
+                it("returns the index of the first occurrence after `start_index`", () => {
+                    expect(instr.call(interpreter, new Int32(5), new BrsString("day"))).toEqual(
+                        new Int32(12)
+                    );
+                });
 
-            it.todo("returns 0 for empty substrings");
-            // TODO: compare to RBI
-            // () => expect(instr.call(interpreter, new BrsString(""))).toEqual(new Int32(-1));
+                it("returns -1 for not-found substrings", () => {
+                    expect(instr.call(interpreter, new Int32(5), new BrsString("Monday"))).toEqual(
+                        new Int32(-1)
+                    );
+                });
+
+                it.todo("returns start_index for empty substrings");
+                // TODO: compare to RBI
+                // () => expect(instr.call(interpreter, new BrsString(""))).toEqual(new Int32(-1));
+            });
         });
     });
 });

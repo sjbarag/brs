@@ -8,6 +8,17 @@ import { Unboxable } from "../Boxing";
 import { Int32 } from "../Int32";
 import { Float } from "../Float";
 
+function isRfc3986Unreserved(char: string) {
+    return (
+        (char >= "a" && char <= "z") ||
+        (char >= "A" && char <= "Z") ||
+        char === "-" ||
+        char === "." ||
+        char === "_" ||
+        char === "~"
+    );
+}
+
 export class RoString extends BrsComponent implements BrsValue, Unboxable {
     readonly kind = ValueKind.Object;
     private intrinsic: BrsString;
@@ -32,7 +43,15 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             this.trim,
             this.toInt,
             this.toFloat,
+            this.tokenize,
             this.split,
+            this.getEntityEncode,
+            this.escape,
+            this.unescape,
+            this.encodeUri,
+            this.decodeUri,
+            this.encodeUriComponent,
+            this.decodeUriComponent,
         ]);
     }
 
@@ -248,6 +267,23 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
     });
 
     /**
+     * Splits the string into separate substrings separated by a single delimiter character. Returns
+     * an roList containing each of the substrings. The delimiters are not returned.
+     */
+    private tokenize = new Callable("Tokenize", {
+        signature: {
+            args: [new StdlibArgument("delim", ValueKind.String)],
+            returns: ValueKind.Object,
+        },
+        impl: _interpreter => {
+            _interpreter.stderr.write(
+                "WARNING: tokenize not yet implemented.  Returning `invalid`."
+            );
+            return BrsInvalid.Instance;
+        },
+    });
+
+    /**
      * Splits the input string using the separator string as a delimiter, and returns an array of
      * the split token strings (not including the delimiter). An empty separator string indicates
      * to split the string by character.
@@ -261,6 +297,101 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             return new RoArray(
                 this.intrinsic.value.split(separator.value).map(section => new BrsString(section))
             );
+        },
+    });
+
+    /**
+     * Returns the string with certain characters ("'<>&) replaced with the corresponding HTML
+     * entity encoding.
+     */
+    private getEntityEncode = new Callable("GetEntityEncode", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(this.intrinsic.value.replace(/(['"<>&])/g, "\\$1"));
+        },
+    });
+
+    /** URL encodes the specified string per RFC 3986 and returns the encoded string. */
+    private escape = new Callable("Escape", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(
+                // encoding courtesy of
+                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#Description
+                encodeURIComponent(this.intrinsic.value).replace(
+                    /[!'()*]/g,
+                    c => "%" + c.charCodeAt(0).toString(16)
+                )
+            );
+        },
+    });
+
+    /** URL decodes the specified string per RFC 3986 and returns the decoded string. */
+    private unescape = new Callable("Unescape", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(decodeURIComponent(this.intrinsic.value));
+        },
+    });
+
+    /**
+     * Encode the specified string with escape sequences for reserved Uniform Resource Identifier
+     * (URI) characters.
+     */
+    private encodeUri = new Callable("EncodeUri", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(encodeURI(this.intrinsic.value));
+        },
+    });
+
+    /**
+     * Decode the specified string with escape sequences for reserved Uniform Resource Identifier
+     * (URI) characters.
+     */
+    private decodeUri = new Callable("DecodeUri", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(decodeURI(this.intrinsic.value));
+        },
+    });
+
+    /**
+     * Encode the specified string with escape sequences for reserved Uniform Resource Identifier
+     * (URI) component characters.
+     */
+    private encodeUriComponent = new Callable("EncodeUriComponent", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(encodeURIComponent(this.intrinsic.value));
+        },
+    });
+
+    private decodeUriComponent = new Callable("DecodeUriCOmponent", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => {
+            return new BrsString(decodeURIComponent(this.intrinsic.value));
         },
     });
 }

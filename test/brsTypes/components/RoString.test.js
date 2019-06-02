@@ -244,5 +244,54 @@ describe("RoString", () => {
                 // () => expect(instr.call(interpreter, new BrsString(""))).toEqual(new Int32(-1));
             });
         });
+
+        describe("replace", () => {
+            let s, replace;
+
+            beforeEach(() => {
+                s = new RoString(new BrsString("tossed salad and scrambled eggs"));
+                replace = s.getMethod("replace");
+                expect(replace).toBeInstanceOf(Callable);
+            });
+
+            it("replaces all instances of `from` with `to`", () => {
+                expect(replace.call(interpreter, new BrsString("s"), new BrsString("$"))).toEqual(
+                    new BrsString("to$$ed $alad and $crambled egg$")
+                );
+            });
+
+            it("returns the original string for empty `from`", () => {
+                expect(
+                    replace.call(
+                        interpreter,
+                        new BrsString(""),
+                        new BrsString("oh baby I hear the blues a-callin'")
+                    )
+                ).toEqual(new BrsString("tossed salad and scrambled eggs"));
+            });
+        });
+
+        describe("trim", () => {
+            let s, trim;
+            beforeEach(() => {
+                let whitespace = [
+                    String.fromCharCode(0x0a), // newline
+                    String.fromCharCode(0x0b), // vertical tab
+                    String.fromCharCode(0x0c), // form feed
+                    String.fromCharCode(0x0d), // carriage return
+                    String.fromCharCode(0xa0), // non-breaking space
+                    "\t", // just a regular tab
+                    " ", // just a regular space
+                ].join("");
+
+                s = new RoString(new BrsString(whitespace + "hello" + whitespace));
+                trim = s.getMethod("trim");
+                expect(trim).toBeInstanceOf(Callable);
+            });
+
+            it("removes leading and trailing whitespace", () => {
+                expect(trim.call(interpreter)).toEqual(new BrsString("hello"));
+            });
+        });
     });
 });

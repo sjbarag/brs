@@ -213,6 +213,10 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             returns: ValueKind.String,
         },
         impl: (_interpreter, from: BrsString, to: BrsString) => {
+            if (from.value === "") {
+                return this.intrinsic;
+            }
+
             return new BrsString(
                 this.intrinsic.value.replace(new RegExp(from.value, "g"), to.value)
             );

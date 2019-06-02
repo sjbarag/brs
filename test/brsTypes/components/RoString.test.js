@@ -200,5 +200,29 @@ describe("RoString", () => {
                 });
             });
         });
+
+        describe("instr", () => {
+            let s, instr;
+
+            beforeEach(() => {
+                //                              0   0   0   1   1   2   2
+                //                              0   4   8   2   6   0   4
+                s = new RoString(new BrsString("Monday, Tuesday, Happy Days"));
+                instr = s.getMethod("instr");
+                expect(instr).toBeInstanceOf(Callable);
+            });
+
+            it("returns the index of the first occurrence", () => {
+                expect(instr.call(interpreter, new BrsString("day"))).toEqual(new Int32(3));
+            });
+
+            it("returns -1 for not-found substrings", () => {
+                expect(instr.call(interpreter, new BrsString("Fonzie"))).toEqual(new Int32(-1));
+            });
+
+            it.todo("returns 0 for empty substrings");
+            // TODO: compare to RBI
+            // () => expect(instr.call(interpreter, new BrsString(""))).toEqual(new Int32(-1));
+        });
     });
 });

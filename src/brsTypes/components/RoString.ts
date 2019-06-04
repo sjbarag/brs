@@ -284,7 +284,7 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
         },
         impl: _interpreter => {
             _interpreter.stderr.write(
-                "WARNING: tokenize not yet implemented.  Returning `invalid`."
+                "WARNING: tokenize not yet implemented, because it returns an RoList.  Returning `invalid`."
             );
             return BrsInvalid.Instance;
         },
@@ -301,9 +301,15 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             returns: ValueKind.Object,
         },
         impl: (_interpreter, separator: BrsString) => {
-            return new RoArray(
-                this.intrinsic.value.split(separator.value).map(section => new BrsString(section))
-            );
+            let parts;
+            if (separator.value === "") {
+                // split characters apart, preserving multi-character unicode structures
+                parts = Array.from(this.intrinsic.value);
+            } else {
+                parts = this.intrinsic.value.split(separator.value);
+            }
+
+            return new RoArray(parts.map(part => new BrsString(part)));
         },
     });
 

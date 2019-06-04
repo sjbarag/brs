@@ -1,5 +1,5 @@
 const brs = require("brs");
-const { Int32, Float, BrsString, RoString, BrsBoolean, Callable } = brs.types;
+const { Int32, Float, BrsString, RoString, RoArray, BrsBoolean, Callable } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 
 describe("RoString", () => {
@@ -368,6 +368,60 @@ describe("RoString", () => {
                 let positiveToFloat = positive.getMethod("toFloat");
                 expect(positiveToFloat).toBeInstanceOf(Callable);
                 expect(positiveToFloat.call(interpreter)).toEqual(new Float(1.9));
+            });
+        });
+
+        describe("tokenize", () => {
+            let tokenize;
+
+            beforeEach(() => {
+                let s = new RoString(new BrsString("good dog"));
+                tokenize = s.getMethod("tokenize");
+                expect(tokenize).toBeInstanceOf(Callable);
+            });
+
+            // TODO: implement after RoList exists
+            it.todo("splits by single-character delimiter");
+            it.todo("splits by multi-character delimiter");
+        });
+
+        describe("split", () => {
+            let split;
+
+            beforeEach(() => {
+                let s = new RoString(new BrsString("🐶good dog🐶"));
+                split = s.getMethod("split");
+                expect(split).toBeInstanceOf(Callable);
+            });
+
+            it("splits characters with an empty string", () => {
+                let result = split.call(interpreter, new BrsString(""));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual(
+                    ["🐶", "g", "o", "o", "d", " ", "d", "o", "g", "🐶"].map(c => new BrsString(c))
+                );
+            });
+
+            it("returns one section for not-found delimiters", () => {
+                let result = split.call(interpreter, new BrsString("/"));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([new BrsString("🐶good dog🐶")]);
+            });
+
+            it("returns empty strings for leading and trailing matches", () => {
+                let result = split.call(interpreter, new BrsString("🐶"));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([
+                    new BrsString(""),
+                    new BrsString("good dog"),
+                    new BrsString(""),
+                ]);
+            });
+
+            it("splits on multi-character sequences", () => {
+                let result = split.call(interpreter, new BrsString("oo"));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([new BrsString("🐶g"), new BrsString("d dog🐶")]);
             });
         });
     });

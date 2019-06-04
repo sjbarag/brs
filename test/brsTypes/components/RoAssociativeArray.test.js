@@ -1,6 +1,7 @@
 const brs = require("brs");
 const {
     RoAssociativeArray,
+    RoSGNode,
     RoArray,
     BrsBoolean,
     BrsString,
@@ -34,6 +35,7 @@ describe("AssociativeArray", () => {
                     value: new RoArray([new BrsString("I shouldn't appear")]),
                 },
                 { name: new BrsString("associative-array"), value: new RoAssociativeArray([]) },
+                { name: new BrsString("node"), value: new RoSGNode([]) },
                 { name: new BrsString("boolean"), value: BrsBoolean.True },
                 { name: new BrsString("string"), value: new BrsString("a string") },
                 { name: new BrsString("number"), value: new Int32(-1) },
@@ -44,6 +46,7 @@ describe("AssociativeArray", () => {
 {
     array: <Component: roArray>
     associative-array: <Component: roAssociativeArray>
+    node: <Component: roSGNode:Node>
     boolean: true
     string: a string
     number: -1

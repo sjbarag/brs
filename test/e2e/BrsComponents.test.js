@@ -51,6 +51,8 @@ describe("end to end brightscript functions", () => {
             "true",
             "can look up elements: ",
             "true",
+            "can look up elements (brackets): ",
+            "true",
             "can check for existence: ",
             "true",
             "can empty itself: ",
@@ -73,8 +75,22 @@ describe("end to end brightscript functions", () => {
         await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
-            "<Component: roSGNode>",
-            "invalid",
+            "node size: ",
+            "3",
+            "node keys size: ",
+            "3",
+            "node items size: ",
+            "3",
+            "can delete elements: ",
+            "true",
+            "can look up elements: ",
+            "true",
+            "can look up elements (brackets): ",
+            "true",
+            "can check for existence: ",
+            "true",
+            "can empty itself: ",
+            "true",
         ]);
     });
 

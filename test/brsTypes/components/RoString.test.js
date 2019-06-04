@@ -1,5 +1,5 @@
 const brs = require("brs");
-const { Int32, BrsString, RoString, BrsBoolean, Callable } = brs.types;
+const { Int32, Float, BrsString, RoString, BrsBoolean, Callable } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 
 describe("RoString", () => {
@@ -94,10 +94,10 @@ describe("RoString", () => {
         });
 
         describe("left", () => {
-            let s, left;
+            let left;
 
             beforeEach(() => {
-                s = new RoString(new BrsString("☃ab"));
+                let s = new RoString(new BrsString("☃ab"));
                 left = s.getMethod("left");
                 expect(left).toBeInstanceOf(Callable);
             });
@@ -117,10 +117,10 @@ describe("RoString", () => {
         });
 
         describe("right", () => {
-            let s, right;
+            let right;
 
             beforeEach(() => {
-                s = new RoString(new BrsString("☃ab"));
+                let s = new RoString(new BrsString("☃ab"));
                 right = s.getMethod("right");
                 expect(right).toBeInstanceOf(Callable);
             });
@@ -140,12 +140,12 @@ describe("RoString", () => {
         });
 
         describe("mid", () => {
-            let s, mid;
+            let mid;
 
             beforeEach(() => {
-                //                              0   0   0   1   1   2   2
-                //                              0   4   8   2   6   0   4
-                s = new RoString(new BrsString("Lorem ipsum dolor sit aMeT"));
+                //                                  0   0   0   1   1   2   2
+                //                                  0   4   8   2   6   0   4
+                let s = new RoString(new BrsString("Lorem ipsum dolor sit aMeT"));
                 mid = s.getMethod("mid");
                 expect(mid).toBeInstanceOf(Callable);
             });
@@ -202,12 +202,12 @@ describe("RoString", () => {
         });
 
         describe("instr", () => {
-            let s, instr;
+            let instr;
 
             beforeEach(() => {
-                //                              0   0   0   1   1   2   2
-                //                              0   4   8   2   6   0   4
-                s = new RoString(new BrsString("Monday, Tuesday, Happy Days"));
+                //                                  0   0   0   1   1   2   2
+                //                                  0   4   8   2   6   0   4
+                let s = new RoString(new BrsString("Monday, Tuesday, Happy Days"));
                 instr = s.getMethod("instr");
                 expect(instr).toBeInstanceOf(Callable);
             });
@@ -246,10 +246,10 @@ describe("RoString", () => {
         });
 
         describe("replace", () => {
-            let s, replace;
+            let replace;
 
             beforeEach(() => {
-                s = new RoString(new BrsString("tossed salad and scrambled eggs"));
+                let s = new RoString(new BrsString("tossed salad and scrambled eggs"));
                 replace = s.getMethod("replace");
                 expect(replace).toBeInstanceOf(Callable);
             });
@@ -272,7 +272,8 @@ describe("RoString", () => {
         });
 
         describe("trim", () => {
-            let s, trim;
+            let trim;
+
             beforeEach(() => {
                 let whitespace = [
                     String.fromCharCode(0x0a), // newline
@@ -284,13 +285,89 @@ describe("RoString", () => {
                     " ", // just a regular space
                 ].join("");
 
-                s = new RoString(new BrsString(whitespace + "hello" + whitespace));
+                let s = new RoString(new BrsString(whitespace + "hello" + whitespace));
                 trim = s.getMethod("trim");
                 expect(trim).toBeInstanceOf(Callable);
             });
 
             it("removes leading and trailing whitespace", () => {
                 expect(trim.call(interpreter)).toEqual(new BrsString("hello"));
+            });
+        });
+
+        describe("toInt", () => {
+            it("returns 0 for non-numbers", () => {
+                let s = new RoString(new BrsString("I'm just a bill."));
+                let toInt = s.getMethod("toInt");
+                expect(toInt).toBeInstanceOf(Callable);
+
+                expect(toInt.call(interpreter)).toEqual(new Int32(0));
+            });
+
+            it("returns 0 for hex strings", () => {
+                let s = new RoString(new BrsString("&hFF"));
+                let toInt = s.getMethod("toInt");
+                expect(toInt).toBeInstanceOf(Callable);
+
+                expect(toInt.call(interpreter)).toEqual(new Int32(0));
+            });
+
+            it("converts string-formatted integers to Integer type", () => {
+                let s = new RoString(new BrsString("112358"));
+                let toInt = s.getMethod("toInt");
+                expect(toInt).toBeInstanceOf(Callable);
+
+                expect(toInt.call(interpreter)).toEqual(new Int32(112358));
+            });
+
+            it("truncates string-formatted floats to Integer type", () => {
+                let negative = new RoString(new BrsString("-1.9"));
+                let negativeToInt = negative.getMethod("toInt");
+                expect(negativeToInt).toBeInstanceOf(Callable);
+                expect(negativeToInt.call(interpreter)).toEqual(new Int32(-1));
+
+                let positive = new RoString(new BrsString("1.9"));
+                let positiveToInt = positive.getMethod("toInt");
+                expect(positiveToInt).toBeInstanceOf(Callable);
+                expect(positiveToInt.call(interpreter)).toEqual(new Int32(1));
+            });
+        });
+
+        describe("toFloat", () => {
+            it("returns 0 for non-numbers", () => {
+                let s = new RoString(new BrsString("I'm just a bill."));
+                let toFloat = s.getMethod("toFloat");
+                expect(toFloat).toBeInstanceOf(Callable);
+
+                expect(toFloat.call(interpreter)).toEqual(new Float(0));
+            });
+
+            it("returns 0 for hex strings", () => {
+                let s = new RoString(new BrsString("&hFF"));
+                let toFloat = s.getMethod("toFloat");
+                expect(toFloat).toBeInstanceOf(Callable);
+
+                expect(toFloat.call(interpreter)).toEqual(new Float(0));
+            });
+
+            it("converts string-formatted integers to Float type", () => {
+                let s = new RoString(new BrsString("112358"));
+                let toFloat = s.getMethod("toFloat");
+                expect(toFloat).toBeInstanceOf(Callable);
+
+                expect(toFloat.call(interpreter)).toEqual(new Float(112358));
+            });
+
+            it("converts string-formatted floats to Float type", () => {
+                let negative = new RoString(new BrsString("-1.9"));
+                let negativeToFloat = negative.getMethod("toFloat");
+                expect(negativeToFloat).toBeInstanceOf(Callable);
+                expect(negativeToFloat.call(interpreter)).toEqual(new Float(-1.9));
+
+                let positive = new RoString(new BrsString("1.9"));
+                let positiveToFloat = positive.getMethod("toFloat");
+                expect(positiveToFloat).toBeInstanceOf(Callable);
+                expect(positiveToFloat.call(interpreter)).toEqual(new Float(1.9));
             });
         });
     });

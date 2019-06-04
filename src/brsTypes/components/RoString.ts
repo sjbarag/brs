@@ -244,7 +244,14 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             returns: ValueKind.Int32,
         },
         impl: _interpreter => {
-            return Int32.fromString(this.intrinsic.value);
+            let int = Math.trunc(Number.parseFloat(this.intrinsic.value));
+
+            if (Number.isNaN(int)) {
+                // non-integers are returned as "0"
+                return new Int32(0);
+            }
+
+            return new Int32(int);
         },
     });
 
@@ -255,7 +262,14 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
             returns: ValueKind.Float,
         },
         impl: _interpreter => {
-            return Float.fromString(this.intrinsic.value);
+            let float = Number.parseFloat(this.intrinsic.value);
+
+            if (Number.isNaN(float)) {
+                // non-integers are returned as "0"
+                return new Float(0);
+            }
+
+            return new Float(float);
         },
     });
 

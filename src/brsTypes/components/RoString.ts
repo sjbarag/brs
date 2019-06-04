@@ -339,7 +339,12 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
                 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#Description
                 encodeURIComponent(this.intrinsic.value).replace(
                     /[!'()*]/g,
-                    c => "%" + c.charCodeAt(0).toString(16)
+                    c =>
+                        "%" +
+                        c
+                            .charCodeAt(0)
+                            .toString(16)
+                            .toUpperCase()
                 )
             );
         },

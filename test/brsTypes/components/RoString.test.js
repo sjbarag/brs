@@ -440,5 +440,145 @@ describe("RoString", () => {
                 );
             });
         });
+
+        describe("escape", () => {
+            it("escapes characters in the ascii range", () => {
+                let s = new RoString(new BrsString("@&=+/#!*ABcde_-"));
+                let escape = s.getMethod("escape");
+                expect(escape).toBeInstanceOf(Callable);
+
+                expect(escape.call(interpreter)).toEqual(
+                    new BrsString("%40%26%3D%2B%2F%23%21%2AABcde_-")
+                );
+            });
+
+            it("breaks unicode characters into UTF-8 escape sequences", () => {
+                let s = new RoString(new BrsString("•"));
+                let escape = s.getMethod("escape");
+                expect(escape).toBeInstanceOf(Callable);
+
+                expect(escape.call(interpreter)).toEqual(new BrsString("%E2%80%A2"));
+            });
+        });
+
+        describe("unescape", () => {
+            it("unescapes characters in the ascii range", () => {
+                let s = new RoString(new BrsString("%40%26%3D%2B%2F%23%21%2AABcde_-"));
+                let unescape = s.getMethod("unescape");
+                expect(unescape).toBeInstanceOf(Callable);
+
+                expect(unescape.call(interpreter)).toEqual(new BrsString("@&=+/#!*ABcde_-"));
+            });
+
+            it("combines UTF-8 escape sequences into non-ASCII characters", () => {
+                let s = new RoString(new BrsString("%E2%80%A2"));
+                let unescape = s.getMethod("unescape");
+                expect(unescape).toBeInstanceOf(Callable);
+
+                expect(unescape.call(interpreter)).toEqual(new BrsString("•"));
+            });
+        });
+
+        describe("encodeUri", () => {
+            it("URI-encodes ASCII strings", () => {
+                let s = new RoString(
+                    new BrsString("http://example.com/my test.asp?first=jane&last=doe")
+                );
+                let encodeUri = s.getMethod("encodeUri");
+                expect(encodeUri).toBeInstanceOf(Callable);
+
+                expect(encodeUri.call(interpreter)).toEqual(
+                    new BrsString("http://example.com/my%20test.asp?first=jane&last=doe")
+                );
+            });
+
+            it("encodes non-ascii strings as UTF-8 escape sequences", () => {
+                let s = new RoString(new BrsString("http://example.com/?bullet=•"));
+                let encodeUri = s.getMethod("encodeUri");
+                expect(encodeUri).toBeInstanceOf(Callable);
+
+                expect(encodeUri.call(interpreter)).toEqual(
+                    new BrsString("http://example.com/?bullet=%E2%80%A2")
+                );
+            });
+        });
+
+        describe("decodeUri", () => {
+            it("URI-decodes ASCII strings", () => {
+                let s = new RoString(
+                    new BrsString("http://example.com/my%20test.asp?first=jane&last=doe")
+                );
+                let decodeUri = s.getMethod("decodeUri");
+                expect(decodeUri).toBeInstanceOf(Callable);
+
+                expect(decodeUri.call(interpreter)).toEqual(
+                    new BrsString("http://example.com/my test.asp?first=jane&last=doe")
+                );
+            });
+
+            it("decodes UTF-8 escape sequences into non-ASCII characters", () => {
+                let s = new RoString(new BrsString("http://example.com/?bullet=%E2%80%A2"));
+                let decodeUri = s.getMethod("decodeUri");
+                expect(decodeUri).toBeInstanceOf(Callable);
+
+                expect(decodeUri.call(interpreter)).toEqual(
+                    new BrsString("http://example.com/?bullet=•")
+                );
+            });
+        });
+
+        describe("encodeUriComponent", () => {
+            it("encodes the string for use as a URI component", () => {
+                let s = new RoString(
+                    new BrsString("http://example.com/my test.asp?first=jane&last=doe")
+                );
+                let encodeUriComponent = s.getMethod("encodeUriComponent");
+                expect(encodeUriComponent).toBeInstanceOf(Callable);
+
+                expect(encodeUriComponent.call(interpreter)).toEqual(
+                    new BrsString(
+                        "http%3A%2F%2Fexample.com%2Fmy%20test.asp%3Ffirst%3Djane%26last%3Ddoe"
+                    )
+                );
+            });
+
+            it("encodes non-ascii strings as UTF-8 escape sequences", () => {
+                let s = new RoString(new BrsString("http://example.com/?bullet=•"));
+                let encodeUriComponent = s.getMethod("encodeUriComponent");
+                expect(encodeUriComponent).toBeInstanceOf(Callable);
+
+                expect(encodeUriComponent.call(interpreter)).toEqual(
+                    new BrsString("http%3A%2F%2Fexample.com%2F%3Fbullet%3D%E2%80%A2")
+                );
+            });
+        });
+
+        describe("decodeUriComponent", () => {
+            it("decodes an encoded URI component to a readable string", () => {
+                let s = new RoString(
+                    new BrsString(
+                        "http%3A%2F%2Fexample.com%2Fmy%20test.asp%3Ffirst%3Djane%26last%3Ddoe"
+                    )
+                );
+                let decodeUriComponent = s.getMethod("decodeUriComponent");
+                expect(decodeUriComponent).toBeInstanceOf(Callable);
+
+                expect(decodeUriComponent.call(interpreter)).toEqual(
+                    new BrsString("http://example.com/my test.asp?first=jane&last=doe")
+                );
+            });
+
+            it("decodes UTF-8 escape sequences into non-ASCII characters", () => {
+                let s = new RoString(
+                    new BrsString("http%3A%2F%2Fexample.com%2F%3Fbullet%3D%E2%80%A2")
+                );
+                let decodeUriComponent = s.getMethod("decodeUriComponent");
+                expect(decodeUriComponent).toBeInstanceOf(Callable);
+
+                expect(decodeUriComponent.call(interpreter)).toEqual(
+                    new BrsString("http://example.com/?bullet=•")
+                );
+            });
+        });
     });
 });

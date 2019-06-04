@@ -424,5 +424,21 @@ describe("RoString", () => {
                 expect(result.elements).toEqual([new BrsString("🐶g"), new BrsString("d dog🐶")]);
             });
         });
+
+        describe("getEntityEncode", () => {
+            it("escapes five special characters", () => {
+                let s = new RoString(
+                    new BrsString(`Let's watch <a href="example.com">Cagney & Lacey</a>!`)
+                );
+                let getEntityEncode = s.getMethod("getEntityEncode");
+                expect(getEntityEncode).toBeInstanceOf(Callable);
+
+                expect(getEntityEncode.call(interpreter)).toEqual(
+                    new BrsString(
+                        String.raw`Let\'s watch \<a href=\"example.com\"\>Cagney \& Lacey\</a\>!`
+                    )
+                );
+            });
+        });
     });
 });

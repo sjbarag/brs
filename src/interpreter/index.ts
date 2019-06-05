@@ -35,7 +35,7 @@ import { Runtime } from "../parser/Statement";
 import { RoAssociativeArray } from "../brsTypes/components/RoAssociativeArray";
 import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
-import { isBoxable } from "../brsTypes/Boxing";
+import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 import { DottedGet } from "../parser/Expression";
 
 /** The set of options used to configure an interpreter's execution. */
@@ -323,11 +323,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 return operator === Lexeme.Equal || operator === Lexeme.LessGreater;
             }
 
-            return false;
+            return isComparable(left) && isComparable(right);
         }
 
         function isComparable(value: BrsType): value is BrsType & Comparable {
-            return value.kind < ValueKind.Dynamic;
+            return value.kind < ValueKind.Dynamic || isUnboxable(value);
         }
 
         switch (lexeme) {

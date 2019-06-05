@@ -15,5 +15,5 @@ export function isBoxable(value: BrsType): value is BrsType & Boxable {
 }
 
 export function isUnboxable(value: BrsType): value is BrsType & Unboxable {
-    return value instanceof BrsComponent && value.hasOwnProperty("unbox");
+    return "unbox" in value;
 }

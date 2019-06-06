@@ -1,6 +1,6 @@
 import { BrsComponent } from "./BrsComponent";
 import { RoArray } from "./RoArray";
-import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
+import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid, Comparable } from "../BrsType";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { BrsType } from "..";
@@ -8,7 +8,7 @@ import { Unboxable } from "../Boxing";
 import { Int32 } from "../Int32";
 import { Float } from "../Float";
 
-export class RoString extends BrsComponent implements BrsValue, Unboxable {
+export class RoString extends BrsComponent implements BrsValue, Comparable, Unboxable {
     readonly kind = ValueKind.Object;
     private intrinsic: BrsString;
 
@@ -51,6 +51,30 @@ export class RoString extends BrsComponent implements BrsValue, Unboxable {
 
         if (other instanceof RoString) {
             return BrsBoolean.from(other.intrinsic.value === this.intrinsic.value);
+        }
+
+        return BrsBoolean.False;
+    }
+
+    lessThan(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.String) {
+            return this.unbox().lessThan(other);
+        }
+
+        if (other instanceof RoString) {
+            return this.unbox().lessThan(other.unbox());
+        }
+
+        return BrsBoolean.False;
+    }
+
+    greaterThan(other: BrsType): BrsBoolean {
+        if (other.kind === ValueKind.String) {
+            return this.unbox().greaterThan(other);
+        }
+
+        if (other instanceof RoString) {
+            return this.unbox().greaterThan(other.unbox());
         }
 
         return BrsBoolean.False;

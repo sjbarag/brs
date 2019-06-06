@@ -15,6 +15,7 @@ import { Float } from "./Float";
 import { Double } from "./Double";
 import { Callable } from "./Callable";
 import { BrsComponent } from "./components/BrsComponent";
+import { RoString } from "./components/RoString";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -52,7 +53,7 @@ export function isBrsNumber(value: BrsType): value is BrsNumber {
  * @returns `true` if `value` is a string, otherwise `false`.
  */
 export function isBrsString(value: BrsType): value is BrsString {
-    return value.kind === ValueKind.String;
+    return value.kind === ValueKind.String || value instanceof RoString;
 }
 
 /**

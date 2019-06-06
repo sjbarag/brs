@@ -323,11 +323,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 return operator === Lexeme.Equal || operator === Lexeme.LessGreater;
             }
 
-            return isComparable(left) && isComparable(right);
-        }
-
-        function isComparable(value: BrsType): value is BrsType & Comparable {
-            return value.kind < ValueKind.Dynamic || isUnboxable(value);
+            return (
+                (left.kind < ValueKind.Dynamic || isUnboxable(left)) &&
+                (right.kind < ValueKind.Dynamic || isUnboxable(right))
+            );
         }
 
         switch (lexeme) {
@@ -464,7 +463,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     );
                 }
             case Lexeme.Greater:
-                if (isComparable(left) && isComparable(right)) {
+                if (
+                    (isBrsNumber(left) || isBrsString(left)) &&
+                    (isBrsNumber(right) || isBrsString(right))
+                ) {
                     return left.greaterThan(right);
                 }
 
@@ -483,8 +485,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 );
 
             case Lexeme.GreaterEqual:
-                if (isComparable(left) && isComparable(right)) {
+                if (
+                    (isBrsNumber(left) || isBrsString(left)) &&
+                    (isBrsNumber(right) || isBrsString(right))
+                ) {
                     return left.greaterThan(right).or(left.equalTo(right));
+                } else if (canCheckEquality(left, lexeme, right)) {
+                    return left.equalTo(right);
                 }
 
                 return this.addError(
@@ -502,7 +509,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 );
 
             case Lexeme.Less:
-                if (isComparable(left) && isComparable(right)) {
+                if (
+                    (isBrsNumber(left) || isBrsString(left)) &&
+                    (isBrsNumber(right) || isBrsString(right))
+                ) {
                     return left.lessThan(right);
                 }
 
@@ -520,8 +530,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     })
                 );
             case Lexeme.LessEqual:
-                if (isComparable(left) && isComparable(right)) {
+                if (
+                    (isBrsNumber(left) || isBrsString(left)) &&
+                    (isBrsNumber(right) || isBrsString(right))
+                ) {
                     return left.lessThan(right).or(left.equalTo(right));
+                } else if (canCheckEquality(left, lexeme, right)) {
+                    return left.equalTo(right);
                 }
 
                 return this.addError(

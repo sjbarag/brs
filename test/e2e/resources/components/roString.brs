@@ -2,14 +2,15 @@ sub main()
     ' direct creation
     r = createObject("RoString", "foo")
 
-    ' autoboxing
     s = "bar"
-    s.setString("f")
-    s.appendString("oo", 10)
+
+    r.setString("boo!", 1)
+    r.appendString("ar", 10)
 
     ' comparisons
     print r = s ' => true
 
+    ' autoboxing
     t = "a/b/c"
     print t.len() ' => 5
     print t.split("/")[1] ' => b

@@ -84,7 +84,7 @@ export class RoRegex extends BrsComponent implements BrsValue {
             const result = this.jsRegex.exec(str.value);
             let arr: (BrsString | BrsInvalid)[] = [];
             if (result !== null) {
-                arr = result.map(match => (match ? new BrsString(match) : BrsInvalid.Instance));
+                arr = result.map(match => new BrsString(match || ""));
             }
 
             return new RoArray(arr);
@@ -153,7 +153,7 @@ export class RoRegex extends BrsComponent implements BrsValue {
             let matches: string[] | null;
 
             while ((matches = this.jsRegex.exec(str.value)) !== null) {
-                let item = matches[0] ? new BrsString(matches[0]) : BrsInvalid.Instance;
+                let item = new BrsString(matches[0] || "");
                 arr.push(new RoArray([item]));
             }
             return new RoArray(arr);

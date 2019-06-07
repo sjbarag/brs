@@ -1,4 +1,4 @@
-import { BrsBoolean, BrsInvalid, BrsString, BrsValue, ValueKind } from "../BrsType";
+import { BrsBoolean, BrsString, BrsValue, ValueKind } from "../BrsType";
 import { BrsComponent } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
@@ -82,7 +82,7 @@ export class RoRegex extends BrsComponent implements BrsValue {
         },
         impl: (interpreter: Interpreter, str: BrsString) => {
             const result = this.jsRegex.exec(str.value);
-            let arr: (BrsString | BrsInvalid)[] = [];
+            let arr: BrsString[] = [];
             if (result !== null) {
                 arr = result.map(match => new BrsString(match || ""));
             }

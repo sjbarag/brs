@@ -137,20 +137,28 @@ export class BrsString implements BrsValue, Comparable, Boxable {
     lessThan(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {
             return BrsBoolean.from(this.value < other.value);
+        } else if (other instanceof RoString) {
+            return this.lessThan(other.unbox());
         }
+
         return BrsBoolean.False;
     }
 
     greaterThan(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {
             return BrsBoolean.from(this.value > other.value);
+        } else if (other instanceof RoString) {
+            return this.greaterThan(other.unbox());
         }
+
         return BrsBoolean.False;
     }
 
     equalTo(other: BrsType): BrsBoolean {
         if (other.kind === ValueKind.String) {
             return BrsBoolean.from(this.value === other.value);
+        } else if (other instanceof RoString) {
+            return this.equalTo(other.unbox());
         }
         return BrsBoolean.False;
     }

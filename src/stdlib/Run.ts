@@ -23,11 +23,11 @@ export const Run = new Callable("Run", {
         }
 
         try {
-            let contents = volume.readFileSync(pathToFile, "utf8");
-            let results = brs.executeSync([contents], interpreter.options);
+            let results = brs.executeSync([pathToFile], interpreter.options);
             return results[0] || BrsInvalid.Instance;
         } catch (err) {
-            // swallow errors and just return invalid; RBI returns invalid for "file doesn't exist" errors
+            // swallow errors and just return invalid; RBI returns invalid for "file doesn't exist" errors,
+            // syntax errors, etc.
             return BrsInvalid.Instance;
         }
     },

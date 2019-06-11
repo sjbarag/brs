@@ -1,5 +1,5 @@
 const brs = require("brs");
-const { BrsString, BrsInvalid } = brs.types;
+const { BrsString, BrsInvalid, Int32, RoArray, RoAssociativeArray } = brs.types;
 const { Run } = require("../../lib/stdlib");
 const { Interpreter } = require("../../lib/interpreter");
 const fs = require("fs");
@@ -53,6 +53,18 @@ describe("global Run function", () => {
         );
     });
 
+    it("returns invalid when provided a not-array component", () => {
+        expect(Run.call(interpreter, new RoAssociativeArray([]))).toBe(BrsInvalid.Instance);
+    });
+
+    it("returns invalid when provided an empty array of files", () => {
+        expect(Run.call(interpreter, new RoArray([]))).toBe(BrsInvalid.Instance);
+    });
+
+    it("returns invalid when provided an array with non-strings", () => {
+        expect(Run.call(interpreter, new RoArray([BrsInvalid.Instance]))).toBe(BrsInvalid.Instance);
+    });
+
     it("returns whatever the executed file returns", () => {
         fs.readFileSync.mockImplementationOnce(
             () => `function main(): return "I'm a return value!": end function`
@@ -60,5 +72,59 @@ describe("global Run function", () => {
         expect(Run.call(interpreter, new BrsString("pkg:/success/exec.brs"))).toEqual(
             new BrsString("I'm a return value!")
         );
+    });
+
+    it("returns whatever the executed set of files return", () => {
+        fs.readFileSync
+            .mockImplementationOnce(() => `function main(): return greet(): end function`)
+            .mockImplementationOnce(() => `function greet(): return "hello!": end function`);
+
+        expect(
+            Run.call(
+                interpreter,
+                new RoArray([
+                    new BrsString("pkg:/success/exec.brs"),
+                    new BrsString("pkg:/success/greet.brs"),
+                ])
+            )
+        ).toEqual(new BrsString("hello!"));
+    });
+
+    describe("args", () => {
+        it("accepts one argument", () => {
+            fs.readFileSync.mockImplementationOnce(
+                () => `function main(i as integer): return i: end function`
+            );
+            expect(
+                Run.call(interpreter, new BrsString("pkg:/success/identity.brs"), new Int32(5))
+            ).toEqual(new Int32(5));
+        });
+
+        it("accepts two arguments", () => {
+            fs.readFileSync.mockImplementationOnce(
+                () => `function main(a as integer, b as integer): return a + b: end function`
+            );
+            expect(
+                Run.call(
+                    interpreter,
+                    new BrsString("pkg:/success/identity.brs"),
+                    new Int32(5),
+                    new Int32(3)
+                )
+            ).toEqual(new Int32(8));
+        });
+
+        it("returns invalid for type errors", () => {
+            fs.readFileSync.mockImplementationOnce(
+                () => `function main(i as integer): return i: end function`
+            );
+            expect(
+                Run.call(
+                    interpreter,
+                    new BrsString("pkg:/success/identity.brs"),
+                    new BrsString("not an integer")
+                )
+            ).toEqual(BrsInvalid.Instance);
+        });
     });
 });

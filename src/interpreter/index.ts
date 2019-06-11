@@ -140,10 +140,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    exec(statements: ReadonlyArray<Stmt.Statement>) {
+    exec(statements: ReadonlyArray<Stmt.Statement>, ...args: BrsType[]) {
         let results = statements.map(statement => this.execute(statement));
         try {
-            let maybeMain = this._environment.get({
+            let mainVariable = new Expr.Variable({
                 kind: Lexeme.Identifier,
                 text: "main",
                 isReserved: false,
@@ -159,8 +159,19 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     file: "(internal)",
                 },
             });
+
+            let maybeMain = this.visitVariable(mainVariable);
+
             if (maybeMain.kind === ValueKind.Callable) {
-                maybeMain.call(this);
+                results = [
+                    this.visitCall(
+                        new Expr.Call(
+                            mainVariable,
+                            mainVariable.name,
+                            args.map(arg => new Expr.Literal(arg, mainVariable.location))
+                        )
+                    ),
+                ];
             }
         } catch (err) {
             if (err instanceof Stmt.ReturnValue) {

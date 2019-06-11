@@ -103,16 +103,20 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
  * @param filename the paths to BrightScript files to execute synchronously
  * @param options configuration for the execution, including the streams to use for `stdout` and
  *                `stderr` and the base directory for path resolution
+ * @param args the set of arguments to pass to the `main` function declared in one of the provided filenames
  *
  * @returns the value returned by the executed file(s)
  */
-export function executeSync(filenames: string[], options: Partial<ExecutionOptions>) {
+export function executeSync(
+    filenames: string[],
+    options: Partial<ExecutionOptions>,
+    args: BrsTypes.BrsType[]
+) {
     const executionOptions = Object.assign(defaultExecutionOptions, options);
     const interpreter = new Interpreter(executionOptions); // shared between files
 
     let manifest = PP.getManifestSync(executionOptions.root);
 
-    // TODO: re-add file reading here
     let allStatements = filenames
         .map(filename => {
             let contents = fs.readFileSync(filename, "utf8");
@@ -123,7 +127,7 @@ export function executeSync(filenames: string[], options: Partial<ExecutionOptio
         })
         .reduce((allStatements, statements) => [...allStatements, ...statements], []);
 
-    return interpreter.exec(allStatements);
+    return interpreter.exec(allStatements, ...args);
 }
 
 /**

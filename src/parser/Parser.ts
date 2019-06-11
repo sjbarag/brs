@@ -1124,8 +1124,8 @@ export class Parser {
         }
 
         /**
-         * Parses a `goto` statement
-         * @returns an AST representation of an `goto` statement.
+         * Parses a `label` statement
+         * @returns an AST representation of an `label` statement.
          */
         function labelStatement() {
             let tokens = {

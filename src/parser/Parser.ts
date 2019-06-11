@@ -548,24 +548,6 @@ export class Parser {
             }
         }
 
-        /**
-         * Check to see if the next set of tokens look like a label
-         */
-        function checkLabel() {
-            //labels must be on their own line (which means there was a newline or we are at the beginning of the program
-            if (current > 0 && checkPrevious(Lexeme.Newline) === false) {
-                return false;
-            }
-
-            //labels are specifically detected when there's an identifier, a colon, then a newline or eof.
-            //If this check gets more greedy, it causes other issues.
-            return (
-                check(Lexeme.Identifier) &&
-                checkNext(Lexeme.Colon) &&
-                checkNextNext(Lexeme.Newline, Lexeme.Eof)
-            );
-        }
-
         function statement(...additionalterminators: BlockTerminator[]): Statement | undefined {
             if (checkLibrary()) {
                 return libraryStatement();
@@ -615,7 +597,8 @@ export class Parser {
                 return gotoStatement();
             }
 
-            if (checkLabel()) {
+            //does this line look like a label? (i.e.  `someIdentifier:` )
+            if (check(Lexeme.Identifier) && checkNext(Lexeme.Colon)) {
                 return labelStatement();
             }
 
@@ -1581,13 +1564,6 @@ export class Parser {
             }
 
             return lexemes.some(lexeme => peekNext().kind === lexeme);
-        }
-
-        function checkNextNext(...lexemes: Lexeme[]) {
-            current++;
-            var result = checkNext(...lexemes);
-            current--;
-            return result;
         }
 
         function isAtEnd() {

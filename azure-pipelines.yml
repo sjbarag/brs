@@ -19,3 +19,15 @@ steps:
     yarn install
     yarn build
   displayName: 'yarn install and build'
+
+- script: |
+    yarn lint
+  displayName: 'lint'
+
+- script: |
+    yarn prettier
+  displayName: 'style'
+
+- script: |
+    yarn test
+  displayName: 'test'

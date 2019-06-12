@@ -407,9 +407,7 @@ export class Parser {
                             isReserved: ReservedWords.has(arg.name.text),
                             location: arg.location,
                         },
-                        `Argument '${
-                            arg.name.text
-                        }' has no default value, but comes after arguments with default values`
+                        `Argument '${arg.name.text}' has no default value, but comes after arguments with default values`
                     );
                 }
 
@@ -519,9 +517,7 @@ export class Parser {
             this.addError(name, `Cannot use reserved word "${name.text}" as an identifier`);
         }
         let operator = this.consume(
-            `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${
-                name.text
-            }'`,
+            `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${name.text}'`,
             ...assignmentOperators
         );
 

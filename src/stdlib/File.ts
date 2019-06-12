@@ -244,6 +244,7 @@ export const WriteAsciiFile = new Callable("WriteAsciiFile", {
     },
 });
 
+/** Searches a directory for filenames that match a certain pattern. */
 export const MatchFiles = new Callable("MatchFiles", {
     signature: {
         args: [
@@ -269,7 +270,10 @@ export const MatchFiles = new Callable("MatchFiles", {
                 nonegate: true,
             });
 
-            return new RoArray(matchedFiles || []);
+            matchedFiles = (matchedFiles || []).map((match: string) => new BrsString(match));
+
+            // TODO: replace with RoList when that's implemented
+            return new RoArray(matchedFiles);
         } catch (err) {
             // TODO: replace with RoList when that's implemented
             return new RoArray([]);

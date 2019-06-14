@@ -54,6 +54,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         ].join("\n");
     }
 
+    equalTo(other: BrsType) {
+        // SceneGraph nodes are never equal to anything
+        return BrsBoolean.False;
+    }
+
     getElements() {
         return Array.from(this.elements.keys())
             .sort()

@@ -14,7 +14,7 @@ class Field {
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
-    private elements = new Map<string, BrsType>();
+    elements = new Map<string, BrsType>();
     private fields = new Map<string, Field>();
 
     constructor(elements: AAMember[], readonly type: string = "Node") {
@@ -47,8 +47,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return [
             `<Component: ${componentName}> =`,
             "{",
-            ...Array.from(this.elements.keys()).map(
-                key => `    ${key}: ${this.elements.get(key)!.toString(this as any)}`
+            ...Array.from(this.elements.entries()).map(
+                ([key, value]) => `    ${key}: ${value.toString(this)}`
             ),
             "}",
         ].join("\n");
@@ -173,10 +173,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, obj: BrsType) => {
             if (obj instanceof RoAssociativeArray || obj instanceof RoSGNode) {
-                this.elements = new Map<string, BrsType>([
-                    ...this.elements,
-                    ...(obj as any).elements,
-                ]);
+                this.elements = new Map<string, BrsType>([...this.elements, ...obj.elements]);
             }
 
             return BrsInvalid.Instance;

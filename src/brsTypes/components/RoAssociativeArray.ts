@@ -16,7 +16,7 @@ export interface AAMember {
 
 export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
-    private elements = new Map<string, BrsType>();
+    elements = new Map<string, BrsType>();
 
     constructor(elements: AAMember[]) {
         super("roAssociativeArray");
@@ -45,8 +45,8 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         return [
             "<Component: roAssociativeArray> =",
             "{",
-            ...Array.from(this.elements.keys()).map(
-                key => `    ${key}: ${this.elements.get(key)!.toString(this)}`
+            ...Array.from(this.elements.entries()).map(
+                ([key, value]) => `    ${key}: ${value.toString(this)}`
             ),
             "}",
         ].join("\n");

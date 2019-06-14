@@ -2,17 +2,28 @@ import { Callable, ValueKind, BrsString, BrsBoolean, RoArray, StdlibArgument } f
 import { Interpreter } from "../interpreter";
 import { URL } from "url";
 import MemoryFileSystem from "memory-fs";
+import * as nanomatch from "nanomatch";
+
+import * as fs from "fs";
+import * as path from "path";
+
+type Volume = MemoryFileSystem | typeof fs;
 
 /*
  * Returns a memfs volume based on the brs path uri.  For example, passing in
- * "tmp:///test.txt" will return the memfs temporary volume on the interpreter.
+ * "tmp:/test.txt" will return the memfs temporary volume on the interpreter.
  *
  * Returns invalid in no appopriate volume is found for the path
  */
-export function getVolumeByPath(interpreter: Interpreter, path: string): MemoryFileSystem | null {
+export function getVolumeByPath(interpreter: Interpreter, path: string): Volume | null {
     try {
         const protocol = new URL(path).protocol;
-        if (protocol === "tmp:") return interpreter.temporaryVolume;
+        if (protocol === "tmp:") {
+            return interpreter.temporaryVolume;
+        }
+        if (protocol === "pkg:") {
+            return fs;
+        }
     } catch (err) {
         return null;
     }
@@ -21,9 +32,9 @@ export function getVolumeByPath(interpreter: Interpreter, path: string): MemoryF
 
 /*
  * Returns a memfs file path from a brs file uri
- *   ex. "tmp:///test/test1.txt" -> "/test/test1.txt"
+ *   ex. "tmp:/test/test1.txt" -> "/test/test1.txt"
  */
-export function getMemfsPath(fileUri: string) {
+export function getPath(fileUri: string) {
     return new URL(fileUri).pathname;
 }
 
@@ -46,8 +57,8 @@ export const CopyFile = new Callable("CopyFile", {
             return BrsBoolean.False;
         }
 
-        const srcMemfsPath = getMemfsPath(src.value);
-        const dstMemfsPath = getMemfsPath(dst.value);
+        const srcMemfsPath = getPath(src.value);
+        const dstMemfsPath = getPath(dst.value);
         try {
             let contents = srcVolume.readFileSync(srcMemfsPath);
             dstVolume.writeFileSync(dstMemfsPath, contents);
@@ -77,8 +88,8 @@ export const MoveFile = new Callable("MoveFile", {
             return BrsBoolean.False;
         }
 
-        const srcMemfsPath = getMemfsPath(src.value);
-        const dstMemfsPath = getMemfsPath(dst.value);
+        const srcMemfsPath = getPath(src.value);
+        const dstMemfsPath = getPath(dst.value);
         try {
             let contents = srcVolume.readFileSync(srcMemfsPath);
             dstVolume.writeFileSync(dstMemfsPath, contents);
@@ -102,7 +113,7 @@ export const DeleteFile = new Callable("DeleteFile", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getMemfsPath(file.value);
+        const memfsPath = getPath(file.value);
         try {
             volume.unlinkSync(memfsPath);
             return BrsBoolean.True;
@@ -124,7 +135,7 @@ export const DeleteDirectory = new Callable("DeleteDirectory", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getMemfsPath(dir.value);
+        const memfsPath = getPath(dir.value);
         try {
             volume.rmdirSync(memfsPath);
             return BrsBoolean.True;
@@ -146,7 +157,7 @@ export const CreateDirectory = new Callable("CreateDirectory", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getMemfsPath(dir.value);
+        const memfsPath = getPath(dir.value);
         try {
             volume.mkdirSync(memfsPath);
             return BrsBoolean.True;
@@ -185,7 +196,7 @@ export const ListDir = new Callable("ListDir", {
             return new RoArray([]);
         }
 
-        const memfsPath = getMemfsPath(path.value);
+        const memfsPath = getPath(path.value);
         try {
             let subPaths = volume.readdirSync(memfsPath).map(s => new BrsString(s));
             return new RoArray(subPaths);
@@ -207,7 +218,7 @@ export const ReadAsciiFile = new Callable("ReadAsciiFile", {
             return new BrsString("");
         }
 
-        const memfsPath = getMemfsPath(filepath.value);
+        const memfsPath = getPath(filepath.value);
         return new BrsString(volume.readFileSync(memfsPath).toString());
     },
 });
@@ -227,8 +238,45 @@ export const WriteAsciiFile = new Callable("WriteAsciiFile", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getMemfsPath(filepath.value);
+        const memfsPath = getPath(filepath.value);
         volume.writeFileSync(memfsPath, text.value);
         return BrsBoolean.True;
+    },
+});
+
+/** Searches a directory for filenames that match a certain pattern. */
+export const MatchFiles = new Callable("MatchFiles", {
+    signature: {
+        args: [
+            new StdlibArgument("path", ValueKind.String),
+            new StdlibArgument("pattern_in", ValueKind.String),
+        ],
+        returns: ValueKind.Object,
+    },
+    impl: (interpreter: Interpreter, pathArg: BrsString, patternIn: BrsString) => {
+        let volume = getVolumeByPath(interpreter, pathArg.value);
+        if (volume == null) {
+            // TODO: replace with RoList when that's implemented
+            return new RoArray([]);
+        }
+
+        let localPath = path.join(interpreter.options.root, getPath(pathArg.value));
+        try {
+            let knownFiles = fs.readdirSync(localPath, "utf8");
+            let matchedFiles = nanomatch.match(knownFiles, patternIn.value, {
+                nocase: true,
+                nodupes: true,
+                noglobstar: true,
+                nonegate: true,
+            });
+
+            matchedFiles = (matchedFiles || []).map((match: string) => new BrsString(match));
+
+            // TODO: replace with RoList when that's implemented
+            return new RoArray(matchedFiles);
+        } catch (err) {
+            // TODO: replace with RoList when that's implemented
+            return new RoArray([]);
+        }
     },
 });

@@ -27,7 +27,34 @@ export async function getManifest(rootDir: string): Promise<Manifest> {
     } catch (err) {
         return new Map();
     }
+    return parseManifest(contents);
+}
 
+/**
+ * A synchronous version of `getManifest`.
+ * @param rootDir the root directory in which a `manifest` file is expected
+ * @returns a map of string to JavaScript number, string, or boolean, representing the manifest
+ *          file's contents
+ */
+export function getManifestSync(rootDir: string): Manifest {
+    let manifestPath = path.join(rootDir, "manifest");
+
+    if (!fs.existsSync(manifestPath)) {
+        return new Map();
+    }
+
+    let contents = fs.readFileSync(manifestPath, "utf-8");
+    return parseManifest(contents);
+}
+
+/**
+ * Attempts to parse a `manifest` file's contents into a map of string to JavaScript
+ * number, string, or boolean.
+ * @param contents the text contents of a manifest file.
+ * @returns a Promise that resolves to a map of string to JavaScript number, string, or boolean,
+ *          representing the manifest file's contents
+ */
+export function parseManifest(contents: string) {
     let keyValuePairs = contents
         // for each line
         .split("\n")
@@ -54,23 +81,21 @@ export async function getManifest(rootDir: string): Promise<Manifest> {
         // remove leading/trailing whitespace from keys and values
         .map(([key, value]) => [key.trim(), value.trim()])
         // convert value to boolean, integer, or leave as string
-        .map(
-            ([key, value]): [string, ManifestValue] => {
-                if (value.toLowerCase() === "true") {
-                    return [key, true];
-                }
-                if (value.toLowerCase() === "false") {
-                    return [key, false];
-                }
-
-                let maybeNumber = Number.parseInt(value);
-                // if it's not a number, it's just a string
-                if (Number.isNaN(maybeNumber)) {
-                    return [key, value];
-                }
-                return [key, maybeNumber];
+        .map(([key, value]): [string, ManifestValue] => {
+            if (value.toLowerCase() === "true") {
+                return [key, true];
             }
-        );
+            if (value.toLowerCase() === "false") {
+                return [key, false];
+            }
+
+            let maybeNumber = Number.parseInt(value);
+            // if it's not a number, it's just a string
+            if (Number.isNaN(maybeNumber)) {
+                return [key, value];
+            }
+            return [key, maybeNumber];
+        });
 
     return new Map<string, ManifestValue>(keyValuePairs);
 }
@@ -111,19 +136,17 @@ export function getBsConst(manifest: Manifest): Map<string, boolean> {
         // remove leading/trailing whitespace from keys and values
         .map(([key, value]) => [key.trim(), value.trim()])
         // convert value to boolean or throw
-        .map(
-            ([key, value]): [string, boolean] => {
-                if (value.toLowerCase() === "true") {
-                    return [key, true];
-                }
-                if (value.toLowerCase() === "false") {
-                    return [key, false];
-                }
-                throw new Error(
-                    `Invalid value for bs_const key '${key}'.  Values must be either 'true' or 'false'.`
-                );
+        .map(([key, value]): [string, boolean] => {
+            if (value.toLowerCase() === "true") {
+                return [key, true];
             }
-        );
+            if (value.toLowerCase() === "false") {
+                return [key, false];
+            }
+            throw new Error(
+                `Invalid value for bs_const key '${key}'.  Values must be either 'true' or 'false'.`
+            );
+        });
 
     return new Map(keyValuePairs);
 }

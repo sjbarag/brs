@@ -31,6 +31,7 @@ describe("end to end standard libary", () => {
             "true",
             "false",
             "<Component: roArray> =\n[\n    test_backup.txt\n]",
+            "true",
         ]);
     });
 
@@ -101,6 +102,18 @@ describe("end to end standard libary", () => {
                 "    string: ok",
                 "}",
             ].join("\n"),
+        ]);
+    });
+
+    test("stdlib/run.brs", async () => {
+        await execute([resourceFile("stdlib", "run.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "in run.brs",
+            "    in runme.brs",
+            "returned to run.brs",
+            "runme.brs returned: ",
+            "2",
         ]);
     });
 });

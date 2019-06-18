@@ -278,4 +278,113 @@ describe("RoSGNode", () => {
             });
         });
     });
+
+    describe("ifSGNodeField", () => {
+        let interpreter;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+        });
+
+        describe("addfield", () => {
+            it("adds a field to the object", () => {
+                let node = new RoSGNode([]);
+
+                let addField = node.getMethod("addfield");
+                expect(addField).toBeTruthy();
+
+                let result = addField.call(
+                    interpreter,
+                    new BrsString("field1"),
+                    new BrsString("string"),
+                    BrsBoolean.True
+                );
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(1);
+            });
+        });
+
+        describe("addfields", () => {
+            it("adds multiple field to the object", () => {
+                let node = new RoSGNode([]);
+                let fields = new RoAssociativeArray([
+                    { name: new BrsString("associative-array"), value: new RoAssociativeArray([]) },
+                    { name: new BrsString("node"), value: new RoSGNode([]) },
+                    { name: new BrsString("boolean"), value: BrsBoolean.True },
+                    { name: new BrsString("string"), value: new BrsString("a string") },
+                    { name: new BrsString("number"), value: new Int32(-1) },
+                    { name: new BrsString("invalid"), value: BrsInvalid.Instance },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                expect(addFields).toBeTruthy();
+
+                let result = addFields.call(interpreter, fields);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(6);
+            });
+
+            it("doesn't add duplicated fields", () => {
+                let node = new RoSGNode([]);
+                let fields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString("a string") },
+                    { name: new BrsString("field2"), value: new Int32(-1) },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                let result = addFields.call(interpreter, fields);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getElements().length).toEqual(2);
+
+                let moreFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString("my string") },
+                    { name: new BrsString("field2"), value: new Int32(-10) },
+                    { name: new BrsString("field3"), value: BrsInvalid.Instance },
+                ]);
+                result = addFields.call(interpreter, moreFields);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getElements().length).toEqual(3); //Only adds the non duplicated
+            });
+
+            it("only adds fields if passed as an associative array", () => {
+                let node = new RoSGNode([]);
+                let fields = "non associative array";
+
+                let addFields = node.getMethod("addfields");
+
+                let result = addFields.call(interpreter, fields);
+                expect(result).toEqual(BrsBoolean.False);
+                expect(node.getFields().size).toEqual(0);
+            });
+        });
+
+        describe("getfield", () => {
+            it("gets an non-existing field from node", () => {
+                let node = new RoSGNode([]);
+
+                let getField = node.getMethod("getfield");
+                expect(getField).toBeTruthy();
+
+                let result = getField.call(interpreter, new BrsString("field1"));
+                expect(result).toEqual(BrsInvalid.Instance);
+            });
+
+            it("gets the value of a defined field", () => {
+                let node = new RoSGNode([]);
+
+                let addField = node.getMethod("addfield");
+                addField.call(
+                    interpreter,
+                    new BrsString("field1"),
+                    new BrsString("string"),
+                    BrsBoolean.True
+                );
+
+                let getField = node.getMethod("getfield");
+                let result = getField.call(interpreter, new BrsString("field1"));
+                expect(result).toEqual(new BrsString(""));
+                expect(node.get(new BrsString("field1"))).toEqual(new BrsString(""));
+            });
+        });
+    });
 });

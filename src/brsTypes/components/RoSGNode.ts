@@ -7,8 +7,10 @@ import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
+import { Float } from "../Float";
 
 class Field {
+    // private callbacks;
     constructor(readonly type: string, readonly alwaysNotify: boolean) {}
 }
 
@@ -19,6 +21,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
     constructor(elements: AAMember[], readonly type: string = "Node") {
         super("roSGNode");
+        // TODO: add default fields: id, change, focusable, focusedChild
+        // this.set(new BrsString("string"), new BrsString("id"));
         elements.forEach(member =>
             this.elements.set(member.name.value.toLowerCase(), member.value)
         );
@@ -34,6 +38,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.keys,
             this.items,
             this.lookup,
+            //ifSGNodeField methods
+            this.addfield,
+            this.addfields,
+            this.getfield,
         ]);
     }
 
@@ -69,6 +77,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return Array.from(this.elements.values())
             .sort()
             .map((value: BrsType) => value);
+    }
+
+    getFields() {
+        return this.fields;
     }
 
     get(index: BrsType) {
@@ -211,6 +223,84 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, key: BrsString) => {
             let lKey = key.value.toLowerCase();
             return this.get(new BrsString(lKey));
+        },
+    });
+
+    /** Adds a new field to the node, if the field already exists it doesn't change the current value. */
+    private addfield = new Callable("addfield", {
+        signature: {
+            args: [
+                new StdlibArgument("fieldname", ValueKind.String),
+                new StdlibArgument("type", ValueKind.String),
+                new StdlibArgument("alwaysnotify", ValueKind.Boolean),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (
+            interpreter: Interpreter,
+            fieldname: BrsString,
+            type: BrsString,
+            alwaysnotify: BrsBoolean
+        ) => {
+            let brsType: BrsType;
+            switch (type.value) {
+                case "string":
+                    brsType = new BrsString("");
+                    break;
+                case "integer":
+                    brsType = new Int32(0);
+                    break;
+                case "float":
+                    brsType = new Float(0);
+                    break;
+                case "boolean":
+                    brsType = BrsBoolean.False;
+                    break;
+                default:
+                    brsType = new BrsString("");
+                    break;
+            }
+            if (this.get(fieldname) === BrsInvalid.Instance) {
+                this.set(fieldname, brsType);
+                this.fields.set(fieldname.value, new Field(type.value, alwaysnotify.toBoolean()));
+            }
+
+            return BrsBoolean.True;
+        },
+    });
+
+    /** Adds one or more fields defined as an associative aray of key values. */
+    private addfields = new Callable("addfields", {
+        signature: {
+            args: [new StdlibArgument("fields", ValueKind.Object)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fields: RoAssociativeArray) => {
+            if (!(fields instanceof RoAssociativeArray)) {
+                return BrsBoolean.False;
+            }
+
+            fields.getValue().forEach((value, key) => {
+                let fieldName = new BrsString(key);
+                let fieldType = ValueKind.toString(value.kind);
+                if (this.get(fieldName) === BrsInvalid.Instance) {
+                    this.set(fieldName, value);
+                    this.fields.set(key, new Field(fieldType, false));
+                }
+            });
+
+            return BrsBoolean.True;
+        },
+    });
+
+    /** Returns the value of the field passed as argument, if the field doesn't exist it returns invalid. */
+    private getfield = new Callable("getfield", {
+        signature: {
+            args: [new StdlibArgument("fieldname", ValueKind.String)],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString) => {
+            return this.get(fieldname);
         },
     });
 }

@@ -453,5 +453,98 @@ describe("RoSGNode", () => {
                 expect(result4.elements).toEqual([child1, child2, child3]);
             });
         });
+
+        describe("removechild", () => {
+            it("remove a child node from parent", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child1 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+                let child2 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("3") },
+                ]);
+                let child3 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("4") },
+                ]);
+
+                let removeChild = parent.getMethod("removechild");
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+
+                // remove child 2
+                removeChild.call(interpreter, child2);
+                let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                let childCount = getChildCount.call(interpreter);
+                expect(removeChild).toBeTruthy();
+                expect(childCount).toEqual(new Int32(2));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([child1, child3]);
+
+                // remove child 3
+                removeChild.call(interpreter, child3);
+                let result1 = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                let childCount1 = getChildCount.call(interpreter);
+                expect(childCount1).toEqual(new Int32(1));
+                expect(result1).toBeInstanceOf(RoArray);
+                expect(result1.elements).toEqual([child1]);
+
+                // remove child 1
+                removeChild.call(interpreter, child1);
+                let result2 = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                let childCount2 = getChildCount.call(interpreter);
+                expect(childCount2).toEqual(new Int32(0));
+                expect(result2).toBeInstanceOf(RoArray);
+                expect(result2.elements).toEqual([]);
+
+                // try to remove child 1 again, but shouldn't do anything
+                removeChild.call(interpreter, child1);
+                let result3 = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                let childCount3 = getChildCount.call(interpreter);
+                expect(childCount3).toEqual(new Int32(0));
+                expect(result3).toBeInstanceOf(RoArray);
+                expect(result3.elements).toEqual([]);
+            });
+
+            it("remove non-node things from parent", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child1 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+                let child2 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("3") },
+                ]);
+                let child3 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("4") },
+                ]);
+
+                let removeChild = parent.getMethod("removechild");
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+
+                // only returns true if we are removing roSGNode type object
+                let result = removeChild.call(interpreter, child1);
+                expect(result).toEqual(BrsBoolean.True);
+                let result1 = removeChild.call(interpreter, new BrsString("some string"));
+                expect(result1).toEqual(BrsBoolean.False);
+                let result2 = removeChild.call(interpreter, new Int32(5));
+                expect(result2).toEqual(BrsBoolean.False);
+                let childCount = getChildCount.call(interpreter);
+                expect(childCount).toEqual(new Int32(2));
+            });
+        });
     });
 });

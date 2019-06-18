@@ -39,6 +39,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.appendchild,
             this.getchildcount,
             this.getchildren,
+            this.removechild,
         ]);
     }
 
@@ -219,6 +220,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /* Return the current number of children in the subject node list of children.
+    This is always a non-negative number. */
     private getchildcount = new Callable("getchildcount", {
         signature: {
             args: [],
@@ -229,6 +232,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /* Adds a child node to the end of the subject node list of children so that it is
+    traversed last (of those children) during render. */
     private appendchild = new Callable("appendchild", {
         signature: {
             args: [new StdlibArgument("child", ValueKind.Dynamic)],
@@ -248,6 +253,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /* Retrieves the number of child nodes specified by num_children from the subject
+    node, starting at the position specified by index. Returns an array of the child nodes
+    retrieved. If num_children is -1, return all the children. */
     private getchildren = new Callable("getchildren", {
         signature: {
             args: [
@@ -273,6 +281,34 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
 
             return new RoArray([]);
+        },
+    });
+
+    /* Finds a child node in the subject node list of children, and if found,
+    remove it from the list of children. The match is made on the basis of actual
+    object identity, that is, the value of the pointer to the child node.
+    return false if trying to remove anything that's not a node */
+    private removechild = new Callable("removechild", {
+        signature: {
+            args: [new StdlibArgument("child", ValueKind.Dynamic)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child: BrsType) => {
+            var spliceIndex = -1;
+            if (child instanceof RoSGNode) {
+                for (var i = 0; i < this.children.length; i++) {
+                    let childNode = this.children[i];
+                    if (childNode === child) {
+                        spliceIndex = i;
+                    }
+                }
+                if (spliceIndex >= 0) {
+                    this.children.splice(spliceIndex, 1);
+                }
+                return BrsBoolean.True;
+            } else {
+                return BrsBoolean.False;
+            }
         },
     });
 }

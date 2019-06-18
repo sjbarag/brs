@@ -1,4 +1,4 @@
-import { BrsValue, ValueKind, BrsString, BrsInvalid, BrsBoolean } from "../BrsType";
+import { BrsValue, ValueKind, BrsString, BrsInvalid, BrsBoolean, Uninitialized } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
@@ -42,6 +42,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.addfield,
             this.addfields,
             this.getfield,
+            this.setfield,
         ]);
     }
 
@@ -243,9 +244,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             alwaysnotify: BrsBoolean
         ) => {
             let brsType: BrsType;
-            switch (type.value) {
-                case "string":
-                    brsType = new BrsString("");
+            switch (type.value.toLowerCase()) {
+                case "boolean":
+                    brsType = BrsBoolean.False;
                     break;
                 case "integer":
                     brsType = new Int32(0);
@@ -253,14 +254,21 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 case "float":
                     brsType = new Float(0);
                     break;
-                case "boolean":
-                    brsType = BrsBoolean.False;
+                case "roArray":
+                    brsType = BrsInvalid.Instance;
                     break;
-                default:
+                case "roAssociativeArray":
+                    brsType = BrsInvalid.Instance;
+                    break;
+                case "string":
                     brsType = new BrsString("");
                     break;
+                default:
+                    brsType = Uninitialized.Instance;
+                    break;
             }
-            if (this.get(fieldname) === BrsInvalid.Instance) {
+
+            if (brsType !== Uninitialized.Instance && this.get(fieldname) === BrsInvalid.Instance) {
                 this.set(fieldname, brsType);
                 this.fields.set(fieldname.value, new Field(type.value, alwaysnotify.toBoolean()));
             }
@@ -285,7 +293,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 let fieldType = ValueKind.toString(value.kind);
                 if (this.get(fieldName) === BrsInvalid.Instance) {
                     this.set(fieldName, value);
-                    this.fields.set(key, new Field(fieldType, false));
+                    this.fields.set(key, new Field(fieldType, false)); //ToDo: check if this actually the default value for alwaysnotify
                 }
             });
 
@@ -301,6 +309,31 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, fieldname: BrsString) => {
             return this.get(fieldname);
+        },
+    });
+
+    /** Updates the value of an existing field only if the types match. */
+    private setfield = new Callable("setfield", {
+        signature: {
+            args: [
+                new StdlibArgument("fieldname", ValueKind.String),
+                new StdlibArgument("value", ValueKind.Dynamic),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString, value: BrsType) => {
+            let element = this.get(fieldname);
+            let field = this.fields.get(fieldname.value);
+            if (element === BrsInvalid.Instance || !field) {
+                return BrsBoolean.False;
+            }
+
+            if (field.type.toLowerCase() !== ValueKind.toString(value.kind).toLowerCase()) {
+                return BrsBoolean.False;
+            }
+
+            this.set(fieldname, value);
+            return BrsBoolean.True;
         },
     });
 }

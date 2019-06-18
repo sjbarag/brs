@@ -278,4 +278,79 @@ describe("RoSGNode", () => {
             });
         });
     });
+
+    describe("ifSGNodeChildren", () => {
+        let interpreter;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+        });
+
+        describe("getchildcount", () => {
+            it("returns the number of children", () => {
+                let node = new RoSGNode([]);
+
+                let getChildCount = node.getMethod("getchildcount");
+                expect(getChildCount).toBeTruthy();
+
+                let result = getChildCount.call(interpreter);
+                expect(result).toEqual(new Int32(0));
+            });
+
+            //TODO: test when the node does have children
+        });
+
+        describe("appendchild", () => {
+            it("appends a child to the node", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+
+                let result = appendChild.call(interpreter, child);
+                let childCount = getChildCount.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(appendChild).toBeTruthy();
+                expect(childCount).toEqual(new Int32(1));
+            });
+
+            it("appends invalid to the node", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child = BrsInvalid.Instance;
+
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+
+                let result = appendChild.call(interpreter, child);
+                let childCount = getChildCount.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                expect(childCount).toEqual(new Int32(0));
+            });
+
+            it("doesn't append the same node twice", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+
+                let result = appendChild.call(interpreter, child);
+                appendChild.call(interpreter, child);
+                let childCount = getChildCount.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(childCount).toEqual(new Int32(1));
+            });
+        });
+    });
 });

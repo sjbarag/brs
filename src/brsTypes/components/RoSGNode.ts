@@ -16,6 +16,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     elements = new Map<string, BrsType>();
     private fields = new Map<string, Field>();
+    private children = new Array<RoSGNode>();
 
     constructor(elements: AAMember[], readonly type: string = "Node") {
         super("roSGNode");
@@ -34,6 +35,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.keys,
             this.items,
             this.lookup,
+            //ifSGNodeChildren
+            this.appendchild,
+            this.getchildcount,
         ]);
     }
 
@@ -211,6 +215,35 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, key: BrsString) => {
             let lKey = key.value.toLowerCase();
             return this.get(new BrsString(lKey));
+        },
+    });
+
+    private getchildcount = new Callable("getchildcount", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (interpreter: Interpreter) => {
+            return new Int32(this.children.length);
+        },
+    });
+
+    private appendchild = new Callable("appendchild", {
+        signature: {
+            args: [new StdlibArgument("child", ValueKind.Dynamic)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child: BrsType) => {
+            for (let childNode of this.children) {
+                if (childNode === child) {
+                    return BrsBoolean.True;
+                }
+            }
+            if (child instanceof RoSGNode) {
+                this.children.push(child);
+                return BrsBoolean.True;
+            }
+            return BrsBoolean.False;
         },
     });
 }

@@ -352,5 +352,106 @@ describe("RoSGNode", () => {
                 expect(childCount).toEqual(new Int32(1));
             });
         });
+
+        describe("getchildren", () => {
+            it("get children of node without children", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+
+                let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                let childCount = getChildCount.call(interpreter);
+                expect(getChildren).toBeTruthy();
+                expect(childCount).toEqual(new Int32(0));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([]);
+            });
+
+            it("get all children of node with children", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child1 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+                let child2 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("3") },
+                ]);
+                let child3 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("4") },
+                ]);
+
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+
+                let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                let childCount = getChildCount.call(interpreter);
+                expect(childCount).toEqual(new Int32(3));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([child1, child2, child3]);
+            });
+
+            it("get subset of children of node", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child1 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+                let child2 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("3") },
+                ]);
+                let child3 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("4") },
+                ]);
+                let child4 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("5") },
+                ]);
+
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+                appendChild.call(interpreter, child4);
+
+                // get last 2 children
+                let result = getChildren.call(interpreter, new Int32(2), new Int32(2));
+                let childCount = getChildCount.call(interpreter);
+                expect(childCount).toEqual(new Int32(4));
+                expect(result).toBeInstanceOf(RoArray);
+                expect(result.elements).toEqual([child3, child4]);
+
+                // pass in more children count than there are children, should just return 2 with offset of 2
+                let result1 = getChildren.call(interpreter, new Int32(20), new Int32(2));
+                expect(result1).toBeInstanceOf(RoArray);
+                expect(result1.elements).toEqual([child3, child4]);
+
+                // pass in negative indices
+                let result2 = getChildren.call(interpreter, new Int32(-10), new Int32(-50));
+                expect(result2).toBeInstanceOf(RoArray);
+                expect(result2.elements).toEqual([]);
+
+                // pass in just negative start index
+                let result3 = getChildren.call(interpreter, new Int32(5), new Int32(-50));
+                expect(result3).toBeInstanceOf(RoArray);
+                expect(result3.elements).toEqual([]);
+
+                // get first 3 children
+                let result4 = getChildren.call(interpreter, new Int32(3), new Int32(0));
+                expect(result4).toBeInstanceOf(RoArray);
+                expect(result4.elements).toEqual([child1, child2, child3]);
+            });
+        });
     });
 });

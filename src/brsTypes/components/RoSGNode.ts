@@ -38,6 +38,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             //ifSGNodeChildren
             this.appendchild,
             this.getchildcount,
+            this.getchildren,
         ]);
     }
 
@@ -244,6 +245,34 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 return BrsBoolean.True;
             }
             return BrsBoolean.False;
+        },
+    });
+
+    private getchildren = new Callable("getchildren", {
+        signature: {
+            args: [
+                new StdlibArgument("num_children", ValueKind.Int32),
+                new StdlibArgument("index", ValueKind.Int32),
+            ],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter, num_children: Int32, index: Int32) => {
+            let numChildrenValue = num_children.getValue();
+            let indexValue = index.getValue();
+            let childrenSize = this.children.length;
+            if (numChildrenValue <= -1 && indexValue == 0) {
+                //short hand to return all children
+                return new RoArray(this.children);
+            } else if (numChildrenValue <= 0 || indexValue < 0 || indexValue > childrenSize - 1) {
+                //these never return any children
+                return new RoArray([]);
+            } else {
+                //only valid cases
+                let endSliceIndex = Math.min(indexValue + numChildrenValue, childrenSize);
+                return new RoArray(this.children.slice(indexValue, endSliceIndex));
+            }
+
+            return new RoArray([]);
         },
     });
 }

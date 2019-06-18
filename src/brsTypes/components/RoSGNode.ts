@@ -8,6 +8,7 @@ import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { Float } from "../Float";
+import { Call } from "../../parser/Expression";
 
 class Field {
     // private callbacks;
@@ -42,6 +43,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.addfield,
             this.addfields,
             this.getfield,
+            this.removefield,
             this.setfield,
         ]);
     }
@@ -309,6 +311,22 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, fieldname: BrsString) => {
             return this.get(fieldname);
+        },
+    });
+
+    /** Removes the given field from the node */
+    private removefield = new Callable("removefield", {
+        signature: {
+            args: [new StdlibArgument("fieldname", ValueKind.String)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString) => {
+            if (this.get(fieldname) !== BrsInvalid.Instance) {
+                this.elements.delete(fieldname.value);
+                this.fields.delete(fieldname.value);
+            }
+
+            return BrsBoolean.True;
         },
     });
 

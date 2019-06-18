@@ -402,6 +402,54 @@ describe("RoSGNode", () => {
             });
         });
 
+        describe("removefield", () => {
+            it("removes a field from the node", () => {
+                let node = new RoSGNode([
+                    { name: new BrsString("letter1"), value: new BrsString("a") },
+                    { name: new BrsString("letter2"), value: new BrsString("b") },
+                    { name: new BrsString("letter3"), value: new BrsString("c") },
+                ]);
+
+                let addField = node.getMethod("addfield");
+                let removeField = node.getMethod("removefield");
+                expect(removeField).toBeTruthy();
+
+                let result = addField.call(
+                    interpreter,
+                    new BrsString("field1"),
+                    new BrsString("string"),
+                    BrsBoolean.False
+                );
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(1);
+
+                result = removeField.call(interpreter, new BrsString("field1"));
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(0);
+            });
+
+            it("doesn't remove a non existing field", () => {
+                let node = new RoSGNode([]);
+
+                let addField = node.getMethod("addfield");
+                let removeField = node.getMethod("removefield");
+                expect(removeField).toBeTruthy();
+
+                let result = addField.call(
+                    interpreter,
+                    new BrsString("field1"),
+                    new BrsString("string"),
+                    BrsBoolean.False
+                );
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(1);
+
+                result = removeField.call(interpreter, new BrsString("field2"));
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(1);
+            });
+        });
+
         describe("setfield", () => {
             it("updates the value of an existing field", () => {
                 let node = new RoSGNode([]);

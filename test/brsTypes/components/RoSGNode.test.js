@@ -546,5 +546,51 @@ describe("RoSGNode", () => {
                 expect(childCount).toEqual(new Int32(2));
             });
         });
+
+        describe("getparent", () => {
+            it("get parent of node", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child1 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+
+                let getParent = child1.getMethod("getparent");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                let parentNode = getParent.call(interpreter);
+                expect(getParent).toBeTruthy();
+                expect(parentNode).toEqual(parent);
+            });
+
+            it("get parent of node without parent", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+                let child1 = new RoSGNode([
+                    { name: new BrsString("child"), value: new BrsString("2") },
+                ]);
+
+                let getParent = child1.getMethod("getparent");
+                let appendChild = parent.getMethod("appendchild");
+                let removeChild = parent.getMethod("removechild");
+
+                // node should start without a parent
+                let parentNode = getParent.call(interpreter);
+                expect(parentNode).toEqual(BrsInvalid.Instance);
+
+                // appends a node as child
+                appendChild.call(interpreter, child1);
+                let parentNode1 = getParent.call(interpreter);
+                expect(parentNode1).toEqual(parent);
+
+                // remove parent from child again, should get invalid as parent
+                removeChild.call(interpreter, child1);
+                let parentNode2 = getParent.call(interpreter);
+                expect(parentNode2).toEqual(BrsInvalid.Instance);
+            });
+        });
     });
 });

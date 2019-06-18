@@ -17,6 +17,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     elements = new Map<string, BrsType>();
     private fields = new Map<string, Field>();
     private children = new Array<RoSGNode>();
+    private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
 
     constructor(elements: AAMember[], readonly type: string = "Node") {
         super("roSGNode");
@@ -40,6 +41,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.getchildcount,
             this.getchildren,
             this.removechild,
+            this.getparent,
         ]);
     }
 
@@ -106,6 +108,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         }
         this.elements.set(index.value.toLowerCase(), value);
         return BrsInvalid.Instance;
+    }
+
+    setParent(parent: RoSGNode) {
+        this.parent = parent;
+    }
+
+    removeParent() {
+        this.parent = BrsInvalid.Instance;
     }
 
     /** Removes all elements from the node */
@@ -247,6 +257,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
             if (child instanceof RoSGNode) {
                 this.children.push(child);
+                child.setParent(this);
                 return BrsBoolean.True;
             }
             return BrsBoolean.False;
@@ -300,6 +311,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     let childNode = this.children[i];
                     if (childNode === child) {
                         spliceIndex = i;
+                        child.removeParent();
                     }
                 }
                 if (spliceIndex >= 0) {
@@ -309,6 +321,17 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             } else {
                 return BrsBoolean.False;
             }
+        },
+    });
+    /* If the subject node has been added to a parent node list of children,
+    return the parent node, otherwise return invalid.*/
+    private getparent = new Callable("getparent", {
+        signature: {
+            args: [],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter) => {
+            return this.parent;
         },
     });
 }

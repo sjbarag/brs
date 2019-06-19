@@ -282,7 +282,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let childrenSize = this.children.length;
             if (numChildrenValue <= -1 && indexValue === 0) {
                 //short hand to return all children
-                return new RoArray(this.children);
+                return new RoArray(this.children.slice());
             } else if (numChildrenValue <= 0 || indexValue < 0 || indexValue > childrenSize - 1) {
                 //these never return any children
                 return new RoArray([]);
@@ -346,9 +346,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, nodetype: BrsString) => {
             // currently we can't create a custom subclass object of roSGNode,
             // so we'll always create generic RoSGNode object as child
-            var child = new RoSGNode([]);
-            this.children.push(child);
-            child.setParent(this);
+            var child = createNodeByType(nodetype);
+            if (child instanceof RoSGNode) {
+                this.children.push(child);
+                child.setParent(this);
+            }
             return child;
         },
     });

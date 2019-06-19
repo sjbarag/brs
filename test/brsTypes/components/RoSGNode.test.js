@@ -296,8 +296,6 @@ describe("RoSGNode", () => {
                 let result = getChildCount.call(interpreter);
                 expect(result).toEqual(new Int32(0));
             });
-
-            //TODO: test when the node does have children
         });
 
         describe("appendchild", () => {

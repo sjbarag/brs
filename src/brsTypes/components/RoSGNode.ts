@@ -16,7 +16,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     elements = new Map<string, BrsType>();
     private fields = new Map<string, Field>();
-    private children = new Array<RoSGNode>();
+    private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
 
     constructor(elements: AAMember[], readonly type: string = "Node") {

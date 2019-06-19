@@ -280,7 +280,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let numChildrenValue = num_children.getValue();
             let indexValue = index.getValue();
             let childrenSize = this.children.length;
-            if (numChildrenValue <= -1 && indexValue == 0) {
+            if (numChildrenValue <= -1 && indexValue === 0) {
                 //short hand to return all children
                 return new RoArray(this.children);
             } else if (numChildrenValue <= 0 || indexValue < 0 || indexValue > childrenSize - 1) {

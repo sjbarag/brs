@@ -45,6 +45,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.getfield,
             this.removefield,
             this.setfield,
+            this.setfields,
+            //this.update
         ]);
     }
 
@@ -315,6 +317,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /** Removes the given field from the node */
+    /** TODO: node built-in fields shouldn't be removable (i.e. id, change, focusable,) */
     private removefield = new Callable("removefield", {
         signature: {
             args: [new StdlibArgument("fieldname", ValueKind.String)],
@@ -351,6 +354,33 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
 
             this.set(fieldname, value);
+            return BrsBoolean.True;
+        },
+    });
+
+    /** Updates the value of multiple existing field only if the types match */
+    private setfields = new Callable("setfields", {
+        signature: {
+            args: [new StdlibArgument("fields", ValueKind.Object)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fields: RoAssociativeArray) => {
+            if (!(fields instanceof RoAssociativeArray)) {
+                return BrsBoolean.False;
+            }
+
+            fields.getValue().forEach((value, key) => {
+                let fieldName = new BrsString(key);
+                let field = this.fields.get(key) || { type: "" };
+                let valueType = ValueKind.toString(value.kind);
+                if (
+                    this.get(fieldName) !== BrsInvalid.Instance &&
+                    field.type.toLowerCase() === valueType.toLowerCase()
+                ) {
+                    this.set(fieldName, value);
+                }
+            });
+
             return BrsBoolean.True;
         },
     });

@@ -503,5 +503,73 @@ describe("RoSGNode", () => {
                 expect(node.getFields().size).toEqual(0);
             });
         });
+
+        describe("setfields", () => {
+            it("updates the value of existing fields", () => {
+                let node = new RoSGNode([]);
+                const strVal = "updated string";
+                const intVal = 666;
+                let initialFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString("a string") },
+                    { name: new BrsString("field2"), value: new Int32(-1) },
+                    { name: new BrsString("field3"), value: BrsBoolean.False },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                let setFields = node.getMethod("setfields");
+                let getField = node.getMethod("getfield");
+                expect(setFields).toBeTruthy();
+
+                let result = addFields.call(interpreter, initialFields);
+                expect(result).toEqual(BrsBoolean.True);
+
+                let updatedFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString(strVal) },
+                    { name: new BrsString("field2"), value: new Int32(intVal) },
+                ]);
+
+                result = setFields.call(interpreter, updatedFields);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(3);
+
+                result = getField.call(interpreter, new BrsString("field1"));
+                expect(result.value).toEqual(strVal);
+
+                result = getField.call(interpreter, new BrsString("field2"));
+                expect(result.value).toEqual(intVal);
+            });
+
+            it("doesn't update the value of existing fields if types don't match", () => {
+                let node = new RoSGNode([]);
+                const strVal = "a string";
+                const intVal = -1;
+                let initialFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString(strVal) },
+                    { name: new BrsString("field2"), value: new Int32(intVal) },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                let setFields = node.getMethod("setfields");
+                let getField = node.getMethod("getfield");
+
+                let result = addFields.call(interpreter, initialFields);
+                expect(result).toEqual(BrsBoolean.True);
+
+                let updatedFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: BrsInvalid.Instance },
+                    { name: new BrsString("field2"), value: BrsBoolean.False },
+                ]);
+
+                result = setFields.call(interpreter, updatedFields);
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(2);
+
+                result = getField.call(interpreter, new BrsString("field1"));
+                expect(result.value).toEqual(strVal);
+
+                result = getField.call(interpreter, new BrsString("field2"));
+                expect(result.value).toEqual(intVal);
+            });
+        });
     });
 });

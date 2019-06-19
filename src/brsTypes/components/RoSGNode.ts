@@ -283,7 +283,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             if (numChildrenValue <= -1 && indexValue === 0) {
                 //short hand to return all children
                 return new RoArray(this.children.slice());
-            } else if (numChildrenValue <= 0 || indexValue < 0 || indexValue > childrenSize - 1) {
+            } else if (numChildrenValue <= 0 || indexValue < 0 || indexValue >= childrenSize) {
                 //these never return any children
                 return new RoArray([]);
             } else {
@@ -308,7 +308,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, child: BrsType) => {
             var spliceIndex = -1;
             if (child instanceof RoSGNode) {
-                for (var i = 0; i < this.children.length; i++) {
+                for (let i = 0; i < this.children.length; i++) {
                     let childNode = this.children[i];
                     if (childNode === child) {
                         spliceIndex = i;
@@ -319,9 +319,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     this.children.splice(spliceIndex, 1);
                 }
                 return BrsBoolean.True;
-            } else {
-                return BrsBoolean.False;
             }
+            return BrsBoolean.False;
         },
     });
     /* If the subject node has been added to a parent node list of children,

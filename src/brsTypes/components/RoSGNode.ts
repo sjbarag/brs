@@ -42,6 +42,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.getchildren,
             this.removechild,
             this.getparent,
+            this.createchild,
         ]);
     }
 
@@ -332,6 +333,23 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter) => {
             return this.parent;
+        },
+    });
+
+    /* Creates a child node of type nodeType, and adds the new node to the end of the
+    subject node list of children */
+    private createchild = new Callable("createchild", {
+        signature: {
+            args: [new StdlibArgument("nodetype", ValueKind.String)],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter, nodetype: BrsString) => {
+            // currently we can't create a custom subclass object of roSGNode,
+            // so we'll always create generic RoSGNode object as child
+            var child = new RoSGNode([]);
+            this.children.push(child);
+            child.setParent(this);
+            return child;
         },
     });
 }

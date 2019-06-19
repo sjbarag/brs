@@ -592,5 +592,21 @@ describe("RoSGNode", () => {
                 expect(parentNode2).toEqual(BrsInvalid.Instance);
             });
         });
+
+        describe("createchild", () => {
+            it("create generic roSGNode as child", () => {
+                let parent = new RoSGNode([
+                    { name: new BrsString("parent"), value: new BrsString("1") },
+                ]);
+
+                let createChild = parent.getMethod("createchild");
+                let getChildren = parent.getMethod("getchildren");
+
+                let childNode = createChild.call(interpreter, new BrsString("Node"));
+                let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+                expect(createChild).toBeTruthy();
+                expect(result.elements[0]).toEqual(childNode);
+            });
+        });
     });
 });

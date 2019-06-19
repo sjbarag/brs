@@ -46,7 +46,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.removefield,
             this.setfield,
             this.setfields,
-            //this.update
+            this.update,
         ]);
     }
 
@@ -358,7 +358,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    /** Updates the value of multiple existing field only if the types match */
+    /** Updates the value of multiple existing field only if the types match. */
     private setfields = new Callable("setfields", {
         signature: {
             args: [new StdlibArgument("fields", ValueKind.Object)],
@@ -382,6 +382,34 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             });
 
             return BrsBoolean.True;
+        },
+    });
+
+    /** Updates the value of multiple existing field only if the types match.
+     * In contrast to setFields method, update always return Uninitialized */
+    private update = new Callable("update", {
+        signature: {
+            args: [new StdlibArgument("aa", ValueKind.Object)],
+            returns: ValueKind.Uninitialized,
+        },
+        impl: (interpreter: Interpreter, aa: RoAssociativeArray) => {
+            if (!(aa instanceof RoAssociativeArray)) {
+                return Uninitialized.Instance;
+            }
+
+            aa.getValue().forEach((value, key) => {
+                let fieldName = new BrsString(key);
+                let field = this.fields.get(key) || { type: "" };
+                let valueType = ValueKind.toString(value.kind);
+                if (
+                    this.get(fieldName) !== BrsInvalid.Instance &&
+                    field.type.toLowerCase() === valueType.toLowerCase()
+                ) {
+                    this.set(fieldName, value);
+                }
+            });
+
+            return Uninitialized.Instance;
         },
     });
 }

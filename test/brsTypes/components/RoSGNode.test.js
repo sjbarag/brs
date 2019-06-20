@@ -518,13 +518,6 @@ describe("RoSGNode", () => {
 
         describe("getparent", () => {
             it("get parent of node", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-
                 let getParent = child1.getMethod("getparent");
                 let appendChild = parent.getMethod("appendchild");
 
@@ -535,13 +528,6 @@ describe("RoSGNode", () => {
             });
 
             it("get parent of node without parent", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-
                 let getParent = child1.getMethod("getparent");
                 let appendChild = parent.getMethod("appendchild");
                 let removeChild = parent.getMethod("removechild");
@@ -564,10 +550,6 @@ describe("RoSGNode", () => {
 
         describe("createchild", () => {
             it("create generic roSGNode as child", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-
                 let createChild = parent.getMethod("createchild");
                 let getChildren = parent.getMethod("getchildren");
 
@@ -575,6 +557,33 @@ describe("RoSGNode", () => {
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
                 expect(createChild).toBeTruthy();
                 expect(result.elements[0]).toEqual(childNode);
+            });
+        });
+    });
+
+    describe("ifSGNodeFocus", () => {
+        let interpreter, parent, child1, child2, grandChild1, grandChild2;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+            parent = new RoSGNode([{ name: new BrsString("parent"), value: new BrsString("1") }]);
+            child1 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("2") }]);
+            child2 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("3") }]);
+            grandChild1 = new RoSGNode([
+                { name: new BrsString("grandChild"), value: new BrsString("4") },
+            ]);
+            grandChild2 = new RoSGNode([
+                { name: new BrsString("grandChild"), value: new BrsString("5") },
+            ]);
+        });
+
+        describe("hasfocus", () => {
+            it("check if unfocused node has focus", () => {
+                let hasFocus = parent.getMethod("hasfocus");
+                expect(hasFocus).toBeTruthy();
+
+                let result = hasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
             });
         });
     });

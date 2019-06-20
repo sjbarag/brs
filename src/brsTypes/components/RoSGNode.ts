@@ -18,6 +18,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     private fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
+    private isFocused: BrsBoolean = BrsBoolean.False;
 
     constructor(elements: AAMember[], readonly type: string = "Node") {
         super("roSGNode");
@@ -36,13 +37,15 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.keys,
             this.items,
             this.lookup,
-            //ifSGNodeChildren
+            // ifSGNodeChildren methods
             this.appendchild,
             this.getchildcount,
             this.getchildren,
             this.removechild,
             this.getparent,
             this.createchild,
+            // ifSGNodeFocus methods
+            this.hasfocus,
         ]);
     }
 
@@ -342,6 +345,17 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 child.setParent(this);
             }
             return child;
+        },
+    });
+
+    /* Returns true if the subject node has the remote control focus, and false otherwise */
+    private hasfocus = new Callable("hasfocus", {
+        signature: {
+            args: [],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter) => {
+            return this.isFocused;
         },
     });
 }

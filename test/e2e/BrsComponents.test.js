@@ -91,6 +91,7 @@ describe("end to end brightscript functions", () => {
             "true",
             "can empty itself: ",
             "true",
+            //ifNodeField tests
             "node size: ",
             "3",
             "node size: ",
@@ -103,6 +104,21 @@ describe("end to end brightscript functions", () => {
             "hello",
             "field3 in node now is: ",
             "false",
+            //ifNodeChildren tests
+            "parent child count: ",
+            "0",
+            "get same parent from child: ",
+            "true",
+            "parent child count: ",
+            "1",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "2",
+            "children size: ",
+            "2",
         ]);
     });
 

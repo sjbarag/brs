@@ -578,4 +578,23 @@ describe("RoSGNode", () => {
             });
         });
     });
+
+    describe.only("ifSGNodeDict", () => {
+        let interpreter, node;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+            node = new RoSGNode([{ name: new BrsString("currentNode") }]);
+        });
+
+        describe("findnode", () => {
+            it("returns invalid if no node is found", () => {
+                let findNode = node.getMethod("findnode");
+                expect(findNode).toBeTruthy();
+
+                let invalidNode = findNode.call(interpreter, new BrsString("someRandomId"));
+                expect(invalidNode).toEqual(BrsInvalid.Instance);
+            });
+        });
+    });
 });

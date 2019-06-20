@@ -43,6 +43,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.removechild,
             this.getparent,
             this.createchild,
+            //ifSGNodeDict
+            this.findnode,
         ]);
     }
 
@@ -342,6 +344,22 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 child.setParent(this);
             }
             return child;
+        },
+    });
+
+    /* Returns the node that is a descendant of the nearest component ancestor of the subject node whose id field matches the given name,
+        otherwise return invalid.*/
+    private findnode = new Callable("findnode", {
+        signature: {
+            args: [new StdlibArgument("name", ValueKind.String)],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, name: BrsString) => {
+            // TODO: breadthfirst search to find nearest component ancestor
+            //       whose id field is set to 'name'
+
+            // Return invalid if a node with the specified name is not found
+            return BrsInvalid.Instance;
         },
     });
 }

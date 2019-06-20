@@ -106,6 +106,9 @@ describe("end to end brightscript functions", () => {
             "2",
             "children size: ",
             "2",
+            //ifNodeDict tests
+            "find node that does not exist: ",
+            "invalid",
         ]);
     });
 

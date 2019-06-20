@@ -34,4 +34,9 @@ sub main()
     print "parent child count: " parentNode.getChildCount()        ' => 2
     children = parentNode.getChildren(-1, 0)
     print "children size: " children.count()                       ' => 2
+
+    'ifNodeDict tests
+    currentNode = createObject("roSGNode", "Node")
+    currentNode.id = "current"
+    print "find node that does not exist: " currentNode.findNode("invalid-node-name") ' => invalid
 end sub

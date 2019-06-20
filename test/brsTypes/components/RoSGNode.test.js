@@ -579,7 +579,7 @@ describe("RoSGNode", () => {
         });
     });
 
-    describe.only("ifSGNodeDict", () => {
+    describe("ifSGNodeDict", () => {
         let interpreter, node;
 
         beforeEach(() => {

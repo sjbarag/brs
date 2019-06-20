@@ -586,5 +586,73 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.False);
             });
         });
+
+        describe("setfocus", () => {
+            it("sets focus on a node", () => {
+                let hasFocus = parent.getMethod("hasfocus");
+                let setFocus = parent.getMethod("setfocus");
+                expect(setFocus).toBeTruthy();
+
+                let result = hasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                setFocus.call(interpreter, BrsBoolean.True);
+                result = hasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+            });
+
+            it("sets focus on a node should disable focus on another", () => {
+                let child1HasFocus = child1.getMethod("hasfocus");
+                let child2HasFocus = child2.getMethod("hasfocus");
+                let child1SetFocus = child1.getMethod("setfocus");
+                let child2SetFocus = child2.getMethod("setfocus");
+
+                //by default both child1 and child2 should have no focus
+                let result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //focus on child 1
+                child1SetFocus.call(interpreter, BrsBoolean.True);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //focus on child 2 should remove focus from child 1
+                child2SetFocus.call(interpreter, BrsBoolean.True);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+            });
+
+            it("set focus to false", () => {
+                let child1HasFocus = child1.getMethod("hasfocus");
+                let child2HasFocus = child2.getMethod("hasfocus");
+                let child1SetFocus = child1.getMethod("setfocus");
+                let child2SetFocus = child2.getMethod("setfocus");
+
+                //by default both child1 and child2 should have no focus
+                let result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //focus on child 1
+                child1SetFocus.call(interpreter, BrsBoolean.True);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //set focus to false on child 1
+                child1SetFocus.call(interpreter, BrsBoolean.False);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+            });
+        });
     });
 });

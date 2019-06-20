@@ -18,7 +18,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     private fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
-    private isFocused: BrsBoolean = BrsBoolean.False;
 
     constructor(elements: AAMember[], readonly type: string = "Node") {
         super("roSGNode");
@@ -46,6 +45,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.createchild,
             // ifSGNodeFocus methods
             this.hasfocus,
+            this.setfocus,
         ]);
     }
 
@@ -355,7 +355,21 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter) => {
-            return this.isFocused;
+            return BrsBoolean.from(interpreter.environment.getFocusedNode() === this);
+        },
+    });
+
+    /** If on is set to true, sets the current remote control focus to the subject node,
+     *  also automatically removing it from the node on which it was previously set.
+     *  If on is set to false, removes focus from the subject node if it had it */
+    private setfocus = new Callable("setfocus", {
+        signature: {
+            args: [new StdlibArgument("on", ValueKind.Boolean)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, on: BrsBoolean) => {
+            interpreter.environment.setFocusedNode(on.toBoolean() ? this : BrsInvalid.Instance);
+            return BrsBoolean.False; //brightscript always returns false for some reason
         },
     });
 }

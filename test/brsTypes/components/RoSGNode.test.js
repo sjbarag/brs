@@ -455,6 +455,7 @@ describe("RoSGNode", () => {
                 let getChildren = parent.getMethod("getchildren");
                 let getChildCount = parent.getMethod("getchildcount");
                 let appendChild = parent.getMethod("appendchild");
+                expect(removeChild).toBeTruthy();
 
                 appendChild.call(interpreter, child1);
                 appendChild.call(interpreter, child2);
@@ -464,7 +465,6 @@ describe("RoSGNode", () => {
                 removeChild.call(interpreter, child2);
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
                 let childCount = getChildCount.call(interpreter);
-                expect(removeChild).toBeTruthy();
                 expect(childCount).toEqual(new Int32(2));
                 expect(result).toBeInstanceOf(RoArray);
                 expect(result.elements).toEqual([child1, child3]);

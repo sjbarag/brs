@@ -251,12 +251,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType) => {
-            for (let childNode of this.children) {
-                if (childNode === child) {
+            if (child instanceof RoSGNode) {
+                if (this.children.includes(child)) {
                     return BrsBoolean.True;
                 }
-            }
-            if (child instanceof RoSGNode) {
                 this.children.push(child);
                 child.setParent(this);
                 return BrsBoolean.True;
@@ -288,8 +286,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 return new RoArray([]);
             } else {
                 //only valid cases
-                let endSliceIndex = Math.min(indexValue + numChildrenValue, childrenSize);
-                return new RoArray(this.children.slice(indexValue, endSliceIndex));
+                return new RoArray(this.children.slice(indexValue, indexValue + numChildrenValue));
             }
 
             return new RoArray([]);
@@ -306,16 +303,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType) => {
-            var spliceIndex = -1;
             if (child instanceof RoSGNode) {
-                for (let i = 0; i < this.children.length; i++) {
-                    let childNode = this.children[i];
-                    if (childNode === child) {
-                        spliceIndex = i;
-                        child.removeParent();
-                    }
-                }
+                let spliceIndex = this.children.indexOf(child);
                 if (spliceIndex >= 0) {
+                    child.removeParent();
                     this.children.splice(spliceIndex, 1);
                 }
                 return BrsBoolean.True;
@@ -345,7 +336,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, nodetype: BrsString) => {
             // currently we can't create a custom subclass object of roSGNode,
             // so we'll always create generic RoSGNode object as child
-            var child = createNodeByType(nodetype);
+            let child = createNodeByType(nodetype);
             if (child instanceof RoSGNode) {
                 this.children.push(child);
                 child.setParent(this);

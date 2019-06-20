@@ -280,17 +280,20 @@ describe("RoSGNode", () => {
     });
 
     describe("ifSGNodeChildren", () => {
-        let interpreter;
+        let interpreter, parent, child1, child2, child3, child4;
 
         beforeEach(() => {
             interpreter = new Interpreter();
+            parent = new RoSGNode([{ name: new BrsString("parent"), value: new BrsString("1") }]);
+            child1 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("2") }]);
+            child2 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("3") }]);
+            child3 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("4") }]);
+            child4 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("5") }]);
         });
 
         describe("getchildcount", () => {
             it("returns the number of children", () => {
-                let node = new RoSGNode([]);
-
-                let getChildCount = node.getMethod("getchildcount");
+                let getChildCount = parent.getMethod("getchildcount");
                 expect(getChildCount).toBeTruthy();
 
                 let result = getChildCount.call(interpreter);
@@ -300,17 +303,10 @@ describe("RoSGNode", () => {
 
         describe("appendchild", () => {
             it("appends a child to the node", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
 
-                let result = appendChild.call(interpreter, child);
+                let result = appendChild.call(interpreter, child1);
                 let childCount = getChildCount.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
                 expect(appendChild).toBeTruthy();
@@ -318,33 +314,23 @@ describe("RoSGNode", () => {
             });
 
             it("appends invalid to the node", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child = BrsInvalid.Instance;
+                let invalidChild = BrsInvalid.Instance;
 
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
 
-                let result = appendChild.call(interpreter, child);
+                let result = appendChild.call(interpreter, invalidChild);
                 let childCount = getChildCount.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
                 expect(childCount).toEqual(new Int32(0));
             });
 
             it("doesn't append the same node twice", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
 
-                let result = appendChild.call(interpreter, child);
-                appendChild.call(interpreter, child);
+                let result = appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child1);
                 let childCount = getChildCount.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
                 expect(childCount).toEqual(new Int32(1));
@@ -353,10 +339,6 @@ describe("RoSGNode", () => {
 
         describe("getchildren", () => {
             it("get children of node without children", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-
                 let getChildren = parent.getMethod("getchildren");
                 let getChildCount = parent.getMethod("getchildcount");
 
@@ -369,19 +351,6 @@ describe("RoSGNode", () => {
             });
 
             it("get all children of node with children", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-                let child2 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("3") },
-                ]);
-                let child3 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("4") },
-                ]);
-
                 let getChildren = parent.getMethod("getchildren");
                 let getChildCount = parent.getMethod("getchildcount");
                 let appendChild = parent.getMethod("appendchild");
@@ -397,23 +366,7 @@ describe("RoSGNode", () => {
                 expect(result.elements).toEqual([child1, child2, child3]);
             });
 
-            it("get subset of children of node", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-                let child2 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("3") },
-                ]);
-                let child3 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("4") },
-                ]);
-                let child4 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("5") },
-                ]);
-
+            it("get last two children", () => {
                 let getChildren = parent.getMethod("getchildren");
                 let getChildCount = parent.getMethod("getchildcount");
                 let appendChild = parent.getMethod("appendchild");
@@ -429,21 +382,65 @@ describe("RoSGNode", () => {
                 expect(childCount).toEqual(new Int32(4));
                 expect(result).toBeInstanceOf(RoArray);
                 expect(result.elements).toEqual([child3, child4]);
+            });
+
+            it("pass in large child count", () => {
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+                appendChild.call(interpreter, child4);
 
                 // pass in more children count than there are children, should just return 2 with offset of 2
                 let result1 = getChildren.call(interpreter, new Int32(20), new Int32(2));
                 expect(result1).toBeInstanceOf(RoArray);
                 expect(result1.elements).toEqual([child3, child4]);
+            });
+
+            it("pass in negative indices", () => {
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+                appendChild.call(interpreter, child4);
 
                 // pass in negative indices
                 let result2 = getChildren.call(interpreter, new Int32(-10), new Int32(-50));
                 expect(result2).toBeInstanceOf(RoArray);
                 expect(result2.elements).toEqual([]);
+            });
+
+            it("pass in negative start index", () => {
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+                appendChild.call(interpreter, child4);
 
                 // pass in just negative start index
                 let result3 = getChildren.call(interpreter, new Int32(5), new Int32(-50));
                 expect(result3).toBeInstanceOf(RoArray);
                 expect(result3.elements).toEqual([]);
+            });
+
+            it("get first 3 children", () => {
+                let getChildren = parent.getMethod("getchildren");
+                let getChildCount = parent.getMethod("getchildcount");
+                let appendChild = parent.getMethod("appendchild");
+
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child2);
+                appendChild.call(interpreter, child3);
+                appendChild.call(interpreter, child4);
 
                 // get first 3 children
                 let result4 = getChildren.call(interpreter, new Int32(3), new Int32(0));
@@ -454,19 +451,6 @@ describe("RoSGNode", () => {
 
         describe("removechild", () => {
             it("remove a child node from parent", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-                let child2 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("3") },
-                ]);
-                let child3 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("4") },
-                ]);
-
                 let removeChild = parent.getMethod("removechild");
                 let getChildren = parent.getMethod("getchildren");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -511,19 +495,6 @@ describe("RoSGNode", () => {
             });
 
             it("remove non-node things from parent", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-                let child2 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("3") },
-                ]);
-                let child3 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("4") },
-                ]);
-
                 let removeChild = parent.getMethod("removechild");
                 let getChildren = parent.getMethod("getchildren");
                 let getChildCount = parent.getMethod("getchildcount");

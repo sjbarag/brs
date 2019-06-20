@@ -30,6 +30,10 @@ describe("RoSGNode", () => {
             expect(node.toString()).toEqual(
                 `<Component: roSGNode:Node> =
 {
+    change: <UNINITIALIZED>
+    focusable: false
+    focusedchild: invalid
+    id: 
     array: <Component: roArray>
     associative-array: <Component: roAssociativeArray>
     node: <Component: roSGNode:Node>
@@ -91,7 +95,7 @@ describe("RoSGNode", () => {
                 let clear = node.getMethod("clear");
                 expect(clear).toBeTruthy();
                 expect(clear.call(interpreter)).toBe(BrsInvalid.Instance);
-                expect(node.elements).toEqual(new Map());
+                expect(node.getFields()).toEqual(new Map());
             });
         });
 
@@ -150,7 +154,7 @@ describe("RoSGNode", () => {
                 expect(count).toBeTruthy();
 
                 let result = count.call(interpreter);
-                expect(result).toEqual(new Int32(2));
+                expect(result).toEqual(new Int32(6));
             });
         });
 
@@ -222,6 +226,10 @@ describe("RoSGNode", () => {
 
         describe("keys", () => {
             it("returns an array of keys from the associative array in lexicographical order", () => {
+                let change = new BrsString("change");
+                let focusable = new BrsString("focusable");
+                let focusedChild = new BrsString("focusedchild");
+                let id = new BrsString("id");
                 let letter1 = new BrsString("letter1");
                 let letter2 = new BrsString("letter2");
                 let cletter = new BrsString("cletter");
@@ -236,22 +244,36 @@ describe("RoSGNode", () => {
                 expect(keys).toBeTruthy();
 
                 let result = keys.call(interpreter);
-                expect(result.elements).toEqual(new RoArray([cletter, letter1, letter2]).elements);
+                expect(result.getElements()).toEqual(
+                    new RoArray([change, cletter, focusable, focusedChild, id, letter1, letter2])
+                        .elements
+                );
             });
 
             it("returns an empty array from an empty associative array", () => {
+                let change = new BrsString("change");
+                let focusable = new BrsString("focusable");
+                let focusedChild = new BrsString("focusedchild");
+                let id = new BrsString("id");
+
                 let node = new RoSGNode([]);
 
                 let keys = node.getMethod("keys");
                 expect(keys).toBeTruthy();
 
                 let result = keys.call(interpreter);
-                expect(result.elements).toEqual(new RoArray([]).elements);
+                expect(result.getElements()).toEqual(
+                    new RoArray([change, focusable, focusedChild, id]).elements
+                );
             });
         });
 
         describe("items", () => {
             it("returns an array of values from the associative array in lexicographical order", () => {
+                let change = BrsBoolean.False;
+                let focusable = BrsInvalid.Instance;
+                let focusedChild = Uninitialized.Instance;
+                let id = new BrsString("");
                 let cletter = new BrsString("c");
                 let letter1 = new BrsString("a");
                 let letter2 = new BrsString("b");
@@ -265,17 +287,27 @@ describe("RoSGNode", () => {
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
                 let result = items.call(interpreter);
-                expect(result.elements).toEqual(new RoArray([letter1, letter2, cletter]).elements);
+                expect(result.getElements()).toEqual(
+                    new RoArray([id, focusedChild, letter1, letter2, cletter, change, focusable])
+                        .elements
+                );
             });
 
             it("returns an empty array from an empty associative array", () => {
+                let change = BrsBoolean.False;
+                let focusable = BrsInvalid.Instance;
+                let focusedChild = Uninitialized.Instance;
+                let id = new BrsString("");
+
                 let node = new RoSGNode([]);
 
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
 
                 let result = items.call(interpreter);
-                expect(result.elements).toEqual(new RoArray([]).elements);
+                expect(result.getElements()).toEqual(
+                    new RoArray([id, focusedChild, change, focusable]).elements
+                );
             });
         });
     });
@@ -301,7 +333,7 @@ describe("RoSGNode", () => {
                     BrsBoolean.True
                 );
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(1);
+                expect(node.getFields().size).toEqual(5);
             });
 
             it("doesn't add the field if the type is not valid", () => {
@@ -316,7 +348,7 @@ describe("RoSGNode", () => {
                     BrsBoolean.True
                 );
                 expect(result).toEqual(BrsBoolean.True); //Brightscript interpreter returns true here
-                expect(node.getFields().size).toEqual(0);
+                expect(node.getFields().size).toEqual(4);
             });
         });
 
@@ -337,7 +369,7 @@ describe("RoSGNode", () => {
 
                 let result = addFields.call(interpreter, fields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(6);
+                expect(node.getFields().size).toEqual(10);
             });
 
             it("doesn't add duplicated fields", () => {
@@ -350,7 +382,7 @@ describe("RoSGNode", () => {
                 let addFields = node.getMethod("addfields");
                 let result = addFields.call(interpreter, fields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(2);
+                expect(node.getFields().size).toEqual(6);
 
                 let moreFields = new RoAssociativeArray([
                     { name: new BrsString("field1"), value: new BrsString("my string") },
@@ -359,7 +391,7 @@ describe("RoSGNode", () => {
                 ]);
                 result = addFields.call(interpreter, moreFields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(3); //Only adds the non duplicated
+                expect(node.getFields().size).toEqual(7); //Only adds the non duplicated
             });
 
             it("only adds fields if passed as an associative array", () => {
@@ -370,7 +402,7 @@ describe("RoSGNode", () => {
 
                 let result = addFields.call(interpreter, fields);
                 expect(result).toEqual(BrsBoolean.False);
-                expect(node.getFields().size).toEqual(0);
+                expect(node.getFields().size).toEqual(4);
             });
         });
 
@@ -405,11 +437,7 @@ describe("RoSGNode", () => {
 
         describe("removefield", () => {
             it("removes a field from the node", () => {
-                let node = new RoSGNode([
-                    { name: new BrsString("letter1"), value: new BrsString("a") },
-                    { name: new BrsString("letter2"), value: new BrsString("b") },
-                    { name: new BrsString("letter3"), value: new BrsString("c") },
-                ]);
+                let node = new RoSGNode([]);
 
                 let addField = node.getMethod("addfield");
                 let removeField = node.getMethod("removefield");
@@ -422,11 +450,11 @@ describe("RoSGNode", () => {
                     BrsBoolean.False
                 );
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(1);
+                expect(node.getFields().size).toEqual(5);
 
                 result = removeField.call(interpreter, new BrsString("field1"));
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(0);
+                expect(node.getFields().size).toEqual(4);
             });
 
             it("doesn't remove a non existing field", () => {
@@ -443,11 +471,11 @@ describe("RoSGNode", () => {
                     BrsBoolean.False
                 );
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(1);
+                expect(node.getFields().size).toEqual(5);
 
                 result = removeField.call(interpreter, new BrsString("field2"));
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(1);
+                expect(node.getFields().size).toEqual(5);
             });
         });
 
@@ -501,7 +529,7 @@ describe("RoSGNode", () => {
                 let setField = node.getMethod("setfield");
                 let result = setField.call(interpreter, new BrsString("field1"), new Int32(999));
                 expect(result).toEqual(BrsBoolean.False);
-                expect(node.getFields().size).toEqual(0);
+                expect(node.getFields().size).toEqual(4);
             });
         });
 
@@ -531,7 +559,7 @@ describe("RoSGNode", () => {
 
                 result = setFields.call(interpreter, updatedFields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(3);
+                expect(node.getFields().size).toEqual(7);
 
                 result = getField.call(interpreter, new BrsString("field1"));
                 expect(result.value).toEqual(strVal);
@@ -563,7 +591,7 @@ describe("RoSGNode", () => {
 
                 result = setFields.call(interpreter, updatedFields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(2);
+                expect(node.getFields().size).toEqual(6);
 
                 result = getField.call(interpreter, new BrsString("field1"));
                 expect(result.value).toEqual(strVal);
@@ -599,7 +627,7 @@ describe("RoSGNode", () => {
 
                 result = update.call(interpreter, updatedFields);
                 expect(result).toEqual(Uninitialized.Instance);
-                expect(node.getFields().size).toEqual(3);
+                expect(node.getFields().size).toEqual(7);
 
                 result = getField.call(interpreter, new BrsString("field1"));
                 expect(result.value).toEqual(strVal);
@@ -631,7 +659,7 @@ describe("RoSGNode", () => {
 
                 result = update.call(interpreter, updatedFields);
                 expect(result).toEqual(Uninitialized.Instance);
-                expect(node.getFields().size).toEqual(2);
+                expect(node.getFields().size).toEqual(6);
 
                 result = getField.call(interpreter, new BrsString("field1"));
                 expect(result.value).toEqual(strVal);

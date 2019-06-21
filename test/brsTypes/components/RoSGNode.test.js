@@ -109,7 +109,7 @@ describe("RoSGNode", () => {
                 let deleteCall = node.getMethod("delete");
                 expect(deleteCall).toBeTruthy();
                 expect(deleteCall.call(interpreter, new BrsString("foo"))).toBe(BrsBoolean.True);
-                expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.False);
+                expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.True);
                 expect(node.get(new BrsString("foo"))).toEqual(BrsInvalid.Instance);
             });
         });
@@ -244,7 +244,15 @@ describe("RoSGNode", () => {
                 expect(keys).toBeTruthy();
 
                 let result = keys.call(interpreter);
-                expect(result.getElements()).toEqual([change, cletter, focusable, focusedChild, id, letter1, letter2]);
+                expect(result.getElements()).toEqual([
+                    change,
+                    cletter,
+                    focusable,
+                    focusedChild,
+                    id,
+                    letter1,
+                    letter2,
+                ]);
             });
 
             it("returns an empty array from an empty associative array", () => {
@@ -282,7 +290,15 @@ describe("RoSGNode", () => {
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
                 let result = items.call(interpreter);
-                expect(result.getElements()).toEqual([id, focusedChild, letter1, letter2, cletter, change, focusable]);
+                expect(result.getElements()).toEqual([
+                    id,
+                    focusedChild,
+                    letter1,
+                    letter2,
+                    cletter,
+                    change,
+                    focusable,
+                ]);
             });
 
             it("returns an empty array from an empty associative array", () => {
@@ -298,6 +314,7 @@ describe("RoSGNode", () => {
 
                 let result = items.call(interpreter);
                 expect(result.getElements()).toEqual([id, focusedChild, change, focusable]);
+            });
         });
     });
 
@@ -342,7 +359,7 @@ describe("RoSGNode", () => {
         });
 
         describe("addfields", () => {
-            it("adds multiple field to the object", () => {
+            it("adds multiple fields to the node", () => {
                 let node = new RoSGNode([]);
                 let fields = new RoAssociativeArray([
                     { name: new BrsString("associative-array"), value: new RoAssociativeArray([]) },
@@ -431,10 +448,14 @@ describe("RoSGNode", () => {
                     { name: new BrsString("bar"), value: new BrsString("hello") },
                 ]);
 
-                let observeField = node.getMethod("observefield")
+                let observeField = node.getMethod("observefield");
                 expect(observeField).toBeTruthy();
-                
-                let result = observeField.call(interpreter, new BrsString("foo"), new BrsString("callMePlease"));
+
+                let result = observeField.call(
+                    interpreter,
+                    new BrsString("foo"),
+                    new BrsString("callMePlease")
+                );
                 expect(result).toEqual(BrsBoolean.True);
             });
         });
@@ -466,7 +487,6 @@ describe("RoSGNode", () => {
 
                 let addField = node.getMethod("addfield");
                 let removeField = node.getMethod("removefield");
-                expect(removeField).toBeTruthy();
 
                 let result = addField.call(
                     interpreter,
@@ -480,6 +500,18 @@ describe("RoSGNode", () => {
                 result = removeField.call(interpreter, new BrsString("field2"));
                 expect(result).toEqual(BrsBoolean.True);
                 expect(node.getFields().size).toEqual(5);
+            });
+
+            it("removes a field defined as invalid", () => {
+                let node = new RoSGNode([
+                    { name: new BrsString("useless"), value: BrsInvalid.Instance },
+                ]);
+
+                let removeField = node.getMethod("removefield");
+
+                result = removeField.call(interpreter, new BrsString("useless"));
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(4);
             });
         });
 

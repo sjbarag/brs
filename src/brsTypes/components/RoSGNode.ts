@@ -12,7 +12,7 @@ import { Float } from "../Float";
 class Field {
     private type: string;
     private value: BrsType;
-    private observers: String[] = [];
+    private observers: string[] = [];
 
     constructor(value: BrsType, private alwaysNotify: boolean) {
         this.type = ValueKind.toString(value.kind);
@@ -244,8 +244,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, str: BrsString) => {
-            let deleted = this.fields.delete(str.value);
-            return BrsBoolean.from(deleted);
+            this.fields.delete(str.value);
+            return BrsBoolean.True; //RBI always returns true
         },
     });
 
@@ -361,10 +361,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         ) => {
             let defaultValue = this.getDefaultValue(type.value);
 
-            if (
-                defaultValue !== Uninitialized.Instance &&
-                this.get(fieldname) === BrsInvalid.Instance
-            ) {
+            if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
                 this.set(fieldname, defaultValue, alwaysnotify.toBoolean());
             }
 
@@ -385,7 +382,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
             fields.getValue().forEach((value, key) => {
                 let fieldName = new BrsString(key);
-                if (this.get(fieldName) === BrsInvalid.Instance) {
+                if (!this.fields.has(key)) {
                     this.set(fieldName, value);
                 }
             });
@@ -431,11 +428,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, fieldname: BrsString) => {
-            if (this.get(fieldname) !== BrsInvalid.Instance) {
-                this.fields.delete(fieldname.value);
-            }
-
-            return BrsBoolean.True;
+            this.fields.delete(fieldname.value);
+            return BrsBoolean.True; //RBI always returns true
         },
     });
 
@@ -451,7 +445,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, value: BrsType) => {
             let field = this.get(fieldname);
 
-            if (field === BrsInvalid.Instance) {
+            if (!this.fields.has(fieldname.value)) {
                 return BrsBoolean.False;
             }
 
@@ -477,8 +471,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
             fields.getValue().forEach((value, key) => {
                 let fieldName = new BrsString(key);
-                let field = this.get(fieldName);
-                if (field !== BrsInvalid.Instance) {
+                if (this.fields.has(key)) {
                     this.set(fieldName, value);
                 }
             });
@@ -501,8 +494,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
             aa.getValue().forEach((value, key) => {
                 let fieldName = new BrsString(key);
-                let field = this.get(fieldName);
-                if (field !== BrsInvalid.Instance) {
+                if (this.fields.has(key)) {
                     this.set(fieldName, value);
                 }
             });

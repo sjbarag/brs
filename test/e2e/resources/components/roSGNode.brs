@@ -35,7 +35,8 @@ sub main()
     print "field1 in node now is: " node1.getField("field1")      ' => hello
     print "field3 in node now is: " node1.getField("field3")      ' => false
 
-    node1.observeField("field1", "onSomethingChanged")
+    node1.observeField("field1", "onCB1Called")
+    node1.observeField("field1", "onCB2Called")
     node1.setField("field1", "world")
 
     'ifNodeChildren tests
@@ -57,6 +58,10 @@ sub main()
     print "children size: " children.count()                       ' => 2
 end sub
 
-sub onSomethingChanged()
-    print "oops, something changed here"
+sub onCB1Called()
+    print "callback 1 called"
+end sub
+
+sub onCB2Called()
+    print "callback 2 called"
 end sub

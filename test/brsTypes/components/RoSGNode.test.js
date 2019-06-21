@@ -633,12 +633,6 @@ describe("RoSGNode", () => {
                 let child1SetFocus = child1.getMethod("setfocus");
                 let child2SetFocus = child2.getMethod("setfocus");
 
-                //by default both child1 and child2 should have no focus
-                let result = child1HasFocus.call(interpreter);
-                expect(result).toEqual(BrsBoolean.False);
-                result = child2HasFocus.call(interpreter);
-                expect(result).toEqual(BrsBoolean.False);
-
                 //focus on child 1
                 child1SetFocus.call(interpreter, BrsBoolean.True);
                 result = child1HasFocus.call(interpreter);

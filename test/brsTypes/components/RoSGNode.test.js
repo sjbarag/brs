@@ -72,12 +72,12 @@ describe("RoSGNode", () => {
             expect(node.get(new BrsString("foo"))).toBe(ninetyNine);
         });
 
-        it("overwrites values with existing keys", () => {
+        it("overwrites values with existing keys if they are the same type", () => {
             let node = new RoSGNode([{ name: new BrsString("foo"), value: new Int32(-99) }]);
 
-            node.set(new BrsString("foo"), new BrsString("not ninetynine"));
+            node.set(new BrsString("foo"), new Int32(66));
 
-            expect(node.get(new BrsString("foo"))).toEqual(new BrsString("not ninetynine"));
+            expect(node.get(new BrsString("foo"))).toEqual(new Int32(66));
         });
     });
 
@@ -244,10 +244,7 @@ describe("RoSGNode", () => {
                 expect(keys).toBeTruthy();
 
                 let result = keys.call(interpreter);
-                expect(result.getElements()).toEqual(
-                    new RoArray([change, cletter, focusable, focusedChild, id, letter1, letter2])
-                        .elements
-                );
+                expect(result.getElements()).toEqual([change, cletter, focusable, focusedChild, id, letter1, letter2]);
             });
 
             it("returns an empty array from an empty associative array", () => {
@@ -262,9 +259,7 @@ describe("RoSGNode", () => {
                 expect(keys).toBeTruthy();
 
                 let result = keys.call(interpreter);
-                expect(result.getElements()).toEqual(
-                    new RoArray([change, focusable, focusedChild, id]).elements
-                );
+                expect(result.getElements()).toEqual([change, focusable, focusedChild, id]);
             });
         });
 
@@ -287,10 +282,7 @@ describe("RoSGNode", () => {
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
                 let result = items.call(interpreter);
-                expect(result.getElements()).toEqual(
-                    new RoArray([id, focusedChild, letter1, letter2, cletter, change, focusable])
-                        .elements
-                );
+                expect(result.getElements()).toEqual([id, focusedChild, letter1, letter2, cletter, change, focusable]);
             });
 
             it("returns an empty array from an empty associative array", () => {
@@ -305,10 +297,7 @@ describe("RoSGNode", () => {
                 expect(items).toBeTruthy();
 
                 let result = items.call(interpreter);
-                expect(result.getElements()).toEqual(
-                    new RoArray([id, focusedChild, change, focusable]).elements
-                );
-            });
+                expect(result.getElements()).toEqual([id, focusedChild, change, focusable]);
         });
     });
 
@@ -432,6 +421,21 @@ describe("RoSGNode", () => {
                 let result = getField.call(interpreter, new BrsString("field1"));
                 expect(result).toEqual(new BrsString(""));
                 expect(node.get(new BrsString("field1"))).toEqual(new BrsString(""));
+            });
+        });
+
+        describe("observefield", () => {
+            it("adds an observer", () => {
+                let node = new RoSGNode([
+                    { name: new BrsString("foo"), value: new Int32(-99) },
+                    { name: new BrsString("bar"), value: new BrsString("hello") },
+                ]);
+
+                let observeField = node.getMethod("observefield")
+                expect(observeField).toBeTruthy();
+                
+                let result = observeField.call(interpreter, new BrsString("foo"), new BrsString("callMePlease"));
+                expect(result).toEqual(BrsBoolean.True);
             });
         });
 

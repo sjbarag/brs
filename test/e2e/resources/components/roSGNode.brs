@@ -35,6 +35,9 @@ sub main()
     print "field1 in node now is: " node1.getField("field1")      ' => hello
     print "field3 in node now is: " node1.getField("field3")      ' => false
 
+    node1.observeField("field1", "onSomethingChanged")
+    node1.setField("field1", "world")
+
     'ifNodeChildren tests
     parentNode = createObject("roSGNode", "Node")
     parentNode.id = "parent"
@@ -52,4 +55,8 @@ sub main()
     print "parent child count: " parentNode.getChildCount()        ' => 2
     children = parentNode.getChildren(-1, 0)
     print "children size: " children.count()                       ' => 2
+end sub
+
+sub onSomethingChanged()
+    print "oops, something changed here"
 end sub

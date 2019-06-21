@@ -378,9 +378,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    /** If on is set to true, sets the current remote control focus to the subject node,
+    /**
+     *  If on is set to true, sets the current remote control focus to the subject node,
      *  also automatically removing it from the node on which it was previously set.
-     *  If on is set to false, removes focus from the subject node if it had it */
+     *  If on is set to false, removes focus from the subject node if it had it
+     */
     private setfocus = new Callable("setfocus", {
         signature: {
             args: [new StdlibArgument("on", ValueKind.Boolean)],
@@ -391,8 +393,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             return BrsBoolean.False; //brightscript always returns false for some reason
         },
     });
-    /** Returns true if the subject node or any of its descendants in the SceneGraph node tree
-     *  has remote control focus */
+    /**
+     *  Returns true if the subject node or any of its descendants in the SceneGraph node tree
+     *  has remote control focus
+     */
     private isinfocuschain = new Callable("isinfocuschain", {
         signature: {
             args: [],

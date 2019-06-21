@@ -182,7 +182,7 @@ export class Environment {
     /**
      * Sets the currently focused node, which reacts to onKey button presses
      * @param node either node object or invalid
-     * */
+     */
     public setFocusedNode(node: RoSGNode | BrsInvalid) {
         this.focusedNode = node;
     }
@@ -190,7 +190,7 @@ export class Environment {
     /**
      * Gets the currently focused node, which reacts to onKey button presses
      * @returns currently focused node
-     * */
+     */
     public getFocusedNode(): RoSGNode | BrsInvalid {
         return this.focusedNode;
     }

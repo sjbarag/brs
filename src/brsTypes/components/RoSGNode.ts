@@ -46,6 +46,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             // ifSGNodeFocus methods
             this.hasfocus,
             this.setfocus,
+            this.isinfocuschain,
         ]);
     }
 
@@ -120,6 +121,24 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
     removeParent() {
         this.parent = BrsInvalid.Instance;
+    }
+
+    // recursively search for any child that's focused via DFS
+    isChildrenFocused(interpreter: Interpreter): boolean {
+        if (this.children.length === 0) {
+            return false;
+        }
+
+        for (let childNode of this.children) {
+            if (interpreter.environment.getFocusedNode() === childNode) {
+                return true;
+            } else {
+                if (childNode.isChildrenFocused(interpreter)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /** Removes all elements from the node */
@@ -370,6 +389,22 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, on: BrsBoolean) => {
             interpreter.environment.setFocusedNode(on.toBoolean() ? this : BrsInvalid.Instance);
             return BrsBoolean.False; //brightscript always returns false for some reason
+        },
+    });
+    /** Returns true if the subject node or any of its descendants in the SceneGraph node tree
+     *  has remote control focus */
+    private isinfocuschain = new Callable("isinfocuschain", {
+        signature: {
+            args: [],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter) => {
+            // loop through all children DFS and check if any children has focus
+            if (interpreter.environment.getFocusedNode() === this) {
+                return BrsBoolean.True;
+            }
+
+            return BrsBoolean.from(this.isChildrenFocused(interpreter));
         },
     });
 }

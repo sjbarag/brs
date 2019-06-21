@@ -654,5 +654,54 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.False);
             });
         });
+
+        describe("isinfocuschain", () => {
+            it("parent node has focus", () => {
+                let isInFocusChain = parent.getMethod("isinfocuschain");
+                let setFocus = parent.getMethod("setfocus");
+                expect(isInFocusChain).toBeTruthy();
+
+                let result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                setFocus.call(interpreter, BrsBoolean.True);
+                result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+            });
+
+            /** Create a node tree in the follow structure:
+             *                  parent
+             *               //        \\
+             *            child1       child2
+             *           //              \\
+             *       grandChild1       grandChild2
+             */
+            it("grand child has focus", () => {
+                let isInFocusChain = parent.getMethod("isinfocuschain");
+                let parentAppendChild = parent.getMethod("appendchild");
+                let child1AppendChild = child1.getMethod("appendchild");
+                let child2AppendChild = child2.getMethod("appendchild");
+                let grandChild2SetFocus = grandChild2.getMethod("setfocus");
+
+                parentAppendChild.call(interpreter, child1);
+                parentAppendChild.call(interpreter, child2);
+                child1AppendChild.call(interpreter, grandChild1);
+                child2AppendChild.call(interpreter, grandChild2);
+
+                // by default nothing has focus yet
+                let result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                // set focus on grand child 2
+                grandChild2SetFocus.call(interpreter, BrsBoolean.True);
+                result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+
+                // unset focus on grand child 2
+                grandChild2SetFocus.call(interpreter, BrsBoolean.False);
+                result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+            });
+        });
     });
 });

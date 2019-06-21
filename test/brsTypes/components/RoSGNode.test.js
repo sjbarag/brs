@@ -1011,11 +1011,12 @@ describe("RoSGNode", () => {
 
         beforeEach(() => {
             interpreter = new Interpreter();
-            parent = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("root") }]);
-            child1 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child1") }]);
-            child2 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child2") }]);
-            child3 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child3") }]);
-            child4 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child4") }]);
+            let idString = new BrsString("id");
+            parent = new RoSGNode([{ name: idString, value: new BrsString("root") }]);
+            child1 = new RoSGNode([{ name: idString, value: new BrsString("child1") }]);
+            child2 = new RoSGNode([{ name: idString, value: new BrsString("child2") }]);
+            child3 = new RoSGNode([{ name: idString, value: new BrsString("child3") }]);
+            child4 = new RoSGNode([{ name: idString, value: new BrsString("child4") }]);
         });
 
         describe("findnode", () => {

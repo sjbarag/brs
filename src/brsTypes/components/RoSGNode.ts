@@ -192,7 +192,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         this.parent = BrsInvalid.Instance;
     }
 
-    /** Removes all elements from the node */
     private getDefaultValue(type: string): BrsType {
         let value: BrsType;
 

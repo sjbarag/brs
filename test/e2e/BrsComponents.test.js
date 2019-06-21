@@ -109,6 +109,8 @@ describe("end to end brightscript functions", () => {
             //ifNodeDict tests
             "find node that does not exist: ",
             "invalid",
+            "node finds itself: ",
+            "current",
         ]);
     });
 

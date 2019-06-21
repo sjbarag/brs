@@ -39,4 +39,7 @@ sub main()
     currentNode = createObject("roSGNode", "Node")
     currentNode.id = "current"
     print "find node that does not exist: " currentNode.findNode("invalid-node-name") ' => invalid
+
+    searchResult = currentNode.findNode("current")
+    print "node finds itself: " searchResult.id ' => current
 end sub

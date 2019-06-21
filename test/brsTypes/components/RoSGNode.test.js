@@ -584,7 +584,11 @@ describe("RoSGNode", () => {
 
         beforeEach(() => {
             interpreter = new Interpreter();
-            node = new RoSGNode([{ name: new BrsString("currentNode") }]);
+            node = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("root") }]);
+            child1 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child1") }]);
+            child2 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child2") }]);
+            child3 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child3") }]);
+            child4 = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("child4") }]);
         });
 
         describe("findnode", () => {
@@ -595,6 +599,30 @@ describe("RoSGNode", () => {
                 let invalidNode = findNode.call(interpreter, new BrsString("someRandomId"));
                 expect(invalidNode).toEqual(BrsInvalid.Instance);
             });
+
+            it("finds itself", () => {
+                let findNode = node.getMethod("findnode");
+                expect(findNode).toBeTruthy();
+
+                let result = findNode.call(interpreter, new BrsString("root"));
+                expect(result).toBeTruthy();
+                expect(result).toBe(node);
+            });
+
+            // it("finds a node in the current nodes children list", () => {
+            //     let appendChild = node.getMethod("appendchild");
+            //     let children = [child1, child2, child3, child4]
+            //     for (let child of children) {
+            //         appendChild.call(interpreter, child);
+            //     }
+
+            //     let findNode = node.getMethod("findNode");
+            //     expect(findNode).toBeTruthy();
+
+            //     let searchNode = findNode.call(interpreter, new BrsString("child3"));
+            //     expect(searchNode).toBeTruthy();
+            //     expect(children[2]).toEqual(searchNode);
+            // });
         });
     });
 });

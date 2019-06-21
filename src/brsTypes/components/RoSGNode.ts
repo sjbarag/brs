@@ -121,6 +121,36 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         this.parent = BrsInvalid.Instance;
     }
 
+    findNodeById(node: RoSGNode, id: BrsString): RoSGNode | BrsInvalid {
+        // nothing to see here if node is invalid
+        if (node instanceof BrsInvalid) {
+            return BrsInvalid.Instance;
+        }
+
+        // test current node in tree
+        let currentId = node.get(new BrsString("id"));
+        if (currentId.toString() === id.toString()) {
+            return node;
+        }
+
+        // if there are no children, return invalid
+        let children = node.children;
+        if (children.length === 0) {
+            return BrsInvalid.Instance;
+        }
+
+        // otherwise visit each child
+        for (let child of children) {
+            let result = this.findNodeById(child, id);
+            if (result instanceof RoSGNode) {
+                return result;
+            }
+        }
+
+        // name was not found anywhere in tree
+        return BrsInvalid.Instance;
+    }
+
     /** Removes all elements from the node */
     private clear = new Callable("clear", {
         signature: {
@@ -355,11 +385,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter, name: BrsString) => {
-            // TODO: breadthfirst search to find nearest component ancestor
-            //       whose id field is set to 'name'
+            // climb parent hierarchy to find node to start search at
+            let root: RoSGNode = this;
+            while (root.parent && root.parent instanceof RoSGNode) {
+                root = root.parent;
+            }
 
-            // Return invalid if a node with the specified name is not found
-            return BrsInvalid.Instance;
+            // perform search
+            return this.findNodeById(root, name);
         },
     });
 }

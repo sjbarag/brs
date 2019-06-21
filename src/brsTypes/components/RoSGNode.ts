@@ -122,25 +122,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     }
 
     findNodeById(node: RoSGNode, id: BrsString): RoSGNode | BrsInvalid {
-        // nothing to see here if node is invalid
-        if (node instanceof BrsInvalid) {
-            return BrsInvalid.Instance;
-        }
-
         // test current node in tree
         let currentId = node.get(new BrsString("id"));
         if (currentId.toString() === id.toString()) {
             return node;
         }
 
-        // if there are no children, return invalid
-        let children = node.children;
-        if (children.length === 0) {
-            return BrsInvalid.Instance;
-        }
-
-        // otherwise visit each child
-        for (let child of children) {
+        // visit each child
+        for (let child of node.children) {
             let result = this.findNodeById(child, id);
             if (result instanceof RoSGNode) {
                 return result;

@@ -102,13 +102,19 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.setfield,
             this.setfields,
             this.update,
-            //ifSGNodeChildren
+            // ifSGNodeChildren methods
             this.appendchild,
             this.getchildcount,
             this.getchildren,
             this.removechild,
             this.getparent,
             this.createchild,
+            // ifSGNodeFocus methods
+            this.hasfocus,
+            this.setfocus,
+            this.isinfocuschain,
+            //ifSGNodeDict
+            this.findnode,
         ]);
     }
 
@@ -199,6 +205,22 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         this.parent = BrsInvalid.Instance;
     }
 
+    // recursively search for any child that's focused via DFS
+    isChildrenFocused(interpreter: Interpreter): boolean {
+        if (this.children.length === 0) {
+            return false;
+        }
+
+        for (let childNode of this.children) {
+            if (interpreter.environment.getFocusedNode() === childNode) {
+                return true;
+            } else if (childNode.isChildrenFocused(interpreter)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private getDefaultValue(type: string): BrsType {
         let value: BrsType;
 
@@ -230,6 +252,26 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         }
 
         return value;
+    }
+
+    /* searches the node tree for a node with the given id */
+    private findNodeById(node: RoSGNode, id: BrsString): RoSGNode | BrsInvalid {
+        // test current node in tree
+        let currentId = node.get(new BrsString("id"));
+        if (currentId.toString() === id.toString()) {
+            return node;
+        }
+
+        // visit each child
+        for (let child of node.children) {
+            let result = this.findNodeById(child, id);
+            if (result instanceof RoSGNode) {
+                return result;
+            }
+        }
+
+        // name was not found anywhere in tree
+        return BrsInvalid.Instance;
     }
 
     /** Removes all fields from the node */
@@ -623,6 +665,72 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 child.setParent(this);
             }
             return child;
+        },
+    });
+
+    /* Returns true if the subject node has the remote control focus, and false otherwise */
+    private hasfocus = new Callable("hasfocus", {
+        signature: {
+            args: [],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter) => {
+            return BrsBoolean.from(interpreter.environment.getFocusedNode() === this);
+        },
+    });
+
+    /**
+     *  If on is set to true, sets the current remote control focus to the subject node,
+     *  also automatically removing it from the node on which it was previously set.
+     *  If on is set to false, removes focus from the subject node if it had it
+     */
+    private setfocus = new Callable("setfocus", {
+        signature: {
+            args: [new StdlibArgument("on", ValueKind.Boolean)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, on: BrsBoolean) => {
+            interpreter.environment.setFocusedNode(on.toBoolean() ? this : BrsInvalid.Instance);
+            return BrsBoolean.False; //brightscript always returns false for some reason
+        },
+    });
+
+    /**
+     *  Returns true if the subject node or any of its descendants in the SceneGraph node tree
+     *  has remote control focus
+     */
+    private isinfocuschain = new Callable("isinfocuschain", {
+        signature: {
+            args: [],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter) => {
+            // loop through all children DFS and check if any children has focus
+            if (interpreter.environment.getFocusedNode() === this) {
+                return BrsBoolean.True;
+            }
+
+            return BrsBoolean.from(this.isChildrenFocused(interpreter));
+        },
+    });
+
+    /* Returns the node that is a descendant of the nearest component ancestor of the subject node whose id field matches the given name,
+        otherwise return invalid.
+        Implemented as a DFS from the top of parent hierarchy to match the observed behavior as opposed to the BFS mentioned in the docs. */
+    private findnode = new Callable("findnode", {
+        signature: {
+            args: [new StdlibArgument("name", ValueKind.String)],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, name: BrsString) => {
+            // climb parent hierarchy to find node to start search at
+            let root: RoSGNode = this;
+            while (root.parent && root.parent instanceof RoSGNode) {
+                root = root.parent;
+            }
+
+            // perform search
+            return this.findNodeById(root, name);
         },
     });
 }

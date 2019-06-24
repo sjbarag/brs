@@ -121,6 +121,32 @@ describe("end to end brightscript functions", () => {
             "2",
             "children size: ",
             "2",
+            //ifSGNodeFocus tests
+            "is parent in focus chain: ",
+            "false",
+            "is parent in focus chain: ",
+            "true",
+            "does grand child1 have focus: ",
+            "true",
+            "does grand child1 still have focus: ",
+            "false",
+            "does child2 have focus: ",
+            "true",
+            //ifNodeDict tests
+            "find node that does not exist: ",
+            "invalid",
+            "node finds itself: ",
+            "current",
+            "node finds one of its children: ",
+            "Child",
+            "node finds its grandchild: ",
+            "Grandchild",
+            "node finds its sibling: ",
+            "sibling-c7",
+            "node finds a cousin node: ",
+            "Cousin-2",
+            "node finds its grandparent: ",
+            "root-node",
         ]);
     });
 

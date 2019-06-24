@@ -945,13 +945,6 @@ describe("RoSGNode", () => {
 
         describe("getparent", () => {
             it("get parent of node", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-
                 let getParent = child1.getMethod("getparent");
                 let appendChild = parent.getMethod("appendchild");
 
@@ -962,13 +955,6 @@ describe("RoSGNode", () => {
             });
 
             it("get parent of node without parent", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-                let child1 = new RoSGNode([
-                    { name: new BrsString("child"), value: new BrsString("2") },
-                ]);
-
                 let getParent = child1.getMethod("getparent");
                 let appendChild = parent.getMethod("appendchild");
                 let removeChild = parent.getMethod("removechild");
@@ -991,10 +977,6 @@ describe("RoSGNode", () => {
 
         describe("createchild", () => {
             it("create generic roSGNode as child", () => {
-                let parent = new RoSGNode([
-                    { name: new BrsString("parent"), value: new BrsString("1") },
-                ]);
-
                 let createChild = parent.getMethod("createchild");
                 let getChildren = parent.getMethod("getchildren");
 
@@ -1002,6 +984,251 @@ describe("RoSGNode", () => {
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
                 expect(createChild).toBeTruthy();
                 expect(result.elements[0]).toEqual(childNode);
+            });
+        });
+    });
+
+    describe("ifSGNodeFocus", () => {
+        let interpreter, parent, child1, child2, grandChild1, grandChild2;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+            parent = new RoSGNode([{ name: new BrsString("parent"), value: new BrsString("1") }]);
+            child1 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("2") }]);
+            child2 = new RoSGNode([{ name: new BrsString("child"), value: new BrsString("3") }]);
+            grandChild1 = new RoSGNode([
+                { name: new BrsString("grandChild"), value: new BrsString("4") },
+            ]);
+            grandChild2 = new RoSGNode([
+                { name: new BrsString("grandChild"), value: new BrsString("5") },
+            ]);
+        });
+
+        describe("hasfocus", () => {
+            it("check if unfocused node has focus", () => {
+                let hasFocus = parent.getMethod("hasfocus");
+                expect(hasFocus).toBeTruthy();
+
+                let result = hasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+            });
+        });
+
+        describe("setfocus", () => {
+            it("sets focus on a node", () => {
+                let hasFocus = parent.getMethod("hasfocus");
+                let setFocus = parent.getMethod("setfocus");
+                expect(setFocus).toBeTruthy();
+
+                let result = hasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                setFocus.call(interpreter, BrsBoolean.True);
+                result = hasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+            });
+
+            it("sets focus on a node should disable focus on another", () => {
+                let child1HasFocus = child1.getMethod("hasfocus");
+                let child2HasFocus = child2.getMethod("hasfocus");
+                let child1SetFocus = child1.getMethod("setfocus");
+                let child2SetFocus = child2.getMethod("setfocus");
+
+                //by default both child1 and child2 should have no focus
+                let result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //focus on child 1
+                child1SetFocus.call(interpreter, BrsBoolean.True);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //focus on child 2 should remove focus from child 1
+                child2SetFocus.call(interpreter, BrsBoolean.True);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+            });
+
+            it("set focus to false", () => {
+                let child1HasFocus = child1.getMethod("hasfocus");
+                let child2HasFocus = child2.getMethod("hasfocus");
+                let child1SetFocus = child1.getMethod("setfocus");
+                let child2SetFocus = child2.getMethod("setfocus");
+
+                //focus on child 1
+                child1SetFocus.call(interpreter, BrsBoolean.True);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                //set focus to false on child 1
+                child1SetFocus.call(interpreter, BrsBoolean.False);
+                result = child1HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+                result = child2HasFocus.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+            });
+        });
+
+        describe("isinfocuschain", () => {
+            it("parent node has focus", () => {
+                let isInFocusChain = parent.getMethod("isinfocuschain");
+                let setFocus = parent.getMethod("setfocus");
+                expect(isInFocusChain).toBeTruthy();
+
+                let result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                setFocus.call(interpreter, BrsBoolean.True);
+                result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+            });
+
+            /** Create a node tree in the follow structure:
+             *                  parent
+             *               //        \\
+             *            child1       child2
+             *           //              \\
+             *       grandChild1       grandChild2
+             */
+            it("grand child has focus", () => {
+                let isInFocusChain = parent.getMethod("isinfocuschain");
+                let parentAppendChild = parent.getMethod("appendchild");
+                let child1AppendChild = child1.getMethod("appendchild");
+                let child2AppendChild = child2.getMethod("appendchild");
+                let grandChild2SetFocus = grandChild2.getMethod("setfocus");
+
+                parentAppendChild.call(interpreter, child1);
+                parentAppendChild.call(interpreter, child2);
+                child1AppendChild.call(interpreter, grandChild1);
+                child2AppendChild.call(interpreter, grandChild2);
+
+                // by default nothing has focus yet
+                let result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+
+                // set focus on grand child 2
+                grandChild2SetFocus.call(interpreter, BrsBoolean.True);
+                result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.True);
+
+                // unset focus on grand child 2
+                grandChild2SetFocus.call(interpreter, BrsBoolean.False);
+                result = isInFocusChain.call(interpreter);
+                expect(result).toEqual(BrsBoolean.False);
+            });
+        });
+    });
+
+    describe("ifSGNodeDict", () => {
+        let interpreter, parent, child1, child2, child3, child4;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+            let idString = new BrsString("id");
+            parent = new RoSGNode([{ name: idString, value: new BrsString("root") }]);
+            child1 = new RoSGNode([{ name: idString, value: new BrsString("child1") }]);
+            child2 = new RoSGNode([{ name: idString, value: new BrsString("child2") }]);
+            child3 = new RoSGNode([{ name: idString, value: new BrsString("child3") }]);
+            child4 = new RoSGNode([{ name: idString, value: new BrsString("child4") }]);
+        });
+
+        describe("findnode", () => {
+            it("returns invalid if no node is found", () => {
+                let findNode = parent.getMethod("findnode");
+                expect(findNode).toBeTruthy();
+
+                let invalidNode = findNode.call(interpreter, new BrsString("someRandomId"));
+                expect(invalidNode).toEqual(BrsInvalid.Instance);
+            });
+
+            it("finds itself", () => {
+                let findNode = parent.getMethod("findnode");
+
+                let result = findNode.call(interpreter, new BrsString("root"));
+                expect(result).toBeTruthy();
+                expect(result).toBe(parent);
+            });
+
+            it("finds a node in its direct children", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let children = [child1, child2, child3, child4];
+                for (let child of children) {
+                    appendChild.call(interpreter, child);
+                }
+
+                let findNode = parent.getMethod("findnode");
+                let result = findNode.call(interpreter, new BrsString("child3"));
+                expect(result).toBeTruthy();
+                expect(child3).toBe(result);
+            });
+
+            it("finds a grandchild", () => {
+                let appendGrandChild = child4.getMethod("appendchild");
+                appendGrandChild.call(interpreter, child3);
+
+                let appendChild = parent.getMethod("appendchild");
+                let children = [child1, child2, child4];
+                for (let child of children) {
+                    appendChild.call(interpreter, child);
+                }
+
+                let findNode = parent.getMethod("findNode");
+                let result = findNode.call(interpreter, new BrsString("child3"));
+                expect(result).toBeTruthy();
+                expect(child3).toBe(result);
+            });
+
+            it("finds a cousin", () => {
+                let appendChild1 = child1.getMethod("appendchild");
+                appendChild1.call(interpreter, child2);
+
+                let appendChild3 = child3.getMethod("appendchild");
+                appendChild3.call(interpreter, child4);
+
+                let appendChild = parent.getMethod("appendChild");
+                appendChild.call(interpreter, child1);
+                appendChild.call(interpreter, child3);
+
+                let findNode = child2.getMethod("findnode");
+                let result = findNode.call(interpreter, new BrsString("child4"));
+                expect(result).toBeTruthy();
+                expect(child4).toBe(result);
+            });
+
+            it("finds a sibling node", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let children = [child1, child2, child3, child4];
+                for (let child of children) {
+                    appendChild.call(interpreter, child);
+                }
+
+                let findNode = child4.getMethod("findnode");
+                let result = findNode.call(interpreter, new BrsString("child1"));
+                expect(result).toBeTruthy();
+                expect(child1).toBe(result);
+            });
+
+            it("finds its grandparent", () => {
+                let appendChild4 = child4.getMethod("appendchild");
+                appendChild4.call(interpreter, child3);
+
+                let appendChild = parent.getMethod("appendchild");
+                let children = [child1, child2, child4];
+                for (let child of children) {
+                    appendChild.call(interpreter, child);
+                }
+
+                let findNode = child3.getMethod("findNode");
+                let result = findNode.call(interpreter, new BrsString("root"));
+                expect(result).toBeTruthy();
+                expect(parent).toBe(result);
             });
         });
     });

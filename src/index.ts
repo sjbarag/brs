@@ -6,6 +6,7 @@ const readFile = promisify(fs.readFile);
 
 import { Lexer } from "./lexer";
 import * as PP from "./preprocessor";
+import { getComponentDefinitions } from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
@@ -33,6 +34,8 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     const executionOptions = Object.assign(defaultExecutionOptions, options);
 
     let manifest = await PP.getManifest(executionOptions.root);
+
+    let nodeDefs = await getComponentDefinitions(executionOptions.root);
 
     // wait for all files to be read, lexed, and parsed, but don't exit on the first error
     let parsedFiles = await pSettle(

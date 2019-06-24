@@ -76,11 +76,11 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "node size: ",
-            "3",
+            "7",
             "node keys size: ",
-            "3",
+            "7",
             "node items size: ",
-            "3",
+            "7",
             "can delete elements: ",
             "true",
             "can look up elements: ",
@@ -91,6 +91,19 @@ describe("end to end brightscript functions", () => {
             "true",
             "can empty itself: ",
             "true",
+            //ifNodeField tests
+            "node size: ",
+            "3",
+            "node size: ",
+            "2",
+            "field3 in node is: ",
+            "false",
+            "field3 in node now is: ",
+            "true",
+            "field1 in node now is: ",
+            "hello",
+            "field3 in node now is: ",
+            "false",
             //ifNodeChildren tests
             "parent child count: ",
             "0",
@@ -117,6 +130,21 @@ describe("end to end brightscript functions", () => {
             "false",
             "does child2 have focus: ",
             "true",
+            //ifNodeDict tests
+            "find node that does not exist: ",
+            "invalid",
+            "node finds itself: ",
+            "current",
+            "node finds one of its children: ",
+            "Child",
+            "node finds its grandchild: ",
+            "Grandchild",
+            "node finds its sibling: ",
+            "sibling-c7",
+            "node finds a cousin node: ",
+            "Cousin-2",
+            "node finds its grandparent: ",
+            "root-node",
         ]);
     });
 

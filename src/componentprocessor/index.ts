@@ -1,9 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import { promisify } from "util";
-import xmldoc from "xmldoc";
+import xmldoc, { XmlDocument } from "xmldoc";
 import pSettle = require("p-settle");
-const readDir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 const fg = require("fast-glob");
 
@@ -13,15 +12,14 @@ export class ComponentDefinition {
 
     constructor(readonly xmlPath: string) {}
 
-    async parse(): Promise<ComponentDefinition> {
+    async parse(): Promise<XmlDocument | string> {
         let contents;
         try {
-            console.log("parsing!");
             contents = await readFile(this.xmlPath, "utf-8");
             let xmlStr = contents.toString();
-            let stuff = new xmldoc.XmlDocument(xmlStr);
-            console.log(stuff);
-            return Promise.resolve(this);
+            let xmlNode = new xmldoc.XmlDocument(xmlStr);
+
+            return Promise.resolve(xmlNode);
         } catch (err) {
             console.log("some error");
             console.log(err);
@@ -29,7 +27,7 @@ export class ComponentDefinition {
             //   cases:
             //     * file read error
             //     * XML parse error
-            return Promise.reject(this);
+            return Promise.reject("error");
             // return Promise.reject({
             //     message: "Error parsing XML: " + this.xmlPath
             // });
@@ -37,14 +35,12 @@ export class ComponentDefinition {
     }
 }
 
-export async function getComponentDefinitions(
-    rootDir: string
-): Promise<pSettle.SettledResult<Promise<ComponentDefinition[]>>> {
+export async function getComponentDefinitions(rootDir: string): Promise<Object[]> {
     const componentsPattern = rootDir + "/components/**/*.xml";
     const xmlFiles: string[] = fg.sync(componentsPattern, {});
 
     let defs = xmlFiles.map(file => new ComponentDefinition(file));
     let parsedPromises = defs.map(async def => def.parse());
-    return await pSettle(parsedPromises);
-    //return Promise.resolve(defs);
+
+    return pSettle(parsedPromises);
 }

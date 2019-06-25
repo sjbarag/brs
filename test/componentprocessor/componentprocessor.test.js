@@ -1,3 +1,4 @@
+const xmldoc = require("xmldoc");
 const { componentprocessor } = require("brs");
 const { getComponentDefinitions, ComponentDefinition } = require("../../lib/componentprocessor");
 
@@ -33,7 +34,7 @@ describe.only("component parsing support", () => {
             );
 
             let badDef = new ComponentDefinition("/some/valid/path.xml");
-            await badDef.parse();
+            expect(badDef.parse()).rejects.toMatch("error");
         });
 
         it("parses well-defined component definition", async () => {
@@ -47,11 +48,12 @@ describe.only("component parsing support", () => {
             );
 
             let goodDef = new ComponentDefinition("/some/valid/path.xml");
-            await goodDef.parse();
+            let parsed = await goodDef.parse();
+
+            expect(parsed).toBeInstanceOf(xmldoc.XmlDocument);
+            expect(parsed.name).toEqual("component");
+            expect(parsed.attr.name).toEqual("GoodComponent");
+            expect(parsed.attr.extends).toEqual("BaseComponent");
         });
-        //     it("parses a node definition", async () => {
-        //         let nodeDef = new NodeDefinition("/tmp/Test.xml");
-        //         await nodeDef.parse();
-        //     });
     });
 });

@@ -96,6 +96,13 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     // execute them
     const interpreter = new Interpreter(executionOptions);
     interpreter.onError(logError);
+    // save each custom component def into a global map so we can access it
+    // at run time when we call `createObjectByType`
+    nodeDefs.map(node => {
+        if (node.isFulfilled && !node.isRejected) {
+            interpreter.environment.nodeDefMap.set(node.value!.name!, node.value!);
+        }
+    });
     return interpreter.exec(statements);
 }
 

@@ -4,22 +4,24 @@ import { promisify } from "util";
 import xmldoc, { XmlDocument } from "xmldoc";
 import pSettle = require("p-settle");
 const readFile = promisify(fs.readFile);
-const fg = require("fast-glob");
+import * as fg from "fast-glob";
 
 export class ComponentDefinition {
     public contents?: string;
-    public isFulfilled: boolean = true;
+    public xmlNode?: XmlDocument;
+    public name?: string;
 
     constructor(readonly xmlPath: string) {}
 
-    async parse(): Promise<XmlDocument | string> {
+    async parse(): Promise<ComponentDefinition> {
         let contents;
         try {
             contents = await readFile(this.xmlPath, "utf-8");
-            let xmlStr = contents.toString();
-            let xmlNode = new xmldoc.XmlDocument(xmlStr);
+            let xmlStr = contents.toString().replace(/\r?\n|\r/g, "");
+            this.xmlNode = new xmldoc.XmlDocument(xmlStr);
+            this.name = this.xmlNode.attr.name;
 
-            return Promise.resolve(xmlNode);
+            return Promise.resolve(this);
         } catch (err) {
             console.log("some error");
             console.log(err);
@@ -27,15 +29,12 @@ export class ComponentDefinition {
             //   cases:
             //     * file read error
             //     * XML parse error
-            return Promise.reject("error");
-            // return Promise.reject({
-            //     message: "Error parsing XML: " + this.xmlPath
-            // });
+            return Promise.reject(this);
         }
     }
 }
 
-export async function getComponentDefinitions(rootDir: string): Promise<Object[]> {
+export async function getComponentDefinitions(rootDir: string) {
     const componentsPattern = rootDir + "/components/**/*.xml";
     const xmlFiles: string[] = fg.sync(componentsPattern, {});
 

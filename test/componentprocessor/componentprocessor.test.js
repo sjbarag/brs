@@ -34,7 +34,7 @@ describe.only("component parsing support", () => {
             );
 
             let badDef = new ComponentDefinition("/some/valid/path.xml");
-            expect(badDef.parse()).rejects.toMatch("error");
+            expect(badDef.parse()).rejects.toBe(badDef);
         });
 
         it("parses well-defined component definition", async () => {
@@ -49,11 +49,10 @@ describe.only("component parsing support", () => {
 
             let goodDef = new ComponentDefinition("/some/valid/path.xml");
             let parsed = await goodDef.parse();
-
-            expect(parsed).toBeInstanceOf(xmldoc.XmlDocument);
-            expect(parsed.name).toEqual("component");
-            expect(parsed.attr.name).toEqual("GoodComponent");
-            expect(parsed.attr.extends).toEqual("BaseComponent");
+            let xmlNode = parsed.xmlNode;
+            expect(xmlNode.name).toEqual("component");
+            expect(xmlNode.attr.name).toEqual("GoodComponent");
+            expect(xmlNode.attr.extends).toEqual("BaseComponent");
         });
     });
 });

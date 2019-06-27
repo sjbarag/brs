@@ -1,6 +1,6 @@
 const xmldoc = require("xmldoc");
 const { componentprocessor } = require("brs");
-const { getComponentDefinitions, ComponentDefinition } = require("../../lib/componentprocessor");
+const { getComponentDefinitionMap, ComponentDefinition } = require("../../lib/componentprocessor");
 
 jest.mock("fast-glob");
 jest.mock("fs");
@@ -19,8 +19,8 @@ describe.only("component parsing support", () => {
                 return [];
             });
 
-            let nodeDefs = await getComponentDefinitions();
-            expect(nodeDefs).toEqual([]);
+            let nodeDefs = await getComponentDefinitionMap();
+            expect(nodeDefs).toEqual(new Map());
         });
 
         it("parses bad component definitions", async () => {

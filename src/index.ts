@@ -6,7 +6,7 @@ const readFile = promisify(fs.readFile);
 
 import { Lexer } from "./lexer";
 import * as PP from "./preprocessor";
-import { getComponentDefinitions } from "./componentprocessor";
+import { getComponentDefinitionMap } from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
@@ -35,7 +35,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     let manifest = await PP.getManifest(executionOptions.root);
 
-    let nodeDefs = await getComponentDefinitions(executionOptions.root);
+    let nodeDefs = await getComponentDefinitionMap(executionOptions.root);
 
     // wait for all files to be read, lexed, and parsed, but don't exit on the first error
     let parsedFiles = await pSettle(
@@ -98,11 +98,8 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     interpreter.onError(logError);
     // save each custom component def into a global map so we can access it
     // at run time when we call `createObjectByType`
-    nodeDefs.map(node => {
-        if (node.isFulfilled && !node.isRejected) {
-            interpreter.environment.nodeDefMap.set(node.value!.name!, node.value!);
-        }
-    });
+    interpreter.environment.nodeDefMap = nodeDefs;
+
     return interpreter.exec(statements);
 }
 

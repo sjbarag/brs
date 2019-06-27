@@ -196,4 +196,22 @@ describe("end to end brightscript functions", () => {
             "🐶", // uri-encoded dog emoji, decoded
         ]);
     });
+
+    test("components/customComponent.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "customComponent.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "node.baseBoolField: ",
+            "false",
+            "node.baseIntField: ",
+            "0",
+            "node.normalBoolField: ",
+            "true",
+            "node.advancedStringField: ",
+            "advancedField!",
+            "node.advancedIntField: ",
+            "12345",
+        ]);
+    });
 });

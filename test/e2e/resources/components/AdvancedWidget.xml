@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="AdvancedWidget" extends="NormalWidget">
+    <interface>
+        <!-- output -->
+        <field id="advancedStringField" type="string" value="advancedField!" alwaysNotify="true" />
+        <field id="advancedIntField" type="integer" value="12345"  />
+        <field id="advancedBoolField" type="boolean" value="true" />
+    </interface>
+    <children>
+    </children>
+</component>

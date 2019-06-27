@@ -10,6 +10,8 @@ export enum Scope {
     Module,
     /** The set of variables (including anonymous functions) accessible *only* from within a function body. */
     Function,
+    /** The _brs_ mock scope */
+    Mock,
 }
 
 /** An error thrown when attempting to access an uninitialized variable. */
@@ -36,6 +38,15 @@ export class Environment {
      * @see Scope.Function
      */
     private function = new Map<string, BrsType>();
+    /**
+     * The mockComponent function and any mocks that are setup currently.
+     * @see Scope.Mock
+     */
+    private mock = new Map<string, BrsType>();
+    /**
+     * Mocked objects
+     */
+    private mockObjects = new Map<string, RoAssociativeArray>();
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
     /**
@@ -64,6 +75,9 @@ export class Environment {
                 break;
             case Scope.Module:
                 destination = this.module;
+                break;
+            case Scope.Mock:
+                destination = this.mock;
                 break;
             default:
                 destination = this.global;
@@ -116,7 +130,7 @@ export class Environment {
             return this.mPointer;
         }
 
-        let source = [this.function, this.module, this.global].find(scope =>
+        let source = [this.function, this.module, this.global, this.mock].find(scope =>
             scope.has(lowercaseName)
         );
 
@@ -135,7 +149,7 @@ export class Environment {
      */
     public has(
         name: Identifier,
-        scopeFilter: Scope[] = [Scope.Global, Scope.Module, Scope.Function]
+        scopeFilter: Scope[] = [Scope.Global, Scope.Module, Scope.Function, Scope.Mock]
     ): boolean {
         if (name.text.toLowerCase() === "m") {
             return true; // we always have an `m` scope of some sort!
@@ -152,6 +166,8 @@ export class Environment {
                             return this.module;
                         case Scope.Function:
                             return this.function;
+                        case Scope.Mock:
+                            return this.mock;
                     }
                 })
                 .find(scope => scope.has(lowercaseName)) != null
@@ -178,10 +194,29 @@ export class Environment {
         newEnvironment.global = this.global;
         newEnvironment.module = this.module;
         newEnvironment.mPointer = this.mPointer;
+        newEnvironment.mock = this.mock;
+        newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;
         newEnvironment.nodeDefMap = this.nodeDefMap;
 
         return newEnvironment;
+    }
+
+    /**
+     * retrieves mocked object if it exists
+     * @param objName the object to mock
+     */
+    public getMock(objName: string): BrsType {
+        return this.mockObjects.get(objName) || BrsInvalid.Instance;
+    }
+
+    /**
+     * places the mockValue object into list of mocks
+     * @param objName the object we are mocking
+     * @param mockValue the mock to return
+     */
+    public setMock(objName: string, mockValue: RoAssociativeArray): void {
+        this.mockObjects.set(objName.toLowerCase(), mockValue);
     }
 
     /**

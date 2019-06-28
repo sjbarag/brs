@@ -1,7 +1,7 @@
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { Timespan } from "./Timespan";
-import { RoSGNode, createNodeByType } from "./RoSGNode";
+import { createNodeByType } from "./RoSGNode";
 import { RoRegex } from "./RoRegex";
 import { BrsString } from "../BrsType";
 import { RoString } from "./RoString";

@@ -218,6 +218,18 @@ describe("end to end brightscript functions", () => {
             "advancedField!",
             "node.advancedIntField: ",
             "12345",
+            "node child count is: ",
+            "6",
+            "child id is: ",
+            "normalLabel",
+            "otherNode child count is: ",
+            "3",
+            "anotherNode child count is: ",
+            "1",
+            "baseRectangle width: ",
+            "100",
+            "baseRectangle height: ",
+            "200",
         ]);
     });
 });

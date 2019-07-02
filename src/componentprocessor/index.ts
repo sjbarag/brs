@@ -19,9 +19,13 @@ interface ComponentField {
     [key: string]: FieldAttributes;
 }
 
+interface NodeField {
+    [id: string]: string;
+}
+
 interface ComponentNode {
     name: string;
-    fields: Object;
+    fields: NodeField;
     children: ComponentNode[];
 }
 

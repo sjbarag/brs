@@ -128,13 +128,13 @@ Array [
       "body": Block {
         "location": Object {
           "end": Object {
-            "column": 22,
-            "line": 4,
+            "column": 12,
+            "line": 5,
           },
           "file": "",
           "start": Object {
-            "column": 16,
-            "line": 4,
+            "column": 29,
+            "line": 2,
           },
         },
         "statements": Array [
@@ -255,13 +255,13 @@ Array [
       "body": Block {
         "location": Object {
           "end": Object {
-            "column": 19,
+            "column": 12,
             "line": 7,
           },
           "file": "",
           "start": Object {
-            "column": 12,
-            "line": 7,
+            "column": 29,
+            "line": 6,
           },
         },
         "statements": Array [],

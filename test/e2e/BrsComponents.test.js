@@ -51,6 +51,8 @@ describe("end to end brightscript functions", () => {
             "true",
             "can look up elements: ",
             "true",
+            "can look up elements (brackets): ",
+            "true",
             "can check for existence: ",
             "true",
             "can empty itself: ",
@@ -66,6 +68,83 @@ describe("end to end brightscript functions", () => {
             "373447701",
             "can return 2077252342 for date that can't be parsed: ",
             "2077252342",
+        ]);
+    });
+
+    test("components/roSGNode.brs", async () => {
+        await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "node size: ",
+            "7",
+            "node keys size: ",
+            "7",
+            "node items size: ",
+            "7",
+            "can delete elements: ",
+            "true",
+            "can look up elements: ",
+            "true",
+            "can look up elements (brackets): ",
+            "true",
+            "can check for existence: ",
+            "true",
+            "can empty itself: ",
+            "true",
+            //ifNodeField tests
+            "node size: ",
+            "3",
+            "node size: ",
+            "2",
+            "field3 in node is: ",
+            "false",
+            "field3 in node now is: ",
+            "true",
+            "field1 in node now is: ",
+            "hello",
+            "field3 in node now is: ",
+            "false",
+            //ifNodeChildren tests
+            "parent child count: ",
+            "0",
+            "get same parent from child: ",
+            "true",
+            "parent child count: ",
+            "1",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "2",
+            "children size: ",
+            "2",
+            //ifSGNodeFocus tests
+            "is parent in focus chain: ",
+            "false",
+            "is parent in focus chain: ",
+            "true",
+            "does grand child1 have focus: ",
+            "true",
+            "does grand child1 still have focus: ",
+            "false",
+            "does child2 have focus: ",
+            "true",
+            //ifNodeDict tests
+            "find node that does not exist: ",
+            "invalid",
+            "node finds itself: ",
+            "current",
+            "node finds one of its children: ",
+            "Child",
+            "node finds its grandchild: ",
+            "Grandchild",
+            "node finds its sibling: ",
+            "sibling-c7",
+            "node finds a cousin node: ",
+            "Cousin-2",
+            "node finds its grandparent: ",
+            "root-node",
         ]);
     });
 
@@ -102,6 +181,19 @@ describe("end to end brightscript functions", () => {
             "789",
             " ]",
             " ]",
+        ]);
+    });
+
+    test("components/roString.brs", async () => {
+        await execute([resourceFile("components", "roString.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stderr.write)).toEqual([]);
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "true", // comparison
+            "5", // length
+            "b", // split("/")[1]
+            "%F0%9F%90%B6", // dog emoji, uri-encoded
+            "🐶", // uri-encoded dog emoji, decoded
         ]);
     });
 });

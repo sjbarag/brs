@@ -1,12 +1,21 @@
-import { ValueKind, BrsInvalid, BrsBoolean, BrsString, Uninitialized, Comparable } from "./BrsType";
+import {
+    ValueKind,
+    BrsInvalid,
+    BrsBoolean,
+    BrsString,
+    Uninitialized,
+    Comparable,
+    BrsValue,
+} from "./BrsType";
 import { RoArray } from "./components/RoArray";
 import { RoAssociativeArray } from "./components/RoAssociativeArray";
 import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { Double } from "./Double";
-import { Callable, CallableImplementation } from "./Callable";
-import { Lexeme } from "../lexer";
+import { Callable } from "./Callable";
+import { BrsComponent } from "./components/BrsComponent";
+import { RoString } from "./components/RoString";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -16,8 +25,10 @@ export * from "./Double";
 export * from "./components/RoArray";
 export * from "./components/RoAssociativeArray";
 export * from "./components/Timespan";
+export * from "./components/RoSGNode";
 export * from "./components/BrsObjects";
 export * from "./components/RoRegex";
+export * from "./components/RoString";
 export * from "./Callable";
 
 /**
@@ -43,7 +54,7 @@ export function isBrsNumber(value: BrsType): value is BrsNumber {
  * @returns `true` if `value` is a string, otherwise `false`.
  */
 export function isBrsString(value: BrsType): value is BrsString {
-    return value.kind === ValueKind.String;
+    return value.kind === ValueKind.String || value instanceof RoString;
 }
 
 /**
@@ -70,11 +81,7 @@ export function isBrsCallable(value: BrsType): value is Callable {
  * @returns `true` if `value` can be iterated across, otherwise `false`.
  */
 export function isIterable(value: BrsType): value is Iterable {
-    if (value.kind !== ValueKind.Object) {
-        return false;
-    }
-
-    return value.getElements != null;
+    return "get" in value && "getElements" in value && "set" in value;
 }
 
 /** The set of BrightScript numeric types. */
@@ -89,5 +96,8 @@ export type BrsPrimitive = BrsInvalid | BrsBoolean | BrsString | BrsNumber;
 /** The set of BrightScript iterable types. */
 export type Iterable = RoArray | RoAssociativeArray;
 
+// this is getting weird - we need a lesThan and greaterThan function?!
+export type AllComponents = { kind: ValueKind.Object } & BrsComponent & BrsValue;
+
 /** The set of all supported types in BrightScript. */
-export type BrsType = BrsPrimitive | Iterable | Callable | Uninitialized;
+export type BrsType = BrsPrimitive | Iterable | Callable | AllComponents | Uninitialized;

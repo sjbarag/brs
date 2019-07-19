@@ -331,9 +331,7 @@ export class Parser {
                         //don't throw this error; let the parser continue
                         addError(
                             name,
-                            `Function name '${
-                                name.text
-                            }' cannot end with type designator '${lastChar}'`
+                            `Function name '${name.text}' cannot end with type designator '${lastChar}'`
                         );
                     }
                 }
@@ -380,9 +378,7 @@ export class Parser {
                                 isReserved: ReservedWords.has(arg.name.text),
                                 location: arg.location,
                             },
-                            `Argument '${
-                                arg.name.text
-                            }' has no default value, but comes after arguments with default values`
+                            `Argument '${arg.name.text}' has no default value, but comes after arguments with default values`
                         );
                     }
 
@@ -399,9 +395,7 @@ export class Parser {
                 if (!body) {
                     throw addError(
                         peek(),
-                        `Expected 'end ${functionType.text}' to terminate ${
-                            functionType.text
-                        } block`
+                        `Expected 'end ${functionType.text}' to terminate ${functionType.text} block`
                     );
                 }
                 // consume 'end sub' or 'end function'
@@ -413,9 +407,7 @@ export class Parser {
                 if (endingKeyword.kind !== expectedEndKind) {
                     addError(
                         endingKeyword,
-                        `Expected 'end ${functionType.text}' to terminate ${
-                            functionType.text
-                        } block`
+                        `Expected 'end ${functionType.text}' to terminate ${functionType.text} block`
                     );
                 }
 
@@ -502,9 +494,7 @@ export class Parser {
                 addError(name, `Cannot use reserved word "${name.text}" as an identifier`);
             }
             let operator = consume(
-                `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${
-                    name.text
-                }'`,
+                `Expected operator ('=', '+=', '-=', '*=', '/=', '\\=', '^=', '<<=', or '>>=') after idenfifier '${name.text}'`,
                 ...assignmentOperators
             );
 
@@ -591,6 +581,15 @@ export class Parser {
 
             if (match(Lexeme.Return)) {
                 return returnStatement();
+            }
+
+            if (check(Lexeme.Goto)) {
+                return gotoStatement();
+            }
+
+            //does this line look like a label? (i.e.  `someIdentifier:` )
+            if (check(Lexeme.Identifier) && checkNext(Lexeme.Colon)) {
+                return labelStatement();
             }
 
             // TODO: support multi-statements
@@ -1115,6 +1114,36 @@ export class Parser {
         }
 
         /**
+         * Parses a `label` statement
+         * @returns an AST representation of an `label` statement.
+         */
+        function labelStatement() {
+            let tokens = {
+                identifier: advance(),
+                colon: advance(),
+            };
+
+            consume("Labels must be declared on their own line", Lexeme.Newline, Lexeme.Eof);
+
+            return new Stmt.Label(tokens);
+        }
+
+        /**
+         * Parses a `goto` statement
+         * @returns an AST representation of an `goto` statement.
+         */
+        function gotoStatement() {
+            let tokens = {
+                goto: advance(),
+                label: consume("Expected label identifier after goto keyword", Lexeme.Identifier),
+            };
+
+            while (match(Lexeme.Newline, Lexeme.Colon));
+
+            return new Stmt.Goto(tokens);
+        }
+
+        /**
          * Parses an `end` statement
          * @returns an AST representation of an `end` statement.
          */
@@ -1505,6 +1534,21 @@ export class Parser {
                 current++;
             }
             return previous();
+        }
+
+        /**
+         * Check that the previous token matches one of the specified Lexemes
+         * @param lexemes
+         */
+        function checkPrevious(...lexemes: Lexeme[]) {
+            if (current === 0) {
+                return false;
+            } else {
+                current--;
+                var result = check(...lexemes);
+                current++;
+                return result;
+            }
         }
 
         function check(...lexemes: Lexeme[]) {

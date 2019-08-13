@@ -31,6 +31,30 @@ describe("RoDateTime", () => {
             interpreter = new Interpreter();
         });
 
+        describe("mark", () => {
+            it("Reset date to the current date time", () => {
+                let mark = dateTime.getMethod("mark");
+                let advanceTime = 50000;
+                clock.tick(advanceTime);
+                let result = mark.call(interpreter);
+
+                expect(mark).toBeTruthy();
+                expect(dateTime.dateTime).toEqual(Date());
+            });
+        });
+
+        describe("getTimeZoneOffset", () => {
+            it("Returns the time-zone offset in minutes for the current locale.", () => {
+                let getTimeZoneOffset = dateTime.getMethod("getTimeZoneOffset");
+                let currentDate = new Date();
+                let timeZoneOffset = currentDate.getTimezoneOffset();
+                let result = getTimeZoneOffset.call(interpreter);
+
+                expect(getTimeZoneOffset).toBeTruthy();
+                expect(result).toEqual(new Int32(timeZoneOffset));
+            });
+        });
+
         describe("asSeconds", () => {
             it("Returns the date/time as the number of seconds from the Unix epoch", () => {
                 let asSeconds = dateTime.getMethod("asSeconds");

@@ -14,11 +14,9 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         this.dateTime = new Date();
 
         this.registerMethods([
-            /**
             this.mark,
             this.toLocalTime,
             this.getTimeZoneOffset,
-            */
             this.asSeconds,
             /** 
             this.fromSeconds,
@@ -64,13 +62,44 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         return "<Component: roDateTime>";
     }
 
+    private mark = new Callable("mark", {
+        signature: {
+            args: [],
+            returns: ValueKind.Invalid,
+        },
+        impl: (interpreter: Interpreter) => {
+            this.dateTime = new Date();
+            return BrsInvalid.Instance;
+        },
+    });
+
+    private toLocalTime = new Callable("toLocalTime", {
+        signature: {
+            args: [],
+            returns: ValueKind.Invalid,
+        },
+        impl: (interpreter: Interpreter) => {
+            return BrsInvalid.Instance;
+        },
+    });
+
+    private getTimeZoneOffset = new Callable("getTimeZoneOffset", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (interpreter: Interpreter) => {
+            return new Int32(this.dateTime.getTimezoneOffset());
+        },
+    });
+
     private asSeconds = new Callable("asSeconds", {
         signature: {
             args: [],
             returns: ValueKind.Int32,
         },
         impl: (interpreter: Interpreter) => {
-            return new Int32(this.dateTime.getSeconds());
+            return new Int32(this.dateTime.getTime() / 1000);
         },
     });
 }

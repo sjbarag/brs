@@ -56,7 +56,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             this.getMinutes,
             this.getSeconds,
             this.getMilliseconds,
-            /* this.getLastDayOfMonth,*/
+            this.getLastDayOfMonth,
             this.getDayOfWeek,
         ]);
     }
@@ -83,6 +83,12 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
 
     private dateFormatter(date: Date, format: string): string {
         return dateFns.format(date, format);
+    }
+
+    // note that month is 0-based, like in the Date object. Adjust if necessary.
+    private getNumberOfDays(year: number, month: number): number {
+        var isLeap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        return [31, isLeap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
     }
 
     private mark = new Callable("mark", {
@@ -309,6 +315,18 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             );
 
             return new Int32(Number(dateString));
+        },
+    });
+
+    private getLastDayOfMonth = new Callable("getLastDayOfMonth", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            return new Int32(
+                this.getNumberOfDays(this.dateTime.getFullYear(), this.dateTime.getMonth())
+            );
         },
     });
 

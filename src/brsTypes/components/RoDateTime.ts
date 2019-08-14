@@ -22,6 +22,18 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         "short-date-dashes": "M-D-YY",
     };
 
+    private dateComponentsOptions: { [id: string]: string } = {
+        weekDay: "dddd",
+        fullYear: "YYYY",
+        month: "M",
+        dayOfMoth: "D",
+        hours: "H",
+        minutes: "m",
+        seconds: "s",
+        milliseconds: "SSS",
+        dayOfWeek: "d",
+    };
+
     constructor() {
         super("roDateTime", ["ifDateTime"]);
         this.dateTime = new Date();
@@ -35,7 +47,6 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             this.toISOString,
             this.fromISO8601String,
             this.asDateString,
-            /*
             this.asDateStringNoParam,
             this.getWeekday,
             this.getYear,
@@ -45,9 +56,8 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             this.getMinutes,
             this.getSeconds,
             this.getMilliseconds,
-            this.getLastDayOfMonth,
-            this.getDayOfWeek
-            */
+            /* this.getLastDayOfMonth,*/
+            this.getDayOfWeek,
         ]);
     }
 
@@ -71,6 +81,10 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         return "<Component: roDateTime>";
     }
 
+    private dateFormatter(date: Date, format: string): string {
+        return dateFns.format(date, format);
+    }
+
     private mark = new Callable("mark", {
         signature: {
             args: [],
@@ -89,6 +103,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         },
         impl: (interpreter: Interpreter) => {
             /** TODO: Implement toLocalTime */
+
             return BrsInvalid.Instance;
         },
     });
@@ -159,13 +174,156 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         },
         impl: (_: Interpreter, format: BrsString) => {
             if (format.value in this.formatOptions) {
-                let formatter = this.formatOptions[format.value];
+                let dateString = this.dateFormatter(
+                    this.dateTime,
+                    this.formatOptions[format.value]
+                );
 
-                let dateString = dateFns.format(this.dateTime, formatter);
                 return new BrsString(dateString);
             } else {
                 return new BrsString("");
             }
+        },
+    });
+
+    private asDateStringNoParam = new Callable("asDateStringNoParam", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(this.dateTime, this.formatOptions["long-date"]);
+
+            return new BrsString(dateString);
+        },
+    });
+
+    private getWeekday = new Callable("getWeekday", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["weekDay"]
+            );
+
+            return new BrsString(dateString);
+        },
+    });
+
+    private getYear = new Callable("getYear", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["fullYear"]
+            );
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getMonth = new Callable("getMonth", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(this.dateTime, this.dateComponentsOptions["month"]);
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getDayOfMonth = new Callable("getDayOfMonth", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["dayOfMoth"]
+            );
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getHours = new Callable("getHours", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(this.dateTime, this.dateComponentsOptions["hours"]);
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getMinutes = new Callable("getMinutes", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["minutes"]
+            );
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getSeconds = new Callable("getSeconds", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["seconds"]
+            );
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getMilliseconds = new Callable("getMilliseconds", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["milliseconds"]
+            );
+
+            return new Int32(Number(dateString));
+        },
+    });
+
+    private getDayOfWeek = new Callable("getDayOfWeek", {
+        signature: {
+            args: [],
+            returns: ValueKind.Int32,
+        },
+        impl: (_: Interpreter, format: BrsString) => {
+            let dateString = this.dateFormatter(
+                this.dateTime,
+                this.dateComponentsOptions["dayOfWeek"]
+            );
+
+            return new Int32(Number(dateString));
         },
     });
 }

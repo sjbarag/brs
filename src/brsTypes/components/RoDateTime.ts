@@ -4,7 +4,6 @@ import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
-import * as luxon from "luxon";
 import * as dateFns from "date-fns";
 
 export class RoDateTime extends BrsComponent implements BrsValue, Comparable {

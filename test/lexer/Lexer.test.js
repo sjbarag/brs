@@ -424,7 +424,7 @@ describe("lexer", () => {
     });
 
     describe("isToken", () => {
-        it("works", () => {
+        it("returns booleans", () => {
             let location = {
                 start: {
                     line: 1,

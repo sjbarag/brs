@@ -72,7 +72,7 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roDateTime.brs", async () => {
-        await execute([resourceFile("componentes", "roDateTime.brs")], outputStreams);
+        await execute([resourceFile("components", "roDateTime.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "To ISO string: ",

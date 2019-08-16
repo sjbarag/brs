@@ -34,7 +34,7 @@ export class roDateTime extends BrsComponent implements BrsValue, Comparable {
     };
 
     constructor() {
-        super("roDateTime", ["ifDateTime"]);
+        super("roDateTime");
         this.dateTime = new Date();
 
         this.registerMethods([

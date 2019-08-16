@@ -110,7 +110,7 @@ describe("roDateTime", () => {
                 let fromISO8601String = dateTime.getMethod("fromISO8601String");
 
                 let fixedDateISO8601String = "2019-05-02T12:00:00.000";
-                let fixedDateISO8601Timestamp = 1556816400000;
+                let fixedDateISO8601Timestamp = 1556798400000;
 
                 _ = fromISO8601String.call(interpreter, new BrsString(fixedDateISO8601String));
                 let expected = new Date(fixedDateISO8601Timestamp);

@@ -76,7 +76,7 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "To ISO string: ",
-            "2019-05-02T17:00:00.000Z",
+            "2019-05-02T12:00:00.000Z",
             "As a date string long date: ",
             "Thursday May 2, 2019",
             "As a date string no week day: ",

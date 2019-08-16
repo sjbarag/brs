@@ -71,6 +71,41 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/roDateTime.brs", async () => {
+        await execute([resourceFile("componentes", "roDateTime.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "To ISO string: ",
+            "2019-05-02T17:00:00.000Z",
+            "As a date string long date: ",
+            "Thursday May 2, 2019",
+            "As a date string no week day: ",
+            "May 2, 2019",
+            "As a date string no param: ",
+            "Thursday May 2, 2019",
+            "Week day: ",
+            "Thursday",
+            "Full year: ",
+            "2019",
+            "Month: ",
+            "5",
+            "Day of month: ",
+            "2",
+            "Hours: ",
+            "12",
+            "Minutes: ",
+            "0",
+            "Seconds: ",
+            "0",
+            "Milliseconds: ",
+            "0",
+            "Last day of month: ",
+            "31",
+            "Day of week: ",
+            "4",
+        ]);
+    });
+
     test("components/roSGNode.brs", async () => {
         await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
 

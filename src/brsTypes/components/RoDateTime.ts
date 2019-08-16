@@ -6,7 +6,7 @@ import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import * as dateFns from "date-fns";
 
-export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
+export class roDateTime extends BrsComponent implements BrsValue, Comparable {
     readonly kind = ValueKind.Object;
     private dateTime: Date;
 

@@ -16,7 +16,7 @@ import { Double } from "./Double";
 import { Callable } from "./Callable";
 import { BrsComponent } from "./components/BrsComponent";
 import { RoString } from "./components/RoString";
-import { RoDateTime } from "./components/RoDateTime";
+import { roDateTime } from "./components/RoDateTime";
 
 export * from "./BrsType";
 export * from "./Int32";

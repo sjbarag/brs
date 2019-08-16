@@ -1,10 +1,10 @@
 const brs = require("brs");
-const { RoDateTime, Int32, BrsString, BrsInvalid } = brs.types;
+const { roDateTime, Int32, BrsString, BrsInvalid } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 const lolex = require("lolex");
 const dateFns = require("date-fns");
 
-describe("RoDateTime", () => {
+describe("roDateTime", () => {
     let dateTime;
     let clock;
     let fixedDate = "2019-08-09T20:52:58.000Z";
@@ -12,7 +12,7 @@ describe("RoDateTime", () => {
 
     beforeEach(() => {
         clock = lolex.install({ now: fixedDateInMilliseconds });
-        dateTime = new RoDateTime();
+        dateTime = new roDateTime();
     });
 
     afterAll(() => {
@@ -30,7 +30,7 @@ describe("RoDateTime", () => {
 
         beforeEach(() => {
             interpreter = new Interpreter();
-            dateTime = new RoDateTime();
+            dateTime = new roDateTime();
         });
 
         describe("mark", () => {
@@ -269,7 +269,7 @@ describe("RoDateTime", () => {
                 dates.forEach(date => {
                     let newDate = Number(date);
                     clock = lolex.install({ now: newDate });
-                    dateTime = new RoDateTime();
+                    dateTime = new roDateTime();
 
                     let getLastDayOfMonth = dateTime.getMethod("getLastDayOfMonth");
                     let result = getLastDayOfMonth.call(interpreter);

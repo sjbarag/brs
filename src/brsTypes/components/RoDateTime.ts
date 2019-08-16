@@ -84,9 +84,8 @@ export class roDateTime extends BrsComponent implements BrsValue, Comparable {
         return dateFns.format(date, format);
     }
 
-    // note that month is 0-based, like in the Date object.
     private getNumberOfDays(year: number, month: number): number {
-        let isLeap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        let isLeap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
         return [31, isLeap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
     }
 

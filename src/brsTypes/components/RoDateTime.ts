@@ -163,7 +163,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
         },
         impl: (_: Interpreter, dateString: BrsString) => {
             let milliseconds = Date.parse(dateString.value);
-            if ((milliseconds = NaN)) {
+            if (isNaN(milliseconds)) {
                 this.dateTime = new Date();
             } else {
                 this.dateTime = new Date(milliseconds);
@@ -196,7 +196,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.String,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(this.dateTime, this.formatOptions["long-date"]);
 
             return new BrsString(dateString);
@@ -208,7 +208,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.String,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["weekDay"]
@@ -223,7 +223,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["fullYear"]
@@ -238,7 +238,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(this.dateTime, this.dateComponentsOptions["month"]);
 
             return new Int32(Number(dateString));
@@ -250,7 +250,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["dayOfMoth"]
@@ -265,7 +265,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(this.dateTime, this.dateComponentsOptions["hours"]);
 
             return new Int32(Number(dateString));
@@ -277,7 +277,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["minutes"]
@@ -292,7 +292,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["seconds"]
@@ -307,7 +307,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["milliseconds"]
@@ -322,7 +322,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             return new Int32(
                 this.getNumberOfDays(this.dateTime.getFullYear(), this.dateTime.getMonth())
             );
@@ -334,7 +334,7 @@ export class RoDateTime extends BrsComponent implements BrsValue, Comparable {
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: (_: Interpreter, format: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let dateString = this.dateFormatter(
                 this.dateTime,
                 this.dateComponentsOptions["dayOfWeek"]

@@ -45,6 +45,16 @@ describe("RoDateTime", () => {
             });
         });
 
+        describe("toLocalTime", () => {
+            it("Offsets the date/time value from an assumed UTC date/time to a local date/time using the system time zone setting. ", () => {
+                let toLocalTime = dateTime.getMethod("toLocalTime");
+                _ = toLocalTime.call(interpreter);
+
+                expect(toLocalTime).toBeTruthy();
+                expect(dateTime.dateTime).toEqual(new Date());
+            });
+        });
+
         describe("getTimeZoneOffset", () => {
             it("Returns the time-zone offset in minutes for the current locale.", () => {
                 let getTimeZoneOffset = dateTime.getMethod("getTimeZoneOffset");
@@ -95,6 +105,21 @@ describe("RoDateTime", () => {
             });
         });
 
+        describe("fromISO8601String", () => {
+            it("Return an ISO 8601 representation of the date/time value", () => {
+                let fromISO8601String = dateTime.getMethod("fromISO8601String");
+
+                let fixedDateISO8601String = "2019-05-02T12:00:00.000";
+                let fixedDateISO8601Timestamp = 1556816400000;
+
+                _ = fromISO8601String.call(interpreter, new BrsString(fixedDateISO8601String));
+                let expected = new Date(fixedDateISO8601Timestamp);
+
+                expect(fromISO8601String).toBeTruthy();
+                expect(dateTime.dateTime).toEqual(expected);
+            });
+        });
+
         describe("asDateString", () => {
             it("Returns the date/time as a formatted string", () => {
                 let asDateString = dateTime.getMethod("asDateString");
@@ -117,6 +142,105 @@ describe("RoDateTime", () => {
                     expect(asDateString).toBeTruthy();
                     expect(result).toEqual(new BrsString(expected));
                 });
+            });
+        });
+
+        describe("asDateStringNoParam", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let asDateStringNoParam = dateTime.getMethod("asDateStringNoParam");
+                let result = asDateStringNoParam.call(interpreter);
+                let expected = dateFns.format(Date(), "dddd MMMM D, YYYY");
+
+                expect(asDateStringNoParam).toBeTruthy();
+                expect(result).toEqual(new BrsString(expected));
+            });
+        });
+
+        describe("getWeekday", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getWeekday = dateTime.getMethod("getWeekday");
+                let result = getWeekday.call(interpreter);
+                let expected = dateFns.format(Date(), "dddd");
+
+                expect(getWeekday).toBeTruthy();
+                expect(result).toEqual(new BrsString(expected));
+            });
+        });
+
+        describe("getYear", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getYear = dateTime.getMethod("getYear");
+                let result = getYear.call(interpreter);
+                let expected = dateFns.format(Date(), "YYYY");
+
+                expect(getYear).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
+            });
+        });
+
+        describe("getMonth", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getMonth = dateTime.getMethod("getMonth");
+                let result = getMonth.call(interpreter);
+                let expected = dateFns.format(Date(), "M");
+
+                expect(getMonth).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
+            });
+        });
+
+        describe("getDayOfMonth", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getDayOfMonth = dateTime.getMethod("getDayOfMonth");
+                let result = getDayOfMonth.call(interpreter);
+                let expected = dateFns.format(Date(), "D");
+
+                expect(getDayOfMonth).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
+            });
+        });
+
+        describe("getHours", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getHours = dateTime.getMethod("getHours");
+                let result = getHours.call(interpreter);
+                let expected = dateFns.format(Date(), "H");
+
+                expect(getHours).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
+            });
+        });
+
+        describe("getMinutes", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getMinutes = dateTime.getMethod("getMinutes");
+                let result = getMinutes.call(interpreter);
+                let expected = dateFns.format(Date(), "m");
+
+                expect(getMinutes).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
+            });
+        });
+
+        describe("getSeconds", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getSeconds = dateTime.getMethod("getSeconds");
+                let result = getSeconds.call(interpreter);
+                let expected = dateFns.format(Date(), "s");
+
+                expect(getSeconds).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
+            });
+        });
+
+        describe("getMilliseconds", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getMilliseconds = dateTime.getMethod("getMilliseconds");
+                let result = getMilliseconds.call(interpreter);
+                let expected = dateFns.format(Date(), "SSS");
+
+                expect(getMilliseconds).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
             });
         });
 
@@ -154,6 +278,17 @@ describe("RoDateTime", () => {
                     expect(getLastDayOfMonth).toBeTruthy();
                     expect(result).toEqual(knownLastDay);
                 });
+            });
+        });
+
+        describe("getDayOfWeek", () => {
+            it("Returns the date/time as a formatted string", () => {
+                let getDayOfWeek = dateTime.getMethod("getDayOfWeek");
+                let result = getDayOfWeek.call(interpreter);
+                let expected = dateFns.format(Date(), "d");
+
+                expect(getDayOfWeek).toBeTruthy();
+                expect(result).toEqual(new Int32(expected));
             });
         });
     });

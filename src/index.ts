@@ -152,7 +152,7 @@ export function repl() {
         let results = run(line, defaultExecutionOptions, replInterpreter);
         if (results) {
             results.map(result => {
-                if (result.toString() !== "invalid") {
+                if (result !== BrsTypes.BrsInvalid.Instance) {
                     console.log(result.toString());
                 }
             });

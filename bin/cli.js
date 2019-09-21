@@ -30,7 +30,7 @@ program
                 process.exitCode = 1;
             }
         } else {
-            console.log("Off-Roku BrightScript interpreter [Version " + packageJson.version + "]");
+            console.log(`Off-Roku BrightScript interpreter [Version ${packageJson.version}]`);
             console.log("");
             brs.repl();
         }

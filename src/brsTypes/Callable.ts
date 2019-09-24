@@ -261,8 +261,7 @@ export class Callable implements Brs.BrsValue {
                 expected.type.kind === Brs.ValueKind.Float &&
                 received.kind === Brs.ValueKind.Int32
             ) {
-                let old = args[index] as Int32;
-                args[index] = new Float(old.getValue());
+                args[index] = new Float(received.getValue());
                 return;
             }
 
@@ -270,8 +269,7 @@ export class Callable implements Brs.BrsValue {
                 expected.type.kind === Brs.ValueKind.Int32 &&
                 received.kind === Brs.ValueKind.Float
             ) {
-                let old = args[index] as Float;
-                args[index] = new Int32(old.getValue());
+                args[index] = new Int32(received.getValue());
                 return;
             }
 

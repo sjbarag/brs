@@ -6,7 +6,7 @@ import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { roDouble } from "./components/RoDouble";
 
-export class Double implements Numeric, Comparable {
+export class Double implements Numeric, Comparable, Boxable {
     readonly kind = ValueKind.Double;
     private readonly value: number;
 

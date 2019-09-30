@@ -5,6 +5,7 @@ import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { roDouble } from "./components/RoDouble";
+import { Boxable } from "./Boxing";
 
 export class Double implements Numeric, Comparable, Boxable {
     readonly kind = ValueKind.Double;

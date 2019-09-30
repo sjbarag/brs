@@ -23,13 +23,13 @@ describe("roInt", () => {
     });
 
     describe("ifInt, ifToStr", () => {
-        let a, b, interpreter, someNumberA, someNumberB;
+        var a = new roInt(new Int32(0));
+        var b = new roInt(new Int32(0));
+        let interpreter;
+        let someNumberA = 305;
+        let someNumberB = 291;
 
         beforeEach(() => {
-            someNumberA = Math.floor(Math.random() * Math.floor(500));
-            someNumberB = Math.floor(Math.random() * Math.floor(500));
-            a = new roInt(new Int32(0));
-            b = new roInt(new Int32(0));
             interpreter = new Interpreter();
         });
 

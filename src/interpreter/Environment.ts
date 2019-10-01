@@ -35,6 +35,10 @@ export class Environment {
      * @see Scope.Function
      */
     private function = new Map<string, BrsType>();
+    /**
+     * Mocked objects
+     */
+    private mockObjects = new Map<string, RoAssociativeArray>();
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
     /**
@@ -88,9 +92,20 @@ export class Environment {
     /**
      * Removes a variable from this environment's function scope.
      * @param name the name of the variable to remove (in the form of an `Identifier`)
+     * @param scope the scope to remove this variable from (defaults to "function")
      */
-    public remove(name: string): void {
-        this.function.delete(name.toLowerCase());
+    public remove(name: string, scope: Scope = Scope.Function): void {
+        let lowercaseName = name.toLowerCase();
+        switch (scope) {
+            case Scope.Module:
+                this.module.delete(lowercaseName);
+                break;
+            case Scope.Function:
+                this.function.delete(lowercaseName);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -171,12 +186,30 @@ export class Environment {
      */
     public createSubEnvironment(): Environment {
         let newEnvironment = new Environment();
-        newEnvironment.global = this.global;
-        newEnvironment.module = this.module;
+        newEnvironment.global = new Map(this.global);
+        newEnvironment.module = new Map(this.module);
         newEnvironment.mPointer = this.mPointer;
+        newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;
 
         return newEnvironment;
+    }
+
+    /**
+     * retrieves mocked object if it exists
+     * @param objName the object to mock
+     */
+    public getMock(objName: string): BrsType {
+        return this.mockObjects.get(objName) || BrsInvalid.Instance;
+    }
+
+    /**
+     * places the mockValue object into list of mocks
+     * @param objName the object we are mocking
+     * @param mockValue the mock to return
+     */
+    public setMock(objName: string, mockValue: RoAssociativeArray): void {
+        this.mockObjects.set(objName.toLowerCase(), mockValue);
     }
 
     /**

@@ -19,6 +19,7 @@ import {
     Callable,
     BrsNumber,
     Comparable,
+    Float,
 } from "../brsTypes";
 
 import { Lexeme } from "../lexer";
@@ -27,6 +28,7 @@ import { Expr, Stmt } from "../parser";
 import { BrsError, TypeMismatch } from "../Error";
 
 import * as StdLib from "../stdlib";
+import { _brs_ } from "../extensions";
 
 import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
@@ -36,7 +38,6 @@ import { RoAssociativeArray } from "../brsTypes/components/RoAssociativeArray";
 import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
 import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
-import { DottedGet } from "../parser/Expression";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -116,6 +117,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             .forEach((func: Callable) =>
                 this._environment.define(Scope.Global, func.name || "", func)
             );
+
+        this._environment.define(Scope.Global, "_brs_", _brs_);
     }
 
     /**
@@ -376,6 +379,84 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         switch (lexeme) {
+            case Lexeme.LeftShift:
+            case Lexeme.LeftShiftEqual:
+                if (
+                    isBrsNumber(left) &&
+                    isBrsNumber(right) &&
+                    right.getValue() >= 0 &&
+                    right.getValue() < 32
+                ) {
+                    return left.leftShift(right);
+                } else if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return this.addError(
+                        new TypeMismatch({
+                            message:
+                                "In a bitshift expression the right value must be >= 0 and < 32.",
+                            left: {
+                                type: left,
+                                location: expression.left.location,
+                            },
+                            right: {
+                                type: right,
+                                location: expression.right.location,
+                            },
+                        })
+                    );
+                } else {
+                    return this.addError(
+                        new TypeMismatch({
+                            message: "Attempting to bitshift non-numeric values.",
+                            left: {
+                                type: left,
+                                location: expression.left.location,
+                            },
+                            right: {
+                                type: right,
+                                location: expression.right.location,
+                            },
+                        })
+                    );
+                }
+            case Lexeme.RightShift:
+            case Lexeme.RightShiftEqual:
+                if (
+                    isBrsNumber(left) &&
+                    isBrsNumber(right) &&
+                    right.getValue() >= 0 &&
+                    right.getValue() < 32
+                ) {
+                    return left.rightShift(right);
+                } else if (isBrsNumber(left) && isBrsNumber(right)) {
+                    return this.addError(
+                        new TypeMismatch({
+                            message:
+                                "In a bitshift expression the right value must be >= 0 and < 32.",
+                            left: {
+                                type: left,
+                                location: expression.left.location,
+                            },
+                            right: {
+                                type: right,
+                                location: expression.right.location,
+                            },
+                        })
+                    );
+                } else {
+                    return this.addError(
+                        new TypeMismatch({
+                            message: "Attempting to bitshift non-numeric values.",
+                            left: {
+                                type: left,
+                                location: expression.left.location,
+                            },
+                            right: {
+                                type: right,
+                                location: expression.right.location,
+                            },
+                        })
+                    );
+                }
             case Lexeme.Minus:
             case Lexeme.MinusEqual:
                 if (isBrsNumber(left) && isBrsNumber(right)) {
@@ -1011,9 +1092,19 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         // BrightScript for/to loops evaluate the counter initial value, final value, and increment
         // values *only once*, at the top of the for/to loop.
         this.execute(statement.counterDeclaration);
-        const finalValue = this.evaluate(statement.finalValue);
-        const increment = this.evaluate(statement.increment);
-
+        const startValue = this.evaluate(statement.counterDeclaration.value) as Int32 | Float;
+        const finalValue = this.evaluate(statement.finalValue) as Int32 | Float;
+        let increment = this.evaluate(statement.increment) as Int32 | Float;
+        if (increment instanceof Float) {
+            increment = new Int32(Math.trunc(increment.getValue()));
+        }
+        if (
+            (startValue.getValue() > finalValue.getValue() && increment.getValue() > 0) ||
+            (startValue.getValue() < finalValue.getValue() && increment.getValue() < 0)
+        ) {
+            // Shortcut, do not process anything
+            return BrsInvalid.Instance;
+        }
         const counterName = statement.counterDeclaration.name;
         const step = new Stmt.Assignment(
             { equals: statement.tokens.for },
@@ -1042,34 +1133,52 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         let loopExitReason: Stmt.BlockEnd | undefined;
 
-        while (
-            this.evaluate(new Expr.Variable(counterName))
-                .equalTo(finalValue)
-                .not()
-                .toBoolean()
-        ) {
-            // execute the block
-            try {
-                this.execute(statement.body);
-            } catch (reason) {
-                if (reason instanceof Stmt.ExitForReason) {
-                    loopExitReason = reason;
-                    break;
-                } else {
-                    // re-throw returns, runtime errors, etc.
-                    throw reason;
+        if (increment.getValue() > 0) {
+            while (
+                (this.evaluate(new Expr.Variable(counterName)) as Int32 | Float)
+                    .greaterThan(finalValue)
+                    .not()
+                    .toBoolean()
+            ) {
+                // execute the block
+                try {
+                    this.execute(statement.body);
+                } catch (reason) {
+                    if (reason instanceof Stmt.ExitForReason) {
+                        loopExitReason = reason;
+                        break;
+                    } else {
+                        // re-throw returns, runtime errors, etc.
+                        throw reason;
+                    }
                 }
+
+                // then increment the counter
+                this.execute(step);
             }
+        } else {
+            while (
+                (this.evaluate(new Expr.Variable(counterName)) as Int32 | Float)
+                    .lessThan(finalValue)
+                    .not()
+                    .toBoolean()
+            ) {
+                // execute the block
+                try {
+                    this.execute(statement.body);
+                } catch (reason) {
+                    if (reason instanceof Stmt.ExitForReason) {
+                        loopExitReason = reason;
+                        break;
+                    } else {
+                        // re-throw returns, runtime errors, etc.
+                        throw reason;
+                    }
+                }
 
-            // then increment the counter
-            this.execute(step);
-        }
-
-        // BrightScript for/to loops execute the body one more time when initial === final
-        if (loopExitReason === undefined) {
-            this.execute(statement.body);
-            // they also increments the counter once more
-            this.execute(step);
+                // then increment the counter
+                this.execute(step);
+            }
         }
 
         return BrsInvalid.Instance;

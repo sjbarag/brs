@@ -188,7 +188,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    callNamedFunction(functionName: string) {
+    getCallableFunction(functionName: string): Callable {
         let callbackVariable = new Expr.Variable({
             kind: Lexeme.Identifier,
             text: functionName,
@@ -207,8 +207,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         });
         let maybeCallback = this.evaluate(callbackVariable);
         if (maybeCallback.kind === ValueKind.Callable) {
-            this.visitCall(new Expr.Call(callbackVariable, callbackVariable.name, []));
+            return maybeCallback;
         }
+
+        throw new NotFound(`${functionName} was not found in scope`);
     }
 
     visitNamedFunction(statement: Stmt.Function): BrsType {

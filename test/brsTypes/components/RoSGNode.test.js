@@ -450,13 +450,6 @@ describe("RoSGNode", () => {
 
                 let observeField = node.getMethod("observefield");
                 expect(observeField).toBeTruthy();
-
-                let result = observeField.call(
-                    interpreter,
-                    new BrsString("foo"),
-                    new BrsString("callMePlease")
-                );
-                expect(result).toEqual(BrsBoolean.True);
             });
         });
 

@@ -11,7 +11,7 @@ import { Float } from "../Float";
 
 interface BrsCallback {
     interpreter: Interpreter;
-    functionName: string;
+    callable: Callable;
 }
 class Field {
     private type: string;
@@ -42,16 +42,16 @@ class Field {
         this.value = value;
     }
 
-    addObserver(interpreter: Interpreter, functionName: BrsString) {
+    addObserver(interpreter: Interpreter, callable: Callable) {
         let brsCallback: BrsCallback = {
             interpreter: interpreter,
-            functionName: functionName.value,
+            callable: callable,
         };
         this.observers.push(brsCallback);
     }
 
     private executeCallbacks(callback: BrsCallback) {
-        callback.interpreter.callNamedFunction(callback.functionName);
+        callback.callable.call(callback.interpreter);
     }
 }
 
@@ -537,7 +537,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value);
             if (field instanceof Field) {
-                field.addObserver(interpreter, functionname);
+                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value));
             }
             return BrsBoolean.True;
         },

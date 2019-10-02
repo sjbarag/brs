@@ -141,6 +141,7 @@ describe("end to end brightscript functions", () => {
             "false",
             "callback 1 called",
             "callback 2 called",
+            "field 3 updated",
             //ifNodeChildren tests
             "parent child count: ",
             "0",

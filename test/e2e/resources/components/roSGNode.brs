@@ -37,7 +37,10 @@ sub main()
 
     node1.observeField("field1", "onCB1Called")
     node1.observeField("field1", "onCB2Called")
+    node1.observeField("field2", "onField2Cb") ' This doesn't get called since field was removed
+    node1.observeField("field3", "onField3Cb")
     node1.setField("field1", "world")
+    node1.update({ field2: 10, field3: true})
 
     'ifNodeChildren tests
     parentNode = createObject("roSGNode", "Node")
@@ -186,4 +189,12 @@ end sub
 
 sub onCB2Called()
     print "callback 2 called"
+end sub
+
+sub onField2Cb()
+    print "field 2 updated"
+end sub
+
+sub onField3Cb()
+    print "field 3 updated"
 end sub

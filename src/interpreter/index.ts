@@ -189,29 +189,25 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     callNamedFunction(functionName: string) {
-        try {
-            let callbackVariable = new Expr.Variable({
-                kind: Lexeme.Identifier,
-                text: functionName,
-                isReserved: false,
-                location: {
-                    start: {
-                        line: -1,
-                        column: -1,
-                    },
-                    end: {
-                        line: -1,
-                        column: -1,
-                    },
-                    file: "(internal)",
+        let callbackVariable = new Expr.Variable({
+            kind: Lexeme.Identifier,
+            text: functionName,
+            isReserved: false,
+            location: {
+                start: {
+                    line: -1,
+                    column: -1,
                 },
-            });
-            let maybeCallback = this.evaluate(callbackVariable);
-            if (maybeCallback.kind === ValueKind.Callable) {
-                this.visitCall(new Expr.Call(callbackVariable, callbackVariable.name, []));
-            }
-        } catch (err) {
-            throw err;
+                end: {
+                    line: -1,
+                    column: -1,
+                },
+                file: "(internal)",
+            },
+        });
+        let maybeCallback = this.evaluate(callbackVariable);
+        if (maybeCallback.kind === ValueKind.Callable) {
+            this.visitCall(new Expr.Call(callbackVariable, callbackVariable.name, []));
         }
     }
 

@@ -47,12 +47,18 @@ export interface ExecutionOptions {
     stderr: NodeJS.WriteStream;
 }
 
-/** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
-export const defaultExecutionOptions: ExecutionOptions = {
-    root: process.cwd(),
-    stdout: process.stdout,
-    stderr: process.stderr,
-};
+/**
+ * Returns the default set of execution options. Includes the `stdout`/`stderr` pair from the process that invoked
+ * `brs`, as well as the root directory to use for pkg:/ paths.
+ * @returns the default set of options for the interpreter
+ */
+export function defaultExecutionOptions(): ExecutionOptions {
+    return {
+        root: process.cwd(),
+        stdout: process.stdout,
+        stderr: process.stderr,
+    };
+}
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
@@ -99,7 +105,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * @param options configuration for the execution, including the streams to use for `stdout` and
      *                `stderr` and the base directory for path resolution
      */
-    constructor(options: ExecutionOptions = defaultExecutionOptions) {
+    constructor(options: ExecutionOptions = defaultExecutionOptions()) {
         this.stdout = new OutputProxy(options.stdout);
         this.stderr = new OutputProxy(options.stderr);
         this.options = options;

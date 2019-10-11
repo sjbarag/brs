@@ -31,7 +31,7 @@ export { _parser as parser };
  *          executed, or be rejected if an error occurs.
  */
 export async function execute(filenames: string[], options: Partial<ExecutionOptions>) {
-    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    const executionOptions = Object.assign(defaultExecutionOptions(), options);
 
     let manifest = await PP.getManifest(executionOptions.root);
 
@@ -96,11 +96,22 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     // execute them
     const interpreter = new Interpreter(executionOptions);
     interpreter.onError(logError);
+
     // save each custom component def into a global map so we can access it
     // at run time when we call `createObjectByType`
     interpreter.environment.nodeDefMap = nodeDefs;
 
-    return interpreter.exec(statements);
+    let result = interpreter.exec(statements);
+
+    // close stdout and stderr if they're not process.stdout/process.stderr
+    let { stdout, stderr } = executionOptions;
+    if (stdout !== process.stdout) {
+        stdout.end();
+    }
+    if (stderr !== process.stderr) {
+        stderr.end();
+    }
+    return result;
 }
 
 /**
@@ -113,7 +124,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
  * @returns the AST produced from lexing and parsing the provided files
  */
 export function lexParseSync(filenames: string[], options: Partial<ExecutionOptions>) {
-    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    const executionOptions = Object.assign(defaultExecutionOptions(), options);
 
     let manifest = PP.getManifestSync(executionOptions.root);
 
@@ -147,7 +158,7 @@ export function repl() {
         if (line.toLowerCase() === "quit" || line.toLowerCase() === "exit") {
             process.exit();
         }
-        let results = run(line, defaultExecutionOptions, replInterpreter);
+        let results = run(line, defaultExecutionOptions(), replInterpreter);
         if (results) {
             results.map(result => {
                 if (result !== BrsTypes.BrsInvalid.Instance) {
@@ -174,7 +185,7 @@ export function repl() {
  */
 function run(
     contents: string,
-    options: ExecutionOptions = defaultExecutionOptions,
+    options: ExecutionOptions = defaultExecutionOptions(),
     interpreter: Interpreter
 ) {
     const lexer = new Lexer();

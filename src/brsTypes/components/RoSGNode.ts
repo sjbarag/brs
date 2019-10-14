@@ -9,10 +9,14 @@ import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { Float } from "../Float";
 
+interface BrsCallback {
+    interpreter: Interpreter;
+    callable: Callable;
+}
 class Field {
     private type: string;
     private value: BrsType;
-    private observers: string[] = [];
+    private observers: BrsCallback[] = [];
 
     constructor(value: BrsType, private alwaysNotify: boolean) {
         this.type = ValueKind.toString(value.kind);
@@ -32,18 +36,23 @@ class Field {
     }
 
     setValue(value: BrsType) {
-        // This is where the Callbacks are called
         if (this.alwaysNotify || this.value !== value) {
-            this.executeCallbacks();
+            this.observers.map(this.executeCallbacks);
         }
         this.value = value;
     }
 
-    addObserver(functionName: BrsString) {
-        this.observers.push(functionName.value);
+    addObserver(interpreter: Interpreter, callable: Callable) {
+        let brsCallback: BrsCallback = {
+            interpreter: interpreter,
+            callable: callable,
+        };
+        this.observers.push(brsCallback);
     }
 
-    private executeCallbacks() {}
+    private executeCallbacks(callback: BrsCallback) {
+        callback.callable.call(callback.interpreter);
+    }
 }
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
@@ -528,7 +537,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value);
             if (field instanceof Field) {
-                field.addObserver(functionname);
+                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value));
             }
             return BrsBoolean.True;
         },

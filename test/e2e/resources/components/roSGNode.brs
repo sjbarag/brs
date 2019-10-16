@@ -35,8 +35,12 @@ sub main()
     print "field1 in node now is: " node1.getField("field1")      ' => hello
     print "field3 in node now is: " node1.getField("field3")      ' => false
 
-    node1.observeField("field1", "onSomethingChanged")
+    node1.observeField("field1", "onCB1Called")
+    node1.observeField("field1", "onCB2Called")
+    node1.observeField("field2", "onField2Cb") ' This doesn't get called since field was removed
+    node1.observeField("field3", "onField3Cb")
     node1.setField("field1", "world")
+    node1.update({ field2: 10, field3: true})
 
     'ifNodeChildren tests
     parentNode = createObject("roSGNode", "Node")
@@ -55,6 +59,42 @@ sub main()
     print "parent child count: " parentNode.getChildCount()        ' => 2
     children = parentNode.getChildren(-1, 0)
     print "children size: " children.count()                       ' => 2
+    childNode4 = createObject("roSGNode", "Node")
+    childNode4.id = "new node"
+    parentNode.replaceChild(childNode4, 0)
+    print "first child id after replacing: " parentNode.getChild(0).id ' => new node
+    print "parent child count: " parentNode.getChildCount()     ' => 2
+    parentNode.removeChildren([childNode, childNode2])
+    print "parent child count: " parentNode.getChildCount()         ' => 2
+    parentNode.removeChildren([childNode3, childNode4])
+    print "parent child count: " parentNode.getChildCount()         ' => 0
+    parentNode.appendChild(childNode)
+    parentNode.appendChild(childNode2)
+    parentNode.appendChild(childNode3)
+    parentNode.removeChildrenIndex(2, 7)
+    print "parent child count: " parentNode.getChildCount()         ' => 3
+    parentNode.removeChildrenIndex(3, 0)
+    print "parent child count: " parentNode.getChildCount()         ' => 0
+    parentNode.appendChildren([childNode, childNode2])
+    print "parent child count: " parentNode.getChildCount()         ' => 2
+    parentNode.appendChildren([childNode, childNode3])
+    print "parent child count: " parentNode.getChildCount()         ' => 3
+    parentNode.insertChild(childNode4, 0)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+    parentNode.insertChild(childNode3, 0)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+    parentNode.createChildren(2, "Node")
+    print "parent child count: " parentNode.getChildCount()         ' => 6
+    parentNode.removeChildren([childNode, childNode2])
+    parentNode.replaceChildren([childNode, childNode2], 1)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+    parentNode.removeChildren([childNode3, childNode4])
+    parentNode.insertChildren([childNode3, childNode4], 0)
+    print "inserted child id: " parentNode.getChild(1).id         ' => new node
+    parentNode.removeChildIndex(0)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+    childNode3.reparent(childNode4, false)
+    print "new parent id: " childNode3.getParent().id         ' => new node
 
     ' ifSGNodeFocus tests
     ' assume parent node will be attached to the rootscene node tree, otherwise
@@ -143,6 +183,18 @@ sub main()
     print "Node subtype is returned:" n.subtype()                       ' => Node
 end sub
 
-sub onSomethingChanged()
-    print "oops, something changed here"
+sub onCB1Called()
+    print "callback 1 called"
+end sub
+
+sub onCB2Called()
+    print "callback 2 called"
+end sub
+
+sub onField2Cb()
+    print "field 2 updated"
+end sub
+
+sub onField3Cb()
+    print "field 3 updated"
 end sub

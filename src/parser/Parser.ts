@@ -1198,7 +1198,18 @@ export class Parser {
                 // TODO: Figure out how to handle unterminated blocks well
             }
 
-            return new Stmt.Block(statements, startingToken.location);
+            //the block's location starts at the end of the preceeding token, and stops at the beginning of the `end` token
+            const preceedingToken = tokens[tokens.indexOf(startingToken) - 1];
+            const postceedingToken = tokens[current];
+            const location: Location = {
+                file: startingToken.location.file,
+                start: {
+                    line: preceedingToken.location.end.line,
+                    column: preceedingToken.location.end.column,
+                },
+                end: postceedingToken.location.start,
+            };
+            return new Stmt.Block(statements, location);
         }
 
         function expression(): Expression {
@@ -1226,7 +1237,7 @@ export class Parser {
         }
 
         function relational(): Expression {
-            let expr = additive();
+            let expr = bitshift();
 
             while (
                 match(
@@ -1239,14 +1250,24 @@ export class Parser {
                 )
             ) {
                 let operator = previous();
-                let right = additive();
+                let right = bitshift();
                 expr = new Expr.Binary(expr, operator, right);
             }
 
             return expr;
         }
 
-        // TODO: bitshift
+        function bitshift(): Expression {
+            let expr = additive();
+
+            while (match(Lexeme.LeftShift, Lexeme.RightShift)) {
+                let operator = previous();
+                let right = additive();
+                expr = new Expr.Binary(expr, operator, right);
+            }
+
+            return expr;
+        }
 
         function additive(): Expression {
             let expr = multiplicative();

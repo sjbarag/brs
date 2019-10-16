@@ -3,6 +3,7 @@ import { Boxable } from "./Boxing";
 import { RoString } from "./components/RoString";
 import { Int32 } from "./Int32";
 import { Float } from "./Float";
+import { roBoolean } from "./components/RoBoolean";
 
 /** Set of values supported in BrightScript. */
 export enum ValueKind {
@@ -221,7 +222,7 @@ export class BrsString implements BrsValue, Comparable, Boxable {
 }
 
 /** Internal representation of a boolean in BrightScript. */
-export class BrsBoolean implements BrsValue, Comparable {
+export class BrsBoolean implements BrsValue, Comparable, Boxable {
     readonly kind = ValueKind.Boolean;
     private constructor(private readonly value: boolean) {}
 
@@ -256,6 +257,10 @@ export class BrsBoolean implements BrsValue, Comparable {
 
     toString(parent?: BrsType) {
         return this.value.toString();
+    }
+
+    box() {
+        return new roBoolean(this);
     }
 
     /**

@@ -10,8 +10,6 @@ export enum Scope {
     Module,
     /** The set of variables (including anonymous functions) accessible *only* from within a function body. */
     Function,
-    /** The _brs_ mock scope */
-    Mock,
 }
 
 /** An error thrown when attempting to access an uninitialized variable. */
@@ -38,11 +36,6 @@ export class Environment {
      * @see Scope.Function
      */
     private function = new Map<string, BrsType>();
-    /**
-     * The mockComponent function and any mocks that are setup currently.
-     * @see Scope.Mock
-     */
-    private mock = new Map<string, BrsType>();
     /**
      * Mocked objects
      */
@@ -76,9 +69,6 @@ export class Environment {
             case Scope.Module:
                 destination = this.module;
                 break;
-            case Scope.Mock:
-                destination = this.mock;
-                break;
             default:
                 destination = this.global;
                 break;
@@ -106,9 +96,20 @@ export class Environment {
     /**
      * Removes a variable from this environment's function scope.
      * @param name the name of the variable to remove (in the form of an `Identifier`)
+     * @param scope the scope to remove this variable from (defaults to "function")
      */
-    public remove(name: string): void {
-        this.function.delete(name.toLowerCase());
+    public remove(name: string, scope: Scope = Scope.Function): void {
+        let lowercaseName = name.toLowerCase();
+        switch (scope) {
+            case Scope.Module:
+                this.module.delete(lowercaseName);
+                break;
+            case Scope.Function:
+                this.function.delete(lowercaseName);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -130,7 +131,7 @@ export class Environment {
             return this.mPointer;
         }
 
-        let source = [this.function, this.module, this.global, this.mock].find(scope =>
+        let source = [this.function, this.module, this.global].find(scope =>
             scope.has(lowercaseName)
         );
 
@@ -149,7 +150,7 @@ export class Environment {
      */
     public has(
         name: Identifier,
-        scopeFilter: Scope[] = [Scope.Global, Scope.Module, Scope.Function, Scope.Mock]
+        scopeFilter: Scope[] = [Scope.Global, Scope.Module, Scope.Function]
     ): boolean {
         if (name.text.toLowerCase() === "m") {
             return true; // we always have an `m` scope of some sort!
@@ -166,8 +167,6 @@ export class Environment {
                             return this.module;
                         case Scope.Function:
                             return this.function;
-                        case Scope.Mock:
-                            return this.mock;
                     }
                 })
                 .find(scope => scope.has(lowercaseName)) != null
@@ -191,10 +190,9 @@ export class Environment {
      */
     public createSubEnvironment(): Environment {
         let newEnvironment = new Environment();
-        newEnvironment.global = this.global;
-        newEnvironment.module = this.module;
+        newEnvironment.global = new Map(this.global);
+        newEnvironment.module = new Map(this.module);
         newEnvironment.mPointer = this.mPointer;
-        newEnvironment.mock = this.mock;
         newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;
         newEnvironment.nodeDefMap = this.nodeDefMap;

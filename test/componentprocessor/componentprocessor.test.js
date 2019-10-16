@@ -1,5 +1,3 @@
-const xmldoc = require("xmldoc");
-const { componentprocessor } = require("brs");
 const { getComponentDefinitionMap, ComponentDefinition } = require("../../lib/componentprocessor");
 
 jest.mock("fast-glob");

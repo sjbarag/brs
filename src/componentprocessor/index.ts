@@ -40,8 +40,6 @@ export class ComponentDefinition {
 
             return Promise.resolve(this);
         } catch (err) {
-            console.log("some error");
-            console.log(err);
             // TODO: provide better parse error reporting
             //   cases:
             //     * file read error

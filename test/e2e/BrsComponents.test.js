@@ -60,6 +60,41 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/roDateTime.brs", async () => {
+        await execute([resourceFile("components", "roDateTime.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "Full Date: ",
+            "Friday November 12, 2010",
+            "No Week Day: ",
+            "November 12, 2010",
+            "Short Date: ",
+            "11/12/10",
+            "Weekday: ",
+            "Friday",
+            "Day of Week: ",
+            "5",
+            "Day of Month: ",
+            "12",
+            "Month: ",
+            "11",
+            "Year: ",
+            "2010",
+            "Hours: ",
+            "13",
+            "Minutes: ",
+            "14",
+            "Seconds: ",
+            "15",
+            "Last Day of Month: ",
+            "30",
+            "Milliseconds: ",
+            "160",
+            "ISO String UTC: ",
+            "2010-11-12T13:14:15Z",
+        ]);
+    });
+
     test("components/roTimespan.brs", async () => {
         await execute([resourceFile("components", "roTimespan.brs")], outputStreams);
 
@@ -104,6 +139,9 @@ describe("end to end brightscript functions", () => {
             "hello",
             "field3 in node now is: ",
             "false",
+            "callback 1 called",
+            "callback 2 called",
+            "field 3 updated",
             //ifNodeChildren tests
             "parent child count: ",
             "0",
@@ -119,6 +157,36 @@ describe("end to end brightscript functions", () => {
             "2",
             "children size: ",
             "2",
+            "first child id after replacing: ",
+            "new node",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "0",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "0",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "4",
+            "parent child count: ",
+            "4",
+            "parent child count: ",
+            "6",
+            "parent child count: ",
+            "4",
+            "inserted child id: ",
+            "new node",
+            "parent child count: ",
+            "4",
+            "new parent id: ",
+            "new node",
             //ifSGNodeFocus tests
             "is parent in focus chain: ",
             "false",
@@ -230,6 +298,38 @@ describe("end to end brightscript functions", () => {
             "100",
             "baseRectangle height: ",
             "200",
+        ]);
+    });
+
+    test("components/roIntrinsics.brs", async () => {
+        await execute([resourceFile("components", "roIntrinsics.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stderr.write)).toEqual([]);
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "Boolean object A ",
+            "true",
+            "Boolean object B ",
+            "false",
+            "Comparing true = false should be false ",
+            "false",
+            "Double value ",
+            "123.456",
+            "Double value * 2 ",
+            "246.912",
+            "Float object ",
+            "789.012",
+            "Float object * 10 ",
+            "7890.12",
+            "Integer object ",
+            "23",
+            "Integer object times itself ",
+            "529",
+            "Double to string ",
+            "123.456",
+            "Float to string ",
+            "789.012",
+            "Integer to string ",
+            "23",
         ]);
     });
 });

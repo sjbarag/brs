@@ -8,9 +8,8 @@ import {
     RoAssociativeArray,
 } from "../brsTypes";
 import { BrsObjects } from "../brsTypes/components/BrsObjects";
-import * as Expr from "../parser/Expression";
 import { Interpreter } from "../interpreter";
-import { MockNode } from "../mocks/MockNode";
+import { MockNode } from "../extensions/MockNode";
 
 /** Creates a new instance of a given brightscript component (e.g. roAssociativeArray) */
 export const CreateObject = new Callable("CreateObject", {
@@ -41,6 +40,10 @@ export const CreateObject = new Callable("CreateObject", {
         }
 
         let ctor = BrsObjects.get(objName.value.toLowerCase());
-        return ctor ? ctor(interpreter, ...additionalArgs) : BrsInvalid.Instance;
+        if (ctor && objName.value.toLowerCase() === "rosgnode") {
+            return ctor(interpreter, ...additionalArgs);
+        }
+
+        return ctor ? ctor(...additionalArgs) : BrsInvalid.Instance;
     },
 });

@@ -271,6 +271,24 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/customComponent.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "customComponent.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "node.baseBoolField: ",
+            "false",
+            "node.baseIntField: ",
+            "0",
+            "node.normalBoolField: ",
+            "true",
+            "node.advancedStringField: ",
+            "advancedField!",
+            "node.advancedIntField: ",
+            "12345",
+        ]);
+    });
+
     test("components/roIntrinsics.brs", async () => {
         await execute([resourceFile("components", "roIntrinsics.brs")], outputStreams);
 

@@ -1,5 +1,6 @@
 import { Identifier } from "../lexer";
 import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode } from "../brsTypes";
+import { ComponentDefinition } from "../componentprocessor";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {
@@ -48,6 +49,9 @@ export class Environment {
      * of stealing focus away from another node if a new node got focus.
      */
     private focusedNode: RoSGNode | BrsInvalid = BrsInvalid.Instance;
+
+    /** Map holding component definitions of all parsed xml component files */
+    public nodeDefMap = new Map<string, ComponentDefinition>();
 
     /**
      * Stores a `value` for the `name`d variable in the provided `scope`.
@@ -191,6 +195,7 @@ export class Environment {
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;
+        newEnvironment.nodeDefMap = this.nodeDefMap;
 
         return newEnvironment;
     }

@@ -99,14 +99,14 @@ export namespace ValueKind {
  *  @param {string} value optional value specified as string
  *  @returns {BrsType} BrsType value representation of the type
  */
-export function getBrsTypeFromString(type: string, value?: string): BrsType {
+export function getBrsValueFromFieldType(type: string, value?: string): BrsType {
     let returnValue: BrsType;
 
     switch (type.toLowerCase()) {
         case "boolean":
             returnValue = value ? BrsBoolean.from(value === "true") : BrsBoolean.False;
             break;
-        case "dynamic":
+        case "node":
             returnValue = BrsInvalid.Instance;
             break;
         case "integer":

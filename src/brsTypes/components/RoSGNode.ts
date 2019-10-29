@@ -5,7 +5,7 @@ import {
     BrsInvalid,
     BrsBoolean,
     Uninitialized,
-    getBrsTypeFromString,
+    getBrsValueFromFieldType,
 } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { BrsType } from "..";
@@ -72,7 +72,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly builtInFields = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
-        { name: "focusedChild", type: "dynamic" },
+        { name: "focusedChild", type: "node" },
         { name: "id", type: "string" },
     ];
 
@@ -83,7 +83,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         this.builtInFields.forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),
-                new Field(getBrsTypeFromString(field.type), false)
+                new Field(getBrsValueFromFieldType(field.type), false)
             );
         });
 
@@ -458,7 +458,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             type: BrsString,
             alwaysnotify: BrsBoolean
         ) => {
-            let defaultValue = getBrsTypeFromString(type.value);
+            let defaultValue = getBrsValueFromFieldType(type.value);
 
             if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
                 this.set(fieldname, defaultValue, alwaysnotify.toBoolean());
@@ -1097,7 +1097,7 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
                 let result = setField.call(
                     interpreter,
                     fieldName,
-                    getBrsTypeFromString(value.type, value.value)
+                    getBrsValueFromFieldType(value.type, value.value)
                 );
             }
         }

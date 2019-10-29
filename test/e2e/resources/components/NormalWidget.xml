@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="NormalWidget" extends="BaseWidget">
+    <script type="text/brightscript" uri="pkg:/source/hello.brs" />
     <interface>
         <field id="normalStringField" type="string" onChange="onNormalStringFieldChange" />
         <field id="normalIntField" type="integer" value="-321" />
@@ -8,5 +9,7 @@
     <script type="text/brightscript" uri="pkg:/components/player/liveGuide/scripts/BaseGuideView.brs" />
     <script type="text/brightscript" uri="pkg:/components/player/liveGuide/scripts/LiveGuideSettings.brs" />
     <children>
+        <Label id="normalLabel" />
+        <SimpleLabel id="normalSimpleLabel" />
     </children>
 </component>

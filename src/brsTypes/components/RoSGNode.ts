@@ -1069,6 +1069,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
         //use typeDef object to tack on all the bells & whistles of a custom node
         let node = new RoSGNode([], type.value);
         addFields(interpreter, node, typeDef);
+        addChildren(interpreter, node, typeDef);
 
         return node;
     } else {
@@ -1101,4 +1102,26 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
             }
         }
     }
+}
+
+function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentDefinition) {
+    let children = typeDef.children;
+    let appendChild = node.getMethod("appendchild");
+
+    children.forEach(child => {
+        let newChild = createNodeByType(interpreter, new BrsString(child.name));
+        if (newChild instanceof RoSGNode && appendChild) {
+            appendChild.call(interpreter, newChild);
+            let setField = newChild.getMethod("setfield");
+            for (let [key, value] of Object.entries(child.fields)) {
+                if (setField) {
+                    setField.call(interpreter, new BrsString(key), new BrsString(value));
+                }
+            }
+        }
+        let typeDef = interpreter.environment.nodeDefMap.get(child.name);
+        if (child.children.length > 0 && newChild instanceof RoSGNode && typeDef) {
+            addChildren(interpreter, newChild, typeDef);
+        }
+    });
 }

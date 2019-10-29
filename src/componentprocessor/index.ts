@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { promisify } from "util";
-import xmldoc, { XmlDocument } from "xmldoc";
+import { XmlDocument, XmlElement } from "xmldoc";
 import pSettle = require("p-settle");
 const readFile = promisify(fs.readFile);
 import * as fg from "fast-glob";
@@ -19,6 +19,16 @@ interface ComponentField {
     [key: string]: FieldAttributes;
 }
 
+interface NodeField {
+    [id: string]: string;
+}
+
+interface ComponentNode {
+    name: string;
+    fields: NodeField;
+    children: ComponentNode[];
+}
+
 export class ComponentDefinition {
     public contents?: string;
     public xmlNode?: XmlDocument;
@@ -27,6 +37,7 @@ export class ComponentDefinition {
     // which means the fields, children, and inherited functions are correctly set
     public processed: boolean = false;
     public fields: ComponentField = {};
+    public children: ComponentNode[] = [];
 
     constructor(readonly xmlPath: string) {}
 
@@ -35,7 +46,7 @@ export class ComponentDefinition {
         try {
             contents = await readFile(this.xmlPath, "utf-8");
             let xmlStr = contents.toString().replace(/\r?\n|\r/g, "");
-            this.xmlNode = new xmldoc.XmlDocument(xmlStr);
+            this.xmlNode = new XmlDocument(xmlStr);
             this.name = this.xmlNode.attr.name;
 
             return Promise.resolve(this);
@@ -76,7 +87,7 @@ async function processXmlTree(
     // the component backwards from most extended component first
     let inheritanceStack: ComponentDefinition[] = [];
 
-    nodeDefMap.forEach((nodeDef, nodeName) => {
+    nodeDefMap.forEach(nodeDef => {
         if (nodeDef && nodeDef.processed === false) {
             let xmlNode = nodeDef.xmlNode;
             inheritanceStack.push(nodeDef);
@@ -114,9 +125,29 @@ async function processXmlTree(
         }
     });
 
+    nodeDefMap.forEach(nodeDef => {
+        let xmlNode = nodeDef.xmlNode;
+        if (xmlNode) {
+            nodeDef.children = getChildren(xmlNode);
+            let baseNode = xmlNode.attr.extends;
+            while (baseNode) {
+                let baseNodeDef = nodeDefMap.get(baseNode);
+                if (baseNodeDef) {
+                    nodeDef.children = [...nodeDef.children, ...getChildren(baseNodeDef.xmlNode!)];
+                    baseNode = baseNodeDef.xmlNode!.attr.extends;
+                }
+            }
+        }
+    });
+
     return nodeDefMap;
 }
 
+/**
+ * Returns all the fields found in the Xml node
+ * @param node Xml node with fields
+ * @return The fields parsed as ComponentField
+ */
 function getFields(node: XmlDocument): ComponentField {
     let iface = node.childNamed("interface");
     let fields: ComponentField = {};
@@ -139,4 +170,46 @@ function getFields(node: XmlDocument): ComponentField {
     });
 
     return fields;
+}
+
+/**
+ * Given a node as a XmlDocument it will get all the children and return
+ * them parsed.
+ * @param node The XmlDocument that has the children.
+ * @returns The parsed children
+ */
+function getChildren(node: XmlDocument): ComponentNode[] {
+    let xmlElement = node.childNamed("children");
+
+    if (!xmlElement) {
+        return [];
+    }
+
+    let children: ComponentNode[] = [];
+    parseChildren(xmlElement, children);
+
+    return children;
+}
+
+/**
+ * Parses children in the XmlElement converting then into an object
+ * that follows the ComponentNode interface. This process makes
+ * the tree creation simpler.
+ * @param element The XmlElement that has the children to be parsed
+ * @param children The array where parsed children will be added
+ */
+function parseChildren(element: XmlElement, children: ComponentNode[]): void {
+    element.eachChild(child => {
+        let childComponent: ComponentNode = {
+            name: child.name,
+            fields: child.attr,
+            children: [],
+        };
+
+        if (child.children.length > 0) {
+            parseChildren(child, childComponent.children);
+        }
+
+        children.push(childComponent);
+    });
 }

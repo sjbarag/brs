@@ -7,5 +7,23 @@
         <field id="advancedBoolField" type="boolean" value="true" />
     </interface>
     <children>
+        <Group id="advancedGroup1">
+            <Group id="subAdvancedGroup1">
+                <Label
+                    id="advancedLabel"
+                    text="advancedText"/>
+                <Rectangle
+                    id="advancedRectangle"
+                    opacity="0.1"
+                    width="1824"
+                    height="3"
+                    translation="[96, 132]" />
+            </Group>
+        </Group>
+        <Group id="advancedGroup2">
+            <SimpleLabel id="advancedSimpleLabel" />
+        </Group>
+        <Group id="advancedGroup3">
+        </Group>
     </children>
 </component>

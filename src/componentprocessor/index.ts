@@ -129,15 +129,15 @@ async function processXmlTree(
         let xmlNode = nodeDef.xmlNode;
         if (xmlNode) {
             nodeDef.children = getChildren(xmlNode);
-            let parentNode = xmlNode.attr.extends;
-            while (parentNode) {
-                let parentNodeDef = nodeDefMap.get(parentNode);
+            let baseNode = xmlNode.attr.extends;
+            while (baseNode) {
+                let parentNodeDef = nodeDefMap.get(baseNode);
                 if (parentNodeDef) {
                     nodeDef.children = [
                         ...nodeDef.children,
                         ...getChildren(parentNodeDef.xmlNode!),
                     ];
-                    parentNode = parentNodeDef.xmlNode!.attr.extends;
+                    baseNode = parentNodeDef.xmlNode!.attr.extends;
                 }
             }
         }
@@ -146,6 +146,11 @@ async function processXmlTree(
     return nodeDefMap;
 }
 
+/**
+ * Returns all the fields found in the Xml node
+ * @param node Xml node with fields
+ * @return The fields parsed as ComponentField
+ */
 function getFields(node: XmlDocument): ComponentField {
     let iface = node.childNamed("interface");
     let fields: ComponentField = {};
@@ -170,7 +175,13 @@ function getFields(node: XmlDocument): ComponentField {
     return fields;
 }
 
-function getChildren(node: XmlDocument) {
+/**
+ * Given a node as a XmlDocument it will get all the children and return
+ * them parsed.
+ * @param node The XmlDocument that has the children.
+ * @returns The parsed children
+ */
+function getChildren(node: XmlDocument): ComponentNode[] {
     let xmlElement = node.childNamed("children");
 
     if (!xmlElement) {
@@ -183,7 +194,14 @@ function getChildren(node: XmlDocument) {
     return children;
 }
 
-function parseChildren(element: XmlElement, children: ComponentNode[]) {
+/**
+ * Parses children in the XmlElement converting then into an object
+ * that follows the ComponentNode interface. This process makes
+ * the tree creation simpler.
+ * @param element The XmlElement that has the children to be parsed
+ * @param children The array where parsed children will be added
+ */
+function parseChildren(element: XmlElement, children: ComponentNode[]): void {
     element.eachChild(child => {
         let childComponent: ComponentNode = {
             name: child.name,

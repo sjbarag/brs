@@ -29,6 +29,11 @@ interface ComponentNode {
     children: ComponentNode[];
 }
 
+interface ComponentScript {
+    type: string;
+    uri: string;
+}
+
 export class ComponentDefinition {
     public contents?: string;
     public xmlNode?: XmlDocument;
@@ -38,6 +43,7 @@ export class ComponentDefinition {
     public processed: boolean = false;
     public fields: ComponentField = {};
     public children: ComponentNode[] = [];
+    public scripts: ComponentScript[] = [];
 
     constructor(readonly xmlPath: string) {}
 
@@ -112,6 +118,7 @@ async function processXmlTree(
                         inheritedFields = newNodeDef.fields;
                     } else {
                         let nodeFields = getFields(newNodeDef.xmlNode!);
+                        newNodeDef.scripts = getScripts(newNodeDef.xmlNode!);
                         // we will get run-time error if any fields are duplicated
                         // between inherited components, but here we will retain
                         // the original value without throwing an error for simplicity
@@ -212,4 +219,21 @@ function parseChildren(element: XmlElement, children: ComponentNode[]): void {
 
         children.push(childComponent);
     });
+}
+
+function getScripts(node: XmlDocument): ComponentScript[] {
+    let scripts = node.childrenNamed("script");
+    let componentScripts: ComponentScript[] = [];
+
+    // TODO: Verify if uri is valid
+    scripts.map(script => {
+        if (script.attr) {
+            componentScripts.push({
+                type: script.attr.type,
+                uri: script.attr.uri,
+            });
+        }
+    });
+
+    return componentScripts;
 }

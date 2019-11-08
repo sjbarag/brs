@@ -18,6 +18,8 @@ export { BrsTypes as types };
 export { PP as preprocessor };
 import * as _parser from "./parser";
 export { _parser as parser };
+import { URL } from "url";
+import { ManifestValue } from "./preprocessor/Manifest";
 
 /**
  * Executes a BrightScript file by path and writes its output to the streams
@@ -37,61 +39,17 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     let nodeDefs = await getComponentDefinitionMap(executionOptions.root);
 
-    // wait for all files to be read, lexed, and parsed, but don't exit on the first error
-    let parsedFiles = await pSettle(
-        filenames.map(async filename => {
-            let contents;
-            try {
-                contents = await readFile(filename, "utf-8");
-            } catch (err) {
-                return Promise.reject({
-                    message: `brs: can't open file '${filename}': [Errno ${err.errno}]`,
-                });
-            }
+    let components = [filenames];
 
-            let lexer = new Lexer();
-            let preprocessor = new PP.Preprocessor();
-            let parser = new Parser();
-            [lexer, preprocessor, parser].forEach(emitter => emitter.onError(logError));
-
-            let scanResults = lexer.scan(contents, filename);
-            if (scanResults.errors.length > 0) {
-                return Promise.reject({
-                    message: "Error occurred during lexing",
-                });
-            }
-
-            let preprocessResults = preprocessor.preprocess(scanResults.tokens, manifest);
-            if (preprocessResults.errors.length > 0) {
-                return Promise.reject({
-                    message: "Error occurred during pre-processing",
-                });
-            }
-
-            let parseResults = parser.parse(preprocessResults.processedTokens);
-            if (parseResults.errors.length > 0) {
-                return Promise.reject({
-                    message: "Error occurred parsing",
-                });
-            }
-
-            return Promise.resolve(parseResults.statements);
-        })
-    );
-
-    // don't execute anything if there were reading, lexing, or parsing errors
-    if (parsedFiles.some(file => file.isRejected)) {
-        return Promise.reject({
-            messages: parsedFiles
-                .filter(file => file.isRejected)
-                .map(rejection => rejection.reason.message),
-        });
-    }
-
-    // combine statements from all files into one array
-    let statements = parsedFiles
-        .map(file => file.value || [])
-        .reduce((allStatements, fileStatements) => [...allStatements, ...fileStatements], []);
+    nodeDefs.forEach(node => {
+        if (node.scripts.length > 0) {
+            // TODO: This looks dirty to me
+            let realPath = node.scripts.map(script => {
+                return `${__dirname}/..${new URL(script.uri).pathname}`;
+            });
+            components.push(realPath);
+        }
+    });
 
     // execute them
     const interpreter = new Interpreter(executionOptions);
@@ -99,8 +57,20 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     // save each custom component def into a global map so we can access it
     // at run time when we call `createObjectByType`
     interpreter.environment.nodeDefMap = nodeDefs;
+    // console.log(nodeDefs);
 
-    return interpreter.exec(statements);
+    // wait for all files to be read, lexed, and parsed, but don't exit on the first error
+    return Promise.all(
+        components.map(async files => {
+            let statements = await parseFiles(files, manifest);
+            interpreter.inSubEnv(subInterpreter => {
+                subInterpreter.environment.setM(interpreter.environment.getM());
+                subInterpreter.exec(statements);
+                return BrsTypes.BrsInvalid.Instance;
+            });
+            // interpreter.environment.createSubEnvironment
+        })
+    );
 }
 
 /**
@@ -211,4 +181,64 @@ function run(
  */
 function logError(err: BrsError.BrsError) {
     console.error(err.format());
+}
+
+async function parseFiles(
+    filenames: string[],
+    manifest: Map<string, ManifestValue>
+): Promise<_parser.Stmt.Statement[]> {
+    let parsedFiles = await pSettle(
+        filenames.map(async filename => {
+            let contents;
+            try {
+                contents = await readFile(filename, "utf-8");
+            } catch (err) {
+                return Promise.reject({
+                    message: `brs: can't open file '${filename}': [Errno ${err.errno}]`,
+                });
+            }
+
+            let lexer = new Lexer();
+            let preprocessor = new PP.Preprocessor();
+            let parser = new Parser();
+            [lexer, preprocessor, parser].forEach(emitter => emitter.onError(logError));
+
+            let scanResults = lexer.scan(contents, filename);
+            if (scanResults.errors.length > 0) {
+                return Promise.reject({
+                    message: "Error occurred during lexing",
+                });
+            }
+
+            let preprocessResults = preprocessor.preprocess(scanResults.tokens, manifest);
+            if (preprocessResults.errors.length > 0) {
+                return Promise.reject({
+                    message: "Error occurred during pre-processing",
+                });
+            }
+
+            let parseResults = parser.parse(preprocessResults.processedTokens);
+            if (parseResults.errors.length > 0) {
+                return Promise.reject({
+                    message: "Error occurred parsing",
+                });
+            }
+
+            return Promise.resolve(parseResults.statements);
+        })
+    );
+
+    // don't execute anything if there were reading, lexing, or parsing errors
+    if (parsedFiles.some(file => file.isRejected)) {
+        return Promise.reject({
+            messages: parsedFiles
+                .filter(file => file.isRejected)
+                .map(rejection => rejection.reason.message),
+        });
+    }
+
+    // combine statements from all files into one array
+    return parsedFiles
+        .map(file => file.value || [])
+        .reduce((allStatements, fileStatements) => [...allStatements, ...fileStatements], []);
 }

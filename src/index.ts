@@ -39,11 +39,11 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     let nodeDefs = await getComponentDefinitionMap(executionOptions.root);
 
-    let components = [filenames];
+    let components: any[] = [];
 
     nodeDefs.forEach(node => {
         if (node.scripts.length > 0) {
-            // TODO: This looks dirty to me
+            // TODO: Probably handle this in the File class.
             let realPath = node.scripts.map(script => {
                 return `${__dirname}/..${new URL(script.uri).pathname}`;
             });
@@ -51,26 +51,27 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         }
     });
 
-    // execute them
     const interpreter = new Interpreter(executionOptions);
     interpreter.onError(logError);
     // save each custom component def into a global map so we can access it
     // at run time when we call `createObjectByType`
     interpreter.environment.nodeDefMap = nodeDefs;
-    // console.log(nodeDefs);
 
     // wait for all files to be read, lexed, and parsed, but don't exit on the first error
-    return Promise.all(
-        components.map(async files => {
-            let statements = await parseFiles(files, manifest);
+    Promise.all(
+        components.map(async scripts => {
+            scripts.environment = interpreter.environment.createSubEnvironment();
+            let statements = await parseFiles(scripts, manifest);
             interpreter.inSubEnv(subInterpreter => {
                 subInterpreter.environment.setM(interpreter.environment.getM());
                 subInterpreter.exec(statements);
                 return BrsTypes.BrsInvalid.Instance;
-            });
-            // interpreter.environment.createSubEnvironment
+            }, scripts.environment);
         })
     );
+
+    let mainStatements = await parseFiles(filenames, manifest);
+    return interpreter.exec(mainStatements);
 }
 
 /**

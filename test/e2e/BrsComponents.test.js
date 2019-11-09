@@ -271,7 +271,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test.only("components/customComponent.brs", async () => {
+    test("components/customComponent.brs", async () => {
         outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 

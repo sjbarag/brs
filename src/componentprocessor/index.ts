@@ -5,6 +5,7 @@ import { XmlDocument, XmlElement } from "xmldoc";
 import pSettle = require("p-settle");
 const readFile = promisify(fs.readFile);
 import * as fg from "fast-glob";
+import { Environment } from "../interpreter/Environment";
 
 interface FieldAttributes {
     id: string;
@@ -44,6 +45,7 @@ export class ComponentDefinition {
     public fields: ComponentField = {};
     public children: ComponentNode[] = [];
     public scripts: ComponentScript[] = [];
+    public environment: Environment | undefined;
 
     constructor(readonly xmlPath: string) {}
 

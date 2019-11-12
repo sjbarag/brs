@@ -130,6 +130,13 @@ describe("Environment", () => {
         expect(subEnv.has(identifier("mockScoped"))).toBe(true);
     });
 
+    it("maintains root-m scope between subenvironments", () => {
+        let rootM = new RoAssociativeArray([]);
+        env = new Environment(rootM);
+
+        expect(env.getRootM()).toBe(env.createSubEnvironment().getRootM());
+    });
+
     it("gets & sets mock objects on the mock scope", () => {
         let obj = new RoAssociativeArray([]);
         env.setMock("mock1", obj);

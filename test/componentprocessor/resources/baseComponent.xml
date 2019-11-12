@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="BaseComponent">
-<script type="text/brightscript" uri="pkg:/test/componentprocessor/resources/scripts/baseComp.brs" />
+<script type="text/brightscript" uri="pkg:/test/componentprocessor/resources/scripts/baseComponent.brs" />
 <children>
     <Label name="label_a" />
 </children>

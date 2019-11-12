@@ -80,6 +80,7 @@ describe.only("component parsing support", () => {
                 expect(parsedExtendedComp).not.toBeUndefined();
                 expect(parsedExtendedComp.children).not.toBeUndefined();
                 expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
+
                 let expectedChildOrder = ["label_a", "label_b"];
                 let childOrder = parsedExtendedComp.children.map(child => {
                     return child.fields && child.fields.name;
@@ -87,10 +88,20 @@ describe.only("component parsing support", () => {
                 expect(childOrder).toEqual(expectedChildOrder);
             });
 
-            it("adds all functions into node", async () => {
+            it("adds all scripts into node", async () => {
                 let map = await getComponentDefinitionMap("/doesnt/matter");
                 let parsedExtendedComp = map.get("ExtendedComponent");
                 expect(parsedExtendedComp).not.toBeUndefined();
+                expect(parsedExtendedComp.scripts).not.toBeUndefined();
+                expect(parsedExtendedComp.scripts.length).toBeGreaterThan(0);
+
+                const expectedPrefix = "pkg:/test/componentprocessor/resources/scripts/";
+                let expectedScripts = ["extendedComponent.brs", "utility.brs"].map(scriptName =>
+                    path.join(expectedPrefix, scriptName)
+                );
+                parsedExtendedComp.scripts.forEach(script => {
+                    expect(expectedScripts).toContain(script.uri);
+                });
             });
         });
     });

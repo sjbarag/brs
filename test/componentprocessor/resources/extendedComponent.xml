@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="ExtendedComponent" extends="BaseComponent">
-<script type="text/brightscript" uri="pkg:/test/componentprocessor/resources/scripts/extendedComp.brs" />
+<script type="text/brightscript" uri="pkg:/test/componentprocessor/resources/scripts/extendedComponent.brs" />
 <script type="text/brightscript" uri="pkg:/test/componentprocessor/resources/scripts/utility.brs" />
 <children>
         <Label name="label_b" />

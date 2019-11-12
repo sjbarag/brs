@@ -1,9 +1,12 @@
 const { getComponentDefinitionMap, ComponentDefinition } = require("../../lib/componentprocessor");
+const path = require("path");
 
 jest.mock("fast-glob");
 jest.mock("fs");
 const fg = require("fast-glob");
 const fs = require("fs");
+
+const realFs = jest.requireActual("fs");
 
 describe.only("component parsing support", () => {
     afterEach(() => {
@@ -54,30 +57,20 @@ describe.only("component parsing support", () => {
         });
 
         describe("parsing expectations", () => {
-            beforeAll(() => {
-                const baseComp = `
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="BaseComponent">
-<children>
-    <Label name="label_a" />
-</children>
-</component>
-                `;
-                const extendedComp = `
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="ExtendedComponent" extends="BaseComponent">
-<children>
-        <Label name="label_b" />
-</children>
-</component>
-                `;
-
+            beforeEach(() => {
                 fg.sync.mockImplementation(() => {
-                    return ["base_component.xml", "extended_component.xml"];
+                    return [
+                        "baseComponent.xml",
+                        "extendedComponent.xml",
+                        "scripts/baseComp.brs",
+                        "scripts/extendedComp.brs",
+                        "scripts/utility.brs",
+                    ];
                 });
                 fs.readFile.mockImplementation((filename, _, cb) => {
-                    selected = filename.includes("base_component.xml") ? baseComp : extendedComp;
-                    cb(/* no error */ null, selected);
+                    resourcePath = path.join(__dirname, "resources", filename);
+                    contents = realFs.readFileSync(resourcePath);
+                    cb(/* no error */ null, contents);
                 });
             });
 
@@ -95,7 +88,9 @@ describe.only("component parsing support", () => {
             });
 
             it("adds all functions into node", async () => {
-                // console.log('derp');
+                let map = await getComponentDefinitionMap("/doesnt/matter");
+                let parsedExtendedComp = map.get("ExtendedComponent");
+                expect(parsedExtendedComp).not.toBeUndefined();
             });
         });
     });

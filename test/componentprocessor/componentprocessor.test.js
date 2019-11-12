@@ -53,42 +53,50 @@ describe.only("component parsing support", () => {
             expect(xmlNode.attr.extends).toEqual("BaseComponent");
         });
 
-        it("parses children nodes in correct order", async () => {
-            const baseComp = `
+        describe("parsing expectations", () => {
+            beforeAll(() => {
+                const baseComp = `
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="BaseComponent">
-    <children>
-        <Label name="label_a" />
-    </children>
+<children>
+    <Label name="label_a" />
+</children>
 </component>
-            `;
-            const extendedComp = `
+                `;
+                const extendedComp = `
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="ExtendedComponent" extends="BaseComponent">
-    <children>
-            <Label name="label_b" />
-    </children>
+<children>
+        <Label name="label_b" />
+</children>
 </component>
-            `;
+                `;
 
-            fg.sync.mockImplementation(() => {
-                return ["base_component.xml", "extended_component.xml"];
-            });
-            fs.readFile.mockImplementation((filename, _, cb) => {
-                selected = filename.includes("base_component.xml") ? baseComp : extendedComp;
-                cb(/* no error */ null, selected);
+                fg.sync.mockImplementation(() => {
+                    return ["base_component.xml", "extended_component.xml"];
+                });
+                fs.readFile.mockImplementation((filename, _, cb) => {
+                    selected = filename.includes("base_component.xml") ? baseComp : extendedComp;
+                    cb(/* no error */ null, selected);
+                });
             });
 
-            let map = await getComponentDefinitionMap("/doesnt/matter");
-            let parsedExtendedComp = map.get("ExtendedComponent");
-            expect(parsedExtendedComp).not.toBeUndefined();
-            expect(parsedExtendedComp.children).not.toBeUndefined();
-            expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
-            let expectedChildOrder = ["label_a", "label_b"];
-            let childOrder = parsedExtendedComp.children.map(child => {
-                return child.fields && child.fields.name;
+            it("parses children nodes in correct order", async () => {
+                let map = await getComponentDefinitionMap("/doesnt/matter");
+                let parsedExtendedComp = map.get("ExtendedComponent");
+                expect(parsedExtendedComp).not.toBeUndefined();
+                expect(parsedExtendedComp.children).not.toBeUndefined();
+                expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
+                let expectedChildOrder = ["label_a", "label_b"];
+                let childOrder = parsedExtendedComp.children.map(child => {
+                    return child.fields && child.fields.name;
+                });
+                expect(childOrder).toEqual(expectedChildOrder);
             });
-            expect(childOrder).toEqual(expectedChildOrder);
+
+            it("adds all functions into node", async () => {
+                // console.log('derp');
+            });
         });
     });
 });

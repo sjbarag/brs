@@ -39,15 +39,15 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     let nodeDefs = await getComponentDefinitionMap(executionOptions.root);
 
-    let components: any[] = [];
+    let componentScriptsGroupings: any[] = [];
 
     nodeDefs.forEach(node => {
         if (node.scripts.length > 0) {
             // TODO: Probably handle this in the File class.
-            let realPath = node.scripts.map(script => {
+            let scriptsFullPaths = node.scripts.map(script => {
                 return `${__dirname}/..${new URL(script.uri).pathname}`;
             });
-            components.push(realPath);
+            componentScriptsGroupings.push(scriptsFullPaths);
         }
     });
 
@@ -59,14 +59,14 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     // wait for all files to be read, lexed, and parsed, but don't exit on the first error
     Promise.all(
-        components.map(async scripts => {
-            scripts.environment = interpreter.environment.createSubEnvironment();
-            let statements = await parseFiles(scripts, manifest);
+        componentScriptsGroupings.map(async componentScripts => {
+            componentScripts.environment = interpreter.environment.createSubEnvironment();
+            let statements = await parseFiles(componentScripts, manifest);
             interpreter.inSubEnv(subInterpreter => {
                 subInterpreter.environment.setM(interpreter.environment.getM());
                 subInterpreter.exec(statements);
                 return BrsTypes.BrsInvalid.Instance;
-            }, scripts.environment);
+            }, componentScripts.environment);
         })
     );
 

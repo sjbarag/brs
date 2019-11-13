@@ -1,2 +1,2 @@
-sub supporFunction()
+sub supportFunction()
 end sub

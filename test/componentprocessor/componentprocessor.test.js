@@ -88,7 +88,7 @@ describe.only("component parsing support", () => {
                 expect(childOrder).toEqual(expectedChildOrder);
             });
 
-            it("adds all scripts into node", async () => {
+            it("adds all scripts into node in correct order", async () => {
                 let map = await getComponentDefinitionMap("/doesnt/matter");
                 let parsedExtendedComp = map.get("ExtendedComponent");
                 expect(parsedExtendedComp).not.toBeUndefined();

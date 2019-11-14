@@ -271,7 +271,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/customComponent.brs", async () => {
+    test.skip("components/customComponent.brs", async () => {
         outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
@@ -301,7 +301,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/roIntrinsics.brs", async () => {
+    test.skip("components/roIntrinsics.brs", async () => {
         await execute([resourceFile("components", "roIntrinsics.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stderr.write)).toEqual([]);

@@ -117,7 +117,6 @@ async function processXmlTree(
                         inheritedFields = newNodeDef.fields;
                     } else {
                         let nodeFields = getFields(newNodeDef.xmlNode!);
-                        newNodeDef.scripts = getScripts(newNodeDef.xmlNode!);
                         // we will get run-time error if any fields are duplicated
                         // between inherited components, but here we will retain
                         // the original value without throwing an error for simplicity
@@ -135,11 +134,13 @@ async function processXmlTree(
         let xmlNode = nodeDef.xmlNode;
         if (xmlNode) {
             nodeDef.children = getChildren(xmlNode);
+            nodeDef.scripts = getScripts(xmlNode);
             let baseNode = xmlNode.attr.extends;
             while (baseNode) {
                 let baseNodeDef = nodeDefMap.get(baseNode);
                 if (baseNodeDef) {
                     nodeDef.children = [...getChildren(baseNodeDef.xmlNode!), ...nodeDef.children];
+                    nodeDef.scripts = [...getScripts(baseNodeDef.xmlNode!), ...nodeDef.scripts];
                     baseNode = baseNodeDef.xmlNode!.attr.extends;
                 }
             }

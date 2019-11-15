@@ -167,13 +167,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      */
     inSubEnv(func: (interpreter: Interpreter) => BrsType, environment?: Environment): BrsType {
         let originalEnvironment = this._environment;
-        let newEnv: Environment;
+        let newEnv = environment || this._environment.createSubEnvironment();
 
-        if (!environment) {
-            newEnv = this._environment.createSubEnvironment();
-        } else {
-            newEnv = environment;
-        }
         try {
             this._environment = newEnv;
             return func(this);

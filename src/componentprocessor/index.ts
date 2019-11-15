@@ -5,6 +5,7 @@ import { XmlDocument, XmlElement } from "xmldoc";
 import pSettle = require("p-settle");
 const readFile = promisify(fs.readFile);
 import * as fg from "fast-glob";
+import { Environment } from "../interpreter/Environment";
 
 interface FieldAttributes {
     id: string;
@@ -29,6 +30,11 @@ interface ComponentNode {
     children: ComponentNode[];
 }
 
+export interface ComponentScript {
+    type: string;
+    uri: string;
+}
+
 export class ComponentDefinition {
     public contents?: string;
     public xmlNode?: XmlDocument;
@@ -38,6 +44,8 @@ export class ComponentDefinition {
     public processed: boolean = false;
     public fields: ComponentField = {};
     public children: ComponentNode[] = [];
+    public scripts: ComponentScript[] = [];
+    public environment: Environment | undefined;
 
     constructor(readonly xmlPath: string) {}
 
@@ -129,11 +137,13 @@ async function processXmlTree(
         let xmlNode = nodeDef.xmlNode;
         if (xmlNode) {
             nodeDef.children = getChildren(xmlNode);
+            nodeDef.scripts = getScripts(xmlNode);
             let baseNode = xmlNode.attr.extends;
             while (baseNode) {
                 let baseNodeDef = nodeDefMap.get(baseNode);
                 if (baseNodeDef) {
                     nodeDef.children = [...getChildren(baseNodeDef.xmlNode!), ...nodeDef.children];
+                    nodeDef.scripts = [...getScripts(baseNodeDef.xmlNode!), ...nodeDef.scripts];
                     baseNode = baseNodeDef.xmlNode!.attr.extends;
                 }
             }
@@ -212,4 +222,21 @@ function parseChildren(element: XmlElement, children: ComponentNode[]): void {
 
         children.push(childComponent);
     });
+}
+
+function getScripts(node: XmlDocument): ComponentScript[] {
+    let scripts = node.childrenNamed("script");
+    let componentScripts: ComponentScript[] = [];
+
+    // TODO: Verify if uri is valid
+    scripts.map(script => {
+        if (script.attr) {
+            componentScripts.push({
+                type: script.attr.type,
+                uri: script.attr.uri,
+            });
+        }
+    });
+
+    return componentScripts;
 }

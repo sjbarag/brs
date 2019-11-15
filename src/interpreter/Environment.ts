@@ -188,10 +188,12 @@ export class Environment {
      *
      * @returns a copy of this environment but with no function-scoped values.
      */
-    public createSubEnvironment(): Environment {
+    public createSubEnvironment(includeModuleScope: boolean = true): Environment {
         let newEnvironment = new Environment();
         newEnvironment.global = new Map(this.global);
-        newEnvironment.module = new Map(this.module);
+        newEnvironment.module = includeModuleScope
+            ? new Map(this.module)
+            : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;

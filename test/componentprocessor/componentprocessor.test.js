@@ -1,9 +1,12 @@
 const { getComponentDefinitionMap, ComponentDefinition } = require("../../lib/componentprocessor");
+const path = require("path");
 
 jest.mock("fast-glob");
 jest.mock("fs");
 const fg = require("fast-glob");
 const fs = require("fs");
+
+const realFs = jest.requireActual("fs");
 
 describe.only("component parsing support", () => {
     afterEach(() => {
@@ -53,42 +56,54 @@ describe.only("component parsing support", () => {
             expect(xmlNode.attr.extends).toEqual("BaseComponent");
         });
 
-        it("parses children nodes in correct order", async () => {
-            const baseComp = `
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="BaseComponent">
-    <children>
-        <Label name="label_a" />
-    </children>
-</component>
-            `;
-            const extendedComp = `
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="ExtendedComponent" extends="BaseComponent">
-    <children>
-            <Label name="label_b" />
-    </children>
-</component>
-            `;
-
-            fg.sync.mockImplementation(() => {
-                return ["base_component.xml", "extended_component.xml"];
-            });
-            fs.readFile.mockImplementation((filename, _, cb) => {
-                selected = filename.includes("base_component.xml") ? baseComp : extendedComp;
-                cb(/* no error */ null, selected);
+        describe("parsing expectations", () => {
+            beforeEach(() => {
+                fg.sync.mockImplementation(() => {
+                    return [
+                        "baseComponent.xml",
+                        "extendedComponent.xml",
+                        "scripts/baseComp.brs",
+                        "scripts/extendedComp.brs",
+                        "scripts/utility.brs",
+                    ];
+                });
+                fs.readFile.mockImplementation((filename, _, cb) => {
+                    resourcePath = path.join(__dirname, "resources", filename);
+                    contents = realFs.readFileSync(resourcePath);
+                    cb(/* no error */ null, contents);
+                });
             });
 
-            let map = await getComponentDefinitionMap("/doesnt/matter");
-            let parsedExtendedComp = map.get("ExtendedComponent");
-            expect(parsedExtendedComp).not.toBeUndefined();
-            expect(parsedExtendedComp.children).not.toBeUndefined();
-            expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
-            let expectedChildOrder = ["label_a", "label_b"];
-            let childOrder = parsedExtendedComp.children.map(child => {
-                return child.fields && child.fields.name;
+            it("parses children nodes in correct order", async () => {
+                let map = await getComponentDefinitionMap("/doesnt/matter");
+                let parsedExtendedComp = map.get("ExtendedComponent");
+                expect(parsedExtendedComp).not.toBeUndefined();
+                expect(parsedExtendedComp.children).not.toBeUndefined();
+                expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
+
+                let expectedChildOrder = ["label_a", "label_b"];
+                let childOrder = parsedExtendedComp.children.map(child => {
+                    return child.fields && child.fields.name;
+                });
+                expect(childOrder).toEqual(expectedChildOrder);
             });
-            expect(childOrder).toEqual(expectedChildOrder);
+
+            it("adds all scripts into node in correct order", async () => {
+                let map = await getComponentDefinitionMap("/doesnt/matter");
+                let parsedExtendedComp = map.get("ExtendedComponent");
+                expect(parsedExtendedComp).not.toBeUndefined();
+                expect(parsedExtendedComp.scripts).not.toBeUndefined();
+                expect(parsedExtendedComp.scripts.length).toBeGreaterThan(0);
+
+                const expectedPrefix = "pkg:/test/componentprocessor/resources/scripts/";
+                let expectedScripts = [
+                    "baseComponent.brs",
+                    "extendedComponent.brs",
+                    "utility.brs",
+                ].map(scriptName => path.join(expectedPrefix, scriptName));
+                let actualScripts = parsedExtendedComp.scripts.map(script => script.uri);
+                expect(actualScripts).toEqual(expectedScripts);
+            });
         });
     });
 });

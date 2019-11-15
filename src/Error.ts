@@ -77,6 +77,14 @@ export class TypeMismatch extends BrsError {
 }
 
 /**
+ * Logs a detected BRS error to stderr.
+ * @param err the error to log to `stderr`
+ */
+export function logError(err: BrsError) {
+    console.error(err.format());
+}
+
+/**
  * Returns the `.kind` property of a `BrsType`, otherwise returns the provided `ValueKind`.
  * @param maybeType the `BrsType` to extract a `.kind` field from, or the `ValueKind` to return directly
  * @returns the `ValueKind` for `maybeType`

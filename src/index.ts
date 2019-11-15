@@ -21,6 +21,7 @@ export { PP as preprocessor };
 import * as _parser from "./parser";
 export { _parser as parser };
 import { URL } from "url";
+import * as path from "path";
 
 /**
  * Executes a BrightScript file by path and writes its output to the streams
@@ -47,8 +48,12 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     let pathFormatter = (component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
-        component.scripts = component.scripts.filter((script: ComponentScript) => {
-            return `${__dirname}/..${new URL(script.uri).pathname}`;
+        component.scripts = component.scripts.map((script: ComponentScript) => {
+            script.uri = path.join(
+                options.root ? options.root : __dirname,
+                new URL(script.uri).pathname
+            );
+            return script;
         });
     };
 

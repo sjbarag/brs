@@ -40,7 +40,7 @@ describe("integration tests", () => {
         await interpreter.buildSubEnvsFromComponents(
             componentMap,
             comp => {
-                comp.scripts = comp.scripts.filter(script => {
+                comp.scripts = comp.scripts.map(script => {
                     script.uri = path.join("scripts/", path.parse(script.uri).base);
                     return script;
                 });

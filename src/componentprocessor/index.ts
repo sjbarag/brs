@@ -30,7 +30,7 @@ interface ComponentNode {
     children: ComponentNode[];
 }
 
-interface ComponentScript {
+export interface ComponentScript {
     type: string;
     uri: string;
 }

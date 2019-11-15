@@ -1070,7 +1070,6 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
         let node = new RoSGNode([], type.value);
         addFields(interpreter, node, typeDef);
         addChildren(interpreter, node, typeDef);
-        runScripts(interpreter, typeDef);
 
         return node;
     } else {
@@ -1125,15 +1124,4 @@ function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: Componen
             addChildren(interpreter, newChild, typeDef);
         }
     });
-}
-
-function runScripts(interpreter: Interpreter, typeDef: ComponentDefinition) {
-    let scripts = typeDef.scripts;
-
-    // let calable = interpreter.getCallableFunction("init");
-    // console.log(calable);
-    // scripts.forEach(script => {
-    //     // console.log(interpreter.environment);
-    //     // console.log(new BrsString(script.uri));
-    // });
 }

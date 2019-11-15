@@ -42,9 +42,6 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     const interpreter = new Interpreter(executionOptions);
     interpreter.onError(BrsError.logError);
-    // save each custom component def into a global map so we can access it
-    // at run time when we call `createObjectByType`
-    interpreter.environment.nodeDefMap = nodeDefs;
 
     let pathFormatter = (component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;

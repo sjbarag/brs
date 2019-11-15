@@ -35,9 +35,7 @@ describe("integration tests", () => {
 
     test("interpreter environments have the right functions per component", async () => {
         let componentMap = await getComponentDefinitionMap("/doesnt/matter");
-        let interpreter = new Interpreter();
-
-        await interpreter.buildSubEnvsFromComponents(
+        let interpreter = await Interpreter.withSubEnvsFromComponents(
             componentMap,
             comp => {
                 comp.scripts = comp.scripts.map(script => {

@@ -38,10 +38,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     const executionOptions = Object.assign(defaultExecutionOptions, options);
 
     let manifest = await PP.getManifest(executionOptions.root);
-    let nodeDefs = await getComponentDefinitionMap(executionOptions.root);
-
-    const interpreter = new Interpreter(executionOptions);
-    interpreter.onError(BrsError.logError);
+    let componentDefinitions = await getComponentDefinitionMap(executionOptions.root);
 
     let pathFormatter = (component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
@@ -55,7 +52,14 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     };
 
     let lexerParserFn = LexerParser.getLexerParserFn(manifest);
-    await interpreter.buildSubEnvsFromComponents(nodeDefs, pathFormatter, lexerParserFn);
+    const interpreter = await Interpreter.withSubEnvsFromComponents(
+        componentDefinitions,
+        pathFormatter,
+        lexerParserFn
+    );
+    if (!interpreter) {
+        throw new Error("Unable to build interpreter with given component definitions.");
+    }
 
     let mainStatements = await lexerParserFn(filenames);
     return interpreter.exec(mainStatements);

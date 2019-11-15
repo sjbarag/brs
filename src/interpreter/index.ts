@@ -24,7 +24,7 @@ import {
 import { Lexeme } from "../lexer";
 import { isToken } from "../lexer/Token";
 import { Expr, Stmt } from "../parser";
-import { BrsError, TypeMismatch } from "../Error";
+import { BrsError, TypeMismatch, logError } from "../Error";
 
 import * as StdLib from "../stdlib";
 import { _brs_ } from "../extensions";
@@ -104,32 +104,35 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * @param formatPathFn
      * @param parseFn
      */
-    public buildSubEnvsFromComponents(
+    public static async withSubEnvsFromComponents(
         componentMap: Map<string, ComponentDefinition>,
         formatPathFn: (comp: ComponentDefinition) => void,
-        parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>
+        parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>,
+        options: ExecutionOptions = defaultExecutionOptions
     ) {
-        let nodeDefs = (this.environment.nodeDefMap = componentMap);
-        if (nodeDefs.size < 1) {
-            /** No modules defined */ return;
+        let interpreter = new Interpreter(options);
+        interpreter.onError(logError);
+
+        let componentDefinitions = (interpreter.environment.nodeDefMap = componentMap);
+        if (componentDefinitions.size > 0) {
+            await Promise.all(
+                Array.from(componentDefinitions).map(async componentKV => {
+                    let [_, component] = componentKV;
+                    formatPathFn(component);
+                    component.environment = interpreter.environment.createSubEnvironment(
+                        /* includeModuleScope */ false
+                    );
+                    let statements = await parseFn(component.scripts.map(c => c.uri));
+                    interpreter.inSubEnv(subInterpreter => {
+                        subInterpreter.environment.setM(interpreter.environment.getM());
+                        subInterpreter.exec(statements);
+                        return BrsInvalid.Instance;
+                    }, component.environment);
+                })
+            );
         }
 
-        return Promise.all(
-            Array.from(nodeDefs).map(async componentKV => {
-                let [_, component] = componentKV;
-                formatPathFn(component);
-                component.environment = this.environment.createSubEnvironment(
-                    /* includeModuleScope */ false
-                );
-                let statements = await parseFn(component.scripts.map(c => c.uri));
-                let currInterpreter = this;
-                currInterpreter.inSubEnv(subInterpreter => {
-                    subInterpreter.environment.setM(currInterpreter.environment.getM());
-                    subInterpreter.exec(statements);
-                    return BrsInvalid.Instance;
-                }, component.environment);
-            })
-        );
+        return interpreter;
     }
 
     /**

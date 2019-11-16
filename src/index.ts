@@ -58,7 +58,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         lexerParserFn
     );
     if (!interpreter) {
-        throw new Error("Unable to build interpreter with given component definitions.");
+        throw new Error("Unable to build interpreter.");
     }
 
     let mainStatements = await lexerParserFn(filenames);

@@ -113,24 +113,22 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let interpreter = new Interpreter(options);
         interpreter.onError(logError);
 
-        let componentDefinitions = (interpreter.environment.nodeDefMap = componentMap);
-        if (componentDefinitions.size > 0) {
-            await Promise.all(
-                Array.from(componentDefinitions).map(async componentKV => {
-                    let [_, component] = componentKV;
-                    formatPathFn(component);
-                    component.environment = interpreter.environment.createSubEnvironment(
-                        /* includeModuleScope */ false
-                    );
-                    let statements = await parseFn(component.scripts.map(c => c.uri));
-                    interpreter.inSubEnv(subInterpreter => {
-                        subInterpreter.environment.setM(interpreter.environment.getM());
-                        subInterpreter.exec(statements);
-                        return BrsInvalid.Instance;
-                    }, component.environment);
-                })
-            );
-        }
+        interpreter.environment.nodeDefMap = componentMap;
+        await Promise.all(
+            Array.from(componentMap).map(async componentKV => {
+                let [_, component] = componentKV;
+                formatPathFn(component);
+                component.environment = interpreter.environment.createSubEnvironment(
+                    /* includeModuleScope */ false
+                );
+                let statements = await parseFn(component.scripts.map(c => c.uri));
+                interpreter.inSubEnv(subInterpreter => {
+                    subInterpreter.environment.setM(interpreter.environment.getM());
+                    subInterpreter.exec(statements);
+                    return BrsInvalid.Instance;
+                }, component.environment);
+            })
+        );
 
         return interpreter;
     }

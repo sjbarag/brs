@@ -35,14 +35,14 @@ describe("integration tests", () => {
 
     test("interpreter environments have the right functions per component", async () => {
         let componentMap = await getComponentDefinitionMap("/doesnt/matter");
+        componentMap.forEach(comp => {
+            comp.scripts = comp.scripts.map(script => {
+                script.uri = path.join("scripts/", path.parse(script.uri).base);
+                return script;
+            });
+        });
         let interpreter = await Interpreter.withSubEnvsFromComponents(
             componentMap,
-            comp => {
-                comp.scripts = comp.scripts.map(script => {
-                    script.uri = path.join("scripts/", path.parse(script.uri).base);
-                    return script;
-                });
-            },
             LexerParser.getLexerParserFn(new Map())
         );
 

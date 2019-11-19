@@ -40,7 +40,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     let manifest = await PP.getManifest(executionOptions.root);
     let componentDefinitions = await getComponentDefinitionMap(executionOptions.root);
 
-    let pathFormatter = (component: ComponentDefinition) => {
+    componentDefinitions.forEach((component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
         component.scripts = component.scripts.map((script: ComponentScript) => {
             script.uri = path.join(
@@ -49,12 +49,11 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
             );
             return script;
         });
-    };
+    });
 
     let lexerParserFn = LexerParser.getLexerParserFn(manifest);
     const interpreter = await Interpreter.withSubEnvsFromComponents(
         componentDefinitions,
-        pathFormatter,
         lexerParserFn
     );
     if (!interpreter) {

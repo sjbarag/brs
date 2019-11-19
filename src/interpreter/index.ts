@@ -106,7 +106,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      */
     public static async withSubEnvsFromComponents(
         componentMap: Map<string, ComponentDefinition>,
-        formatPathFn: (comp: ComponentDefinition) => void,
         parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>,
         options: ExecutionOptions = defaultExecutionOptions
     ) {
@@ -117,7 +116,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         await Promise.all(
             Array.from(componentMap).map(async componentKV => {
                 let [_, component] = componentKV;
-                formatPathFn(component);
                 component.environment = interpreter.environment.createSubEnvironment(
                     /* includeModuleScope */ false
                 );

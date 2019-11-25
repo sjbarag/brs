@@ -1,4 +1,12 @@
-import { BrsValue, ValueKind, BrsString, BrsInvalid, BrsBoolean, Uninitialized } from "../BrsType";
+import {
+    BrsValue,
+    ValueKind,
+    BrsString,
+    BrsInvalid,
+    BrsBoolean,
+    Uninitialized,
+    getBrsValueFromFieldType,
+} from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
@@ -8,11 +16,16 @@ import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { Float } from "../Float";
+import { ComponentDefinition } from "../../componentprocessor";
 
+interface BrsCallback {
+    interpreter: Interpreter;
+    callable: Callable;
+}
 class Field {
     private type: string;
     private value: BrsType;
-    private observers: string[] = [];
+    private observers: BrsCallback[] = [];
 
     constructor(value: BrsType, private alwaysNotify: boolean) {
         this.type = ValueKind.toString(value.kind);
@@ -32,18 +45,23 @@ class Field {
     }
 
     setValue(value: BrsType) {
-        // This is where the Callbacks are called
         if (this.alwaysNotify || this.value !== value) {
-            this.executeCallbacks();
+            this.observers.map(this.executeCallbacks);
         }
         this.value = value;
     }
 
-    addObserver(functionName: BrsString) {
-        this.observers.push(functionName.value);
+    addObserver(interpreter: Interpreter, callable: Callable) {
+        let brsCallback: BrsCallback = {
+            interpreter: interpreter,
+            callable: callable,
+        };
+        this.observers.push(brsCallback);
     }
 
-    private executeCallbacks() {}
+    private executeCallbacks(callback: BrsCallback) {
+        callback.callable.call(callback.interpreter);
+    }
 }
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
@@ -54,7 +72,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly builtInFields = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
-        { name: "focusedChild", type: "dynamic" },
+        { name: "focusedChild", type: "node" },
         { name: "id", type: "string" },
     ];
 
@@ -65,7 +83,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         this.builtInFields.forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),
-                new Field(this.getDefaultValue(field.type), false)
+                new Field(getBrsValueFromFieldType(field.type), false)
             );
         });
 
@@ -223,39 +241,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
         }
         return false;
-    }
-
-    private getDefaultValue(type: string): BrsType {
-        let value: BrsType;
-
-        switch (type.toLowerCase()) {
-            case "boolean":
-                value = BrsBoolean.False;
-                break;
-            case "dynamic":
-                value = BrsInvalid.Instance;
-                break;
-            case "integer":
-                value = new Int32(0);
-                break;
-            case "float":
-                value = new Float(0);
-                break;
-            case "roArray":
-                value = BrsInvalid.Instance;
-                break;
-            case "roAssociativeArray":
-                value = BrsInvalid.Instance;
-                break;
-            case "string":
-                value = new BrsString("");
-                break;
-            default:
-                value = Uninitialized.Instance;
-                break;
-        }
-
-        return value;
     }
 
     /* searches the node tree for a node with the given id */
@@ -473,7 +458,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             type: BrsString,
             alwaysnotify: BrsBoolean
         ) => {
-            let defaultValue = this.getDefaultValue(type.value);
+            let defaultValue = getBrsValueFromFieldType(type.value);
 
             if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
                 this.set(fieldname, defaultValue, alwaysnotify.toBoolean());
@@ -528,7 +513,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value);
             if (field instanceof Field) {
-                field.addObserver(functionname);
+                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value));
             }
             return BrsBoolean.True;
         },
@@ -558,8 +543,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, fieldname: BrsString, value: BrsType) => {
             let field = this.get(fieldname);
-
-            if (!this.fields.has(fieldname.value)) {
+            if (!this.fields.has(fieldname.value.toLowerCase())) {
                 return BrsBoolean.False;
             }
 
@@ -706,7 +690,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, nodetype: BrsString) => {
             // currently we can't create a custom subclass object of roSGNode,
             // so we'll always create generic RoSGNode object as child
-            let child = createNodeByType(nodetype);
+            let child = createNodeByType(interpreter, nodetype);
             if (child instanceof RoSGNode) {
                 this.children.push(child);
                 child.setParent(this);
@@ -844,7 +828,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let numChildrenValue = num_children.getValue();
             let addedChildren: RoSGNode[] = [];
             for (let i = 0; i < numChildrenValue; i++) {
-                let child = createNodeByType(subtype);
+                let child = createNodeByType(interpreter, subtype);
                 if (child instanceof RoSGNode) {
                     this.children.push(child);
                     addedChildren.push(child);
@@ -1077,10 +1061,67 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 }
 
-export function createNodeByType(type: BrsString) {
+export function createNodeByType(interpreter: Interpreter, type: BrsString) {
+    let typeDef = interpreter.environment.nodeDefMap.get(type.value);
     if (type.value === "Node") {
         return new RoSGNode([]);
+    } else if (typeDef) {
+        //use typeDef object to tack on all the bells & whistles of a custom node
+        let node = new RoSGNode([], type.value);
+        addFields(interpreter, node, typeDef);
+        addChildren(interpreter, node, typeDef);
+
+        return node;
     } else {
         return BrsInvalid.Instance;
     }
+}
+
+function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentDefinition) {
+    let fields = typeDef.fields;
+    for (let [key, value] of Object.entries(fields)) {
+        if (value instanceof Object) {
+            let addField = node.getMethod("addField");
+            let setField = node.getMethod("setFIeld");
+            const fieldName = new BrsString(key);
+            if (addField) {
+                addField.call(
+                    interpreter,
+                    fieldName,
+                    new BrsString(value.type),
+                    BrsBoolean.from(value.alwaysNotify === "true")
+                );
+            }
+            // set default value if it was specified in xml
+            if (setField && value.value) {
+                let result = setField.call(
+                    interpreter,
+                    fieldName,
+                    getBrsValueFromFieldType(value.type, value.value)
+                );
+            }
+        }
+    }
+}
+
+function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentDefinition) {
+    let children = typeDef.children;
+    let appendChild = node.getMethod("appendchild");
+
+    children.forEach(child => {
+        let newChild = createNodeByType(interpreter, new BrsString(child.name));
+        if (newChild instanceof RoSGNode && appendChild) {
+            appendChild.call(interpreter, newChild);
+            let setField = newChild.getMethod("setfield");
+            for (let [key, value] of Object.entries(child.fields)) {
+                if (setField) {
+                    setField.call(interpreter, new BrsString(key), new BrsString(value));
+                }
+            }
+        }
+        let typeDef = interpreter.environment.nodeDefMap.get(child.name);
+        if (child.children.length > 0 && newChild instanceof RoSGNode && typeDef) {
+            addChildren(interpreter, newChild, typeDef);
+        }
+    });
 }

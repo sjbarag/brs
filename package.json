@@ -1,6 +1,6 @@
 {
   "name": "brs",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "An interpreter for the BrightScript language that runs on non-Roku platforms.",
   "author": "Sean Barag <sean@barag.org>",
   "license": "MIT",
@@ -25,11 +25,13 @@
   ],
   "dependencies": {
     "commander": "^2.12.2",
+    "fast-glob": "^3.0.1",
     "long": "^3.2.0",
     "luxon": "^1.8.3",
     "memory-fs": "^0.4.1",
     "nanomatch": "^1.2.13",
-    "p-settle": "^2.1.0"
+    "p-settle": "^2.1.0",
+    "xmldoc": "^1.1.2"
   },
   "devDependencies": {
     "@types/jest": "^23.3.13",
@@ -39,6 +41,7 @@
     "@types/memory-fs": "^0.3.2",
     "@types/node": "^8.5.2",
     "@types/p-settle": "^2.0.1",
+    "@types/xmldoc": "^1.1.4",
     "husky": ">=1",
     "jest": "^24.0.0",
     "jest-junit": "^6.1.0",

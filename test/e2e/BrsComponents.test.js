@@ -139,6 +139,9 @@ describe("end to end brightscript functions", () => {
             "hello",
             "field3 in node now is: ",
             "false",
+            "callback 1 called",
+            "callback 2 called",
+            "field 3 updated",
             //ifNodeChildren tests
             "parent child count: ",
             "0",
@@ -265,6 +268,68 @@ describe("end to end brightscript functions", () => {
             "b", // split("/")[1]
             "%F0%9F%90%B6", // dog emoji, uri-encoded
             "🐶", // uri-encoded dog emoji, decoded
+        ]);
+    });
+
+    test("components/customComponent.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "customComponent.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "node.baseBoolField: ",
+            "false",
+            "node.baseIntField: ",
+            "0",
+            "node.normalBoolField: ",
+            "true",
+            "node.advancedStringField: ",
+            "advancedField!",
+            "node.advancedIntField: ",
+            "12345",
+            "node child count is: ",
+            "6",
+            "child id is: ",
+            "normalLabel",
+            "otherNode child count is: ",
+            "3",
+            "anotherNode child count is: ",
+            "1",
+            "baseRectangle width: ",
+            "100",
+            "baseRectangle height: ",
+            "200",
+        ]);
+    });
+
+    test("components/roIntrinsics.brs", async () => {
+        await execute([resourceFile("components", "roIntrinsics.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stderr.write)).toEqual([]);
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "Boolean object A ",
+            "true",
+            "Boolean object B ",
+            "false",
+            "Comparing true = false should be false ",
+            "false",
+            "Double value ",
+            "123.456",
+            "Double value * 2 ",
+            "246.912",
+            "Float object ",
+            "789.012",
+            "Float object * 10 ",
+            "7890.12",
+            "Integer object ",
+            "23",
+            "Integer object times itself ",
+            "529",
+            "Double to string ",
+            "123.456",
+            "Float to string ",
+            "789.012",
+            "Integer to string ",
+            "23",
         ]);
     });
 });

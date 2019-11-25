@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="AdvancedWidget" extends="NormalWidget">
+    <interface>
+        <!-- output -->
+        <field id="advancedStringField" type="string" value="advancedField!" alwaysNotify="true" />
+        <field id="advancedIntField" type="integer" value="12345"  />
+        <field id="advancedBoolField" type="boolean" value="true" />
+    </interface>
+    <children>
+        <Group id="advancedGroup1">
+            <Group id="subAdvancedGroup1">
+                <Label
+                    id="advancedLabel"
+                    text="advancedText"/>
+                <Rectangle
+                    id="advancedRectangle"
+                    opacity="0.1"
+                    width="1824"
+                    height="3"
+                    translation="[96, 132]" />
+            </Group>
+        </Group>
+        <Group id="advancedGroup2">
+            <SimpleLabel id="advancedSimpleLabel" />
+        </Group>
+        <Group id="advancedGroup3">
+        </Group>
+    </children>
+</component>

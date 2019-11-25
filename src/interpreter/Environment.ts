@@ -1,5 +1,6 @@
 import { Identifier } from "../lexer";
 import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode } from "../brsTypes";
+import { ComponentDefinition } from "../componentprocessor";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {
@@ -20,6 +21,13 @@ export class NotFound extends Error {
 
 /** Holds a set of values in multiple scopes and provides access operations to them. */
 export class Environment {
+    constructor(rootM?: RoAssociativeArray) {
+        if (!rootM) {
+            this.rootM = this.mPointer;
+        } else {
+            this.rootM = rootM;
+        }
+    }
     /**
      * Functions that are always accessible.
      * @see Scope.Global
@@ -41,6 +49,7 @@ export class Environment {
     private mockObjects = new Map<string, RoAssociativeArray>();
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
+    private rootM: RoAssociativeArray;
     /**
      * The one true focus of the scenegraph app, only one component can have focus at a time.
      * Note: this focus is only meaningful if the node being set focus to
@@ -48,6 +57,9 @@ export class Environment {
      * of stealing focus away from another node if a new node got focus.
      */
     private focusedNode: RoSGNode | BrsInvalid = BrsInvalid.Instance;
+
+    /** Map holding component definitions of all parsed xml component files */
+    public nodeDefMap = new Map<string, ComponentDefinition>();
 
     /**
      * Stores a `value` for the `name`d variable in the provided `scope`.
@@ -87,6 +99,14 @@ export class Environment {
      */
     public getM(): RoAssociativeArray {
         return this.mPointer;
+    }
+
+    /**
+     * Retrieves the the special `m` variable from the root Environment.
+     * @returns the current value used for the root `m` pointer.
+     */
+    public getRootM(): RoAssociativeArray {
+        return this.rootM;
     }
 
     /**
@@ -185,12 +205,13 @@ export class Environment {
      * @returns a copy of this environment but with no function-scoped values.
      */
     public createSubEnvironment(): Environment {
-        let newEnvironment = new Environment();
+        let newEnvironment = new Environment(this.rootM);
         newEnvironment.global = new Map(this.global);
         newEnvironment.module = new Map(this.module);
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;
+        newEnvironment.nodeDefMap = this.nodeDefMap;
 
         return newEnvironment;
     }

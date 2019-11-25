@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="BaseWidget">
+    <interface>
+        <field id="baseStringField" type="string" />
+        <field id="baseIntField" type="integer" />
+        <field id="baseBoolField" type="boolean" />
+    </interface>
+    <children>
+        <Rectangle 
+            id="baseRectangle"
+            width="100"
+            height="200" />
+    </children>
+</component>

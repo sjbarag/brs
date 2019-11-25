@@ -35,8 +35,12 @@ sub main()
     print "field1 in node now is: " node1.getField("field1")      ' => hello
     print "field3 in node now is: " node1.getField("field3")      ' => false
 
-    node1.observeField("field1", "onSomethingChanged")
+    node1.observeField("field1", "onCB1Called")
+    node1.observeField("field1", "onCB2Called")
+    node1.observeField("field2", "onField2Cb") ' This doesn't get called since field was removed
+    node1.observeField("field3", "onField3Cb")
     node1.setField("field1", "world")
+    node1.update({ field2: 10, field3: true})
 
     'ifNodeChildren tests
     parentNode = createObject("roSGNode", "Node")
@@ -179,6 +183,18 @@ sub main()
     print "Node subtype is returned:" n.subtype()                       ' => Node
 end sub
 
-sub onSomethingChanged()
-    print "oops, something changed here"
+sub onCB1Called()
+    print "callback 1 called"
+end sub
+
+sub onCB2Called()
+    print "callback 2 called"
+end sub
+
+sub onField2Cb()
+    print "field 2 updated"
+end sub
+
+sub onField3Cb()
+    print "field 3 updated"
 end sub

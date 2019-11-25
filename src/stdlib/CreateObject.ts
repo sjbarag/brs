@@ -40,6 +40,10 @@ export const CreateObject = new Callable("CreateObject", {
         }
 
         let ctor = BrsObjects.get(objName.value.toLowerCase());
+        if (ctor && objName.value.toLowerCase() === "rosgnode") {
+            return ctor(interpreter, ...additionalArgs);
+        }
+
         return ctor ? ctor(...additionalArgs) : BrsInvalid.Instance;
     },
 });

@@ -163,6 +163,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * passes the sub-interpreter to the provided JavaScript function. Always
      * reverts the current interpreter's environment to its original value.
      * @param func the JavaScript function to execute with the sub interpreter.
+     * @param environment (Optional) the environment to run the interpreter in.
      */
     inSubEnv(func: (interpreter: Interpreter) => BrsType, environment?: Environment): BrsType {
         let originalEnvironment = this._environment;

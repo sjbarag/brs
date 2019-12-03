@@ -42,13 +42,19 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     componentDefinitions.forEach((component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
-        component.scripts = component.scripts.map((script: ComponentScript) => {
-            script.uri = path.join(
-                options.root ? options.root : __dirname,
-                new URL(script.uri).pathname
+        try {
+            component.scripts = component.scripts.map((script: ComponentScript) => {
+                script.uri = path.join(
+                    options.root ? options.root : __dirname,
+                    new URL(script.uri).pathname
+                );
+                return script;
+            });
+        } catch (error) {
+            throw new Error(
+                `Encountered an error when parsing component ${component.name}: ${error}`
             );
-            return script;
-        });
+        }
     });
 
     let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);

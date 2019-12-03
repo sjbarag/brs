@@ -53,8 +53,8 @@ describe("integration tests", () => {
         let extendedComp = interpreter.environment.nodeDefMap.get("ExtendedComponent");
         expect(extendedComp).not.toBeUndefined();
         let actualFns = Array.from(extendedComp.environment.module).map(methodKV => {
-            let [fnNamePair] = methodKV;
-            return fnNamePair;
+            let [fnName] = methodKV;
+            return fnName;
         });
 
         expect(actualFns).toEqual(["init", "test1", "utility"]);

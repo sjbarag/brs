@@ -13,9 +13,13 @@ import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interp
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
 
+import * as _lexer from "./lexer";
+export { _lexer as lexer };
 import * as BrsTypes from "./brsTypes";
 export { BrsTypes as types };
 export { PP as preprocessor };
+import * as _parser from "./parser";
+export { _parser as parser };
 import { URL } from "url";
 import * as path from "path";
 

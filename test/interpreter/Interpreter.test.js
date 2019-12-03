@@ -1,5 +1,5 @@
 const { getComponentDefinitionMap } = require("../../lib/componentprocessor");
-const { Interpreter } = require("../../lib/interpreter");
+const { Interpreter, defaultExecutionOptions } = require("../../lib/interpreter");
 const path = require("path");
 const LexerParser = require("../../lib/LexerParser");
 
@@ -43,7 +43,7 @@ describe("integration tests", () => {
         });
         let interpreter = await Interpreter.withSubEnvsFromComponents(
             componentMap,
-            LexerParser.getLexerParserFn(new Map())
+            LexerParser.getLexerParserFn(new Map(), defaultExecutionOptions)
         );
 
         let baseComp = interpreter.environment.nodeDefMap.get("BaseComponent");

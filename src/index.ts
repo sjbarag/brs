@@ -51,7 +51,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         });
     });
 
-    let lexerParserFn = LexerParser.getLexerParserFn(manifest);
+    let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);
     const interpreter = await Interpreter.withSubEnvsFromComponents(
         componentDefinitions,
         lexerParserFn

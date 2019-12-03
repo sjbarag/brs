@@ -31,8 +31,7 @@ describe("end to end conditional compilation", () => {
 
     describe("(with sterr captured)", () => {
         test("conditional-compilation/compile-error.brs", async done => {
-            // make console.error empty so we don't clutter test output
-            let stderr = jest.spyOn(console, "error").mockImplementation(() => {});
+            let stderr = outputStreams.stderrSpy;
 
             try {
                 await execute(

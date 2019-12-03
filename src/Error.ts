@@ -77,11 +77,20 @@ export class TypeMismatch extends BrsError {
 }
 
 /**
- * Logs a detected BRS error to stderr.
- * @param err the error to log to `stderr`
+ * Logs a detected BRS error to console.
+ * @param err the error to log to console
  */
-export function logError(err: BrsError) {
+export function logConsoleError(err: BrsError) {
     console.error(err.format());
+}
+
+/**
+ * Produces a function that writes errors to the given error stream.
+ * @param errorStream write stream to write errors to.
+ * @returns function that writes to given write stream.
+ */
+export function getLoggerUsing(errorStream: NodeJS.WriteStream): (err: BrsError) => boolean {
+    return err => errorStream.write(err.format());
 }
 
 /**

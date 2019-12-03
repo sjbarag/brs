@@ -16,8 +16,13 @@ import * as _parser from "./parser";
 export { _parser as parser };
 import { ManifestValue } from "./preprocessor/Manifest";
 import * as BrsError from "./Error";
+import { defaultExecutionOptions, ExecutionOptions } from "./interpreter";
 
-export function getLexerParserFn(manifest: Map<string, ManifestValue>) {
+export function getLexerParserFn(
+    manifest: Map<string, ManifestValue>,
+    options: Partial<ExecutionOptions>
+) {
+    const executionOptions = Object.assign(defaultExecutionOptions, options);
     return async function parse(filenames: string[]): Promise<_parser.Stmt.Statement[]> {
         let parsedFiles = await pSettle(
             filenames.map(async filename => {
@@ -34,7 +39,7 @@ export function getLexerParserFn(manifest: Map<string, ManifestValue>) {
                 let preprocessor = new PP.Preprocessor();
                 let parser = new Parser();
                 [lexer, preprocessor, parser].forEach(emitter =>
-                    emitter.onError(BrsError.logError)
+                    emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
                 );
 
                 let scanResults = lexer.scan(contents, filename);

@@ -97,7 +97,7 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
  */
 export function repl() {
     const replInterpreter = new Interpreter();
-    replInterpreter.onError(BrsError.logError);
+    replInterpreter.onError(BrsError.getLoggerUsing(process.stderr));
 
     const rl = readline.createInterface({
         input: process.stdin,
@@ -140,9 +140,10 @@ function run(
 ) {
     const lexer = new Lexer();
     const parser = new Parser();
+    const logErrorFn = BrsError.getLoggerUsing(options.stderr);
 
-    lexer.onError(BrsError.logError);
-    parser.onError(BrsError.logError);
+    lexer.onError(logErrorFn);
+    parser.onError(logErrorFn);
 
     const scanResults = lexer.scan(contents, "REPL");
     if (scanResults.errors.length > 0) {

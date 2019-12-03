@@ -24,7 +24,7 @@ import {
 import { Lexeme } from "../lexer";
 import { isToken } from "../lexer/Token";
 import { Expr, Stmt } from "../parser";
-import { BrsError, TypeMismatch, logError } from "../Error";
+import { BrsError, TypeMismatch, getLoggerUsing } from "../Error";
 
 import * as StdLib from "../stdlib";
 import { _brs_ } from "../extensions";
@@ -110,7 +110,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         options: ExecutionOptions = defaultExecutionOptions
     ) {
         let interpreter = new Interpreter(options);
-        interpreter.onError(logError);
+        interpreter.onError(getLoggerUsing(options.stderr));
 
         interpreter.environment.nodeDefMap = componentMap;
         await Promise.all(

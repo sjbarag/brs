@@ -4,16 +4,12 @@ import pSettle from "p-settle";
 const readFile = promisify(fs.readFile);
 
 import { Lexer } from "./lexer";
+import { Parser, Stmt } from "./parser";
 import * as PP from "./preprocessor";
-import { Parser } from "./parser";
 
-import * as _lexer from "./lexer";
-export { _lexer as lexer };
 import * as BrsTypes from "./brsTypes";
 export { BrsTypes as types };
 export { PP as preprocessor };
-import * as _parser from "./parser";
-export { _parser as parser };
 import { ManifestValue } from "./preprocessor/Manifest";
 import * as BrsError from "./Error";
 import { defaultExecutionOptions, ExecutionOptions } from "./interpreter";
@@ -23,7 +19,7 @@ export function getLexerParserFn(
     options: Partial<ExecutionOptions>
 ) {
     const executionOptions = Object.assign(defaultExecutionOptions, options);
-    return async function parse(filenames: string[]): Promise<_parser.Stmt.Statement[]> {
+    return async function parse(filenames: string[]): Promise<Stmt.Statement[]> {
         let parsedFiles = await pSettle(
             filenames.map(async filename => {
                 let contents;

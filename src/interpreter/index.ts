@@ -40,6 +40,7 @@ import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 
 import { ManifestValue } from "../preprocessor/Manifest";
 import { ComponentDefinition } from "../componentprocessor";
+import pSettle from "p-settle";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -100,9 +101,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * Builds out all the sub-environments for the given components. Components are saved into the calling interpreter
      * instance. This function will mutate the state of the calling interpreter.
      * @param componentMap Map of all components to be assigned to this interpreter
-     * @param manifest
-     * @param formatPathFn
-     * @param parseFn
+     * @param parseFn Function used to parse components into interpretable statements
+     * @param options
      */
     public static async withSubEnvsFromComponents(
         componentMap: Map<string, ComponentDefinition>,
@@ -113,7 +113,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         interpreter.onError(getLoggerUsing(options.stderr));
 
         interpreter.environment.nodeDefMap = componentMap;
-        await Promise.all(
+        await pSettle(
             Array.from(componentMap).map(async componentKV => {
                 let [_, component] = componentKV;
                 component.environment = interpreter.environment.createSubEnvironment(

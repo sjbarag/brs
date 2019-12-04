@@ -1,5 +1,5 @@
 const { getComponentDefinitionMap } = require("../../lib/componentprocessor");
-const { Interpreter } = require("../../lib/interpreter");
+const { Interpreter, defaultExecutionOptions } = require("../../lib/interpreter");
 const path = require("path");
 const LexerParser = require("../../lib/LexerParser");
 
@@ -23,8 +23,9 @@ describe("integration tests", () => {
         });
         fs.readFile.mockImplementation((filename, _, cb) => {
             resourcePath = path.join(__dirname, "resources", filename);
-            contents = realFs.readFileSync(resourcePath, "utf8");
-            cb(/* no error */ null, contents);
+            realFs.readFile(resourcePath, "utf8", (err, contents) => {
+                cb(/* no error */ null, contents);
+            });
         });
     });
 
@@ -43,7 +44,7 @@ describe("integration tests", () => {
         });
         let interpreter = await Interpreter.withSubEnvsFromComponents(
             componentMap,
-            LexerParser.getLexerParserFn(new Map())
+            LexerParser.getLexerParserFn(new Map(), defaultExecutionOptions)
         );
 
         let baseComp = interpreter.environment.nodeDefMap.get("BaseComponent");
@@ -53,8 +54,8 @@ describe("integration tests", () => {
         let extendedComp = interpreter.environment.nodeDefMap.get("ExtendedComponent");
         expect(extendedComp).not.toBeUndefined();
         let actualFns = Array.from(extendedComp.environment.module).map(methodKV => {
-            let [fnNamePair] = methodKV;
-            return fnNamePair;
+            let [fnName] = methodKV;
+            return fnName;
         });
 
         expect(actualFns).toEqual(["init", "test1", "utility"]);

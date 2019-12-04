@@ -69,8 +69,9 @@ describe.only("component parsing support", () => {
                 });
                 fs.readFile.mockImplementation((filename, _, cb) => {
                     resourcePath = path.join(__dirname, "resources", filename);
-                    contents = realFs.readFileSync(resourcePath);
-                    cb(/* no error */ null, contents);
+                    realFs.readFile(resourcePath, (err, contents) => {
+                        cb(/* no error */ null, contents);
+                    });
                 });
             });
 

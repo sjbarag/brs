@@ -4,21 +4,22 @@ import pSettle from "p-settle";
 const readFile = promisify(fs.readFile);
 
 import { Lexer } from "./lexer";
+import { Parser, Stmt } from "./parser";
 import * as PP from "./preprocessor";
-import { Parser } from "./parser";
 
-import * as _lexer from "./lexer";
-export { _lexer as lexer };
 import * as BrsTypes from "./brsTypes";
 export { BrsTypes as types };
 export { PP as preprocessor };
-import * as _parser from "./parser";
-export { _parser as parser };
 import { ManifestValue } from "./preprocessor/Manifest";
 import * as BrsError from "./Error";
+import { defaultExecutionOptions, ExecutionOptions } from "./interpreter";
 
-export function getLexerParserFn(manifest: Map<string, ManifestValue>) {
-    return async function parse(filenames: string[]): Promise<_parser.Stmt.Statement[]> {
+export function getLexerParserFn(
+    manifest: Map<string, ManifestValue>,
+    options: Partial<ExecutionOptions>
+) {
+    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    return async function parse(filenames: string[]): Promise<Stmt.Statement[]> {
         let parsedFiles = await pSettle(
             filenames.map(async filename => {
                 let contents;
@@ -34,7 +35,7 @@ export function getLexerParserFn(manifest: Map<string, ManifestValue>) {
                 let preprocessor = new PP.Preprocessor();
                 let parser = new Parser();
                 [lexer, preprocessor, parser].forEach(emitter =>
-                    emitter.onError(BrsError.logError)
+                    emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
                 );
 
                 let scanResults = lexer.scan(contents, filename);

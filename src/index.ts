@@ -42,16 +42,22 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 
     componentDefinitions.forEach((component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
-        component.scripts = component.scripts.map((script: ComponentScript) => {
-            script.uri = path.join(
-                options.root ? options.root : __dirname,
-                new URL(script.uri).pathname
+        try {
+            component.scripts = component.scripts.map((script: ComponentScript) => {
+                script.uri = path.join(
+                    options.root ? options.root : __dirname,
+                    new URL(script.uri).pathname
+                );
+                return script;
+            });
+        } catch (error) {
+            throw new Error(
+                `Encountered an error when parsing component ${component.name}: ${error}`
             );
-            return script;
-        });
+        }
     });
 
-    let lexerParserFn = LexerParser.getLexerParserFn(manifest);
+    let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);
     const interpreter = await Interpreter.withSubEnvsFromComponents(
         componentDefinitions,
         lexerParserFn
@@ -97,7 +103,7 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
  */
 export function repl() {
     const replInterpreter = new Interpreter();
-    replInterpreter.onError(BrsError.logError);
+    replInterpreter.onError(BrsError.getLoggerUsing(process.stderr));
 
     const rl = readline.createInterface({
         input: process.stdin,
@@ -140,9 +146,10 @@ function run(
 ) {
     const lexer = new Lexer();
     const parser = new Parser();
+    const logErrorFn = BrsError.getLoggerUsing(options.stderr);
 
-    lexer.onError(BrsError.logError);
-    parser.onError(BrsError.logError);
+    lexer.onError(logErrorFn);
+    parser.onError(logErrorFn);
 
     const scanResults = lexer.scan(contents, "REPL");
     if (scanResults.errors.length > 0) {

@@ -23,8 +23,9 @@ describe("integration tests", () => {
         });
         fs.readFile.mockImplementation((filename, _, cb) => {
             resourcePath = path.join(__dirname, "resources", filename);
-            contents = realFs.readFileSync(resourcePath, "utf8");
-            cb(/* no error */ null, contents);
+            realFs.readFile(resourcePath, "utf8", (err, contents) => {
+                cb(/* no error */ null, contents);
+            });
         });
     });
 

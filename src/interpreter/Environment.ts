@@ -21,6 +21,13 @@ export class NotFound extends Error {
 
 /** Holds a set of values in multiple scopes and provides access operations to them. */
 export class Environment {
+    constructor(rootM?: RoAssociativeArray) {
+        if (!rootM) {
+            this.rootM = this.mPointer;
+        } else {
+            this.rootM = rootM;
+        }
+    }
     /**
      * Functions that are always accessible.
      * @see Scope.Global
@@ -42,6 +49,7 @@ export class Environment {
     private mockObjects = new Map<string, RoAssociativeArray>();
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
+    private rootM: RoAssociativeArray;
     /**
      * The one true focus of the scenegraph app, only one component can have focus at a time.
      * Note: this focus is only meaningful if the node being set focus to
@@ -91,6 +99,14 @@ export class Environment {
      */
     public getM(): RoAssociativeArray {
         return this.mPointer;
+    }
+
+    /**
+     * Retrieves the the special `m` variable from the root Environment.
+     * @returns the current value used for the root `m` pointer.
+     */
+    public getRootM(): RoAssociativeArray {
+        return this.rootM;
     }
 
     /**
@@ -191,7 +207,7 @@ export class Environment {
      * @returns a copy of this environment but with no function-scoped values.
      */
     public createSubEnvironment(includeModuleScope: boolean = true): Environment {
-        let newEnvironment = new Environment();
+        let newEnvironment = new Environment(this.rootM);
         newEnvironment.global = new Map(this.global);
         newEnvironment.module = includeModuleScope
             ? new Map(this.module)

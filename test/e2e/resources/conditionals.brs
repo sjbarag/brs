@@ -41,3 +41,16 @@ else if foo < 10 then
 else
     print "from else"
 endif
+
+' inline if inside if
+if foo < 5
+    if foo < 3 then print "foo < 3"
+else if foo = 5
+    print 7
+end if
+
+' inline if with dotted expression
+aa = {}
+aa.value = 0
+if aa.value = 0 then aa.value = 8 else aa.value++
+print aa.value

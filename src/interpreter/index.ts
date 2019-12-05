@@ -18,14 +18,13 @@ import {
     MismatchReason,
     Callable,
     BrsNumber,
-    Comparable,
     Float,
 } from "../brsTypes";
 
 import { Lexeme } from "../lexer";
 import { isToken } from "../lexer/Token";
 import { Expr, Stmt } from "../parser";
-import { BrsError, TypeMismatch } from "../Error";
+import { BrsError, TypeMismatch, getLoggerUsing } from "../Error";
 
 import * as StdLib from "../stdlib";
 import { _brs_ } from "../extensions";
@@ -38,6 +37,10 @@ import { RoAssociativeArray } from "../brsTypes/components/RoAssociativeArray";
 import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
 import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
+
+import { ManifestValue } from "../preprocessor/Manifest";
+import { ComponentDefinition } from "../componentprocessor";
+import pSettle from "p-settle";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -95,6 +98,40 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     /**
+     * Builds out all the sub-environments for the given components. Components are saved into the calling interpreter
+     * instance. This function will mutate the state of the calling interpreter.
+     * @param componentMap Map of all components to be assigned to this interpreter
+     * @param parseFn Function used to parse components into interpretable statements
+     * @param options
+     */
+    public static async withSubEnvsFromComponents(
+        componentMap: Map<string, ComponentDefinition>,
+        parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>,
+        options: ExecutionOptions = defaultExecutionOptions
+    ) {
+        let interpreter = new Interpreter(options);
+        interpreter.onError(getLoggerUsing(options.stderr));
+
+        interpreter.environment.nodeDefMap = componentMap;
+        await pSettle(
+            Array.from(componentMap).map(async componentKV => {
+                let [_, component] = componentKV;
+                component.environment = interpreter.environment.createSubEnvironment(
+                    /* includeModuleScope */ false
+                );
+                let statements = await parseFn(component.scripts.map(c => c.uri));
+                interpreter.inSubEnv(subInterpreter => {
+                    subInterpreter.environment.setM(interpreter.environment.getM());
+                    subInterpreter.exec(statements);
+                    return BrsInvalid.Instance;
+                }, component.environment);
+            })
+        );
+
+        return interpreter;
+    }
+
+    /**
      * Creates a new Interpreter, including any global properties and functions.
      * @param options configuration for the execution, including the streams to use for `stdout` and
      *                `stderr` and the base directory for path resolution
@@ -126,10 +163,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      * passes the sub-interpreter to the provided JavaScript function. Always
      * reverts the current interpreter's environment to its original value.
      * @param func the JavaScript function to execute with the sub interpreter.
+     * @param environment (Optional) the environment to run the interpreter in.
      */
-    inSubEnv(func: (interpreter: Interpreter) => BrsType): BrsType {
+    inSubEnv(func: (interpreter: Interpreter) => BrsType, environment?: Environment): BrsType {
         let originalEnvironment = this._environment;
-        let newEnv = this._environment.createSubEnvironment();
+        let newEnv = environment || this._environment.createSubEnvironment();
+
         try {
             this._environment = newEnv;
             return func(this);

@@ -3,12 +3,11 @@ const { execute } = require("../../lib/");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 
 describe("function argument type checking", () => {
-    let outputStreams;
+    let outputStreams, stderr;
 
     beforeAll(() => {
-        // make console.error empty so we don't clutter test output
-        stderr = jest.spyOn(console, "error").mockImplementation(() => {});
         outputStreams = createMockStreams();
+        stderr = outputStreams.stderrSpy;
     });
 
     afterEach(() => {

@@ -23,8 +23,11 @@ exports.allArgs = function(jestMock) {
 exports.createMockStreams = function() {
     const stdout = Object.assign(new stream.PassThrough(), process.stdout);
     const stderr = Object.assign(new stream.PassThrough(), process.stderr);
-    jest.spyOn(stdout, "write").mockImplementation(() => {});
-    jest.spyOn(stderr, "write").mockImplementation(() => {});
 
-    return { stdout, stderr };
+    return {
+        stdout,
+        stderr,
+        stdoutSpy: jest.spyOn(stdout, "write").mockImplementation(() => {}),
+        stderrSpy: jest.spyOn(stderr, "write").mockImplementation(() => {}),
+    };
 };

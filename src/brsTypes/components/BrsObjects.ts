@@ -17,18 +17,21 @@ import { Interpreter } from "../../interpreter";
 
 /** Map containing a list of brightscript components that can be created. */
 export const BrsObjects = new Map<string, Function>([
-    ["roassociativearray", () => new RoAssociativeArray([])],
-    ["roarray", () => new RoArray([])],
-    ["rodatetime", () => new RoDateTime()],
-    ["rotimespan", () => new Timespan()],
+    ["roassociativearray", (_: Interpreter) => new RoAssociativeArray([])],
+    ["roarray", (_: Interpreter) => new RoArray([])],
+    ["rodatetime", (_: Interpreter) => new RoDateTime()],
+    ["rotimespan", (_: Interpreter) => new Timespan()],
     [
         "rosgnode",
         (interpreter: Interpreter, nodeType: BrsString) => createNodeByType(interpreter, nodeType),
     ],
-    ["roregex", (expression: BrsString, flags: BrsString) => new RoRegex(expression, flags)],
-    ["rostring", (literal: BrsString) => new RoString(literal)],
-    ["roboolean", (literal: BrsBoolean) => new roBoolean(literal)],
-    ["rodouble", (literal: Double) => new roDouble(literal)],
-    ["rofloat", (literal: Float) => new roFloat(literal)],
-    ["roint", (literal: Int32) => new roInt(literal)],
+    [
+        "roregex",
+        (_: Interpreter, expression: BrsString, flags: BrsString) => new RoRegex(expression, flags),
+    ],
+    ["rostring", (_: Interpreter, literal: BrsString) => new RoString(literal)],
+    ["roboolean", (_: Interpreter, literal: BrsBoolean) => new roBoolean(literal)],
+    ["rodouble", (_: Interpreter, literal: Double) => new roDouble(literal)],
+    ["rofloat", (_: Interpreter, literal: Float) => new roFloat(literal)],
+    ["roint", (_: Interpreter, literal: Int32) => new roInt(literal)],
 ]);

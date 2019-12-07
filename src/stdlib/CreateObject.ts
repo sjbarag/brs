@@ -20,6 +20,7 @@ export const CreateObject = new Callable("CreateObject", {
             new StdlibArgument("arg2", ValueKind.Dynamic, BrsInvalid.Instance),
             new StdlibArgument("arg3", ValueKind.Dynamic, BrsInvalid.Instance),
             new StdlibArgument("arg4", ValueKind.Dynamic, BrsInvalid.Instance),
+            new StdlibArgument("arg5", ValueKind.Dynamic, BrsInvalid.Instance),
         ],
         returns: ValueKind.Dynamic,
     },
@@ -40,10 +41,7 @@ export const CreateObject = new Callable("CreateObject", {
         }
 
         let ctor = BrsObjects.get(objName.value.toLowerCase());
-        if (ctor && objName.value.toLowerCase() === "rosgnode") {
-            return ctor(interpreter, ...additionalArgs);
-        }
 
-        return ctor ? ctor(...additionalArgs) : BrsInvalid.Instance;
+        return ctor ? ctor(interpreter, ...additionalArgs) : BrsInvalid.Instance;
     },
 });

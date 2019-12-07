@@ -1,15 +1,17 @@
 import * as fs from "fs";
 import * as readline from "readline";
-import { promisify } from "util";
-import pSettle from "p-settle";
-const readFile = promisify(fs.readFile);
 
 import { Lexer } from "./lexer";
 import * as PP from "./preprocessor";
-import { getComponentDefinitionMap } from "./componentprocessor";
+import {
+    getComponentDefinitionMap,
+    ComponentDefinition,
+    ComponentScript,
+} from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
+import * as LexerParser from "./LexerParser";
 
 import * as _lexer from "./lexer";
 export { _lexer as lexer };
@@ -18,6 +20,8 @@ export { BrsTypes as types };
 export { PP as preprocessor };
 import * as _parser from "./parser";
 export { _parser as parser };
+import { URL } from "url";
+import * as path from "path";
 
 /**
  * Executes a BrightScript file by path and writes its output to the streams
@@ -34,73 +38,36 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     const executionOptions = Object.assign(defaultExecutionOptions, options);
 
     let manifest = await PP.getManifest(executionOptions.root);
+    let componentDefinitions = await getComponentDefinitionMap(executionOptions.root);
 
-    let nodeDefs = await getComponentDefinitionMap(executionOptions.root);
+    componentDefinitions.forEach((component: ComponentDefinition) => {
+        if (component.scripts.length < 1) return;
+        try {
+            component.scripts = component.scripts.map((script: ComponentScript) => {
+                script.uri = path.join(
+                    options.root ? options.root : __dirname,
+                    new URL(script.uri).pathname
+                );
+                return script;
+            });
+        } catch (error) {
+            throw new Error(
+                `Encountered an error when parsing component ${component.name}: ${error}`
+            );
+        }
+    });
 
-    // wait for all files to be read, lexed, and parsed, but don't exit on the first error
-    let parsedFiles = await pSettle(
-        filenames.map(async filename => {
-            let contents;
-            try {
-                contents = await readFile(filename, "utf-8");
-            } catch (err) {
-                return Promise.reject({
-                    message: `brs: can't open file '${filename}': [Errno ${err.errno}]`,
-                });
-            }
-
-            let lexer = new Lexer();
-            let preprocessor = new PP.Preprocessor();
-            let parser = new Parser();
-            [lexer, preprocessor, parser].forEach(emitter => emitter.onError(logError));
-
-            let scanResults = lexer.scan(contents, filename);
-            if (scanResults.errors.length > 0) {
-                return Promise.reject({
-                    message: "Error occurred during lexing",
-                });
-            }
-
-            let preprocessResults = preprocessor.preprocess(scanResults.tokens, manifest);
-            if (preprocessResults.errors.length > 0) {
-                return Promise.reject({
-                    message: "Error occurred during pre-processing",
-                });
-            }
-
-            let parseResults = parser.parse(preprocessResults.processedTokens);
-            if (parseResults.errors.length > 0) {
-                return Promise.reject({
-                    message: "Error occurred parsing",
-                });
-            }
-
-            return Promise.resolve(parseResults.statements);
-        })
+    let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);
+    const interpreter = await Interpreter.withSubEnvsFromComponents(
+        componentDefinitions,
+        lexerParserFn
     );
-
-    // don't execute anything if there were reading, lexing, or parsing errors
-    if (parsedFiles.some(file => file.isRejected)) {
-        return Promise.reject({
-            messages: parsedFiles
-                .filter(file => file.isRejected)
-                .map(rejection => rejection.reason.message),
-        });
+    if (!interpreter) {
+        throw new Error("Unable to build interpreter.");
     }
 
-    // combine statements from all files into one array
-    let statements = parsedFiles
-        .map(file => file.value || [])
-        .reduce((allStatements, fileStatements) => [...allStatements, ...fileStatements], []);
-
-    // execute them
-    const interpreter = new Interpreter(executionOptions);
-    interpreter.onError(logError);
-    // save each custom component def into a global map so we can access it
-    // at run time when we call `createObjectByType`
-    interpreter.environment.nodeDefMap = nodeDefs;
-
-    return interpreter.exec(statements);
+    let mainStatements = await lexerParserFn(filenames);
+    return interpreter.exec(mainStatements);
 }
 
 /**
@@ -136,7 +103,7 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
  */
 export function repl() {
     const replInterpreter = new Interpreter();
-    replInterpreter.onError(logError);
+    replInterpreter.onError(BrsError.getLoggerUsing(process.stderr));
 
     const rl = readline.createInterface({
         input: process.stdin,
@@ -179,9 +146,10 @@ function run(
 ) {
     const lexer = new Lexer();
     const parser = new Parser();
+    const logErrorFn = BrsError.getLoggerUsing(options.stderr);
 
-    lexer.onError(logError);
-    parser.onError(logError);
+    lexer.onError(logErrorFn);
+    parser.onError(logErrorFn);
 
     const scanResults = lexer.scan(contents, "REPL");
     if (scanResults.errors.length > 0) {
@@ -203,12 +171,4 @@ function run(
         //options.stderr.write(e.message);
         return;
     }
-}
-
-/**
- * Logs a detected BRS error to stderr.
- * @param err the error to log to `stderr`
- */
-function logError(err: BrsError.BrsError) {
-    console.error(err.format());
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="AdvancedWidget" extends="NormalWidget">
+    <script type="text/brightscript" uri="pkg:/components/scripts/AdvancedWidget.brs" />
+    <script type="text/brightscript" uri="pkg:/components/scripts/SupportScript.brs" />
     <interface>
         <!-- output -->
         <field id="advancedStringField" type="string" value="advancedField!" alwaysNotify="true" />

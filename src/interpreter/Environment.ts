@@ -201,13 +201,17 @@ export class Environment {
      * 3. Parameters passed into the function
      * 4. The `m` pointer, defined by the way in which a function was called
      * 5. Currently focused node object that reacts to onKey button presses
+     * @param includeModuleScope whether or not to includer caller's module scope into
+     * the cloned environment.
      *
      * @returns a copy of this environment but with no function-scoped values.
      */
-    public createSubEnvironment(): Environment {
+    public createSubEnvironment(includeModuleScope: boolean = true): Environment {
         let newEnvironment = new Environment(this.rootM);
         newEnvironment.global = new Map(this.global);
-        newEnvironment.module = new Map(this.module);
+        newEnvironment.module = includeModuleScope
+            ? new Map(this.module)
+            : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.focusedNode = this.focusedNode;

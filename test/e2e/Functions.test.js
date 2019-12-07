@@ -95,6 +95,12 @@ describe("end to end functions", () => {
         ]);
     });
 
+    test("function/m-pointer-func.brs", async () => {
+        await execute([resourceFile("function", "m-pointer-func.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual(["root"]);
+    });
+
     test("function/scoping.brs", async () => {
         await execute([resourceFile("function", "scoping.brs")], outputStreams);
 

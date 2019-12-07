@@ -51,6 +51,5 @@ end if
 
 ' inline if with dotted expression
 aa = {}
-aa.value = 0
-if aa.value = 0 then aa.value = 8 else aa.value++
+if foo > 5 then aa.value = ">5" else aa.value = 8
 print aa.value

@@ -1,6 +1,5 @@
 import { ComponentDefinition } from "../componentprocessor";
 import * as Stmt from "./Statement";
-import { statement } from "@babel/template";
 
 export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];

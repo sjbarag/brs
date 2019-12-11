@@ -3,6 +3,8 @@ import * as Stmt from "./Statement";
 import { statement } from "@babel/template";
 
 export class ComponentScopeResolver {
+    private readonly excludedNames: string[] = ["init"];
+
     /**
      * @param componentMap Component definition map to reference for function resolution.
      * @param parserLexerFn Function used to parse statements out of given components
@@ -18,7 +20,7 @@ export class ComponentScopeResolver {
      * @returns All statements in scope for the resolved component
      */
     public async resolve(component: ComponentDefinition): Promise<Stmt.Statement[]> {
-        return Promise.all(this.getStatements(component)).then(this.flatten);
+        return Promise.all(this.getStatements(component)).then(this.flatten.bind(this));
     }
 
     /**
@@ -40,11 +42,12 @@ export class ComponentScopeResolver {
                 extendedFns
                     .filter((_): _ is Stmt.Function => true)
                     .filter(statement => {
-                        let haveFnName = statementMemo.has(statement.name.text);
+                        let statementName = statement.name.text;
+                        let haveFnName = statementMemo.has(statementName);
                         if (!haveFnName) {
-                            statementMemo.add(statement.name.text);
+                            statementMemo.add(statementName);
                         }
-                        return !haveFnName;
+                        return !haveFnName && !this.excludedNames.includes(statementName);
                     })
             );
         }

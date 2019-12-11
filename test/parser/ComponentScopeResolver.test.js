@@ -80,4 +80,14 @@ describe("ComponentScopeResolver", () => {
         let testStatementCount = testStatement.func.body.statements.length;
         expect(testStatementCount).toEqual(2);
     });
+
+    it("doesn't copy init into scope", async () => {
+        let componentToResolve = componentMap.get("ExtendedComponent");
+        let componentScopeResolver = new brs.parser.ComponentScopeResolver(componentMap, parseFn);
+        let statements = await componentScopeResolver.resolve(componentToResolve);
+        expect(statements).toBeDefined();
+
+        let statementNames = statements.map(s => s.name.text);
+        expect(statementNames).not.toContain("init");
+    });
 });

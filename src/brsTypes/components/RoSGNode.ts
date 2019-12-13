@@ -1071,6 +1071,15 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
         addFields(interpreter, node, typeDef);
         addChildren(interpreter, node, typeDef);
 
+        interpreter.inSubEnv(subInterpreter => {
+            let init = subInterpreter.getInitMethod();
+            if (init instanceof Callable) {
+                init.call(subInterpreter);
+            }
+
+            return BrsInvalid.Instance;
+        }, typeDef.environment);
+
         return node;
     } else {
         return BrsInvalid.Instance;

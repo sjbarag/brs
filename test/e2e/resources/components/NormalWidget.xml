@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="NormalWidget" extends="BaseWidget">
+<component name="NormalWidget">
     <script type="text/brightscript" uri="pkg:/components/scripts/NormalWidget.brs" />
     <interface>
         <field id="normalStringField" type="string" onChange="onNormalStringFieldChange" />

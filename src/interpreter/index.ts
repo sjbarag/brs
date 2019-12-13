@@ -254,6 +254,27 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         throw new NotFound(`${functionName} was not found in scope`);
     }
 
+    getInitMethod(): BrsType {
+        let callbackVariable = new Expr.Variable({
+            kind: Lexeme.Identifier,
+            text: "init",
+            isReserved: false,
+            location: {
+                start: {
+                    line: -1,
+                    column: -1,
+                },
+                end: {
+                    line: -1,
+                    column: -1,
+                },
+                file: "(internal)",
+            },
+        });
+
+        return this.evaluate(callbackVariable);
+    }
+
     visitNamedFunction(statement: Stmt.Function): BrsType {
         if (statement.name.isReserved) {
             return this.addError(

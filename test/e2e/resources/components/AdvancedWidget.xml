@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="AdvancedWidget" extends="NormalWidget">
+<component name="AdvancedWidget">
     <script type="text/brightscript" uri="pkg:/components/scripts/AdvancedWidget.brs" />
     <script type="text/brightscript" uri="pkg:/components/scripts/SupportScript.brs" />
     <interface>
@@ -27,5 +27,6 @@
         </Group>
         <Group id="advancedGroup3">
         </Group>
+        <NormalWidget />
     </children>
 </component>

@@ -49,7 +49,7 @@ describe("integration tests", () => {
 
         let baseComp = interpreter.environment.nodeDefMap.get("BaseComponent");
         expect(baseComp).not.toBeUndefined();
-        expect(baseComp.environment.module.size).toEqual(0);
+        expect(baseComp.environment.module.size).toEqual(1);
 
         let extendedComp = interpreter.environment.nodeDefMap.get("ExtendedComponent");
         expect(extendedComp).not.toBeUndefined();

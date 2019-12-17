@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ExtendedComponent" extends="BaseComponent">
+<script type="text/brightscript" uri="pkg:/test/parser/resources/scripts/extendedComponent.brs" />
+</component>

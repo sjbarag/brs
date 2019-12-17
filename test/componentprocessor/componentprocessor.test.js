@@ -97,11 +97,9 @@ describe.only("component parsing support", () => {
                 expect(parsedExtendedComp.scripts.length).toBeGreaterThan(0);
 
                 const expectedPrefix = "pkg:/test/componentprocessor/resources/scripts/";
-                let expectedScripts = [
-                    "baseComponent.brs",
-                    "extendedComponent.brs",
-                    "utility.brs",
-                ].map(scriptName => path.join(expectedPrefix, scriptName));
+                let expectedScripts = ["extendedComponent.brs", "utility.brs"].map(scriptName =>
+                    path.join(expectedPrefix, scriptName)
+                );
                 let actualScripts = parsedExtendedComp.scripts.map(script => script.uri);
                 expect(actualScripts).toEqual(expectedScripts);
             });

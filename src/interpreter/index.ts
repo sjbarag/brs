@@ -23,7 +23,7 @@ import {
 
 import { Lexeme } from "../lexer";
 import { isToken } from "../lexer/Token";
-import { Expr, Stmt } from "../parser";
+import { Expr, Stmt, ComponentScopeResolver } from "../parser";
 import { BrsError, TypeMismatch, getLoggerUsing } from "../Error";
 
 import * as StdLib from "../stdlib";
@@ -113,13 +113,15 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         interpreter.onError(getLoggerUsing(options.stderr));
 
         interpreter.environment.nodeDefMap = componentMap;
+
+        let componentScopeResolver = new ComponentScopeResolver(componentMap, parseFn);
         await pSettle(
             Array.from(componentMap).map(async componentKV => {
                 let [_, component] = componentKV;
                 component.environment = interpreter.environment.createSubEnvironment(
                     /* includeModuleScope */ false
                 );
-                let statements = await parseFn(component.scripts.map(c => c.uri));
+                let statements = await componentScopeResolver.resolve(component);
                 interpreter.inSubEnv(subInterpreter => {
                     subInterpreter.environment.setM(interpreter.environment.getM());
                     subInterpreter.exec(statements);

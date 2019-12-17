@@ -66,6 +66,10 @@ export class ComponentDefinition {
             return Promise.reject(this);
         }
     }
+
+    public get extends(): string {
+        return this.xmlNode ? this.xmlNode.attr.extends : "";
+    }
 }
 
 export async function getComponentDefinitionMap(rootDir: string) {
@@ -143,7 +147,6 @@ async function processXmlTree(
                 let baseNodeDef = nodeDefMap.get(baseNode);
                 if (baseNodeDef) {
                     nodeDef.children = [...getChildren(baseNodeDef.xmlNode!), ...nodeDef.children];
-                    nodeDef.scripts = [...getScripts(baseNodeDef.xmlNode!), ...nodeDef.scripts];
                     baseNode = baseNodeDef.xmlNode!.attr.extends;
                 }
             }

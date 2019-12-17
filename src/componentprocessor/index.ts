@@ -146,7 +146,7 @@ async function processXmlTree(
             while (baseNode) {
                 let baseNodeDef = nodeDefMap.get(baseNode);
                 if (baseNodeDef) {
-                    nodeDef.children = [...getChildren(baseNodeDef.xmlNode!), ...nodeDef.children];
+                    nodeDef.children = [...nodeDef.children];
                     baseNode = baseNodeDef.xmlNode!.attr.extends;
                 }
             }

@@ -1068,17 +1068,41 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
     } else if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
         let node = new RoSGNode([], type.value);
-        addFields(interpreter, node, typeDef);
-        addChildren(interpreter, node, typeDef);
+        let typeDefStack: ComponentDefinition[] = [];
+        let currentEnv = typeDef.environment;
 
-        interpreter.inSubEnv(subInterpreter => {
-            let init = subInterpreter.getInitMethod();
-            if (init instanceof Callable) {
-                init.call(subInterpreter);
+        typeDefStack.push(typeDef);
+        // Adding all component extensions to the stack to call init methods
+        // in the correct order.
+        while (typeDef && typeDef.extends) {
+            typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends);
+            if (typeDef) typeDefStack.push(typeDef);
+        }
+
+        while (typeDef && typeDefStack.length > 0) {
+            typeDef = typeDefStack.pop();
+            let init: BrsType;
+
+            if (typeDef) {
+                addChildren(interpreter, node, typeDef);
             }
 
-            return BrsInvalid.Instance;
-        }, typeDef.environment);
+            if (typeDef) {
+                addFields(interpreter, node, typeDef);
+            }
+
+            interpreter.inSubEnv(subInterpreter => {
+                init = subInterpreter.getInitMethod();
+                return BrsInvalid.Instance;
+            }, typeDef!.environment);
+
+            interpreter.inSubEnv(subInterpreter => {
+                if (init instanceof Callable) {
+                    init.call(subInterpreter);
+                }
+                return BrsInvalid.Instance;
+            }, currentEnv);
+        }
 
         return node;
     } else {

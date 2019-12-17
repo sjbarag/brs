@@ -271,13 +271,47 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test.only("components/customComponent.brs", async () => {
+    test("components/customComponent.brs", async () => {
         outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
-            "AdvancedWidget init",
-            "asas",
+            "node.baseBoolField: ",
+            "false",
+            "node.baseIntField: ",
+            "0",
+            "node.normalBoolField: ",
+            "true",
+            "node.advancedStringField: ",
+            "advancedField!",
+            "node.advancedIntField: ",
+            "12345",
+            "node child count is: ",
+            "6",
+            "child id is: ",
+            "normalLabel",
+            "otherNode child count is: ",
+            "3",
+            "anotherNode child count is: ",
+            "1",
+            "baseRectangle width: ",
+            "100",
+            "baseRectangle height: ",
+            "200",
+        ]);
+    });
+
+    test("components/componentExtension.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "BaseChild init",
+            "BaseComponent init",
+            "ExtendedComponent start",
+            "ExtendedChild init",
+            "ExtendedComponent init",
+            "ExtendedComponent start",
         ]);
     });
 

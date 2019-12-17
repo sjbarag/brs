@@ -82,7 +82,7 @@ describe.only("component parsing support", () => {
                 expect(parsedExtendedComp.children).not.toBeUndefined();
                 expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
 
-                let expectedChildOrder = ["label_a", "label_b"];
+                let expectedChildOrder = ["label_b"];
                 let childOrder = parsedExtendedComp.children.map(child => {
                     return child.fields && child.fields.name;
                 });

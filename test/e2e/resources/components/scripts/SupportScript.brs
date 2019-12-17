@@ -1,2 +1,3 @@
-sub supportFunction()
+sub start()
+    print "ExtendedComponent start"
 end sub

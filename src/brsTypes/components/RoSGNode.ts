@@ -1071,30 +1071,28 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
         let typeDefStack: ComponentDefinition[] = [];
         let currentEnv = typeDef.environment;
 
-        typeDefStack.push(typeDef);
         // Adding all component extensions to the stack to call init methods
         // in the correct order.
+        typeDefStack.push(typeDef);
         while (typeDef && typeDef.extends) {
             typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends);
             if (typeDef) typeDefStack.push(typeDef);
         }
 
+        // Add children, fields and call each init method starting from the
+        // "basemost" component of the tree.
         while (typeDef && typeDefStack.length > 0) {
             typeDef = typeDefStack.pop();
             let init: BrsType;
 
             if (typeDef) {
                 addChildren(interpreter, node, typeDef);
-            }
-
-            if (typeDef) {
                 addFields(interpreter, node, typeDef);
+                interpreter.inSubEnv(subInterpreter => {
+                    init = subInterpreter.getInitMethod();
+                    return BrsInvalid.Instance;
+                }, typeDef.environment);
             }
-
-            interpreter.inSubEnv(subInterpreter => {
-                init = subInterpreter.getInitMethod();
-                return BrsInvalid.Instance;
-            }, typeDef!.environment);
 
             interpreter.inSubEnv(subInterpreter => {
                 if (init instanceof Callable) {

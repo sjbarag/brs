@@ -15,7 +15,7 @@ export const Type = new Callable("type", {
             case ValueKind.Object:
                 return new BrsString(variable.getComponentName());
             case ValueKind.Interface:
-                return new BrsString(variable.interfaceName);
+                return new BrsString(variable.name);
             default:
                 return new BrsString(ValueKind.toString(variable.kind));
         }

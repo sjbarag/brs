@@ -1066,7 +1066,8 @@ export class Parser {
             let values: (
                 | Expr.Expression
                 | Stmt.PrintSeparator.Tab
-                | Stmt.PrintSeparator.Space)[] = [];
+                | Stmt.PrintSeparator.Space
+            )[] = [];
 
             //print statements can be empty, so look for empty print conditions
             if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {

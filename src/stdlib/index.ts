@@ -1,23 +1,6 @@
 import { Callable, ValueKind, BrsInvalid, RoAssociativeArray } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
-let warningShown = false;
-
-export const RebootSystem = new Callable("RebootSystem", {
-    signature: {
-        args: [],
-        returns: ValueKind.Void,
-    },
-    impl: () => {
-        if (!warningShown) {
-            console.warn("`RebootSystem` is not implemented in `brs`.");
-            warningShown = true;
-        }
-
-        return BrsInvalid.Instance;
-    },
-});
-
 /**
  * Returns global M pointer (the m from the root Environment).
  */
@@ -31,6 +14,7 @@ export const GetGlobalAA = new Callable("GetGlobalAA", {
     },
 });
 
+export * from "./GlobalUtilities";
 export * from "./CreateObject";
 export * from "./File";
 export * from "./Json";

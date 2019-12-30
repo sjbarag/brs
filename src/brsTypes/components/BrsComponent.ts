@@ -7,7 +7,7 @@ export class BrsComponent {
     private methods: Map<string, Callable> = new Map();
     private readonly componentName: string;
 
-    readonly interfaces = new Set<BrsInterface>();
+    readonly interfaces = new Map<string, BrsInterface>();
 
     constructor(name: string) {
         this.componentName = name;
@@ -23,8 +23,8 @@ export class BrsComponent {
 
     protected registerMethods(interfaces: Record<string, Callable[]>) {
         this.methods = new Map<string, Callable>();
-        Object.entries(interfaces).forEach(([iface, methods]) => {
-            this.interfaces.add(new BrsInterface(iface));
+        Object.entries(interfaces).forEach(([interfaceName, methods]) => {
+            this.interfaces.set(interfaceName.toLowerCase(), new BrsInterface(interfaceName));
 
             methods.forEach(m => this.methods.set((m.name || "").toLowerCase(), m));
         });

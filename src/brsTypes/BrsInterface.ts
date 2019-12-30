@@ -4,7 +4,7 @@ import { BrsComponent } from "./components/BrsComponent";
 /**
  * A small typed wrapper around a BrightScript Interface.
  *
- * While BrightScript interfaces don't have any
+ * While BrightScript interfaces don't have any direct uses that I've found, their presence is useful in implementing reflection-based logic.
  */
 export class BrsInterface implements BrsValue {
     readonly kind = ValueKind.Interface;

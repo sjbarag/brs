@@ -301,6 +301,20 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/componentExtension.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "BaseChild init",
+            "BaseComponent init",
+            "ExtendedComponent start",
+            "ExtendedChild init",
+            "ExtendedComponent init",
+            "ExtendedComponent start",
+        ]);
+    });
+
     test("components/roIntrinsics.brs", async () => {
         await execute([resourceFile("components", "roIntrinsics.brs")], outputStreams);
 

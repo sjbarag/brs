@@ -1,2 +1,0 @@
-sub init()
-end sub

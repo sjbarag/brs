@@ -6,7 +6,9 @@ import {
     BrsType,
     StdlibArgument,
     RoAssociativeArray,
+    BrsInterface,
 } from "../brsTypes";
+import { BrsComponent } from "../brsTypes/components/BrsComponent";
 
 let warningShown = false;
 
@@ -25,4 +27,15 @@ export const RebootSystem = new Callable("RebootSystem", {
     },
 });
 
-export const GetInterface = new Callable("GetInterface", {});
+export const GetInterface = new Callable("GetInterface", {
+    signature: {
+        args: [
+            new StdlibArgument("object", ValueKind.Object),
+            new StdlibArgument("ifname", ValueKind.String),
+        ],
+        returns: ValueKind.Interface,
+    },
+    impl: (interpreter, object: BrsComponent, ifname: BrsString): BrsInterface | BrsInvalid => {
+        return object.interfaces.get(ifname.value.toLowerCase()) || BrsInvalid.Instance;
+    },
+});

@@ -12,12 +12,14 @@ export class Timespan extends BrsComponent implements BrsValue {
 
     constructor() {
         super("roTimespan");
-        this.registerMethods([
-            this.mark,
-            this.totalmilliseconds,
-            this.totalseconds,
-            this.getsecondstoiso8601date,
-        ]);
+        this.registerMethods({
+            ifTimespan: [
+                this.mark,
+                this.totalmilliseconds,
+                this.totalseconds,
+                this.getsecondstoiso8601date,
+            ],
+        });
 
         this.resetTime();
     }

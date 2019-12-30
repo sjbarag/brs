@@ -91,53 +91,50 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.fields.set(member.name.value.toLowerCase(), new Field(member.value, false))
         );
 
-        this.registerMethods([
-            // ifAssociativeArray methods
-            this.clear,
-            this.delete,
-            this.addreplace,
-            this.count,
-            this.doesexist,
-            this.append,
-            this.keys,
-            this.items,
-            this.lookup,
-            //ifSGNodeField methods
-            this.addfield,
-            this.addfields,
-            this.getfield,
-            this.observefield,
-            this.removefield,
-            this.setfield,
-            this.setfields,
-            this.update,
-            // ifSGNodeChildren methods
-            this.appendchild,
-            this.getchildcount,
-            this.getchildren,
-            this.removechild,
-            this.getparent,
-            this.createchild,
-            this.replacechild,
-            this.removechildren,
-            this.appendchildren,
-            this.getchild,
-            this.insertchild,
-            this.removechildrenindex,
-            this.removechildindex,
-            this.reparent,
-            this.createchildren,
-            this.replacechildren,
-            this.insertchildren,
-            // ifSGNodeFocus methods
-            this.hasfocus,
-            this.setfocus,
-            this.isinfocuschain,
-            //ifSGNodeDict
-            this.findnode,
-            this.issamenode,
-            this.subtype,
-        ]);
+        this.registerMethods({
+            ifAssociativeArray: [
+                this.clear,
+                this.delete,
+                this.addreplace,
+                this.count,
+                this.doesexist,
+                this.append,
+                this.keys,
+                this.items,
+                this.lookup,
+            ],
+            ifSGNodeField: [
+                this.addfield,
+                this.addfields,
+                this.getfield,
+                this.observefield,
+                this.removefield,
+                this.setfield,
+                this.setfields,
+                this.update,
+            ],
+            ifSGNodeChildren: [
+                this.appendchild,
+                this.getchildcount,
+                this.getchildren,
+                this.removechild,
+                this.getparent,
+                this.createchild,
+                this.replacechild,
+                this.removechildren,
+                this.appendchildren,
+                this.getchild,
+                this.insertchild,
+                this.removechildrenindex,
+                this.removechildindex,
+                this.reparent,
+                this.createchildren,
+                this.replacechildren,
+                this.insertchildren,
+            ],
+            ifSGNodeFocus: [this.hasfocus, this.setfocus, this.isinfocuschain],
+            ifSGNodeDict: [this.findnode, this.issamenode, this.subtype],
+        });
     }
 
     toString(parent?: BrsType): string {

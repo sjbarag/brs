@@ -103,6 +103,21 @@ describe.only("component parsing support", () => {
                 let actualScripts = parsedExtendedComp.scripts.map(script => script.uri);
                 expect(actualScripts).toEqual(expectedScripts);
             });
+
+            it("ignores extensions of unknown node subtypes", async () => {
+                fg.sync.mockImplementation(() => {
+                    return ["unknownExtensionComponent.xml"];
+                });
+
+                jest.spyOn(global.console, "error").mockImplementation();
+                try {
+                    let map = await getComponentDefinitionMap("/doesnt/matter");
+                    let invalidExtensionComponent = map.get("UnknownExtensionComponent");
+                    expect(invalidExtensionComponent).toBeDefined();
+                } finally {
+                    global.console.error.mockRestore();
+                }
+            });
         });
     });
 });

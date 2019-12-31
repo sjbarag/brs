@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    A component that extends an intentionally non-existent base component.
+    Used to ensure that we fall back to a basic 'Node' when attempting to
+    extend a component that hasn't uyet been implemented in BRS.
+-->
+<component name="UnknownExtensionComponent" extends="DoesNotExist"/>

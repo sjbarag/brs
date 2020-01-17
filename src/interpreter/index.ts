@@ -38,7 +38,6 @@ import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
 import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 
-import { ManifestValue } from "../preprocessor/Manifest";
 import { ComponentDefinition } from "../componentprocessor";
 import pSettle from "p-settle";
 
@@ -276,6 +275,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         });
 
         return this.evaluate(initVariable);
+    }
+
+    visitLibrary(statement: Stmt.Library): BrsInvalid {
+        this.stderr.write("WARNING: 'Library' statement implemented as no-op");
+        return BrsInvalid.Instance;
     }
 
     visitNamedFunction(statement: Stmt.Function): BrsType {

@@ -21,10 +21,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
 
         this.intrinsic = initialValue;
         this.registerMethods({
-            ifString: [
-                this.setString,
-                // TODO: getString
-            ],
+            ifString: [this.setString, this.getString],
             ifStringOps: [
                 this.appendString,
                 this.len,
@@ -46,7 +43,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
                 this.encodeUriComponent,
                 this.decodeUriComponent,
             ],
-            // TODO: ifToStr and it's toStr() method
+            ifToStr: [this.toStr],
         });
     }
 
@@ -108,6 +105,14 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             this.intrinsic = new BrsString(s.value.substr(0, len.getValue()));
             return BrsInvalid.Instance;
         },
+    });
+
+    private getString = new Callable("GetString", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => this.intrinsic,
     });
 
     /** Appends the first len characters of s to the end of the string. */
@@ -441,5 +446,13 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
         impl: _interpreter => {
             return new BrsString(decodeURIComponent(this.intrinsic.value));
         },
+    });
+
+    private toStr = new Callable("toStr", {
+        signature: {
+            args: [],
+            returns: ValueKind.String,
+        },
+        impl: _interpreter => this.intrinsic,
     });
 }

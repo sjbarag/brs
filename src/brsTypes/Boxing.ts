@@ -9,10 +9,10 @@ export interface Unboxable {
     unbox(): BrsType;
 }
 
-export function isBoxable(value: BrsValue): value is BrsValue & Boxable {
+export function isBoxable(value: BrsType): value is BrsType & Boxable {
     return "box" in value;
 }
 
-export function isUnboxable(value: BrsValue): value is BrsValue & Unboxable {
+export function isUnboxable(value: BrsType): value is BrsType & Unboxable {
     return "unbox" in value;
 }

@@ -1,4 +1,4 @@
-const { execute } = require("../../lib/");
+const { execute } = require("../../lib");
 
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 

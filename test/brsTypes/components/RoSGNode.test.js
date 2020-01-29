@@ -441,6 +441,19 @@ describe("RoSGNode", () => {
             });
         });
 
+        describe("hasfield", () => {
+            it("returns presence of a field", () => {
+                let node = new RoSGNode([{ name: new BrsString("foo"), value: new Int32(17) }]);
+
+                let hasField = node.getMethod("hasfield");
+                let result1 = hasField.call(interpreter, new BrsString("foo"));
+                expect(result1).toEqual(new BrsBoolean(true));
+
+                let result2 = hasField.call(interpreter, new BrsString("bar"));
+                expect(result2).toEqual(new BrsBoolean(false));
+            });
+        });
+
         describe("observefield", () => {
             it("adds an observer", () => {
                 let node = new RoSGNode([

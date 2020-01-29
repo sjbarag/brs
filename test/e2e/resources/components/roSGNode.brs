@@ -35,6 +35,9 @@ sub main()
     print "field1 in node now is: " node1.getField("field1")      ' => hello
     print "field3 in node now is: " node1.getField("field3")      ' => false
 
+    print "field3 present? " node1.hasField("field3")
+    print "fieldほ present? " node1.hasField("fieldほ")
+
     node1.observeField("field1", "onCB1Called")
     node1.observeField("field1", "onCB2Called")
     node1.observeField("field2", "onField2Cb") ' This doesn't get called since field was removed

@@ -107,6 +107,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.addfield,
                 this.addfields,
                 this.getfield,
+                this.hasfield,
                 this.observefield,
                 this.removefield,
                 this.setfield,
@@ -495,6 +496,19 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, fieldname: BrsString) => {
             return this.get(fieldname);
+        },
+    });
+
+    /** Returns true if the field exists */
+    private hasfield = new Callable("hasfield", {
+        signature: {
+            args: [new StdlibArgument("fieldname", ValueKind.String)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString) => {
+            return this.fields.has(fieldname.value.toLowerCase())
+                ? BrsBoolean.True
+                : BrsBoolean.False;
         },
     });
 

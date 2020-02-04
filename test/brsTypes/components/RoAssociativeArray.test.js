@@ -274,7 +274,7 @@ describe("RoAssociativeArray", () => {
             });
         });
 
-        describe.only("items", () => {
+        describe("items", () => {
             it("returns an array of values from the associative array in lexicographical order", () => {
                 let cletter = new BrsString("c");
                 let letter1 = new BrsString("a");

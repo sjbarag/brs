@@ -13,6 +13,7 @@
     "build": "tsc",
     "clean": "rimraf ./lib ./types",
     "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --",
     "lint": "tslint --project .",
     "prettier:write": "prettier --write \"{bin,src,test}/**/*.{js,ts}\"",
     "prettier": "prettier --check \"{bin,src,test}/**/*.{js,ts}\"",

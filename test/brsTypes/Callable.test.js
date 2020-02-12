@@ -1,5 +1,6 @@
 const BrsTypes = require("../../lib/brsTypes");
 const { UCase, LCase } = require("../../lib/stdlib");
+const { Interpreter } = require("../../lib/interpreter");
 
 describe("Callable", () => {
     it("is less than nothing", () => {
@@ -112,7 +113,7 @@ describe("Callable", () => {
             const hasArgs = new BrsTypes.Callable("acceptsString", {
                 signature: {
                     args: [new BrsTypes.StdlibArgument("foo", BrsTypes.ValueKind.String)],
-                    returns: BrsTypes.String,
+                    returns: BrsTypes.ValueKind.String,
                 },
                 impl: () => {},
             });
@@ -133,7 +134,7 @@ describe("Callable", () => {
             const hasArgs = new BrsTypes.Callable("acceptsAnything", {
                 signature: {
                     args: [new BrsTypes.StdlibArgument("intArg", BrsTypes.ValueKind.Int32)],
-                    returns: BrsTypes.String,
+                    returns: BrsTypes.ValueKind.String,
                 },
                 impl: () => {},
             });
@@ -149,7 +150,7 @@ describe("Callable", () => {
             const hasArgs = new BrsTypes.Callable("acceptsAnything", {
                 signature: {
                     args: [new BrsTypes.StdlibArgument("floatArg", BrsTypes.ValueKind.Float)],
-                    returns: BrsTypes.String,
+                    returns: BrsTypes.ValueKind.String,
                 },
                 impl: () => {},
             });
@@ -161,26 +162,78 @@ describe("Callable", () => {
             ).toEqual([]);
         });
 
-        it("allows any type for dynamic and object", () => {
+        it("allows any type for dynamic", () => {
             const hasArgs = new BrsTypes.Callable("acceptsAnything", {
                 signature: {
-                    args: [
-                        new BrsTypes.StdlibArgument("foo", BrsTypes.ValueKind.Dynamic),
-                        new BrsTypes.StdlibArgument("bar", BrsTypes.ValueKind.Object),
-                    ],
-                    returns: BrsTypes.String,
+                    args: [new BrsTypes.StdlibArgument("foo", BrsTypes.ValueKind.Dynamic)],
+                    returns: BrsTypes.ValueKind.String,
                 },
                 impl: () => {},
             });
 
             expect(
                 hasArgs
-                    .getAllSignatureMismatches([
-                        BrsTypes.BrsBoolean.False,
-                        BrsTypes.BrsInvalid.Instance,
-                    ])
+                    .getAllSignatureMismatches([BrsTypes.BrsBoolean.False])
                     .map(mm => mm.mismatches)[0]
             ).toEqual([]);
+        });
+
+        it("automatically boxes primitive arguments when signature requests boxed version", () => {
+            const hasArgs = new BrsTypes.Callable("acceptsObject", {
+                signature: {
+                    args: [new BrsTypes.StdlibArgument("foo", BrsTypes.ValueKind.Object)],
+                    returns: BrsTypes.ValueKind.Object,
+                },
+            });
+
+            let satisfied = hasArgs.getFirstSatisfiedSignature([
+                new BrsTypes.BrsString("a primitive string"),
+            ]);
+            expect(satisfied.correctedArgs.length).toBe(1);
+            expect(satisfied.correctedArgs[0]).toBeInstanceOf(BrsTypes.RoString);
+        });
+
+        it("automatically unboxes boxed arguments when signature requests primitive version", () => {
+            const hasArgs = new BrsTypes.Callable("acceptsObject", {
+                signature: {
+                    args: [new BrsTypes.StdlibArgument("foo", BrsTypes.ValueKind.String)],
+                    returns: BrsTypes.ValueKind.Object,
+                },
+            });
+
+            let satisfied = hasArgs.getFirstSatisfiedSignature([
+                new BrsTypes.BrsString("a boxed string").box(),
+            ]);
+            expect(satisfied.correctedArgs.length).toBe(1);
+            expect(satisfied.correctedArgs[0]).toBeInstanceOf(BrsTypes.BrsString);
+        });
+
+        it("automatically boxes return values when implementation returns primitive version", () => {
+            const hasArgs = new BrsTypes.Callable("returnsObject", {
+                signature: {
+                    args: [],
+                    returns: BrsTypes.ValueKind.Object,
+                },
+                impl: () => new BrsTypes.Float(3.14),
+            });
+
+            let result = hasArgs.call(new Interpreter());
+            expect(result).toBeInstanceOf(BrsTypes.roFloat);
+            expect(result.unbox()).toEqual(new BrsTypes.Float(3.14));
+        });
+
+        it("automatically unboxes return values when implementation returns boxed version", () => {
+            const hasArgs = new BrsTypes.Callable("returnsObject", {
+                signature: {
+                    args: [],
+                    returns: BrsTypes.ValueKind.Int32,
+                },
+                impl: () => new BrsTypes.roInt(new BrsTypes.Int32(200)),
+            });
+
+            let result = hasArgs.call(new Interpreter());
+            expect(result).toBeInstanceOf(BrsTypes.Int32);
+            expect(result).toEqual(new BrsTypes.Int32(200));
         });
     });
 });

@@ -926,7 +926,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitCall(expression: Expr.Call) {
         let functionName = "[anonymous function]";
-        // TODO: autobox
         if (
             expression.callee instanceof Expr.Variable ||
             expression.callee instanceof Expr.DottedGet
@@ -955,16 +954,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         if (satisfiedSignature) {
             try {
                 let mPointer = this._environment.getRootM();
-
-                let signature = satisfiedSignature.signature;
-                args = args.map((arg, index) => {
-                    // any arguments of type "object" must be automatically boxed
-                    if (signature.args[index].type.kind === ValueKind.Object && isBoxable(arg)) {
-                        return arg.box();
-                    }
-
-                    return arg;
-                });
 
                 if (
                     expression.callee instanceof Expr.DottedGet ||
@@ -1019,14 +1008,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             returnLocation
                         )
                     );
-                }
-
-                if (
-                    returnedValue &&
-                    isBoxable(returnedValue) &&
-                    satisfiedSignature.signature.returns === ValueKind.Object
-                ) {
-                    returnedValue = returnedValue.box();
                 }
 
                 if (

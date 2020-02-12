@@ -1,5 +1,5 @@
 const brs = require("brs");
-const { ValueKind, Callable, BrsString, RoAssociativeArray } = brs.types;
+const { ValueKind, Callable, BrsString, RoAssociativeArray, BrsBoolean } = brs.types;
 const { Interpreter } = require("../../lib/interpreter");
 const { MockNode } = require("../../lib/extensions/MockNode");
 
@@ -19,7 +19,7 @@ describe("MockNode", () => {
                         returns: ValueKind.Boolean,
                     },
                     impl: () => {
-                        return true;
+                        return BrsBoolean.True;
                     },
                 });
 
@@ -29,7 +29,7 @@ describe("MockNode", () => {
                 let mockNode = new MockNode(aa);
                 result = mockNode.getMethod("newMethod");
                 expect(result).toBeTruthy();
-                expect(result.call(interpreter)).toBe(true);
+                expect(result.call(interpreter)).toBe(BrsBoolean.True);
             });
         });
     });

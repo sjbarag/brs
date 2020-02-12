@@ -402,7 +402,7 @@ describe("RoSGNode", () => {
 
             it("only adds fields if passed as an associative array", () => {
                 let node = new RoSGNode([]);
-                let fields = "non associative array";
+                let fields = new BrsString("non associative array");
 
                 let addFields = node.getMethod("addfields");
 

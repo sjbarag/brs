@@ -5,6 +5,7 @@ import { Scope } from "../interpreter/Environment";
 import { Location } from "../lexer";
 import { Int32 } from "./Int32";
 import { Float } from "./Float";
+import { isBoxable, isUnboxable } from "./Boxing";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
@@ -69,7 +70,7 @@ export interface Signature {
     readonly returns: Brs.ValueKind;
 }
 
-/** A BrightScript function signature paired with its implementation. */
+/** A BrightScript function signature paired with its implementation and corrected arguments. */
 export type SignatureAndImplementation = {
     /** A BrightScript function's signature. */
     signature: Signature;
@@ -158,12 +159,12 @@ export class Callable implements Brs.BrsValue {
 
         let { signature, impl } = satisfiedSignature;
 
-        let mutableArgs = args.slice();
+        let mutableArgs = satisfiedSignature.correctedArgs.slice();
 
         return interpreter.inSubEnv(subInterpreter => {
-            // first, we need to evaluate all of the parameter default values
-            // and define them in a new environment
             signature.args.forEach((param, index) => {
+                // first, we need to evaluate all of the parameter default values
+                // and define them in a new environment
                 if (param.defaultValue && mutableArgs[index] == null) {
                     mutableArgs[index] = subInterpreter.evaluate(param.defaultValue);
                 }
@@ -176,7 +177,21 @@ export class Callable implements Brs.BrsValue {
             });
 
             // then return whatever the selected implementation would return
-            return impl(subInterpreter, ...mutableArgs);
+            let returnedValue = impl(subInterpreter, ...mutableArgs);
+
+            if (returnedValue) {
+                if (isBoxable(returnedValue) && signature.returns === Brs.ValueKind.Object) {
+                    returnedValue = returnedValue.box();
+                } else if (
+                    isUnboxable(returnedValue) &&
+                    signature.returns !== Brs.ValueKind.Object &&
+                    signature.returns !== Brs.ValueKind.Dynamic
+                ) {
+                    returnedValue = returnedValue.unbox();
+                }
+            }
+
+            return returnedValue;
         });
     }
 
@@ -215,20 +230,28 @@ export class Callable implements Brs.BrsValue {
         return this.name || "";
     }
 
-    getFirstSatisfiedSignature(args: Brs.BrsType[]): SignatureAndImplementation | undefined {
-        return this.signatures.filter(
-            sigAndImpl => this.getSignatureMismatches(sigAndImpl.signature, args).length === 0
-        )[0];
+    getFirstSatisfiedSignature(args: Brs.BrsType[]) {
+        for (let sigAndImpl of this.signatures) {
+            let maybeMatched = this.tryMatchSignature(sigAndImpl.signature, args);
+            if (maybeMatched.mismatches.length === 0) {
+                return {
+                    ...sigAndImpl,
+                    correctedArgs: maybeMatched.correctedArgs,
+                };
+            }
+        }
+
+        return undefined;
     }
 
     getAllSignatureMismatches(args: Brs.BrsType[]): SignatureAndMismatches[] {
         return this.signatures.map(sigAndImpl => ({
             signature: sigAndImpl.signature,
-            mismatches: this.getSignatureMismatches(sigAndImpl.signature, args),
+            mismatches: this.tryMatchSignature(sigAndImpl.signature, args).mismatches,
         }));
     }
 
-    private getSignatureMismatches(sig: Signature, args: Brs.BrsType[]): SignatureMismatch[] {
+    private tryMatchSignature(sig: Signature, args: Brs.BrsType[]) {
         let reasons: SignatureMismatch[] = [];
         let requiredArgCount = sig.args.filter(arg => !arg.defaultValue).length;
 
@@ -250,11 +273,18 @@ export class Callable implements Brs.BrsValue {
             let expected = sig.args[index];
             let received = args[index];
 
-            if (
-                expected.type.kind === Brs.ValueKind.Dynamic ||
-                expected.type.kind === Brs.ValueKind.Object
-            ) {
+            if (expected.type.kind === Brs.ValueKind.Dynamic) {
                 return;
+            }
+
+            if (isBoxable(received) && expected.type.kind === Brs.ValueKind.Object) {
+                // any parameters of type "object" must automatically box the argument
+                received = received.box();
+                args[index] = received;
+            } else if (isUnboxable(received) && expected.type.kind !== Brs.ValueKind.Object) {
+                // similarly, any parameters of primitive-type must automatically unbox the argument
+                received = received.unbox();
+                args[index] = received;
             }
 
             if (
@@ -283,7 +313,10 @@ export class Callable implements Brs.BrsValue {
             }
         });
 
-        return reasons;
+        return {
+            correctedArgs: reasons.length > 0 ? [] : args,
+            mismatches: reasons,
+        };
     }
 
     /**

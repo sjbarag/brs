@@ -136,7 +136,10 @@ export const FormatJson = new Callable("FormatJson", {
     signature: {
         returns: ValueKind.String,
         args: [
-            new StdlibArgument("x", ValueKind.Object),
+            // While the BrightScript docs claim `x` is of type `object`, we need to accept non-object types to
+            // be able to match RBI's "unsupported type" error message!  Using `Dynamic` as the type for `x`
+            // effectively disables type correction before this implementation gets called.
+            new StdlibArgument("x", ValueKind.Dynamic),
             new StdlibArgument("flags", ValueKind.Int32, new Int32(0)),
         ],
     },

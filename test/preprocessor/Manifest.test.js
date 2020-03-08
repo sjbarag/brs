@@ -56,7 +56,10 @@ describe("manifest support", () => {
 
         it("parses key-value pairs", () => {
             fs.readFile.mockImplementation((filename, encoding, cb) =>
-                cb(/* no error */ null, ["foo=bar=baz", "lorem=true", "five=5"].join("\n"))
+                cb(
+                    /* no error */ null,
+                    ["foo=bar=baz", "lorem=true", "five=5", "six=6.000", "version=1.2.3"].join("\n")
+                )
             );
 
             return expect(getManifest("/has/a/manifest")).resolves.toEqual(
@@ -64,6 +67,8 @@ describe("manifest support", () => {
                     ["foo", "bar=baz"],
                     ["lorem", true],
                     ["five", 5],
+                    ["six", 6],
+                    ["version", "1.2.3"],
                 ])
             );
         });

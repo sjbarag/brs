@@ -89,7 +89,8 @@ export function parseManifest(contents: string) {
                 return [key, false];
             }
 
-            let maybeNumber = Number.parseInt(value);
+            let maybeNumber = Number(value);
+
             // if it's not a number, it's just a string
             if (Number.isNaN(maybeNumber)) {
                 return [key, value];

@@ -189,7 +189,7 @@ describe("interpreter calls", () => {
         );
     });
 
-    it.only("allows returning invalid when return type is Object", () => {
+    it("allows returning invalid when return type is Object", () => {
         const ast = [
             new Stmt.Function(
                 identifier("foo"),

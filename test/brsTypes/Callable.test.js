@@ -146,7 +146,7 @@ describe("Callable", () => {
         });
 
         it("allows float to be passed to a double argument", () => {
-            const hasArgs = new BrsTypes.Callable("acceptsAnything", {
+            const hasArgs = new BrsTypes.Callable("acceptsDouble", {
                 signature: {
                     args: [new BrsTypes.StdlibArgument("doubleArg", BrsTypes.ValueKind.Double)],
                     returns: BrsTypes.String,

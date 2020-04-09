@@ -3,7 +3,7 @@ const Stmt = require("../../lib/parser/Statement");
 const { Interpreter } = require("../../lib/interpreter");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
-const { BrsString, Int32, roInt, ValueKind, BrsInvalid } = brs.types;
+const { BrsString, Int32, roInt, ValueKind, BrsInvalid, roInvalid } = brs.types;
 
 const { token, identifier } = require("../parser/ParserTests");
 
@@ -189,7 +189,7 @@ describe("interpreter calls", () => {
         );
     });
 
-    it("allows returning invalid when return type is Object", () => {
+    it("boxes invalid when return type is Object", () => {
         const ast = [
             new Stmt.Function(
                 identifier("foo"),
@@ -221,7 +221,8 @@ describe("interpreter calls", () => {
         ];
         interpreter.exec(ast);
         let result = interpreter.environment.get(identifier("result"));
-        expect(result).toBe(BrsInvalid.Instance);
+        expect(result.kind).toEqual(ValueKind.Object);
+        expect(result.value).toEqual(new roInvalid().value);
     });
 
     it("errors when returning from a void return", () => {

@@ -1021,12 +1021,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     );
                 }
 
-                if (returnedValue && satisfiedSignature.signature.returns === ValueKind.Object) {
-                    if (isBoxable(returnedValue)) {
-                        returnedValue = returnedValue.box();
-                    } else if (returnedValue.kind === ValueKind.Invalid) {
-                        returnedValue = undefined;
-                    }
+                if (
+                    returnedValue &&
+                    isBoxable(returnedValue) &&
+                    satisfiedSignature.signature.returns === ValueKind.Object
+                ) {
+                    returnedValue = returnedValue.box();
                 }
 
                 if (

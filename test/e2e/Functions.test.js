@@ -53,7 +53,8 @@ describe("end to end functions", () => {
             "roFloat",
             "3.14159",
             "invalidAsObject:",
-            "invalid",
+            "roInvalid",
+            "<Component: roInvalid>",
         ]);
     });
 

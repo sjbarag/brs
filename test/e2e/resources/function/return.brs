@@ -48,4 +48,5 @@ print "boxedReturnType:"
 print type(boxed) boxed ' => RoFloat 3.14159
 
 print "invalidAsObject:"
-print returnInvalidAsObject() ' => invalid
+boxedInvalid = returnInvalidAsObject() ' => invalid
+print type(boxedInvalid) boxedInvalid ' => roInvalid <Component: roInvalid>

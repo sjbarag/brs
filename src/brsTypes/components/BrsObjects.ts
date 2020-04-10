@@ -14,6 +14,7 @@ import { Double } from "../Double";
 import { Float } from "../Float";
 import { Int32 } from "../Int32";
 import { Interpreter } from "../../interpreter";
+import { roInvalid } from "./RoInvalid";
 
 /** Map containing a list of brightscript components that can be created. */
 export const BrsObjects = new Map<string, Function>([
@@ -34,4 +35,5 @@ export const BrsObjects = new Map<string, Function>([
     ["rodouble", (_: Interpreter, literal: Double) => new roDouble(literal)],
     ["rofloat", (_: Interpreter, literal: Float) => new roFloat(literal)],
     ["roint", (_: Interpreter, literal: Int32) => new roInt(literal)],
+    ["roinvalid", (_: Interpreter) => new roInvalid()],
 ]);

@@ -1,15 +1,5 @@
 const brs = require("brs");
-const {
-    RoArray,
-    RoAssociativeArray,
-    BrsBoolean,
-    BrsString,
-    Int32,
-    BrsInvalid,
-    roInvalid,
-} = brs.types;
-const { Interpreter } = require("../../../lib/interpreter");
-const { createMockStreams } = require("../../e2e/E2ETests");
+const { RoAssociativeArray, BrsBoolean, BrsInvalid, roInvalid } = brs.types;
 
 describe("RoInvalid", () => {
     describe("comparisons", () => {

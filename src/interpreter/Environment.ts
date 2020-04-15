@@ -158,10 +158,7 @@ export class Environment {
 
         if (source) {
             let variableToReturn = source.get(lowercaseName)!;
-            if (
-                variableToReturn instanceof Callable &&
-                this.getMockFunction(lowercaseName) instanceof Callable
-            ) {
+            if (this.isMockedFunction(variableToReturn, lowercaseName)) {
                 variableToReturn = this.getMockFunction(lowercaseName);
             }
             return variableToReturn;
@@ -265,6 +262,18 @@ export class Environment {
      */
     public getMockFunction(functionName: string): Callable | BrsInvalid {
         return this.mockFunctions.get(functionName) || BrsInvalid.Instance;
+    }
+
+    /**
+     * returns true if the variable has a mocked function
+     * @param possibleMockFunction the variable that may be mocked
+     * @param possibleMockName the identifier/name for the mocked function
+     */
+    public isMockedFunction(possibleMockFunction: BrsType, possibleMockName: string): boolean {
+        return (
+            possibleMockFunction instanceof Callable &&
+            this.getMockFunction(possibleMockName) instanceof Callable
+        );
     }
 
     /**

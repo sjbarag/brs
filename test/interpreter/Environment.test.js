@@ -1,7 +1,7 @@
 const { Environment, Scope } = require("../../lib/interpreter/Environment");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
-const { BrsString, RoAssociativeArray, Int32, BrsInvalid } = brs.types;
+const { BrsString, RoAssociativeArray, Int32, BrsInvalid, Callable } = brs.types;
 
 const { token, identifier } = require("../parser/ParserTests");
 
@@ -151,5 +151,23 @@ describe("Environment", () => {
         expect(result).toBeInstanceOf(BrsInvalid);
     });
 
-    // TODO add tests of mockfunction
+    it("gets & sets mock functions on the mock scope", () => {
+        const mockFunction = new Callable("mockFunction", {
+            signature: {
+                args: [],
+                returns: BrsString,
+            },
+            impl: () => {},
+        });
+        env.setMockFunction("mockFunction", mockFunction);
+
+        result = env.getMockFunction("mockFunction".toLowerCase());
+        expect(result).toBe(mockFunction);
+    });
+
+    it("returns instance of BrsInvalid if mock function is not found", () => {
+        result = env.getMockFunction("no-mock-to-be-found".toLowerCase());
+        expect(result).toBeTruthy();
+        expect(result).toBeInstanceOf(BrsInvalid);
+    });
 });

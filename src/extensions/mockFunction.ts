@@ -1,7 +1,6 @@
 import { BrsInvalid, BrsType, Callable, StdlibArgument, ValueKind } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
-// todo: ADD TESTS?
 export const mockFunction = new Callable("mockFunction", {
     signature: {
         args: [

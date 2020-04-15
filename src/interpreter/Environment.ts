@@ -1,7 +1,6 @@
 import { Identifier } from "../lexer";
 import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode, Callable } from "../brsTypes";
 import { ComponentDefinition } from "../componentprocessor";
-import { Call } from "../parser/Expression";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {
@@ -269,11 +268,8 @@ export class Environment {
      * @param possibleMockFunction the variable that may be mocked
      * @param possibleMockName the identifier/name for the mocked function
      */
-    public isMockedFunction(possibleMockFunction: BrsType, possibleMockName: string): boolean {
-        return (
-            possibleMockFunction instanceof Callable &&
-            this.getMockFunction(possibleMockName) instanceof Callable
-        );
+    private isMockedFunction(possibleMockFunction: BrsType, possibleMockName: string): boolean {
+        return possibleMockFunction instanceof Callable && this.mockFunctions.has(possibleMockName);
     }
 
     /**

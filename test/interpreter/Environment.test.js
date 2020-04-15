@@ -139,15 +139,17 @@ describe("Environment", () => {
 
     it("gets & sets mock objects on the mock scope", () => {
         let obj = new RoAssociativeArray([]);
-        env.setMock("mock1", obj);
+        env.setMockObject("mock1", obj);
 
-        result = env.getMock("mock1");
+        result = env.getMockObject("mock1");
         expect(result).toBe(obj);
     });
 
     it("returns instance of BrsInvalid if mock is not found", () => {
-        result = env.getMock("no-mock-to-be-found");
+        result = env.getMockObject("no-mock-to-be-found");
         expect(result).toBeTruthy();
         expect(result).toBeInstanceOf(BrsInvalid);
     });
+
+    // TODO add tests of mockfunction
 });

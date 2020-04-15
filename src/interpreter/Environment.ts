@@ -1,6 +1,7 @@
 import { Identifier } from "../lexer";
-import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode } from "../brsTypes";
+import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode, Callable } from "../brsTypes";
 import { ComponentDefinition } from "../componentprocessor";
+import { Call } from "../parser/Expression";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {
@@ -47,6 +48,10 @@ export class Environment {
      * Mocked objects
      */
     private mockObjects = new Map<string, RoAssociativeArray>();
+    /**
+     * Mocked functions
+     */
+    private mockFunctions = new Map<string, Callable>();
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
     private rootM: RoAssociativeArray;
@@ -152,7 +157,14 @@ export class Environment {
         );
 
         if (source) {
-            return source.get(lowercaseName)!;
+            let variableToReturn = source.get(lowercaseName)!;
+            if (
+                variableToReturn instanceof Callable &&
+                this.getMockFunction(lowercaseName) instanceof Callable
+            ) {
+                variableToReturn = this.getMockFunction(lowercaseName);
+            }
+            return variableToReturn;
         }
 
         throw new NotFound(`Undefined variable '${name.text}'`);
@@ -214,6 +226,7 @@ export class Environment {
             : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
+        newEnvironment.mockFunctions = this.mockFunctions;
         newEnvironment.focusedNode = this.focusedNode;
         newEnvironment.nodeDefMap = this.nodeDefMap;
 
@@ -224,7 +237,7 @@ export class Environment {
      * retrieves mocked object if it exists
      * @param objName the object to mock
      */
-    public getMock(objName: string): BrsType {
+    public getMockObject(objName: string): BrsType {
         return this.mockObjects.get(objName) || BrsInvalid.Instance;
     }
 
@@ -233,8 +246,25 @@ export class Environment {
      * @param objName the object we are mocking
      * @param mockValue the mock to return
      */
-    public setMock(objName: string, mockValue: RoAssociativeArray): void {
+    public setMockObject(objName: string, mockValue: RoAssociativeArray): void {
         this.mockObjects.set(objName.toLowerCase(), mockValue);
+    }
+
+    /**
+     * places the mockValue function into list of mocks
+     * @param functionName the function we are mocking
+     * @param mockValue the mock to return
+     */
+    public setMockFunction(functionName: string, mockValue: Callable): void {
+        this.mockFunctions.set(functionName.toLowerCase(), mockValue);
+    }
+
+    /**
+     * retrieves mocked function if it exists
+     * @param functionName the function to mock
+     */
+    public getMockFunction(functionName: string): Callable | BrsInvalid {
+        return this.mockFunctions.get(functionName) || BrsInvalid.Instance;
     }
 
     /**

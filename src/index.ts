@@ -45,7 +45,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         try {
             component.scripts = component.scripts.map((script: ComponentScript) => {
                 script.uri = path.join(
-                    options.root ? options.root : __dirname,
+                    options.root ? options.root : executionOptions.root,
                     new URL(script.uri).pathname
                 );
                 return script;

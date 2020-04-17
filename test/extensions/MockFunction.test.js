@@ -12,12 +12,7 @@ describe("MockFunction", () => {
         });
 
         describe("calling mock function", () => {
-            // TODO: I don't think this environment spy is working as expected.
-            //       am able to step through and see setMockFunction called
-            //       but the mock expectations fail the test
-            xit("should call environment.setMockFunction", () => {
-                const envMockFunctionSpy = jest.spyOn(interpreter.environment, "setMockFunction");
-
+            it("should call environment.setMockFunction", () => {
                 const mockName = new BrsString("testFunction");
                 const mock = new Callable("testFunction", {
                     signature: {
@@ -31,8 +26,7 @@ describe("MockFunction", () => {
                 const mockArgs = [mockName, mock];
                 mockFunction.getAllSignatureMismatches(mockArgs);
                 mockFunction.call(interpreter, ...mockArgs);
-                expect(envMockFunctionSpy).toHaveBeenCalledTimes(1);
-                expect(envMockFunctionSpy).toHaveBeenCalledWith([mockName.toString(), mock]);
+                expect(interpreter.environment.getMockFunction("testfunction")).toBe(mock);
             });
         });
     });

@@ -44,10 +44,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         if (component.scripts.length < 1) return;
         try {
             component.scripts = component.scripts.map((script: ComponentScript) => {
-                script.uri = path.join(
-                    options.root ? options.root : __dirname,
-                    new URL(script.uri).pathname
-                );
+                script.uri = path.join(executionOptions.root, new URL(script.uri).pathname);
                 return script;
             });
         } catch (error) {

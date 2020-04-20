@@ -184,6 +184,36 @@ sub main()
 
     ' returns the node subtype
     print "Node subtype is returned:" n.subtype()                       ' => Node
+
+    ' calling update function without optional createFields parameter doesn't add new fields
+    node = createObject("roSGNode", "Node")
+    node.id = "originalId"
+    node.update({
+        id: "updatedId",
+        newField: "newValue"
+    })
+    print node.id
+    print node.newField
+
+    ' calling update function with optional createFields parameter set to true adds new fields
+    node = createObject("roSGNode", "Node")
+    node.id = "originalId"
+    node.update({
+        id: "updatedId",
+        newField: "newValue"
+    }, true)
+    print node.id
+    print node.newField
+
+    ' calling update function with optional createFields parameter set to false doesn't add new fields
+    node = createObject("roSGNode", "Node")
+    node.id = "originalId"
+    node.update({
+        id: "updatedId",
+        newField: "newValue"
+    }, false)
+    print node.id
+    print node.newField
 end sub
 
 sub onCB1Called()

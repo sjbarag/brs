@@ -600,7 +600,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Uninitialized,
         },
         impl: (interpreter: Interpreter, aa: RoAssociativeArray, createFields: BrsBoolean) => {
-            console.log(createFields.toBoolean());
             if (!(aa instanceof RoAssociativeArray)) {
                 return Uninitialized.Instance;
             }

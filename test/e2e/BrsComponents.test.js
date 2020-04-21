@@ -227,6 +227,12 @@ describe("end to end brightscript functions", () => {
             "false",
             "Node subtype is returned:",
             "Node",
+            "updatedId",
+            "invalid",
+            "updatedId",
+            "newValue",
+            "updatedId",
+            "invalid",
         ]);
     });
 

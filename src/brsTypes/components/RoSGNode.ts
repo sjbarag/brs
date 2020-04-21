@@ -593,17 +593,20 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     In contrast to setFields method, update always return Uninitialized */
     private update = new Callable("update", {
         signature: {
-            args: [new StdlibArgument("aa", ValueKind.Object)],
+            args: [
+                new StdlibArgument("aa", ValueKind.Object),
+                new StdlibArgument("createFields", ValueKind.Boolean, BrsBoolean.False),
+            ],
             returns: ValueKind.Uninitialized,
         },
-        impl: (interpreter: Interpreter, aa: RoAssociativeArray) => {
+        impl: (interpreter: Interpreter, aa: RoAssociativeArray, createFields: BrsBoolean) => {
             if (!(aa instanceof RoAssociativeArray)) {
                 return Uninitialized.Instance;
             }
 
             aa.getValue().forEach((value, key) => {
                 let fieldName = new BrsString(key);
-                if (this.fields.has(key)) {
+                if (this.fields.has(key) || createFields.toBoolean()) {
                     this.set(fieldName, value);
                 }
             });

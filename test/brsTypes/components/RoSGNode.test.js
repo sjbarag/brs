@@ -709,6 +709,102 @@ describe("RoSGNode", () => {
                 result = getField.call(interpreter, new BrsString("field2"));
                 expect(result.value).toEqual(intVal);
             });
+
+            it("doesn't add fields that do not already exist if createFields optional parameter is not passed", () => {
+                let node = new RoSGNode([]);
+                const strVal = "updated string";
+                const intVal = 666;
+                let initialFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString("a string") },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                let update = node.getMethod("update");
+                let getField = node.getMethod("getfield");
+                expect(update).toBeTruthy();
+
+                let result = addFields.call(interpreter, initialFields);
+                expect(result).toEqual(BrsBoolean.True);
+
+                let updatedFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString(strVal) },
+                    { name: new BrsString("field2"), value: new Int32(intVal) },
+                ]);
+
+                result = update.call(interpreter, updatedFields);
+                expect(result).toEqual(Uninitialized.Instance);
+                expect(node.getFields().size).toEqual(5);
+
+                result = getField.call(interpreter, new BrsString("field1"));
+                expect(result.value).toEqual(strVal);
+
+                result = getField.call(interpreter, new BrsString("field2"));
+                expect(result).toEqual(BrsInvalid.Instance);
+            });
+
+            it("doesn't add fields that do not already exist if createFields optional parameter is false", () => {
+                let node = new RoSGNode([]);
+                const strVal = "updated string";
+                const intVal = 666;
+                let initialFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString("a string") },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                let update = node.getMethod("update");
+                let getField = node.getMethod("getfield");
+                expect(update).toBeTruthy();
+
+                let result = addFields.call(interpreter, initialFields);
+                expect(result).toEqual(BrsBoolean.True);
+
+                let updatedFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString(strVal) },
+                    { name: new BrsString("field2"), value: new Int32(intVal) },
+                ]);
+
+                result = update.call(interpreter, updatedFields, BrsBoolean.False);
+                expect(result).toEqual(Uninitialized.Instance);
+                expect(node.getFields().size).toEqual(5);
+
+                result = getField.call(interpreter, new BrsString("field1"));
+                expect(result.value).toEqual(strVal);
+
+                result = getField.call(interpreter, new BrsString("field2"));
+                expect(result).toEqual(BrsInvalid.Instance);
+            });
+
+            it("does add fields that do not already exist if createFields optional parameter is true", () => {
+                let node = new RoSGNode([]);
+                const strVal = "updated string";
+                const intVal = 666;
+                let initialFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString("a string") },
+                ]);
+
+                let addFields = node.getMethod("addfields");
+                let update = node.getMethod("update");
+                let getField = node.getMethod("getfield");
+                expect(update).toBeTruthy();
+
+                let result = addFields.call(interpreter, initialFields);
+                expect(result).toEqual(BrsBoolean.True);
+
+                let updatedFields = new RoAssociativeArray([
+                    { name: new BrsString("field1"), value: new BrsString(strVal) },
+                    { name: new BrsString("field2"), value: new Int32(intVal) },
+                ]);
+
+                result = update.call(interpreter, updatedFields, BrsBoolean.True);
+                expect(result).toEqual(Uninitialized.Instance);
+                expect(node.getFields().size).toEqual(6);
+
+                result = getField.call(interpreter, new BrsString("field1"));
+                expect(result.value).toEqual(strVal);
+
+                result = getField.call(interpreter, new BrsString("field2"));
+                expect(result.value).toEqual(intVal);
+            });
         });
     });
 

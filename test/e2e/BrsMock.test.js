@@ -52,6 +52,10 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "{fake:'json'}",
+            "your wish is my command",
+            "Named foo",
+            "--inline foo--",
+            "--inline foo--",
         ]);
     });
 });

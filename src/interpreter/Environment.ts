@@ -157,7 +157,10 @@ export class Environment {
 
         if (source) {
             let variableToReturn = source.get(lowercaseName)!;
-            if (this.isMockedFunction(variableToReturn, lowercaseName)) {
+            if (
+                source !== this.function &&
+                this.isMockedFunction(variableToReturn, lowercaseName)
+            ) {
                 variableToReturn = this.getMockFunction(lowercaseName);
             }
             return variableToReturn;

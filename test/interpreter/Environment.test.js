@@ -1,7 +1,7 @@
 const { Environment, Scope } = require("../../lib/interpreter/Environment");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
-const { BrsString, RoAssociativeArray, Int32, BrsInvalid } = brs.types;
+const { BrsString, RoAssociativeArray, Int32, BrsInvalid, Callable } = brs.types;
 
 const { token, identifier } = require("../parser/ParserTests");
 
@@ -139,14 +139,34 @@ describe("Environment", () => {
 
     it("gets & sets mock objects on the mock scope", () => {
         let obj = new RoAssociativeArray([]);
-        env.setMock("mock1", obj);
+        env.setMockObject("mock1", obj);
 
-        result = env.getMock("mock1");
+        result = env.getMockObject("mock1");
         expect(result).toBe(obj);
     });
 
     it("returns instance of BrsInvalid if mock is not found", () => {
-        result = env.getMock("no-mock-to-be-found");
+        result = env.getMockObject("no-mock-to-be-found");
+        expect(result).toBeTruthy();
+        expect(result).toBeInstanceOf(BrsInvalid);
+    });
+
+    it("gets & sets mock functions on the mock scope", () => {
+        const mockFunction = new Callable("mockFunction", {
+            signature: {
+                args: [],
+                returns: BrsString,
+            },
+            impl: () => {},
+        });
+        env.setMockFunction("mockFunction", mockFunction);
+
+        result = env.getMockFunction("mockFunction".toLowerCase());
+        expect(result).toBe(mockFunction);
+    });
+
+    it("returns instance of BrsInvalid if mock function is not found", () => {
+        result = env.getMockFunction("no-mock-to-be-found".toLowerCase());
         expect(result).toBeTruthy();
         expect(result).toBeInstanceOf(BrsInvalid);
     });

@@ -20,8 +20,8 @@ describe("end to end brightscript functions", () => {
         jest.restoreAllMocks();
     });
 
-    test("mocks.brs", async () => {
-        await execute([resourceFile("mocks.brs")], outputStreams);
+    test("mockComponents.brs", async () => {
+        await execute([resourceFile("mockComponents.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "marking mock timespan",
@@ -44,6 +44,18 @@ describe("end to end brightscript functions", () => {
             "id",
             "second mock node name is not mutated by first mock:",
             "name",
+        ]);
+    });
+
+    test("mockFunctions.brs", async () => {
+        await execute([resourceFile("mockFunctions.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "{fake:'json'}",
+            "your wish is my command",
+            "Named foo",
+            "--inline foo--",
+            "--inline foo--",
         ]);
     });
 });

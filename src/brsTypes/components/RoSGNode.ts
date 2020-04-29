@@ -1109,6 +1109,8 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
             }
 
             interpreter.inSubEnv(subInterpreter => {
+                let mPointer = subInterpreter.environment.getM();
+                mPointer.set(new BrsString("top"), node);
                 if (init instanceof Callable) {
                     init.call(subInterpreter);
                 }

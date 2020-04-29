@@ -122,7 +122,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 );
                 let statements = await componentScopeResolver.resolve(component);
                 interpreter.inSubEnv(subInterpreter => {
-                    subInterpreter.environment.setM(interpreter.environment.getM());
+                    subInterpreter.environment.setM(new RoAssociativeArray([]));
                     subInterpreter.exec(statements);
                     return BrsInvalid.Instance;
                 }, component.environment);

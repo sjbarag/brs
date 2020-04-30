@@ -954,7 +954,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         if (satisfiedSignature) {
             try {
-                let mPointer = this._environment.getRootM();
+                // TODO: this breaks m-pointer-func tests because function calls from inside object function calls are unable to find global pointer
+                // let mPointer = this._environment.getRootM();
+                let mPointer = this._environment.getM();
 
                 let signature = satisfiedSignature.signature;
                 args = args.map((arg, index) => {

@@ -25,6 +25,7 @@ describe("m.top usage in scenegraph components", () => {
         await execute([resourceFile("components", "componentTopUsage.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "this is a default value defined in xml",
             "this value set using m.top",
             "invalid",
         ]);

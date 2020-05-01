@@ -1,5 +1,6 @@
 import { Field, RoSGNode } from "./RoSGNode";
 import { getBrsValueFromFieldType } from "../BrsType";
+import { AAMember } from "./RoAssociativeArray";
 
 export type RenderTracking = "none" | "partial" | "full";
 export type ChildRenderOrder = "renderFirst" | "renderLast";
@@ -22,9 +23,10 @@ export class Group extends RoSGNode {
         { name: "renderTracking", type: "string" }, // RenderTracking
     ];
 
-    constructor() {
-        super([], "Group"); // TODO: What's the ctor actually look like, here?
+    constructor(members: AAMember[]) {
+        super(members, "Group"); // TODO: What's the ctor actually look like, here?
 
+        // TODO: Feels like this is redundant and could be incorporated into base class.
         this.builtInFields.forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),

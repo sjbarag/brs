@@ -29,6 +29,7 @@ export * from "./components/RoDateTime";
 export * from "./components/RoAssociativeArray";
 export * from "./components/Timespan";
 export * from "./components/RoSGNode";
+export * from "./components/Group";
 export * from "./components/BrsObjects";
 export * from "./components/RoRegex";
 export * from "./components/RoString";

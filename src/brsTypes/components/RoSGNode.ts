@@ -15,7 +15,6 @@ import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
-import { Float } from "../Float";
 import { ComponentDefinition } from "../../componentprocessor";
 
 interface BrsCallback {

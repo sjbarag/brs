@@ -25,7 +25,7 @@ export class Group extends RoSGNode {
         { name: "renderTracking", type: "string" }, // RenderTracking
     ];
 
-    constructor(members: AAMember[]) {
+    constructor(members: AAMember[] = []) {
         super(members, "Group", Group.builtInFields);
     }
 }

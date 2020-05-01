@@ -14,12 +14,32 @@ const {
 
 describe.only("Group", () => {
     describe("stringification", () => {
-        it("lists all primitive values", () => {
-            let group = new Group([
-                { name: new BrsString("string"), value: new BrsString("a string") },
-            ]);
+        it("inits a new Group component", () => {
+            let group = new Group();
 
-            console.log(group.toString());
+            expect(group.toString()).toEqual(
+                `<Component: roSGNode:Group> =
+{
+    change: <UNINITIALIZED>
+    focusable: false
+    focusedchild: invalid
+    id: 
+    visible: false
+    opacity: 0
+    translation: invalid
+    rotation: 0
+    scale: invalid
+    scalerotatecenter: invalid
+    childrenderorder: 
+    inheritparenttransform: false
+    inheritparentopacity: false
+    clippingrect: invalid
+    renderpass: 0
+    muteaudioguide: false
+    enablerendertracking: false
+    rendertracking: 
+}`
+            );
         });
     });
 });

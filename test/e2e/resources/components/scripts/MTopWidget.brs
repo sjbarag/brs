@@ -6,6 +6,10 @@ sub init()
     localObj = { objFunction: isMTopInvalid }
     print localObj.objFunction()
     print isMTopInvalid()
+
+    childRect = m.top.findNode("childRectangle")
+    print childRect.width
+    print childRect.height
 end sub
 
 function getDefaultTopValue() as string

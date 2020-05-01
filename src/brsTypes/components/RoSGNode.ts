@@ -1129,7 +1129,7 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     for (let [key, value] of Object.entries(fields)) {
         if (value instanceof Object) {
             let addField = node.getMethod("addField");
-            let setField = node.getMethod("setFIeld");
+            let setField = node.getMethod("setField");
             const fieldName = new BrsString(key);
             if (addField) {
                 addField.call(

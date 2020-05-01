@@ -65,23 +65,25 @@ export class Field {
     }
 }
 
+export type FieldModel = { name: string; type: string };
+
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     protected fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
-    readonly builtInFields = [
+    static readonly builtInFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
         { name: "focusedChild", type: "node" },
         { name: "id", type: "string" },
     ];
 
-    constructor(members: AAMember[], readonly type: string = "Node") {
+    constructor(members: AAMember[], readonly type: string = "Node", fields: FieldModel[] = []) {
         super("roSGNode");
 
         // All nodes start have some built-in fields when created
-        this.builtInFields.forEach(field => {
+        RoSGNode.builtInFields.concat(fields).forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),
                 new Field(getBrsValueFromFieldType(field.type), false)

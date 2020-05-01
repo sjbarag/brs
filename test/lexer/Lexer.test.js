@@ -353,6 +353,19 @@ describe("lexer", () => {
             ]);
         });
 
+        it("reads conditional directives", () => {
+            let { tokens } = Lexer.scan("#IF #ELSE IF #ELSEIF #ELSE #END IF #ENDIF");
+            expect(tokens.map(t => t.kind)).toEqual([
+                Lexeme.HashIf,
+                Lexeme.HashElseIf,
+                Lexeme.HashElseIf,
+                Lexeme.HashElse,
+                Lexeme.HashEndIf,
+                Lexeme.HashEndIf,
+                Lexeme.Eof,
+            ]);
+        });
+
         it("reads forced compilation errors with messages", () => {
             let { tokens } = Lexer.scan("#error a message goes here\n");
             expect(tokens.map(t => t.kind)).toEqual([

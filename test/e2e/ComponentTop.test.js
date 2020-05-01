@@ -26,6 +26,8 @@ describe("m.top usage in scenegraph components", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "this is a default value defined in xml",
+            "true",
+            "false",
             "this value set using m.top",
             "invalid",
         ]);

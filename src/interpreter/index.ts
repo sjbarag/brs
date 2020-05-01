@@ -122,7 +122,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 );
                 let statements = await componentScopeResolver.resolve(component);
                 interpreter.inSubEnv(subInterpreter => {
-                    subInterpreter.environment.setM(new RoAssociativeArray([]));
+                    let componentMPointer = new RoAssociativeArray([]);
+                    subInterpreter.environment.setM(componentMPointer);
+                    subInterpreter.environment.setRootM(componentMPointer);
                     subInterpreter.exec(statements);
                     return BrsInvalid.Instance;
                 }, component.environment);
@@ -954,9 +956,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         if (satisfiedSignature) {
             try {
-                // TODO: this breaks m-pointer-func tests because function calls from inside object function calls are unable to find global pointer
-                // let mPointer = this._environment.getRootM();
-                let mPointer = this._environment.getM();
+                let mPointer = this._environment.getRootM();
 
                 let signature = satisfiedSignature.signature;
                 args = args.map((arg, index) => {

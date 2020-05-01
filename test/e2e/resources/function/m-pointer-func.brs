@@ -1,6 +1,6 @@
 Sub Main()
     m.someValue = "root"
-    objA = { myMethod: do_something, someValue: "not root" }    
+    objA = { myMethod: do_something, someValue: "not root" }
     print objA.myMethod()
 End Sub
 

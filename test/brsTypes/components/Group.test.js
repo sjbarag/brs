@@ -1,16 +1,5 @@
 const brs = require("brs");
-const {
-    RoAssociativeArray,
-    RoSGNode,
-    RoArray,
-    BrsBoolean,
-    BrsString,
-    Int32,
-    BrsInvalid,
-    ValueKind,
-    Uninitialized,
-    Group,
-} = brs.types;
+const { Group } = brs.types;
 
 describe("Group", () => {
     describe("stringification", () => {

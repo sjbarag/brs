@@ -1,4 +1,5 @@
-import { RoSGNode } from "../../../lib/brsTypes/components/RoSGNode";
+import { Field, RoSGNode } from "./RoSGNode";
+import { getBrsValueFromFieldType } from "../BrsType";
 
 export type RenderTracking = "none" | "partial" | "full";
 export type ChildRenderOrder = "renderFirst" | "renderLast";
@@ -20,4 +21,15 @@ export class Group extends RoSGNode {
         { name: "enableRenderTracking", type: "boolean" },
         { name: "renderTracking", type: "string" }, // RenderTracking
     ];
+
+    constructor() {
+        super([], "Group"); // TODO: What's the ctor actually look like, here?
+
+        this.builtInFields.forEach(field => {
+            this.fields.set(
+                field.name.toLowerCase(),
+                new Field(getBrsValueFromFieldType(field.type), false)
+            );
+        });
+    }
 }

@@ -22,7 +22,8 @@ interface BrsCallback {
     interpreter: Interpreter;
     callable: Callable;
 }
-class Field {
+
+export class Field {
     private type: string;
     private value: BrsType;
     private observers: BrsCallback[] = [];
@@ -66,7 +67,7 @@ class Field {
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
-    private fields = new Map<string, Field>();
+    protected fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
     readonly builtInFields = [

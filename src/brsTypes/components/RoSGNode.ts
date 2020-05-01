@@ -22,6 +22,8 @@ interface BrsCallback {
     callable: Callable;
 }
 
+export type FieldModel = { name: string; type: string };
+
 class Field {
     private type: string;
     private value: BrsType;
@@ -64,30 +66,23 @@ class Field {
     }
 }
 
-export type FieldModel = { name: string; type: string };
-
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     private fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
-    static readonly builtInFields: FieldModel[] = [
+    readonly builtInFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
         { name: "focusedChild", type: "node" },
         { name: "id", type: "string" },
     ];
 
-    constructor(members: AAMember[], readonly type: string = "Node", fields: FieldModel[] = []) {
+    constructor(members: AAMember[], readonly type: string = "Node") {
         super("roSGNode");
 
         // All nodes start have some built-in fields when created
-        RoSGNode.builtInFields.concat(fields).forEach(field => {
-            this.fields.set(
-                field.name.toLowerCase(),
-                new Field(getBrsValueFromFieldType(field.type), false)
-            );
-        });
+        this.registerFields(this.builtInFields);
 
         members.forEach(member =>
             this.fields.set(member.name.value.toLowerCase(), new Field(member.value, false))
@@ -1075,6 +1070,19 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             return new BrsString(this.type);
         },
     });
+
+    protected registerFields(fields: FieldModel[]) {
+        if (!fields) {
+            return;
+        }
+
+        fields.forEach(field => {
+            this.fields.set(
+                field.name.toLowerCase(),
+                new Field(getBrsValueFromFieldType(field.type), false)
+            );
+        });
+    }
 }
 
 export function createNodeByType(interpreter: Interpreter, type: BrsString) {

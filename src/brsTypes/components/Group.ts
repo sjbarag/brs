@@ -5,7 +5,7 @@ import { AAMember } from "./RoAssociativeArray";
 export class Group extends RoSGNode {
     readonly kind = ValueKind.Object;
 
-    static readonly builtInFields = [
+    readonly builtInFields = [
         { name: "visible", type: "boolean" },
         { name: "opacity", type: "float" },
         { name: "translation", type: "array" },
@@ -23,6 +23,7 @@ export class Group extends RoSGNode {
     ];
 
     constructor(members: AAMember[] = []) {
-        super(members, "Group", Group.builtInFields);
+        super(members, "Group");
+        this.registerFields(this.builtInFields);
     }
 }

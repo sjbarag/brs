@@ -12,7 +12,7 @@ const {
     Group,
 } = brs.types;
 
-describe.only("Group", () => {
+describe("Group", () => {
     describe("stringification", () => {
         it("inits a new Group component", () => {
             let group = new Group();

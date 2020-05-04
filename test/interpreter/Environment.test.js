@@ -45,6 +45,13 @@ describe("Environment", () => {
         expect(env.get(identifier("m"))).toBe(newM);
     });
 
+    it("gets and sets root m pointer", () => {
+        let newM = new RoAssociativeArray([{ name: new BrsString("id"), value: new Int32(1738) }]);
+        env.setRootM(newM);
+
+        expect(env.getRootM()).toBe(newM);
+    });
+
     it("gets and sets from Mock scope", () => {
         let val = new BrsString("mockScope");
         env.define(Scope.Mock, "_brs_", val);

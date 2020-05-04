@@ -114,6 +114,14 @@ export class Environment {
     }
 
     /**
+     * Sets the the special `m` variable from the root Environment.
+     * @param newMPointer the new value to be used for the `m` pointer
+     */
+    public setRootM(newMPointer: RoAssociativeArray): void {
+        this.rootM = newMPointer;
+    }
+
+    /**
      * Removes a variable from this environment's function scope.
      * @param name the name of the variable to remove (in the form of an `Identifier`)
      * @param scope the scope to remove this variable from (defaults to "function")

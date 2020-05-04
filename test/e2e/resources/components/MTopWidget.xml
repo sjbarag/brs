@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MTopWidget">
+    <script type="text/brightscript" uri="pkg:/components/scripts/MTopWidget.brs" />
+    <interface>
+        <field id="stringField" type="string" />
+        <field id="defaultValueField" type="string" value="this is a default value defined in xml" />
+    </interface>
+    <children>
+        <Rectangle id="childRectangle" height="100" width="300" />
+    </children>
+</component>

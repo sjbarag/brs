@@ -1109,6 +1109,8 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
             }
 
             interpreter.inSubEnv(subInterpreter => {
+                let mPointer = subInterpreter.environment.getM();
+                mPointer.set(new BrsString("top"), node);
                 if (init instanceof Callable) {
                     init.call(subInterpreter);
                 }
@@ -1127,7 +1129,7 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     for (let [key, value] of Object.entries(fields)) {
         if (value instanceof Object) {
             let addField = node.getMethod("addField");
-            let setField = node.getMethod("setFIeld");
+            let setField = node.getMethod("setField");
             const fieldName = new BrsString(key);
             if (addField) {
                 addField.call(

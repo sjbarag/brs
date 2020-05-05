@@ -1,10 +1,7 @@
 import { RoSGNode } from "./RoSGNode";
-import { ValueKind } from "../BrsType";
 import { AAMember } from "./RoAssociativeArray";
 
 export class Group extends RoSGNode {
-    readonly kind = ValueKind.Object;
-
     readonly builtInFields = [
         { name: "visible", type: "boolean" },
         { name: "opacity", type: "float" },

@@ -1072,10 +1072,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     protected registerFields(fields: FieldModel[]) {
-        if (!fields) {
-            return;
-        }
-
         fields.forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),

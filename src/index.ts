@@ -93,7 +93,13 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
             let contents = fs.readFileSync(filename, "utf8");
             let scanResults = lexer.scan(contents, filename);
             let preprocessorResults = preprocessor.preprocess(scanResults.tokens, manifest);
-            return parser.parse(preprocessorResults.processedTokens).statements;
+            let parseResults = parser.parse(preprocessorResults.processedTokens);
+
+            if (parseResults.errors.length > 0) {
+                throw "Error occurred parsing";
+            }
+
+            return parseResults.statements;
         })
         .reduce((allStatements, statements) => [...allStatements, ...statements], []);
 }

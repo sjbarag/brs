@@ -83,11 +83,17 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
 
     return filenames
         .map(filename => {
-            let contents = fs.readFileSync(filename, "utf8");
-            let scanResults = Lexer.scan(contents, filename);
+            let lexer = new Lexer();
             let preprocessor = new PP.Preprocessor();
+            let parser = new Parser();
+            [lexer, preprocessor, parser].forEach(emitter =>
+                emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
+            );
+
+            let contents = fs.readFileSync(filename, "utf8");
+            let scanResults = lexer.scan(contents, filename);
             let preprocessorResults = preprocessor.preprocess(scanResults.tokens, manifest);
-            return Parser.parse(preprocessorResults.processedTokens).statements;
+            return parser.parse(preprocessorResults.processedTokens).statements;
         })
         .reduce((allStatements, statements) => [...allStatements, ...statements], []);
 }

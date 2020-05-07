@@ -32,18 +32,22 @@ describe("global Run function", () => {
         );
     });
 
-    it("returns invalid for lexing errors", () => {
+    it("returns invalid for lexing errors", async () => {
         fs.readFileSync.mockImplementation(() => `can't lex this`);
-        expect(Run.call(interpreter, new BrsString("pkg:/errors/lex.brs"))).toBe(
-            BrsInvalid.Instance
-        );
+        try {
+            await Run.call(interpreter, new BrsString("pkg:/errors/lex.brs"));
+        } catch (e) {
+            expect(e).toEqual("Error occurred parsing");
+        }
     });
 
-    it("returns invalid for parse errors", () => {
+    it("returns invalid for parse errors", async () => {
         fs.readFileSync.mockImplementationOnce(() => `if return "parse error" exit while`);
-        expect(Run.call(interpreter, new BrsString("pkg:/errors/parse.brs"))).toBe(
-            BrsInvalid.Instance
-        );
+        try {
+            await Run.call(interpreter, new BrsString("pkg:/errors/parse.brs"));
+        } catch (e) {
+            expect(e).toEqual("Error occurred parsing");
+        }
     });
 
     it("returns invalid for runtime errors", () => {

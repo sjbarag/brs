@@ -8,7 +8,7 @@ import {
     getBrsValueFromFieldType,
 } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
-import { BrsType, BrsBuiltInComponents, NodeCtor } from "..";
+import { BrsType, BrsBuiltInComponents } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
@@ -1089,32 +1089,39 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         return builtInTypeCtor();
     } else if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
-        let node = new RoSGNode([], type.value);
         let typeDefStack: ComponentDefinition[] = [];
         let currentEnv = typeDef.environment;
 
         // Adding all component extensions to the stack to call init methods
         // in the correct order.
         typeDefStack.push(typeDef);
-        while (typeDef && typeDef.extends) {
+        while (typeDef) {
             typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends);
             if (typeDef) typeDefStack.push(typeDef);
         }
 
+        // Start from the "basemost" component of the tree.
+        typeDef = typeDefStack.pop();
+
+        // If this extends a built-in component other than Node, create it.
+        // Default to Node otherwise.
+        let node: RoSGNode = new RoSGNode([], type.value);
+        builtInTypeCtor = BrsBuiltInComponents.get(typeDef!.extends);
+        if (builtInTypeCtor) {
+            node = builtInTypeCtor(type.value);
+        }
+
         // Add children, fields and call each init method starting from the
         // "basemost" component of the tree.
-        while (typeDef && typeDefStack.length > 0) {
-            typeDef = typeDefStack.pop();
+        while (typeDef) {
             let init: BrsType;
 
-            if (typeDef) {
-                addChildren(interpreter, node, typeDef);
-                addFields(interpreter, node, typeDef);
-                interpreter.inSubEnv(subInterpreter => {
-                    init = subInterpreter.getInitMethod();
-                    return BrsInvalid.Instance;
-                }, typeDef.environment);
-            }
+            addChildren(interpreter, node, typeDef);
+            addFields(interpreter, node, typeDef);
+            interpreter.inSubEnv(subInterpreter => {
+                init = subInterpreter.getInitMethod();
+                return BrsInvalid.Instance;
+            }, typeDef.environment);
 
             interpreter.inSubEnv(subInterpreter => {
                 if (init instanceof Callable) {
@@ -1122,6 +1129,8 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
                 }
                 return BrsInvalid.Instance;
             }, currentEnv);
+
+            typeDef = typeDefStack.pop();
         }
 
         return node;

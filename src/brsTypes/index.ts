@@ -42,11 +42,12 @@ export * from "./components/RoInt";
 export * from "./components/RoInvalid";
 export * from "./Callable";
 
-export type NodeCtor = () => RoSGNode;
-
+// Allows for construction of new built-in objects.
+// TODO: update map with more entries as they're implemented (Group, Label, etc.)
+type NodeCtor = (nodeType?: string) => RoSGNode;
 export const BrsBuiltInComponents = new Map<string, NodeCtor>([
-    ["Node", () => new RoSGNode([])],
-    ["Group", () => new Group([])],
+    ["Node", (nodeType: string = "Node") => new RoSGNode([], nodeType)],
+    ["Group", (nodeType: string = "Group") => new Group([], nodeType)],
 ]);
 
 /**

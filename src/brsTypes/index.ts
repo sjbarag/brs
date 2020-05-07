@@ -46,7 +46,7 @@ export type NodeCtor = () => RoSGNode;
 
 export const BrsBuiltInComponents = new Map<string, NodeCtor>([
     ["Node", () => new RoSGNode([])],
-    ["Group", () => new Group([])]
+    ["Group", () => new Group([])],
 ]);
 
 /**

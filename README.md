@@ -90,7 +90,7 @@ index.d.ts (and friends)
 
 Alternatively, you can run the build step in "watch" mode. This will run `yarn build` for you automatically, every time it detects source file changes:
 ```shell
-$ yarn dev
+$ yarn watch
 ```
 This is often useful for testing that local changes work in your BrightScript project, without having to run `yarn build` over and over.
 

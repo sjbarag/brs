@@ -17,6 +17,8 @@ import { Callable } from "./Callable";
 import { BrsComponent } from "./components/BrsComponent";
 import { RoString } from "./components/RoString";
 import { BrsInterface } from "./BrsInterface";
+import { RoSGNode } from "./components/RoSGNode";
+import { Group } from "./components/Group";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -39,6 +41,13 @@ export * from "./components/RoFloat";
 export * from "./components/RoInt";
 export * from "./components/RoInvalid";
 export * from "./Callable";
+
+export type NodeCtor = () => RoSGNode;
+
+export const BrsBuiltInComponents = new Map<string, NodeCtor>([
+    ["Node", () => new RoSGNode([])],
+    ["Group", () => new Group([])]
+]);
 
 /**
  * Determines whether or not the given value is a number.

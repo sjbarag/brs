@@ -8,7 +8,7 @@ import {
     getBrsValueFromFieldType,
 } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
-import { BrsType } from "..";
+import { BrsType, BrsBuiltInComponents, NodeCtor } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
@@ -79,7 +79,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     ];
 
     constructor(members: AAMember[], readonly type: string = "Node") {
-        super("roSGNode");
+        super(type);
 
         // All nodes start have some built-in fields when created
         this.registerFields(this.builtInFields);
@@ -1081,10 +1081,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     }
 }
 
-export function createNodeByType(interpreter: Interpreter, type: BrsString) {
+export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
     let typeDef = interpreter.environment.nodeDefMap.get(type.value);
-    if (type.value === "Node") {
-        return new RoSGNode([]);
+    let builtInTypeCtor = BrsBuiltInComponents.get(type.value);
+
+    if (builtInTypeCtor) {
+        return builtInTypeCtor();
     } else if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
         let node = new RoSGNode([], type.value);

@@ -1,8 +1,8 @@
-import { RoSGNode } from "./RoSGNode";
+import { RoSGNode, FieldModel } from "./RoSGNode";
 import { AAMember } from "./RoAssociativeArray";
 
 export class Group extends RoSGNode {
-    readonly builtInFields = [
+    readonly defaultFields: FieldModel[] = [
         { name: "visible", type: "boolean" },
         { name: "opacity", type: "float" },
         { name: "translation", type: "array" },
@@ -19,8 +19,8 @@ export class Group extends RoSGNode {
         { name: "renderTracking", type: "string" },
     ];
 
-    constructor(members: AAMember[] = [], readonly name: string = "Group") {
+    constructor(members: AAMember[], readonly name: string = "Group") {
         super(members, name);
-        this.registerFields(this.builtInFields);
+        this.registerFields(this.defaultFields);
     }
 }

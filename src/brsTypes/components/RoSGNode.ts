@@ -71,7 +71,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     private fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
-    readonly builtInFields: FieldModel[] = [
+    readonly defaultFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
         { name: "focusedChild", type: "node" },
@@ -81,9 +81,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     constructor(members: AAMember[], readonly type: string = "Node") {
         super(type);
 
-        // All nodes start have some built-in fields when created
-        this.registerFields(this.builtInFields);
+        // All nodes start have some built-in fields when created.
+        this.registerFields(this.defaultFields);
 
+        // TODO: filter out any non-allowed members (custom fields on an object are not allowed on a Roku device).
         members.forEach(member =>
             this.fields.set(member.name.value.toLowerCase(), new Field(member.value, false))
         );
@@ -1071,12 +1072,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    protected registerFields(fields: FieldModel[]) {
+    /**
+     * Takes a list of models and creates fields with default values, and adds them to this.fields.
+     * By default, it will not override existing fields.
+     */
+    protected registerFields(fields: FieldModel[], allowOverrides: boolean = false) {
         fields.forEach(field => {
-            this.fields.set(
-                field.name.toLowerCase(),
-                new Field(getBrsValueFromFieldType(field.type), false)
-            );
+            let fieldName = field.name.toLowerCase();
+            if (!allowOverrides && this.fields.has(fieldName)) {
+                return;
+            }
+
+            this.fields.set(fieldName, new Field(getBrsValueFromFieldType(field.type), false));
         });
     }
 }

@@ -22,7 +22,7 @@ interface BrsCallback {
     callable: Callable;
 }
 
-export type FieldModel = { name: string; type: string };
+export type FieldModel = { name: string; type: string; value?: string };
 
 class Field {
     private type: string;
@@ -1083,7 +1083,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 return;
             }
 
-            this.fields.set(fieldName, new Field(getBrsValueFromFieldType(field.type), false));
+            this.fields.set(
+                fieldName,
+                new Field(getBrsValueFromFieldType(field.type, field.value), false)
+            );
         });
     }
 }

@@ -374,4 +374,24 @@ describe("end to end brightscript functions", () => {
             "true",
         ]);
     });
+
+    test("components/Group.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "Group.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "group node type:",
+            "Group",
+            "group node visible:",
+            "true",
+            "group node opacity:",
+            "1",
+            "extended group node type:",
+            "ExtendedGroup",
+            "extended group node visible:",
+            "true",
+            "extended group node opacity:",
+            "1",
+        ]);
+    });
 });

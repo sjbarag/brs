@@ -13,20 +13,20 @@ describe("Group", () => {
     focusable: false
     focusedchild: invalid
     id: 
-    visible: false
-    opacity: 0
+    visible: true
+    opacity: 1
     translation: invalid
     rotation: 0
     scale: invalid
     scalerotatecenter: invalid
-    childrenderorder: 
-    inheritparenttransform: false
-    inheritparentopacity: false
+    childrenderorder: renderLast
+    inheritparenttransform: true
+    inheritparentopacity: true
     clippingrect: invalid
     renderpass: 0
     muteaudioguide: false
     enablerendertracking: false
-    rendertracking: 
+    rendertracking: disabled
 }`
             );
         });

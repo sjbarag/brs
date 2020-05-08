@@ -3,20 +3,20 @@ import { AAMember } from "./RoAssociativeArray";
 
 export class Group extends RoSGNode {
     readonly defaultFields: FieldModel[] = [
-        { name: "visible", type: "boolean" },
-        { name: "opacity", type: "float" },
-        { name: "translation", type: "array" },
-        { name: "rotation", type: "float" },
-        { name: "scale", type: "array" },
-        { name: "scaleRotateCenter", type: "array" },
-        { name: "childRenderOrder", type: "string" },
-        { name: "inheritParentTransform", type: "boolean" },
-        { name: "inheritParentOpacity", type: "boolean" },
-        { name: "clippingRect", type: "array" },
-        { name: "renderPass", type: "integer" },
-        { name: "muteAudioGuide", type: "boolean" },
-        { name: "enableRenderTracking", type: "boolean" },
-        { name: "renderTracking", type: "string" },
+        { name: "visible", type: "boolean", value: "true" },
+        { name: "opacity", type: "float", value: "1.0" },
+        { name: "translation", type: "array", value: "[0.0,0.0]" },
+        { name: "rotation", type: "float", value: "0.0" },
+        { name: "scale", type: "array", value: "[1.0,1.0]" },
+        { name: "scaleRotateCenter", type: "array", value: "[0.0,0.0]" },
+        { name: "childRenderOrder", type: "string", value: "renderLast" },
+        { name: "inheritParentTransform", type: "boolean", value: "true" },
+        { name: "inheritParentOpacity", type: "boolean", value: "true" },
+        { name: "clippingRect", type: "array", value: "[0.0,0.0,0.0,0.0]" },
+        { name: "renderPass", type: "integer", value: "0" },
+        { name: "muteAudioGuide", type: "boolean", value: "false" },
+        { name: "enableRenderTracking", type: "boolean", value: "false" },
+        { name: "renderTracking", type: "string", value: "disabled" },
     ];
 
     constructor(members: AAMember[] = [], readonly name: string = "Group") {

@@ -37,18 +37,12 @@ function runFilesInScope(interpreter: Interpreter, filenames: BrsString[], args:
         return BrsInvalid.Instance;
     }
 
-    try {
-        let ast = brs.lexParseSync(pathsToFiles, interpreter.options);
-        return interpreter.inSubEnv(subInterpreter => {
-            // remove the original `main` function so we can execute the new file
-            subInterpreter.environment.remove("main", Scope.Module);
-            return subInterpreter.exec(ast, ...args)[0] || BrsInvalid.Instance;
-        });
-    } catch (err) {
-        // swallow errors and just return invalid; RBI returns invalid for "file doesn't exist" errors,
-        // syntax errors, etc.
-        return BrsInvalid.Instance;
-    }
+    let ast = brs.lexParseSync(pathsToFiles, interpreter.options);
+    return interpreter.inSubEnv(subInterpreter => {
+        // remove the original `main` function so we can execute the new file
+        subInterpreter.environment.remove("main", Scope.Module);
+        return subInterpreter.exec(ast, ...args)[0] || BrsInvalid.Instance;
+    });
 }
 
 export const RunInScope = new Callable(

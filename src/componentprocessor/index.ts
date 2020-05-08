@@ -142,22 +142,22 @@ async function processXmlTree(
         if (xmlNode) {
             nodeDef.children = getChildren(xmlNode);
             nodeDef.scripts = getScripts(xmlNode);
-            // let baseNode = xmlNode.attr.extends;
-            // while (baseNode) {
-            //     let baseNodeDef = nodeDefMap.get(baseNode);
-            //     if (baseNodeDef) {
-            //         nodeDef.children = [...nodeDef.children];
-            //         baseNode = baseNodeDef.xmlNode!.attr.extends;
-            //     } else {
-            //         // The reference implementation doesn't allow extensions of unknown node subtypes, but
-            //         // BRS hasn't implemented every node type in the reference implementation!  For now,
-            //         // let's warn when we detect unknown subtypes.
-            //         console.error(
-            //             `XML component '${nodeDef.name}' extends unknown component '${baseNode}'. Ignoring extension.`
-            //         );
-            //         break;
-            //     }
-            // }
+            let baseNode = xmlNode.attr.extends;
+            while (baseNode) {
+                let baseNodeDef = nodeDefMap.get(baseNode);
+                if (baseNodeDef) {
+                    nodeDef.children = [...nodeDef.children];
+                    baseNode = baseNodeDef.xmlNode!.attr.extends;
+                } else {
+                    // The reference implementation doesn't allow extensions of unknown node subtypes, but
+                    // BRS hasn't implemented every node type in the reference implementation!  For now,
+                    // let's warn when we detect unknown subtypes.
+                    console.error(
+                        `XML component '${nodeDef.name}' extends unknown component '${baseNode}'. Ignoring extension.`
+                    );
+                    break;
+                }
+            }
         }
     });
 

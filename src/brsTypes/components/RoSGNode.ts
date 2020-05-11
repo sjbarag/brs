@@ -8,20 +8,22 @@ import {
     getBrsValueFromFieldType,
 } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
-import { BrsType } from "..";
+import { BrsType, BrsBuiltInComponents } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
-import { Float } from "../Float";
 import { ComponentDefinition } from "../../componentprocessor";
 
 interface BrsCallback {
     interpreter: Interpreter;
     callable: Callable;
 }
+
+export type FieldModel = { name: string; type: string; value?: string };
+
 class Field {
     private type: string;
     private value: BrsType;
@@ -69,27 +71,21 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     private fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
-    readonly builtInFields = [
+    readonly defaultFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
         { name: "focusedChild", type: "node" },
         { name: "id", type: "string" },
     ];
 
-    constructor(members: AAMember[], readonly type: string = "Node") {
-        super("roSGNode");
+    constructor(initializedFields: AAMember[], readonly type: string = "Node") {
+        super(type);
 
-        // All nodes start have some built-in fields when created
-        this.builtInFields.forEach(field => {
-            this.fields.set(
-                field.name.toLowerCase(),
-                new Field(getBrsValueFromFieldType(field.type), false)
-            );
-        });
+        // All nodes start have some built-in fields when created.
+        this.registerDefaultFields(this.defaultFields);
 
-        members.forEach(member =>
-            this.fields.set(member.name.value.toLowerCase(), new Field(member.value, false))
-        );
+        // After registering default fields, then register fields instantiated with initial values.
+        this.registerInitializedFields(initializedFields);
 
         this.registerMethods({
             ifAssociativeArray: [
@@ -1073,40 +1069,71 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             return new BrsString(this.type);
         },
     });
+
+    /* Takes a list of models and creates fields with default values, and adds them to this.fields. */
+    protected registerDefaultFields(fields: FieldModel[]) {
+        fields.forEach(field => {
+            this.fields.set(
+                field.name.toLowerCase(),
+                new Field(getBrsValueFromFieldType(field.type, field.value), false)
+            );
+        });
+    }
+
+    /**
+     * Takes a list of preset fields and creates fields from them.
+     * TODO: filter out any non-allowed members. For example, if we instantiate a Node like this:
+     *      <Node thisisnotanodefield="fakevalue" />
+     * then Roku logs an error, because Node does not have a property called "thisisnotanodefield".
+     */
+    protected registerInitializedFields(fields: AAMember[]) {
+        fields.forEach(field =>
+            this.fields.set(field.name.value.toLowerCase(), new Field(field.value, false))
+        );
+    }
 }
 
-export function createNodeByType(interpreter: Interpreter, type: BrsString) {
+export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
     let typeDef = interpreter.environment.nodeDefMap.get(type.value);
-    if (type.value === "Node") {
-        return new RoSGNode([]);
+    let builtInTypeCtor = BrsBuiltInComponents.get(type.value);
+
+    if (builtInTypeCtor) {
+        return builtInTypeCtor();
     } else if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
-        let node = new RoSGNode([], type.value);
         let typeDefStack: ComponentDefinition[] = [];
         let currentEnv = typeDef.environment;
 
         // Adding all component extensions to the stack to call init methods
         // in the correct order.
         typeDefStack.push(typeDef);
-        while (typeDef && typeDef.extends) {
+        while (typeDef) {
             typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends);
             if (typeDef) typeDefStack.push(typeDef);
         }
 
+        // Start from the "basemost" component of the tree.
+        typeDef = typeDefStack.pop();
+
+        // If this extends a built-in component other than Node, create it.
+        // Default to Node otherwise.
+        let node: RoSGNode = new RoSGNode([], type.value);
+        builtInTypeCtor = BrsBuiltInComponents.get(typeDef!.extends);
+        if (builtInTypeCtor) {
+            node = builtInTypeCtor(type.value);
+        }
+
         // Add children, fields and call each init method starting from the
         // "basemost" component of the tree.
-        while (typeDef && typeDefStack.length > 0) {
-            typeDef = typeDefStack.pop();
+        while (typeDef) {
             let init: BrsType;
 
-            if (typeDef) {
-                addChildren(interpreter, node, typeDef);
-                addFields(interpreter, node, typeDef);
-                interpreter.inSubEnv(subInterpreter => {
-                    init = subInterpreter.getInitMethod();
-                    return BrsInvalid.Instance;
-                }, typeDef.environment);
-            }
+            addChildren(interpreter, node, typeDef);
+            addFields(interpreter, node, typeDef);
+            interpreter.inSubEnv(subInterpreter => {
+                init = subInterpreter.getInitMethod();
+                return BrsInvalid.Instance;
+            }, typeDef.environment);
 
             interpreter.inSubEnv(subInterpreter => {
                 let mPointer = subInterpreter.environment.getM();
@@ -1116,6 +1143,8 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
                 }
                 return BrsInvalid.Instance;
             }, currentEnv);
+
+            typeDef = typeDefStack.pop();
         }
 
         return node;

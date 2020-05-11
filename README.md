@@ -88,6 +88,12 @@ $ ls types/
 index.d.ts (and friends)
 ```
 
+Alternatively, you can run the build step in "watch" mode. This will run `yarn build` for you automatically, every time it detects source file changes:
+```shell
+$ yarn watch
+```
+This is often useful for testing that local changes work in your BrightScript project, without having to run `yarn build` over and over.
+
 #### Testing
 Tests are written in plain-old JavaScript with [Facebook's Jest](http://facebook.github.io/jest/), and can be run with the `test` target:
 

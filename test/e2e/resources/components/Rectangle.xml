@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<component name="Rectangle">
-    <interface>
-        <field id="width" type="string" />
-        <field id="height" type="string" />
-    </interface>
-    <children>
-    </children>
-</component>

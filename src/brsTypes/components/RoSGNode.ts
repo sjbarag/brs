@@ -551,14 +551,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, fieldname: BrsString, value: BrsType) => {
             let field = this.get(fieldname);
+            console.log("FIELD", field);
             if (!this.fields.has(fieldname.value.toLowerCase())) {
+                console.log("doesn't have field");
                 return BrsBoolean.False;
             }
 
             if (ValueKind.toString(field.kind) !== ValueKind.toString(value.kind)) {
+                console.log("doesn't match value", field, value);
                 return BrsBoolean.False;
             }
 
+            console.log("setting field to ", fieldname, value);
             this.set(fieldname, value);
             return BrsBoolean.True;
         },
@@ -1209,6 +1213,8 @@ function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: Componen
                     }
                 }
             }
+
+            console.log("new child fields", newChild.getFields());
         }
         let typeDef = interpreter.environment.nodeDefMap.get(child.name);
         if (child.children.length > 0 && newChild instanceof RoSGNode && typeDef) {

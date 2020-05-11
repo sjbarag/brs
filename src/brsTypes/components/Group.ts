@@ -19,8 +19,10 @@ export class Group extends RoSGNode {
         { name: "renderTracking", type: "string", value: "disabled" },
     ];
 
-    constructor(members: AAMember[] = [], readonly name: string = "Group") {
-        super(members, name);
-        this.registerFields(this.defaultFields);
+    constructor(initializedFields: AAMember[] = [], readonly name: string = "Group") {
+        super([], name);
+
+        this.registerDefaultFields(this.defaultFields);
+        this.registerInitializedFields(initializedFields);
     }
 }

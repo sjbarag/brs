@@ -78,16 +78,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         { name: "id", type: "string" },
     ];
 
-    constructor(members: AAMember[], readonly type: string = "Node") {
+    constructor(initializedFields: AAMember[], readonly type: string = "Node") {
         super(type);
 
         // All nodes start have some built-in fields when created.
-        this.registerFields(this.defaultFields);
+        this.registerDefaultFields(this.defaultFields);
 
-        // TODO: filter out any non-allowed members (custom fields on an object are not allowed on a Roku device).
-        members.forEach(member =>
-            this.fields.set(member.name.value.toLowerCase(), new Field(member.value, false))
-        );
+        // After registering default fields, then register fields instantiated with initial values.
+        this.registerInitializedFields(initializedFields);
 
         this.registerMethods({
             ifAssociativeArray: [
@@ -1072,22 +1070,26 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    /**
-     * Takes a list of models and creates fields with default values, and adds them to this.fields.
-     * By default, it will not override existing fields.
-     */
-    protected registerFields(fields: FieldModel[], allowOverrides: boolean = false) {
+    /* Takes a list of models and creates fields with default values, and adds them to this.fields. */
+    protected registerDefaultFields(fields: FieldModel[]) {
         fields.forEach(field => {
-            let fieldName = field.name.toLowerCase();
-            if (!allowOverrides && this.fields.has(fieldName)) {
-                return;
-            }
-
             this.fields.set(
-                fieldName,
+                field.name.toLowerCase(),
                 new Field(getBrsValueFromFieldType(field.type, field.value), false)
             );
         });
+    }
+
+    /**
+     * Takes a list of preset fields and creates fields from them.
+     * TODO: filter out any non-allowed members. For example, if we instantiate a Node like this:
+     *      <Node thisisnotanodefield="fakevalue" />
+     * then Roku logs an error, because Node does not have a property called "thisisnotanodefield".
+     */
+    protected registerInitializedFields(fields: AAMember[]) {
+        fields.forEach(field =>
+            this.fields.set(field.name.value.toLowerCase(), new Field(field.value, false))
+        );
     }
 }
 

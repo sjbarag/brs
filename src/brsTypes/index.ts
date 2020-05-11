@@ -17,8 +17,6 @@ import { Callable } from "./Callable";
 import { BrsComponent } from "./components/BrsComponent";
 import { RoString } from "./components/RoString";
 import { BrsInterface } from "./BrsInterface";
-import { RoSGNode } from "./components/RoSGNode";
-import { Group } from "./components/Group";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -41,14 +39,7 @@ export * from "./components/RoFloat";
 export * from "./components/RoInt";
 export * from "./components/RoInvalid";
 export * from "./Callable";
-
-// Allows for construction of new built-in objects.
-// TODO: update map with more entries as they're implemented (Group, Label, etc.)
-type NodeCtor = (nodeType?: string) => RoSGNode;
-export const BrsBuiltInComponents = new Map<string, NodeCtor>([
-    ["Node", (nodeType: string = "Node") => new RoSGNode([], nodeType)],
-    ["Group", (nodeType: string = "Group") => new Group([], nodeType)],
-]);
+export * from "./components/ComponentFactory";
 
 /**
  * Determines whether or not the given value is a number.

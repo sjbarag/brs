@@ -1,6 +1,6 @@
 import { ComponentDefinition } from "../componentprocessor";
 import * as Stmt from "./Statement";
-import { BrsBuiltInComponents } from "../brsTypes";
+import { BrsComponentName } from "../brsTypes";
 
 export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];
@@ -65,7 +65,7 @@ export class ComponentScopeResolver {
         let currentComponent: ComponentDefinition | undefined = component;
         while (currentComponent.extends) {
             // If this is a built-in component, then no work is needed and we can return.
-            if (BrsBuiltInComponents.has(currentComponent.extends)) {
+            if (currentComponent.extends in BrsComponentName) {
                 return Promise.resolve();
             }
 

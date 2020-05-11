@@ -392,6 +392,8 @@ describe("end to end brightscript functions", () => {
             "true",
             "extended group node opacity:",
             "1",
+            "group as child node rotation:",
+            "0.2",
         ]);
     });
 });

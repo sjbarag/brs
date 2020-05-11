@@ -1189,9 +1189,18 @@ function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: Componen
         if (newChild instanceof RoSGNode && appendChild) {
             appendChild.call(interpreter, newChild);
             let setField = newChild.getMethod("setfield");
-            for (let [key, value] of Object.entries(child.fields)) {
-                if (setField) {
-                    setField.call(interpreter, new BrsString(key), new BrsString(value));
+            if (setField) {
+                let nodeFields = newChild.getFields();
+                for (let [key, value] of Object.entries(child.fields)) {
+                    let field = nodeFields.get(key);
+                    if (field) {
+                        setField.call(
+                            interpreter,
+                            new BrsString(key),
+                            // use the field type to construct the field value
+                            getBrsValueFromFieldType(field.getType(), value)
+                        );
+                    }
                 }
             }
         }

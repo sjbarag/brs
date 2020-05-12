@@ -25,7 +25,7 @@ interface NodeField {
     [id: string]: string;
 }
 
-interface ComponentNode {
+export interface ComponentNode {
     name: string;
     fields: NodeField;
     children: ComponentNode[];

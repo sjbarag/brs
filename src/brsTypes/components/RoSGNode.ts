@@ -15,7 +15,7 @@ import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
-import { ComponentDefinition } from "../../componentprocessor";
+import { ComponentDefinition, ComponentNode } from "../../componentprocessor";
 import { ComponentFactory, BrsComponentName } from "./ComponentFactory";
 
 interface BrsCallback {
@@ -1186,7 +1186,11 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     }
 }
 
-function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentDefinition) {
+function addChildren(
+    interpreter: Interpreter,
+    node: RoSGNode,
+    typeDef: ComponentDefinition | ComponentNode
+) {
     let children = typeDef.children;
     let appendChild = node.getMethod("appendchild");
 
@@ -1210,9 +1214,13 @@ function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: Componen
                 }
             }
         }
-        let typeDef = interpreter.environment.nodeDefMap.get(child.name);
-        if (child.children.length > 0 && newChild instanceof RoSGNode && typeDef) {
-            addChildren(interpreter, newChild, typeDef);
+
+        // If there is no type definition, that means it's a built-in component.
+        // In that case, use the child's ComponentNode information to keep recursing.
+        let newTypeDef = interpreter.environment.nodeDefMap.get(child.name) || child;
+
+        if (child.children.length > 0 && newChild instanceof RoSGNode && newTypeDef) {
+            addChildren(interpreter, newChild, newTypeDef);
         }
     });
 }

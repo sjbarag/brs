@@ -13,9 +13,6 @@ export class Rectangle extends Group {
     constructor(initializedFields: AAMember[] = [], readonly name: string = "Rectangle") {
         super([], name);
 
-        console.log("RECTANGLE INITIALIZED FIELDS");
-        console.log(initializedFields);
-        console.trace("trace here");
         this.registerDefaultFields(this.defaultFields);
         this.registerInitializedFields(initializedFields);
     }

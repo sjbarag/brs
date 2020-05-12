@@ -9,7 +9,7 @@ sub Main()
     print "extended group node visible:" extendedGroupNode.visible                 ' => true
     print "extended group node opacity:" extendedGroupNode.opacity                 ' => 1
 
-    parentOfGroup = createObject("roSGNode", "GroupAsChild")
-    groupAsChild = parentOfGroup.findNode("childgroup")
+    parent = createObject("roSGNode", "ComponentsAsChildren")
+    groupAsChild = parent.findNode("group")
     print "group as child node rotation:" groupAsChild.rotation
 end sub

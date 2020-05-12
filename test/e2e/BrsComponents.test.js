@@ -408,6 +408,10 @@ describe("end to end brightscript functions", () => {
             "0",
             "rectangle node height:",
             "0",
+            "rectangle as child width:",
+            "500",
+            "rectangle as child height:",
+            "50",
         ]);
     });
 });

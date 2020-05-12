@@ -396,4 +396,18 @@ describe("end to end brightscript functions", () => {
             "0.2",
         ]);
     });
+
+    test("components/Rectangle.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "Rectangle.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "rectangle node type:",
+            "Rectangle",
+            "rectangle node width:",
+            "0",
+            "rectangle node height:",
+            "0",
+        ]);
+    });
 });

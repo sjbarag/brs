@@ -26,7 +26,7 @@ This is aimed to be a quick guide for adding a component to `brs`. Note that thi
     ```
 
 1. Replace all `<insert component name>` and `<insert parent component>` from above with your component name. Add any built-in fields and/or class functions that the Roku docs specify.
-1. Add a constructor definition to the [component map](https://github.com/sjbarag/brs/blob/0a1e262260be7ce1e5db00d91160262ad64b553b/src/brsTypes/index.ts#L48-L51). This will allow instances of your new component to be created dynamically when it is encountered in XML or BrightScript code.
+1. Add a constructor definition to the [component factory](https://github.com/sjbarag/brs/blob/master/src/brsTypes/components/ComponentFactory.ts). This will allow instances of your new component to be created dynamically when it is encountered in XML or BrightScript code.
 1. Add a test case for your Typescript class in [the components test directory](https://github.com/sjbarag/brs/tree/master/test/brsTypes/components). Use the existing component test files in that directory as a model for what your test should look like.
 1. Add an end-to-end test case.
     - Create a file in [the end-to-end directory](https://github.com/sjbarag/brs/tree/master/test/e2e) called `<insert component name>.brs`. In the file, write BrightScript code that exercises your component functionality.

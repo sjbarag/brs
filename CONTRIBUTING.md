@@ -1,6 +1,6 @@
 # Contributions Welcome!
 
-Any contibutions you're willing to make are _super_ appreciated. That includes a wide variety of things &ndash; not just code!
+Any contributions you're willing to make are _super_ appreciated. That includes a wide variety of things &ndash; not just code!
 
 ## Types of Contributions
 

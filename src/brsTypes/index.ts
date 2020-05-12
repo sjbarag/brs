@@ -25,11 +25,11 @@ export * from "./Float";
 export * from "./Double";
 export * from "./BrsInterface";
 export * from "./Callable";
+export * from "./components/ComponentFactory";
 export * from "./components/RoArray";
 export * from "./components/RoDateTime";
 export * from "./components/RoAssociativeArray";
 export * from "./components/Timespan";
-export * from "./components/RoSGNode";
 export * from "./components/BrsObjects";
 export * from "./components/RoRegex";
 export * from "./components/RoString";
@@ -38,7 +38,9 @@ export * from "./components/RoDouble";
 export * from "./components/RoFloat";
 export * from "./components/RoInt";
 export * from "./components/RoInvalid";
-export * from "./components/ComponentFactory";
+export * from "./components/RoSGNode";
+export * from "./components/Group";
+export * from "./components/Rectangle";
 
 /**
  * Determines whether or not the given value is a number.

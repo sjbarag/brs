@@ -1,7 +1,7 @@
 const brs = require("brs");
 const { LayoutGroup } = brs.types;
 
-describe("Rectangle", () => {
+describe("LayoutGroup", () => {
     describe("stringification", () => {
         it("inits a new LayoutGroup component", () => {
             let group = new LayoutGroup();

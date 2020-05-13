@@ -41,6 +41,7 @@ export * from "./components/RoInvalid";
 export * from "./components/RoSGNode";
 export * from "./components/Group";
 export * from "./components/Rectangle";
+export * from "./components/Label";
 
 /**
  * Determines whether or not the given value is a number.

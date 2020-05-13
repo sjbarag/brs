@@ -48,10 +48,10 @@ export const FindMemberFunction = new Callable("FindMemberFunction", {
         ],
         returns: ValueKind.Interface,
     },
-    impl: (interpreter, object: BrsComponent, funname: BrsString): BrsInterface | BrsInvalid => {
+    impl: (interpreter, object: BrsComponent, funName: BrsString): BrsInterface | BrsInvalid => {
         let iface: BrsType = BrsInvalid.Instance;
         object.interfaces.forEach(interfaceName => {
-            if (interfaceName.methodNames.has(funname.value.toLowerCase())) {
+            if (interfaceName.methodNames.has(funName.value.toLowerCase())) {
                 iface = interfaceName;
             }
         });

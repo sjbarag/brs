@@ -1,9 +1,9 @@
 const brs = require("brs");
 const { Label } = brs.types;
 
-describe("Font", () => {
+describe("Label", () => {
     describe("stringification", () => {
-        it("inits a new Font component", () => {
+        it("inits a new Label component", () => {
             let group = new Label();
 
             expect(group.toString()).toEqual(

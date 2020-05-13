@@ -8,14 +8,15 @@ import {
     getBrsValueFromFieldType,
 } from "../BrsType";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
-import { BrsType, BrsBuiltInComponents } from "..";
+import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
-import { ComponentDefinition } from "../../componentprocessor";
+import { ComponentDefinition, ComponentNode } from "../../componentprocessor";
+import { ComponentFactory, BrsComponentName } from "./ComponentFactory";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -1094,12 +1095,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 }
 
 export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
-    let typeDef = interpreter.environment.nodeDefMap.get(type.value);
-    let builtInTypeCtor = BrsBuiltInComponents.get(type.value);
+    // If this is a built-in component, then return it.
+    let component = ComponentFactory.createComponent(type.value as BrsComponentName);
+    if (component) {
+        return component;
+    }
 
-    if (builtInTypeCtor) {
-        return builtInTypeCtor();
-    } else if (typeDef) {
+    let typeDef = interpreter.environment.nodeDefMap.get(type.value);
+    if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
         let typeDefStack: ComponentDefinition[] = [];
         let currentEnv = typeDef.environment;
@@ -1115,12 +1118,15 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         // Start from the "basemost" component of the tree.
         typeDef = typeDefStack.pop();
 
-        // If this extends a built-in component other than Node, create it.
-        // Default to Node otherwise.
-        let node: RoSGNode = new RoSGNode([], type.value);
-        builtInTypeCtor = BrsBuiltInComponents.get(typeDef!.extends);
-        if (builtInTypeCtor) {
-            node = builtInTypeCtor(type.value);
+        // If this extends a built-in component, create it.
+        let node = ComponentFactory.createComponent(
+            typeDef!.extends as BrsComponentName,
+            type.value
+        );
+
+        // Default to Node as parent.
+        if (!node) {
+            node = new RoSGNode([], type.value);
         }
 
         // Add children, fields and call each init method starting from the
@@ -1137,7 +1143,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
 
             interpreter.inSubEnv(subInterpreter => {
                 let mPointer = subInterpreter.environment.getM();
-                mPointer.set(new BrsString("top"), node);
+                mPointer.set(new BrsString("top"), node!);
                 if (init instanceof Callable) {
                     init.call(subInterpreter);
                 }
@@ -1180,7 +1186,11 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     }
 }
 
-function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentDefinition) {
+function addChildren(
+    interpreter: Interpreter,
+    node: RoSGNode,
+    typeDef: ComponentDefinition | ComponentNode
+) {
     let children = typeDef.children;
     let appendChild = node.getMethod("appendchild");
 
@@ -1204,9 +1214,13 @@ function addChildren(interpreter: Interpreter, node: RoSGNode, typeDef: Componen
                 }
             }
         }
-        let typeDef = interpreter.environment.nodeDefMap.get(child.name);
-        if (child.children.length > 0 && newChild instanceof RoSGNode && typeDef) {
-            addChildren(interpreter, newChild, typeDef);
+
+        // If there is no type definition, that means it's a built-in component.
+        // In that case, use the child's ComponentNode information to keep recursing.
+        let newTypeDef = interpreter.environment.nodeDefMap.get(child.name) || child;
+
+        if (child.children.length > 0 && newChild instanceof RoSGNode && newTypeDef) {
+            addChildren(interpreter, newChild, newTypeDef);
         }
     });
 }

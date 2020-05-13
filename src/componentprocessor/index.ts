@@ -6,6 +6,7 @@ import pSettle = require("p-settle");
 const readFile = promisify(fs.readFile);
 import * as fg from "fast-glob";
 import { Environment } from "../interpreter/Environment";
+import { BrsComponentName } from "../brsTypes";
 
 interface FieldAttributes {
     id: string;
@@ -24,7 +25,7 @@ interface NodeField {
     [id: string]: string;
 }
 
-interface ComponentNode {
+export interface ComponentNode {
     name: string;
     fields: NodeField;
     children: ComponentNode[];
@@ -149,12 +150,14 @@ async function processXmlTree(
                     nodeDef.children = [...nodeDef.children];
                     baseNode = baseNodeDef.xmlNode!.attr.extends;
                 } else {
-                    // The reference implementation doesn't allow extensions of unknown node subtypes, but
-                    // BRS hasn't implemented every node type in the reference implementation!  For now,
-                    // let's warn when we detect unknown subtypes.
-                    console.error(
-                        `XML component '${nodeDef.name}' extends unknown component '${baseNode}'. Ignoring extension.`
-                    );
+                    if (!(baseNode in BrsComponentName)) {
+                        // The reference implementation doesn't allow extensions of unknown node subtypes, but
+                        // BRS hasn't implemented every node type in the reference implementation!  For now,
+                        // let's warn when we detect unknown subtypes.
+                        console.error(
+                            `XML component '${nodeDef.name}' extends unknown component '${baseNode}'. Ignoring extension.`
+                        );
+                    }
                     break;
                 }
             }

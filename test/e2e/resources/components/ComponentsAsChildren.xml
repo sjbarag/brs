@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="ComponentsAsChildren">
+    <children>
+        <Group id="group" rotation="0.2" >
+            <Rectangle id="rectangle"
+                height="50"
+                width="500" />
+            <Label id="label"
+                numLines="10"
+                wrap="true"
+                lineSpacing="5.5" />
+        </Group>
+    </children>
+</component>

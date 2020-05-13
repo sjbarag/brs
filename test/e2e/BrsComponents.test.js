@@ -434,4 +434,24 @@ describe("end to end brightscript functions", () => {
             "5.5",
         ]);
     });
+
+    test("components/Font.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "Font.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "font node type:",
+            "Font",
+            "font node uri:",
+            "",
+            "font node size:",
+            "1",
+            "font node fallbackGlyph:",
+            "",
+            "font as child size:",
+            "56",
+            "font as child uri:",
+            "font/as/child/uri",
+        ]);
+    });
 });

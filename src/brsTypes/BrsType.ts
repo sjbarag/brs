@@ -132,6 +132,10 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
         case "string":
             returnValue = value ? new BrsString(value) : new BrsString("");
             break;
+        case "uri":
+            // BrightScript represents the "uri" field as a string internally.
+            returnValue = value ? new BrsString(value) : new BrsString("");
+            break;
         default:
             returnValue = Uninitialized.Instance;
             break;

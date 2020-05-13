@@ -129,11 +129,8 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
         case "assocarray":
             returnValue = BrsInvalid.Instance;
             break;
-        case "string":
-            returnValue = value ? new BrsString(value) : new BrsString("");
-            break;
         case "uri":
-            // BrightScript represents the "uri" field as a string internally.
+        case "string":
             returnValue = value ? new BrsString(value) : new BrsString("");
             break;
         default:

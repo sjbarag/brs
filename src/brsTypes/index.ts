@@ -46,6 +46,7 @@ export * from "./components/Group";
 export * from "./components/Rectangle";
 export * from "./components/Label";
 export * from "./components/Font";
+export * from "./components/Poster";
 
 /**
  * Determines whether or not the given value is a number.

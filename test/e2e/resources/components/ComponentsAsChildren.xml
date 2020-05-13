@@ -12,6 +12,11 @@
             <Font id="font"
                 size="56"
                 uri="font/as/child/uri" />
+            <Poster id="poster"
+                audioGuideText="fake text"
+                bitmapWidth="10.4"
+                uri="/fake/uri"
+            />
         </Group>
     </children>
 </component>

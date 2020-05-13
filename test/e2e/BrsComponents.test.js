@@ -454,4 +454,24 @@ describe("end to end brightscript functions", () => {
             "font/as/child/uri",
         ]);
     });
+
+    test("components/Poster.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "Poster.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "poster node type:",
+            "Poster",
+            "poster node width:",
+            "0",
+            "poster node height:",
+            "0",
+            "poster as child audioGuideText:",
+            "fake text",
+            "poster as child uri:",
+            "/fake/uri",
+            "poster as child bitmapWidth:",
+            "10.4",
+        ]);
+    });
 });

@@ -39,3 +39,23 @@ export const GetInterface = new Callable("GetInterface", {
         return object.interfaces.get(ifname.value.toLowerCase()) || BrsInvalid.Instance;
     },
 });
+
+export const FindMemberFunction = new Callable("FindMemberFunction", {
+    signature: {
+        args: [
+            new StdlibArgument("object", ValueKind.Object),
+            new StdlibArgument("funname", ValueKind.String),
+        ],
+        returns: ValueKind.Interface,
+    },
+    impl: (interpreter, object: BrsComponent, funname: BrsString): BrsInterface | BrsInvalid => {
+        let iface: BrsType = BrsInvalid.Instance;
+        object.interfaces.forEach(interfaceName => {
+            if (interfaceName.methodNames.has(funname.value.toLowerCase())) {
+                iface = interfaceName;
+            }
+        });
+
+        return iface;
+    },
+});

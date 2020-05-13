@@ -17,6 +17,9 @@
                 bitmapWidth="10.4"
                 uri="/fake/uri"
             />
+            <LayoutGroup id="layoutGroup"
+                layoutDirection="horiz"
+                horizAlignment="right" />
         </Group>
     </children>
 </component>

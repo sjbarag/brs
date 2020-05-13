@@ -397,6 +397,24 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/LayoutGroup.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "LayoutGroup.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "layoutGroup node type:",
+            "LayoutGroup",
+            "layoutGroup node layoutDirection:",
+            "vert",
+            "layoutGroup node horizAlignment:",
+            "left",
+            "layoutGroup as child layoutDirection:",
+            "horiz",
+            "layoutGroup as child horizAlignment:",
+            "right",
+        ]);
+    });
+
     test("components/Rectangle.brs", async () => {
         outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Rectangle.brs")], outputStreams);

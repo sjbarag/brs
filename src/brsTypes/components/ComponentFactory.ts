@@ -1,4 +1,4 @@
-import { RoSGNode, Group, Rectangle, Label, Font } from "..";
+import { RoSGNode, Group, Rectangle, Label, Font, Poster } from "..";
 
 export enum BrsComponentName {
     Node = "Node",
@@ -6,6 +6,7 @@ export enum BrsComponentName {
     Rectangle = "Rectangle",
     Label = "Label",
     Font = "Font",
+    Poster = "Poster",
 }
 
 // TODO: update with more components as they're implemented.
@@ -26,6 +27,8 @@ export class ComponentFactory {
                 return new Label([], name);
             case BrsComponentName.Font:
                 return new Font([], name);
+            case BrsComponentName.Poster:
+                return new Poster([], name);
             default:
                 return;
         }

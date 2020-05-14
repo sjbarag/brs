@@ -124,6 +124,8 @@ describe("end to end standard libary", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "<Interface: ifFloat>",
+            "<Interface: ifAssociativeArray>",
+            "<Interface: ifSGNodeDict>",
         ]);
     });
 });

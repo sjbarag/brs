@@ -414,4 +414,24 @@ describe("end to end brightscript functions", () => {
             "50",
         ]);
     });
+
+    test("components/Label.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "Label.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "label node type:",
+            "Label",
+            "label node horizAlign:",
+            "left",
+            "label node numLines:",
+            "0",
+            "label as child numLines:",
+            "10",
+            "label as child wrap:",
+            "true",
+            "label as child lineSpacing:",
+            "5.5",
+        ]);
+    });
 });

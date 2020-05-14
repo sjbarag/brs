@@ -129,6 +129,7 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
         case "assocarray":
             returnValue = BrsInvalid.Instance;
             break;
+        case "uri":
         case "string":
             returnValue = value ? new BrsString(value) : new BrsString("");
             break;

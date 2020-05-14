@@ -17,6 +17,9 @@ import { Callable } from "./Callable";
 import { BrsComponent } from "./components/BrsComponent";
 import { RoString } from "./components/RoString";
 import { BrsInterface } from "./BrsInterface";
+import { RoSGNode } from "./components/RoSGNode";
+import { Font } from "./components/Font";
+import { Group } from "./components/Group";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -42,6 +45,7 @@ export * from "./components/RoSGNode";
 export * from "./components/Group";
 export * from "./components/Rectangle";
 export * from "./components/Label";
+export * from "./components/Font";
 
 /**
  * Determines whether or not the given value is a number.

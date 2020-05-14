@@ -9,6 +9,9 @@
                 numLines="10"
                 wrap="true"
                 lineSpacing="5.5" />
+            <Font id="font"
+                size="56"
+                uri="font/as/child/uri" />
         </Group>
     </children>
 </component>

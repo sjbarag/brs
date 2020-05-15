@@ -1,6 +1,7 @@
 sub Main()
     label = createObject("roSGNode", "Label")
     print "label node type:" type(label)
+    print "label node subtype:" label.subtype()
     print "label node horizAlign:" label.horizAlign
     print "label node numLines:" label.numLines
 

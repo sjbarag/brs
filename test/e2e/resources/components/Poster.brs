@@ -1,6 +1,7 @@
 sub Main()
     poster = createObject("roSGNode", "Poster")
-    print "poster node type:" type(poster)                                       ' => Group
+    print "poster node type:" type(poster)
+    print "poster node subtype:" poster.subtype()
     print "poster node width:" poster.width
     print "poster node height:" poster.height
 

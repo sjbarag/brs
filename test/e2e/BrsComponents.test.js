@@ -381,12 +381,16 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "group node type:",
+            "Node",
+            "group node subtype:",
             "Group",
             "group node visible:",
             "true",
             "group node opacity:",
             "1",
             "extended group node type:",
+            "Node",
+            "extended group node subtype:",
             "ExtendedGroup",
             "extended group node visible:",
             "true",
@@ -403,6 +407,8 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "layoutGroup node type:",
+            "Node",
+            "layoutGroup node subtype:",
             "LayoutGroup",
             "layoutGroup node layoutDirection:",
             "vert",
@@ -421,6 +427,8 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "rectangle node type:",
+            "Node",
+            "rectangle node subtype:",
             "Rectangle",
             "rectangle node width:",
             "0",
@@ -439,6 +447,8 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "label node type:",
+            "Node",
+            "label node subtype:",
             "Label",
             "label node horizAlign:",
             "left",
@@ -459,6 +469,8 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "font node type:",
+            "Node",
+            "font node subtype:",
             "Font",
             "font node uri:",
             "",
@@ -479,6 +491,8 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "poster node type:",
+            "Node",
+            "poster node subtype:",
             "Poster",
             "poster node width:",
             "0",

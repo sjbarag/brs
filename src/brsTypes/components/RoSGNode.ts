@@ -79,8 +79,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         { name: "id", type: "string" },
     ];
 
-    constructor(initializedFields: AAMember[], readonly type: string = "Node") {
-        super(type);
+    constructor(initializedFields: AAMember[], readonly nodeSubtype: string = "Node") {
+        super("Node");
 
         // All nodes start have some built-in fields when created.
         this.registerDefaultFields(this.defaultFields);
@@ -136,7 +136,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     }
 
     toString(parent?: BrsType): string {
-        let componentName = "roSGNode:" + this.type;
+        let componentName = "roSGNode:" + this.nodeSubtype;
 
         if (parent) {
             return `<Component: ${componentName}>`;
@@ -1067,7 +1067,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            return new BrsString(this.type);
+            return new BrsString(this.nodeSubtype);
         },
     });
 

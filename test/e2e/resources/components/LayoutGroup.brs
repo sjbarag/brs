@@ -1,6 +1,7 @@
 sub Main()
     layoutGroup = createObject("roSGNode", "LayoutGroup")
     print "layoutGroup node type:" type(layoutGroup)                                       ' => Group
+    print "layoutGroup node subtype:" layoutGroup.subtype()
     print "layoutGroup node layoutDirection:" layoutGroup.layoutDirection
     print "layoutGroup node horizAlignment:" layoutGroup.horizAlignment
 

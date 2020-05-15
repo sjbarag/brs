@@ -43,6 +43,7 @@ export * from "./components/RoInt";
 export * from "./components/RoInvalid";
 export * from "./components/RoSGNode";
 export * from "./components/Group";
+export * from "./components/LayoutGroup";
 export * from "./components/Rectangle";
 export * from "./components/Label";
 export * from "./components/Font";

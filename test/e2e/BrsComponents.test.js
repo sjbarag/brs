@@ -506,4 +506,24 @@ describe("end to end brightscript functions", () => {
             "10.4",
         ]);
     });
+
+    test("components/ArrayGrid.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "ArrayGrid.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "arraygrid node type:",
+            "Node",
+            "arraygrid node subtype:",
+            "ArrayGrid",
+            "arraygrid node focusRow:",
+            "0",
+            "arraygrid node jumpToItem:",
+            "0",
+            "arraygrid as child wrapDividerWidth",
+            "1.23",
+            "arraygrid as child numRows",
+            "5",
+        ]);
+    });
 });

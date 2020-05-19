@@ -72,9 +72,10 @@ export class ComponentScopeResolver {
             let previousComponent = currentComponent;
             currentComponent = this.componentMap.get(currentComponent.extends);
             if (!currentComponent) {
-                return Promise.reject({
-                    message: `Cannot find extended component ${previousComponent.extends} defined on ${previousComponent.name}`,
-                });
+                console.error(
+                    `Cannot find extended component ${previousComponent.extends} defined on ${previousComponent.name}`,
+                );
+                return Promise.resolve();
             }
             yield this.parserLexerFn(currentComponent.scripts.map(c => c.uri));
         }

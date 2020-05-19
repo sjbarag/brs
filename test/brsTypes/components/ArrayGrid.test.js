@@ -55,7 +55,7 @@ describe("ArrayGrid", () => {
     columnspacings: invalid
     sectiondividerbitmapuri: 
     sectiondividerfont: invalid
-    sectiondividertextcolor: system default
+    sectiondividertextcolor: 
     sectiondividerspacing: 0
     sectiondividerwidth: 0
     sectiondividerheight: 0

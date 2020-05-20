@@ -109,12 +109,14 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
     let returnValue: BrsType;
 
     switch (type.toLowerCase()) {
+        case "bool":
         case "boolean":
             returnValue = value ? BrsBoolean.from(value === "true") : BrsBoolean.False;
             break;
         case "node":
             returnValue = BrsInvalid.Instance;
             break;
+        case "int":
         case "integer":
             returnValue = value ? new Int32(Number.parseInt(value)) : new Int32(0);
             break;
@@ -130,6 +132,7 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
             returnValue = BrsInvalid.Instance;
             break;
         case "uri":
+        case "str":
         case "string":
             returnValue = value ? new BrsString(value) : new BrsString("");
             break;

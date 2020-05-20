@@ -20,6 +20,9 @@
             <LayoutGroup id="layoutGroup"
                 layoutDirection="horiz"
                 horizAlignment="right" />
+            <ArrayGrid id="arraygrid" 
+                wrapDividerWidth="1.23"
+                numRows="5" />
         </Group>
     </children>
 </component>

@@ -27,7 +27,11 @@ export class Environment {
         } else {
             this.rootM = rootM;
         }
+        this.id = Environment.idCount;
+        Environment.idCount++;
     }
+    public readonly id: number;
+    static idCount = 0;
     /**
      * Functions that are always accessible.
      * @see Scope.Global
@@ -87,6 +91,16 @@ export class Environment {
         }
 
         destination.set(name.toLowerCase(), value);
+    }
+
+    public getModule() {
+        return this.module;
+    }
+    public getFunction() {
+        return this.function;
+    }
+    public getGlobal() {
+        return this.global;
     }
 
     /**

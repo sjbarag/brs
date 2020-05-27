@@ -5,7 +5,4 @@
         <field id="text" type="string"/>
         <field id="textLabel" type="string"/>
     </interface>
-    <children>
-        <Rectangle id="globalRectangle" height="100" width="300" />
-    </children>
 </component>

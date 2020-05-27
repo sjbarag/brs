@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="FieldChangeParent" >
+    <interface>
+        <field id="textField" type="string" value="initial" onChange="onTextFieldChange" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/scripts/FieldChangeParent.brs" />
+</component>

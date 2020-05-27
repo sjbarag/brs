@@ -527,7 +527,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/FieldChangeRunner.brs", async () => {
+    test.only("components/scripts/FieldChangeRunner.brs", async () => {
         outputStreams.root = __dirname + "/resources";
         await execute(
             [resourceFile("components", "scripts", "FieldChangeRunner.brs")],
@@ -537,7 +537,7 @@ describe("end to end brightscript functions", () => {
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "node text field before",
             "initial",
-            "text field changed",
+            "text field changed child",
             "modified",
         ]);
     });

@@ -50,7 +50,7 @@ class Field {
     }
 
     setValue(value: BrsType) {
-        let oldValue =  this.value;
+        let oldValue = this.value;
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
             this.observers.map(this.executeCallbacks);

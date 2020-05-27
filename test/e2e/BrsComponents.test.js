@@ -529,7 +529,10 @@ describe("end to end brightscript functions", () => {
 
     test("components/scripts/FieldChangeRunner.brs", async () => {
         outputStreams.root = __dirname + "/resources";
-        await execute([resourceFile("components", "scripts", "FieldChangeRunner.brs")], outputStreams);
+        await execute(
+            [resourceFile("components", "scripts", "FieldChangeRunner.brs")],
+            outputStreams
+        );
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "node text field before",

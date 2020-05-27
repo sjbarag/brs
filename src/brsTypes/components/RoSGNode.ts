@@ -63,7 +63,9 @@ class Field {
      * child's observer should be called.
      */
     createExclusiveObserver(interpreter: Interpreter, callable: Callable) {
-        this.observers = this.observers.filter((observer) => observer.callable.name !== callable.name);
+        this.observers = this.observers.filter(
+            observer => observer.callable.name !== callable.name
+        );
         this.addObserver(interpreter, callable);
     }
 
@@ -1210,7 +1212,10 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
             if (value.onChange) {
                 let field = node.getFields().get(key.toLowerCase());
                 if (field) {
-                    field.createExclusiveObserver(interpreter, interpreter.getCallableFunction(value.onChange.toLowerCase()))
+                    field.createExclusiveObserver(
+                        interpreter,
+                        interpreter.getCallableFunction(value.onChange.toLowerCase())
+                    );
                 }
             }
         }

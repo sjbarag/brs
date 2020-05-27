@@ -57,6 +57,16 @@ class Field {
         }
     }
 
+    /**
+     * Adds an observer and removes any existing observers with the same name.
+     * In the case where a child and a parent have the same observer name, only the
+     * child's observer should be called.
+     */
+    createExclusiveObserver(interpreter: Interpreter, callable: Callable) {
+        this.observers = this.observers.filter((observer) => observer.callable.name !== callable.name);
+        this.addObserver(interpreter, callable);
+    }
+
     addObserver(interpreter: Interpreter, callable: Callable) {
         let brsCallback: BrsCallback = {
             interpreter: interpreter,
@@ -1146,7 +1156,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
                 addChildren(subInterpreter, node!, typeDef!);
                 addFields(subInterpreter, node!, typeDef!);
                 return BrsInvalid.Instance;
-            }, typeDef.environment);
+            }, currentEnv);
 
             interpreter.inSubEnv(subInterpreter => {
                 init = subInterpreter.getInitMethod();
@@ -1196,10 +1206,12 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
                 );
             }
 
-            let observeField = node.getMethod("observeField");
-            if (observeField && value.onChange) {
-                let onChangeName = new BrsString(value.onChange);
-                observeField.call(interpreter, fieldName, onChangeName);
+            // Add the onChange callback if it exists.
+            if (value.onChange) {
+                let field = node.getFields().get(key.toLowerCase());
+                if (field) {
+                    field.createExclusiveObserver(interpreter, interpreter.getCallableFunction(value.onChange.toLowerCase()))
+                }
             }
         }
     }

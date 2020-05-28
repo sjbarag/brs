@@ -57,18 +57,6 @@ class Field {
         }
     }
 
-    /**
-     * Adds an observer and removes any existing observers with the same name.
-     * In the case where a child and a parent have the same observer name, only the
-     * child's observer should be called.
-     */
-    createExclusiveObserver(interpreter: Interpreter, callable: Callable) {
-        this.observers = this.observers.filter(
-            observer => observer.callable.name !== callable.name
-        );
-        this.addObserver(interpreter, callable);
-    }
-
     addObserver(interpreter: Interpreter, callable: Callable) {
         let brsCallback: BrsCallback = {
             interpreter: interpreter,
@@ -1187,7 +1175,8 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     let fields = typeDef.fields;
     for (let [key, value] of Object.entries(fields)) {
         if (value instanceof Object) {
-            const fieldName = new BrsString(key);
+            let fieldName = new BrsString(key);
+
             let addField = node.getMethod("addField");
             if (addField) {
                 addField.call(
@@ -1201,7 +1190,7 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
             // set default value if it was specified in xml
             let setField = node.getMethod("setField");
             if (setField && value.value) {
-                let result = setField.call(
+                setField.call(
                     interpreter,
                     fieldName,
                     getBrsValueFromFieldType(value.type, value.value)
@@ -1209,14 +1198,10 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
             }
 
             // Add the onChange callback if it exists.
-            if (value.onChange) {
-                let field = node.getFields().get(key.toLowerCase());
-                if (field) {
-                    field.createExclusiveObserver(
-                        interpreter,
-                        interpreter.getCallableFunction(value.onChange.toLowerCase())
-                    );
-                }
+            let observeField = node.getMethod("observeField");
+            if (observeField && value.onChange) {
+                let onChange = new BrsString(value.onChange);
+                observeField.call(interpreter, fieldName, onChange);
             }
         }
     }

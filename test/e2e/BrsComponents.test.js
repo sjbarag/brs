@@ -535,10 +535,6 @@ describe("end to end brightscript functions", () => {
         );
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
-            "child: text field changed. new value:",
-            "",
-            "child: text field changed. new value:",
-            "initial",
             "runner: node text field value before modifying:",
             "initial",
             "child: text field changed. new value:",

@@ -527,7 +527,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test.only("components/scripts/FieldChangeRunner.brs", async () => {
+    test("components/scripts/FieldChangeRunner.brs", async () => {
         outputStreams.root = __dirname + "/resources";
         await execute(
             [resourceFile("components", "scripts", "FieldChangeRunner.brs")],

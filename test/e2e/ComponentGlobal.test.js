@@ -25,8 +25,8 @@ describe("m.global usage in scenegraph components", () => {
         await execute([resourceFile("components", "componentGlobalUsage.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "",
             "Globally setting this value",
-            "Global Label",
         ]);
     });
 });

@@ -66,7 +66,9 @@ class Field {
         callback.callable.call(callback.interpreter);
     }
 }
-let myGlobal: RoSGNode;
+
+// A node that represents the m.global, referenced by all other nodes
+let mGlobal: RoSGNode;
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     private fields = new Map<string, Field>();
@@ -1129,8 +1131,8 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
             node = new RoSGNode([], type.value);
         }
 
-        if (!myGlobal) {
-            myGlobal = new RoSGNode([]);
+        if (!mGlobal) {
+            mGlobal = new RoSGNode([]);
         }
 
         // Add children, fields and call each init method starting from the
@@ -1148,7 +1150,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
             interpreter.inSubEnv(subInterpreter => {
                 let mPointer = subInterpreter.environment.getM();
                 mPointer.set(new BrsString("top"), node!);
-                mPointer.set(new BrsString("global"), myGlobal);
+                mPointer.set(new BrsString("global"), mGlobal);
                 if (init instanceof Callable) {
                     init.call(subInterpreter);
                 }

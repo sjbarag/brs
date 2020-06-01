@@ -338,7 +338,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter, functionname: BrsString, functionargs: BrsType) => {
-            // We need to search the callee's environment for this function, not the caller's.
+            // We need to search the callee's environment for this function rather than the caller's.
             let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
             if (componentDef) {
                 return interpreter.inSubEnv(subInterpreter => {

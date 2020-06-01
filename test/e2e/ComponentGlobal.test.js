@@ -1,13 +1,10 @@
 const { execute } = require("../../lib");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
-const lolex = require("lolex");
 
 describe("m.global usage in scenegraph components", () => {
     let outputStreams;
-    let clock;
 
     beforeAll(() => {
-        clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
     });
 
@@ -16,7 +13,6 @@ describe("m.global usage in scenegraph components", () => {
     });
 
     afterAll(() => {
-        clock.uninstall();
         jest.restoreAllMocks();
     });
 

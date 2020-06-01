@@ -526,12 +526,18 @@ describe("end to end brightscript functions", () => {
         );
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
-            "runner: node text field value before modifying:",
-            "initial",
+            "runner: node childHandled text field value before modifying:",
+            "childHandled initial",
             "child: text field changed. new value:",
-            "modified",
-            "runner: node text field value after modifying:",
-            "modified",
+            "childHandled modified",
+            "runner: node childHandled text field value after modifying:",
+            "childHandled modified",
+            "runner: node parentHandled text field value before modifying:",
+            "parentHandled initial",
+            "parent: parentHandled text field changed",
+            "parentHandled modified",
+            "runner: node parentHandled text field value after modifying:",
+            "parentHandled modified"
         ]);
     });
 });

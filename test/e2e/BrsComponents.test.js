@@ -9,6 +9,7 @@ describe("end to end brightscript functions", () => {
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
+        outputStreams.root = __dirname + "/resources";
     });
 
     afterEach(() => {
@@ -288,7 +289,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/customComponent.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([

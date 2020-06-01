@@ -318,7 +318,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/componentExtension.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -376,7 +375,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Group.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Group.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -402,7 +400,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/LayoutGroup.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "LayoutGroup.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -422,7 +419,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Rectangle.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Rectangle.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -442,7 +438,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Label.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Label.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -464,7 +459,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Font.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Font.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -486,7 +480,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Poster.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Poster.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -508,7 +501,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/ArrayGrid.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "ArrayGrid.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -528,7 +520,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/scripts/FieldChangeRunner.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute(
             [resourceFile("components", "scripts", "FieldChangeRunner.brs")],
             outputStreams

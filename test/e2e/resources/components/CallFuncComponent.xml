@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="CallFuncComponent">
+    <script type="text/brightscript" uri="pkg:/components/scripts/CallFuncComponent.brs" />
+    <interface>
+        <function name="componentFunction" />
+    </interface>
+</component>

@@ -141,6 +141,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             ifSGNodeFocus: [this.hasfocus, this.setfocus, this.isinfocuschain],
             ifSGNodeDict: [this.findnode, this.issamenode, this.subtype],
         });
+        this.appendMethod("callFunc", this.callFunc);
     }
 
     toString(parent?: BrsType): string {
@@ -324,6 +325,33 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         }
         return false;
     }
+
+    /**
+     * Calls the function specified on this node.
+     */
+    private callFunc = new Callable("callFunc", {
+        signature: {
+            args: [
+                new StdlibArgument("functionname", ValueKind.String),
+                new StdlibArgument("functionargs", ValueKind.Dynamic),
+            ],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, functionname: BrsString, functionargs: BrsType) => {
+            // We need to search the callee's environment for this function, not the caller's.
+            let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
+            if (componentDef) {
+                return interpreter.inSubEnv(subInterpreter => {
+                    let functionToCall = subInterpreter.getCallableFunction(functionname.value);
+                    return functionToCall.call(subInterpreter, functionargs);
+                }, componentDef.environment);
+            } else {
+                throw new Error(
+                    `Error: Unable to find function "${functionname}" used in callFunc.`
+                );
+            }
+        },
+    });
 
     /** Removes all fields from the node */
     // ToDo: Built-in fields shouldn't be removed

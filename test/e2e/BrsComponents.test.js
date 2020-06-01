@@ -559,4 +559,15 @@ describe("end to end brightscript functions", () => {
             "parentHandled modified",
         ]);
     });
+
+    test("components/scripts/CallFuncMain.brs", async () => {
+        await execute([resourceFile("components", "scripts", "CallFuncMain.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "component: inside componentFunction, args.test: ",
+            "123",
+            "main: componentFunction return value success:",
+            "true",
+        ]);
+    });
 });

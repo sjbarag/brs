@@ -537,7 +537,7 @@ describe("end to end brightscript functions", () => {
             "parent: parentHandled text field changed",
             "parentHandled modified",
             "runner: node parentHandled text field value after modifying:",
-            "parentHandled modified"
+            "parentHandled modified",
         ]);
     });
 });

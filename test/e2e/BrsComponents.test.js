@@ -561,11 +561,16 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/scripts/CallFuncMain.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "scripts", "CallFuncMain.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "component: inside componentFunction, args.test: ",
             "123",
+            "component: componentField:",
+            "componentField value",
+            "component: mainField:",
+            "invalid",
             "main: componentFunction return value success:",
             "true",
         ]);

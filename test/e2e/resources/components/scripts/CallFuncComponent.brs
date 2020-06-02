@@ -9,3 +9,7 @@ function componentFunction(args as object) as object
 
     return { "success": true }
 end function
+
+sub componentVoidFunction()
+    print "component: inside componentVoidFunction"
+end sub

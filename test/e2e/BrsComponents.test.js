@@ -573,6 +573,9 @@ describe("end to end brightscript functions", () => {
             "invalid",
             "main: componentFunction return value success:",
             "true",
+            "component: inside componentVoidFunction",
+            "main: componentVoidFunction return value:",
+            "invalid",
         ]);
     });
 });

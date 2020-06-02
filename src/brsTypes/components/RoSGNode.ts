@@ -139,9 +139,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.insertchildren,
             ],
             ifSGNodeFocus: [this.hasfocus, this.setfocus, this.isinfocuschain],
-            ifSGNodeDict: [this.findnode, this.issamenode, this.subtype],
+            ifSGNodeDict: [this.findnode, this.issamenode, this.subtype, this.callfunc],
         });
-        this.appendMethod("callFunc", this.callFunc);
     }
 
     toString(parent?: BrsType): string {
@@ -329,11 +328,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     /**
      * Calls the function specified on this node.
      */
-    private callFunc = new Callable("callFunc", {
+    private callfunc = new Callable("callfunc", {
         signature: {
             args: [
                 new StdlibArgument("functionname", ValueKind.String),
-                new StdlibArgument("functionargs", ValueKind.Dynamic),
+                new StdlibArgument("functionargs", ValueKind.Dynamic, Uninitialized.Instance),
             ],
             returns: ValueKind.Dynamic,
         },
@@ -343,13 +342,23 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             if (componentDef) {
                 return interpreter.inSubEnv(subInterpreter => {
                     let functionToCall = subInterpreter.getCallableFunction(functionname.value);
-                    return functionToCall.call(subInterpreter, functionargs);
+
+                    // Args for callFunc are optional, they're based on the function we're calling,
+                    // and we need to match the signature of that function, so we can't always forward functionargs.
+                    //
+                    // You _can_ pass "invalid" as an argument to a function, so we'll use Uninitialized
+                    // as a default value here to differentiate.
+                    if (functionargs == Uninitialized.Instance) {
+                        return functionToCall.call(subInterpreter);
+                    } else {
+                        return functionToCall.call(subInterpreter, functionargs);
+                    }
                 }, componentDef.environment);
             } else {
-                throw new Error(
-                    `Error: Unable to find function "${functionname}" used in callFunc.`
-                );
+                console.error(`Warning calling function in ${this.nodeSubtype}: no function interface specified for ${functionname}`)
             }
+
+            return BrsInvalid.Instance;
         },
     });
 

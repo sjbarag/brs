@@ -6,4 +6,7 @@ sub Main()
 
     result = node.callFunc("componentFunction", { test: 123 })
     print "main: componentFunction return value success:" result.success
+
+    voidResult = node.callFunc("componentVoidFunction")
+    print "main: componentVoidFunction return value:" voidResult
 end sub

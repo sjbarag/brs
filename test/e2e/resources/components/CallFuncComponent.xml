@@ -3,5 +3,6 @@
     <script type="text/brightscript" uri="pkg:/components/scripts/CallFuncComponent.brs" />
     <interface>
         <function name="componentFunction" />
+        <function name="componentVoidFunction" />
     </interface>
 </component>

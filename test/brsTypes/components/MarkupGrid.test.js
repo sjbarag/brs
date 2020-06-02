@@ -55,7 +55,7 @@ describe("MarkupGrid", () => {
     columnspacings: invalid
     sectiondividerbitmapuri: 
     sectiondividerfont: invalid
-    sectiondividertextcolor: 0xddddddff
+    sectiondividertextcolor: 0xDDDDDDFF
     sectiondividerspacing: 10
     sectiondividerwidth: 0
     sectiondividerheight: 40

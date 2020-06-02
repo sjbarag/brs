@@ -25,7 +25,7 @@ export class MarkupGrid extends ArrayGrid {
         { name: "wrapDividerHeight", type: "float", value: "0.0" },
         { name: "sectionDividerBitmapUri", type: "string", value: "" },
         { name: "sectionDividerFont", type: "node" },
-        { name: "sectionDividerTextColor", type: "string", value: "0xddddddff" },
+        { name: "sectionDividerTextColor", type: "string", value: "0xDDDDDDFF" },
         { name: "sectionDividerSpacing", type: "float", value: "10" },
         { name: "sectionDividerHeight", type: "float", value: "40" },
         { name: "sectionDividerMinWidth", type: "float", value: "117" },

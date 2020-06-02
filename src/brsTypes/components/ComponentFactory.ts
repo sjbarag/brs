@@ -1,4 +1,14 @@
-import { RoSGNode, Group, LayoutGroup, Rectangle, Label, Font, Poster, ArrayGrid } from "..";
+import {
+    RoSGNode,
+    Group,
+    LayoutGroup,
+    Rectangle,
+    Label,
+    Font,
+    Poster,
+    ArrayGrid,
+    MarkupGrid,
+} from "..";
 
 export enum BrsComponentName {
     Node = "Node",
@@ -9,6 +19,7 @@ export enum BrsComponentName {
     Font = "Font",
     Poster = "Poster",
     ArrayGrid = "ArrayGrid",
+    MarkupGrid = "MarkupGrid",
 }
 
 // TODO: update with more components as they're implemented.
@@ -35,6 +46,8 @@ export class ComponentFactory {
                 return new Poster([], name);
             case BrsComponentName.ArrayGrid:
                 return new ArrayGrid([], name);
+            case BrsComponentName.MarkupGrid:
+                return new MarkupGrid([], name);
             default:
                 return;
         }

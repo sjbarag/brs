@@ -49,6 +49,7 @@ export * from "./components/Label";
 export * from "./components/Font";
 export * from "./components/Poster";
 export * from "./components/ArrayGrid";
+export * from "./components/MarkupGrid";
 
 /**
  * Determines whether or not the given value is a number.

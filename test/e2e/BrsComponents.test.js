@@ -526,4 +526,24 @@ describe("end to end brightscript functions", () => {
             "5",
         ]);
     });
+
+    test("components/MarkupGrid.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "MarkupGrid.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "markupgrid node type:",
+            "Node",
+            "markupgrid node subtype:",
+            "MarkupGrid",
+            "markupgrid node numRows:",
+            "12",
+            "markupgrid node sectionDividerMinWidth:",
+            "117",
+            "markupgridAsChild numColumns:",
+            "10",
+            "markupgridAsChild fixedLayout:",
+            "true",
+        ]);
+    });
 });

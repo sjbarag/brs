@@ -528,7 +528,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/MarkupGrid.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "MarkupGrid.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([

@@ -355,7 +355,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     }
                 }, componentDef.environment);
             } else {
-                console.error(`Warning calling function in ${this.nodeSubtype}: no function interface specified for ${functionname}`)
+                console.error(
+                    `Warning calling function in ${this.nodeSubtype}: no function interface specified for ${functionname}`
+                );
             }
 
             return BrsInvalid.Instance;

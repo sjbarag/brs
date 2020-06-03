@@ -348,7 +348,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     //
                     // You _can_ pass "invalid" as an argument to a function, so we'll use Uninitialized
                     // as a default value here to differentiate.
-                    if (functionargs == Uninitialized.Instance) {
+                    if (functionargs === Uninitialized.Instance) {
                         return functionToCall.call(subInterpreter);
                     } else {
                         return functionToCall.call(subInterpreter, functionargs);

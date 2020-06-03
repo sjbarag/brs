@@ -130,7 +130,10 @@ async function processXmlTree(
                         // the original value without throwing an error for simplicity
                         // TODO: throw exception when fields are duplicated.
                         inheritedFields = { ...nodeFields, ...inheritedFields };
-                        newNodeDef.fields = inheritedFields;
+
+                        // We don't actually want our type definition to have inherited fields on it.
+                        // Inherited fields will get added when we create the actual component.
+                        newNodeDef.fields = nodeFields;
                         newNodeDef.processed = true;
                     }
                 }

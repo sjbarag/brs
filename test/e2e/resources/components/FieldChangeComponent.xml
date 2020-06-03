@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="FieldChangeComponent" extends="FieldChangeParent" >
+    <script type="text/brightscript" uri="pkg:/components/scripts/FieldChangeComponent.brs" />
+</component>

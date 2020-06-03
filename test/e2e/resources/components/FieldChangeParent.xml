@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="FieldChangeParent" >
+    <interface>
+        <field id="childHandledTextField" type="string" value="childHandled initial" onChange="onChildHandledFieldChange" />
+        <field id="parentHandledTextField" type="string" value="parentHandled initial" onChange="onParentHandledFieldChange" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/scripts/FieldChangeParent.brs" />
+</component>

@@ -6,6 +6,7 @@ describe("m.global usage in scenegraph components", () => {
 
     beforeAll(() => {
         outputStreams = createMockStreams();
+        outputStreams.root = __dirname + "/resources";
     });
 
     afterEach(() => {
@@ -17,11 +18,16 @@ describe("m.global usage in scenegraph components", () => {
     });
 
     test("components/componentGlobalUsage.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "componentGlobalUsage.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "inside component init, m.global.brsIntField: ",
+            "123",
+            "MGlobalWidget.text: ",
             "",
+            "MUniversalWidget.text: ",
+            "Globally setting this value",
+            "_brs_.global.value: ",
             "Globally setting this value",
         ]);
     });

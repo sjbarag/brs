@@ -75,8 +75,6 @@ class Field {
     }
 }
 
-// A node that represents the m.global, referenced by all other nodes
-let mGlobal: RoSGNode;
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     private fields = new Map<string, Field>();
@@ -1104,6 +1102,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     }
 }
 
+// A node that represents the m.global, referenced by all other nodes
+export const mGlobal = new RoSGNode([]);
+
 export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
     // If this is a built-in component, then return it.
     let component = ComponentFactory.createComponent(type.value as BrsComponentName);
@@ -1137,10 +1138,6 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         // Default to Node as parent.
         if (!node) {
             node = new RoSGNode([], type.value);
-        }
-
-        if (!mGlobal) {
-            mGlobal = new RoSGNode([]);
         }
 
         // Add children, fields and call each init method starting from the

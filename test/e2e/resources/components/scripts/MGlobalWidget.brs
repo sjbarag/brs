@@ -1,5 +1,6 @@
 sub init()
-    if not m.global.hasField("value") and not m.global.hasField("label") then
+    if not m.global.hasField("value") then
+        print "inside component init, m.global.brsIntField: " m.global.brsIntField
         m.global.addField("value", "string", false)
         m.global.value = "Globally setting this value"
    else

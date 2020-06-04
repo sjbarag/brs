@@ -9,20 +9,20 @@ describe("Poster", () => {
             expect(group.toString()).toEqual(
                 `<Component: roSGNode:Poster> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
     visible: true
     opacity: 1
-    translation: invalid
+    translation: <Component: roArray>
     rotation: 0
-    scale: invalid
-    scalerotatecenter: invalid
+    scale: <Component: roArray>
+    scalerotatecenter: <Component: roArray>
     childrenderorder: renderLast
     inheritparenttransform: true
     inheritparentopacity: true
-    clippingrect: invalid
+    clippingrect: <Component: roArray>
     renderpass: 0
     muteaudioguide: false
     enablerendertracking: false
@@ -37,7 +37,7 @@ describe("Poster", () => {
     loadstatus: noScale
     bitmapwidth: 0
     bitmapheight: 0
-    bitmapmargins: invalid
+    bitmapmargins: <Component: roAssociativeArray>
     blendcolor: 0xFFFFFFFF
     loadingbitmapuri: 
     loadingbitmapopacity: 1

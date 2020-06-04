@@ -30,7 +30,7 @@ describe("RoSGNode", () => {
             expect(node.toString()).toEqual(
                 `<Component: roSGNode:Node> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -285,6 +285,10 @@ describe("RoSGNode", () => {
                     { name: new BrsString("letter1"), value: letter1 },
                     { name: new BrsString("letter2"), value: letter2 },
                 ]);
+                let change = node
+                    .getFields()
+                    .get("change")
+                    .getValue();
 
                 let change = node
                     .getFields()

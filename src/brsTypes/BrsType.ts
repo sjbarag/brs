@@ -5,6 +5,8 @@ import { Int32 } from "./Int32";
 import { Float } from "./Float";
 import { roBoolean } from "./components/RoBoolean";
 import { roInvalid } from "./components/RoInvalid";
+import { RoAssociativeArray } from "./components/RoAssociativeArray";
+import { RoArray } from "./components/RoArray";
 
 /** Set of values supported in BrightScript. */
 export enum ValueKind {
@@ -123,13 +125,13 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
         case "float":
             returnValue = value ? new Float(Number.parseFloat(value)) : new Float(0);
             break;
-        case "roArray":
+        case "roarray":
         case "array":
-            returnValue = BrsInvalid.Instance;
+            returnValue = new RoArray([]);
             break;
-        case "roAssociativeArray":
+        case "roassociativearray":
         case "assocarray":
-            returnValue = BrsInvalid.Instance;
+            returnValue = new RoAssociativeArray([]);
             break;
         case "uri":
         case "str":

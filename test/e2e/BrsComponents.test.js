@@ -605,4 +605,23 @@ describe("end to end brightscript functions", () => {
             "Warning calling function in CallFuncComponent: no function interface specified for componentPrivateFunction",
         ]);
     });
+
+    test("components/ContentNode.brs", async () => {
+        await execute([resourceFile("components", "scripts", "ContentNode.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "contentnode node type:",
+            "Node",
+            "contentnode node subtype:",
+            "ContentNode",
+            "contentnode.ContentType:",
+            "",
+            "contentnode.TargetRotation:",
+            "0",
+            "contentnodeAsChild.episodeNumber:",
+            "10",
+            "contentnodeAsChild.subtitleUrl:",
+            "subtitle.example.com",
+        ]);
+    });
 });

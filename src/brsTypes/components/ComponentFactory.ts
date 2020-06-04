@@ -8,6 +8,7 @@ import {
     Poster,
     ArrayGrid,
     MarkupGrid,
+    ContentNode,
 } from "..";
 
 export enum BrsComponentName {
@@ -20,6 +21,7 @@ export enum BrsComponentName {
     Poster = "Poster",
     ArrayGrid = "ArrayGrid",
     MarkupGrid = "MarkupGrid",
+    ContentNode = "ContentNode",
 }
 
 // TODO: update with more components as they're implemented.
@@ -48,6 +50,8 @@ export class ComponentFactory {
                 return new ArrayGrid([], name);
             case BrsComponentName.MarkupGrid:
                 return new MarkupGrid([], name);
+            case BrsComponentName.ContentNode:
+                return new ContentNode(name);
             default:
                 return;
         }

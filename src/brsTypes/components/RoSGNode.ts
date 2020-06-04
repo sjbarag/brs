@@ -30,14 +30,14 @@ interface BrsCallback {
     };
 }
 
-export type FieldModel = { name: string; type: string; value?: string };
+export type FieldModel = { name: string; type: string; value?: string; hidden?: boolean };
 
 export class Field {
     private type: string;
     private value: BrsType;
     private observers: BrsCallback[] = [];
 
-    constructor(value: BrsType, private alwaysNotify: boolean) {
+    constructor(value: BrsType, private alwaysNotify: boolean, private hidden: boolean = false) {
         this.type = ValueKind.toString(value.kind);
         this.value = value;
     }
@@ -46,15 +46,36 @@ export class Field {
         return this.value.toString(parent);
     }
 
+    /**
+     * Returns whether or not the field is "hidden".
+     *
+     * The reason for this is that some fields (content metadata fields) are
+     * by default "hidden". This means they are accessible on the
+     * node without an access error, but they don't show up when you print the node.
+     */
+    isHidden() {
+        return this.hidden;
+    }
+
+    setHidden(isHidden: boolean) {
+        this.hidden = isHidden;
+    }
+
     getType(): string {
         return this.type;
     }
 
     getValue(): BrsType {
+        // Once a field is accessed, it is no longer hidden.
+        this.hidden = false;
+
         return this.value;
     }
 
     setValue(value: BrsType) {
+        // Once a field is set, it is no longer hidden.
+        this.hidden = false;
+
         let oldValue = this.value;
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
@@ -68,6 +89,9 @@ export class Field {
         node: RoSGNode,
         fieldName: BrsString
     ) {
+        // Once a field is accessed, it is no longer hidden.
+        this.hidden = false;
+
         let brsCallback: BrsCallback = {
             interpreter,
             environment: interpreter.environment,
@@ -429,7 +453,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /** Returns the number of items in the node */
-    private count = new Callable("count", {
+    protected count = new Callable("count", {
         signature: {
             args: [],
             returns: ValueKind.Int32,
@@ -472,7 +496,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /** Returns an array of keys from the node in lexicographical order */
-    private keys = new Callable("keys", {
+    protected keys = new Callable("keys", {
         signature: {
             args: [],
             returns: ValueKind.Object,
@@ -483,7 +507,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /** Returns an array of values from the node in lexicographical order */
-    private items = new Callable("items", {
+    protected items = new Callable("items", {
         signature: {
             args: [],
             returns: ValueKind.Object,
@@ -565,7 +589,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /** Returns true if the field exists */
-    private hasfield = new Callable("hasfield", {
+    protected hasfield = new Callable("hasfield", {
         signature: {
             args: [new StdlibArgument("fieldname", ValueKind.String)],
             returns: ValueKind.Boolean,
@@ -1149,7 +1173,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         fields.forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),
-                new Field(getBrsValueFromFieldType(field.type, field.value), false)
+                new Field(getBrsValueFromFieldType(field.type, field.value), false, field.hidden)
             );
         });
     }

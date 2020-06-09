@@ -77,6 +77,7 @@ export class Field {
         this.hidden = false;
 
         let oldValue = this.value;
+        this.type = ValueKind.toString(value.kind);
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
             this.observers.map(this.executeCallbacks.bind(this));
@@ -261,8 +262,13 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
         if (!field) {
             field = new Field(value, alwaysNotify);
-        } else if (field.getType() === valueType) {
-            //Fields are not overwritten if they haven't the same type
+        } else if (
+            field.getType() === ValueKind.toString(ValueKind.Invalid) ||
+            field.getType() === ValueKind.toString(ValueKind.Uninitialized) ||
+            field.getType() === valueType
+        ) {
+            // Fields are not overwritten if they haven't the same type.
+            // The exception is if the field's "type" is invalid or uninitialized.
             field.setValue(value);
         }
         this.fields.set(mapKey, field);

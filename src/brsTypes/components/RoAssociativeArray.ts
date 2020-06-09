@@ -125,7 +125,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, str: BrsString) => {
-            let deleted = this.elements.delete(str.value);
+            let deleted = this.elements.delete(str.value.toLowerCase());
             return BrsBoolean.from(deleted);
         },
     });

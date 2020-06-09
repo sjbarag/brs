@@ -7,6 +7,7 @@ import {
     Uninitialized,
     getBrsValueFromFieldType,
 } from "../BrsType";
+import { RoSGNodeEvent } from "./RoSGNodeEvent";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
@@ -23,11 +24,12 @@ interface BrsCallback {
     interpreter: Interpreter;
     environment: Environment;
     callable: Callable;
+    event: RoSGNodeEvent;
 }
 
 export type FieldModel = { name: string; type: string; value?: string };
 
-class Field {
+export class Field {
     private type: string;
     private value: BrsType;
     private observers: BrsCallback[] = [];
@@ -57,19 +59,25 @@ class Field {
         }
     }
 
-    addObserver(interpreter: Interpreter, callable: Callable) {
+    addObserver(interpreter: Interpreter, callable: Callable, event: RoSGNodeEvent) {
         let brsCallback: BrsCallback = {
-            interpreter: interpreter,
+            interpreter,
             environment: interpreter.environment,
-            callable: callable,
+            callable,
+            event,
         };
         this.observers.push(brsCallback);
     }
 
     private executeCallbacks(callback: BrsCallback) {
-        let { interpreter, callable, environment } = callback;
+        let { interpreter, callable, environment, event } = callback;
         interpreter.inSubEnv(subInterpreter => {
-            callable.call(subInterpreter);
+            // Check whether the callback is expecting an event parameter.
+            if (callable.getFirstSatisfiedSignature([event])) {
+                callable.call(subInterpreter, event);
+            } else {
+                callable.call(subInterpreter);
+            }
             return BrsInvalid.Instance;
         }, environment);
     }
@@ -566,7 +574,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
-                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value));
+                let event = new RoSGNodeEvent(this, fieldname, field);
+                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value), event);
             }
             return BrsBoolean.True;
         },

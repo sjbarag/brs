@@ -7,4 +7,8 @@ sub Main()
     print "runner: node parentHandled text field value before modifying:" node.parentHandledTextField
     node.parentHandledTextField = "parentHandled modified"
     print "runner: node parentHandled text field value after modifying:" node.parentHandledTextField
+
+    node.id = "id-field-change"
+    print "runner: modifying intField"
+    node.intField = 123
 end sub

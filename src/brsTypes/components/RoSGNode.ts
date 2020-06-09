@@ -343,15 +343,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 return interpreter.inSubEnv(subInterpreter => {
                     let functionToCall = subInterpreter.getCallableFunction(functionname.value);
 
-                    // Args for callFunc are optional, they're based on the function we're calling,
-                    // and we need to match the signature of that function, so we can't always forward functionargs.
-                    //
-                    // You _can_ pass "invalid" as an argument to a function, so we'll use Uninitialized
-                    // as a default value here to differentiate.
-                    if (functionargs === Uninitialized.Instance) {
-                        return functionToCall.call(subInterpreter);
-                    } else {
+                    // Determine whether the function should get arguments are not.
+                    if (functionToCall.getFirstSatisfiedSignature([functionargs])) {
                         return functionToCall.call(subInterpreter, functionargs);
+                    } else {
+                        return functionToCall.call(subInterpreter);
                     }
                 }, componentDef.environment);
             } else {

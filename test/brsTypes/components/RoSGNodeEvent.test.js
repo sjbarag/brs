@@ -5,10 +5,12 @@ const { Interpreter } = require("../../../lib/interpreter");
 describe("RoSGNodeEvent", () => {
     let interpreter = new Interpreter();
     let nodeId = new BrsString("node-id");
-    let node = new RoSGNode([{
-        name: new BrsString("id"),
-        value: nodeId
-    }]);
+    let node = new RoSGNode([
+        {
+            name: new BrsString("id"),
+            value: nodeId,
+        },
+    ]);
     let fieldName = new BrsString("fieldName");
     let fieldValue = new BrsString("fieldValue");
     let field = new Field(fieldValue, false);

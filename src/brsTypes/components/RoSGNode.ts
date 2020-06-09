@@ -575,7 +575,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
                 let event = new RoSGNodeEvent(this, fieldname, field);
-                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value), event);
+                field.addObserver(
+                    interpreter,
+                    interpreter.getCallableFunction(functionname.value),
+                    event
+                );
             }
             return BrsBoolean.True;
         },

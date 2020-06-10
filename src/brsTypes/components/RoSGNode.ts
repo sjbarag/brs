@@ -506,14 +506,27 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    /** Returns an array of values from the node in lexicographical order */
+    /** Returns an array of key/value pairs in lexicographical order of key. */
     protected items = new Callable("items", {
         signature: {
             args: [],
             returns: ValueKind.Object,
         },
         impl: (interpreter: Interpreter) => {
-            return new RoArray(this.getValues());
+            return new RoArray(
+                this.getElements().map((key: BrsString) => {
+                    return new RoAssociativeArray([
+                        {
+                            name: new BrsString("key"),
+                            value: key,
+                        },
+                        {
+                            name: new BrsString("value"),
+                            value: this.get(key),
+                        },
+                    ]);
+                })
+            );
         },
     });
 

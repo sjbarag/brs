@@ -272,10 +272,9 @@ describe("RoSGNode", () => {
         });
 
         describe("items", () => {
-            it("returns an array of values from the associative array in lexicographical order", () => {
-                let change = BrsBoolean.False;
-                let focusable = BrsInvalid.Instance;
-                let focusedChild = Uninitialized.Instance;
+            it("returns an array of key-value pairs from the associative array in lexicographical order", () => {
+                let focusable = BrsBoolean.False;
+                let focusedChild = BrsInvalid.Instance;
                 let id = new BrsString("");
                 let cletter = new BrsString("c");
                 let letter1 = new BrsString("a");
@@ -287,33 +286,56 @@ describe("RoSGNode", () => {
                     { name: new BrsString("letter2"), value: letter2 },
                 ]);
 
+                let change = node
+                    .getFields()
+                    .get("change")
+                    .getValue();
+
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
+
                 let result = items.call(interpreter);
-                expect(result.getElements()).toEqual([
-                    id,
+                let keyValPairs = result.getElements();
+                let expectedValues = [
+                    change,
+                    cletter,
+                    focusable,
                     focusedChild,
+                    id,
                     letter1,
                     letter2,
-                    cletter,
-                    change,
-                    focusable,
-                ]);
+                ];
+
+                expect(keyValPairs.length).toEqual(expectedValues.length);
+                expectedValues.forEach((expectedValue, index) => {
+                    let actualValue = keyValPairs[index].get(new BrsString("value"));
+                    expect(actualValue).toEqual(expectedValue);
+                });
             });
 
             it("returns an empty array from an empty associative array", () => {
-                let change = BrsBoolean.False;
-                let focusable = BrsInvalid.Instance;
-                let focusedChild = Uninitialized.Instance;
+                let focusable = BrsBoolean.False;
+                let focusedChild = BrsInvalid.Instance;
                 let id = new BrsString("");
 
                 let node = new RoSGNode([]);
+                let change = node
+                    .getFields()
+                    .get("change")
+                    .getValue();
 
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
 
                 let result = items.call(interpreter);
-                expect(result.getElements()).toEqual([id, focusedChild, change, focusable]);
+                let keyValPairs = result.getElements();
+                let expectedValues = [change, focusable, focusedChild, id];
+
+                expect(keyValPairs.length).toEqual(expectedValues.length);
+                expectedValues.forEach((expectedValue, index) => {
+                    let actualValue = keyValPairs[index].get(new BrsString("value"));
+                    expect(actualValue).toEqual(expectedValue);
+                });
             });
         });
     });

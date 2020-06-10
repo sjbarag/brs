@@ -26,6 +26,7 @@
             <MarkupGrid id="markupgrid" 
                 numColumns="10"
                 fixedLayout="true"
+            />
             <ContentNode id="contentnode" 
                 episodeNumber="10"
                 subtitleUrl="subtitle.example.com"

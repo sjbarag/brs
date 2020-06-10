@@ -332,14 +332,16 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         signature: {
             args: [
                 new StdlibArgument("functionname", ValueKind.String),
-                new StdlibArgument("functionargs", ValueKind.Dynamic, Uninitialized.Instance),
+                new StdlibArgument("functionargs", ValueKind.Dynamic, BrsInvalid.Instance),
             ],
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter, functionname: BrsString, functionargs: BrsType) => {
             // We need to search the callee's environment for this function rather than the caller's.
             let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
-            if (componentDef) {
+
+            // Only allow public functions (defined in the interface) to be called.
+            if (componentDef && functionname.value in componentDef.functions) {
                 return interpreter.inSubEnv(subInterpreter => {
                     let functionToCall = subInterpreter.getCallableFunction(functionname.value);
 

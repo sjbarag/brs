@@ -13,3 +13,8 @@ end function
 sub componentVoidFunction()
     print "component: inside componentVoidFunction"
 end sub
+
+function componentPrivateFunction() as string
+    print "component: inside componentPrivateFunction"
+    return "private return value"
+end function

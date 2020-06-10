@@ -561,7 +561,7 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/scripts/CallFuncMain.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
+        let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         await execute([resourceFile("components", "scripts", "CallFuncMain.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -576,6 +576,14 @@ describe("end to end brightscript functions", () => {
             "component: inside componentVoidFunction",
             "main: componentVoidFunction return value:",
             "invalid",
+            "main: componentPrivateFunction return value:",
+            "invalid",
         ]);
+
+        expect(allArgs(consoleErrorSpy).filter(arg => arg !== "\n")).toEqual([
+            "Warning calling function in CallFuncComponent: no function interface specified for componentPrivateFunction",
+        ]);
+
+        consoleErrorSpy.mockRestore();
     });
 });

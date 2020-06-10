@@ -102,7 +102,8 @@ export namespace ValueKind {
 
 /**
  *  Converts a specified brightscript type in string into BrsType representation, with actual value
- *  Note: only supports native types so far.  Objects such as array/AA aren't handled at the moment.
+ *  Note: only native types are fully supported so far. Objects such as node/array/AA are created with default values,
+ *  instead of the value that gets passed in.
  *  @param {string} type data type of field
  *  @param {string} value optional value specified as string
  *  @returns {BrsType} BrsType value representation of the type

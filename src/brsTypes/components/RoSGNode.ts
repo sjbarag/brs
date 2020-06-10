@@ -32,13 +32,13 @@ interface BrsCallback {
 
 export type FieldModel = { name: string; type: string; value?: string; hidden?: boolean };
 
-export class Field {
-    private type: string;
+class Field {
+    private type: ValueKind;
     private value: BrsType;
     private observers: BrsCallback[] = [];
 
-    constructor(value: BrsType, private alwaysNotify: boolean, private hidden: boolean = false) {
-        this.type = ValueKind.toString(value.kind);
+    constructor(value: BrsType, private alwaysNotify: boolean, private hidden: boolean = false, type?: string) {
+        this.type = ValueKind.fromString(type || "") || value.kind;
         this.value = value;
     }
 
@@ -61,7 +61,7 @@ export class Field {
         this.hidden = isHidden;
     }
 
-    getType(): string {
+    getType(): ValueKind {
         return this.type;
     }
 
@@ -77,7 +77,6 @@ export class Field {
         this.hidden = false;
 
         let oldValue = this.value;
-        this.type = ValueKind.toString(value.kind);
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
             this.observers.map(this.executeCallbacks.bind(this));
@@ -252,21 +251,17 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return this.getMethod(index.value) || BrsInvalid.Instance;
     }
 
-    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false) {
+    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false, type?: string) {
         if (index.kind !== ValueKind.String) {
             throw new Error("RoSGNode indexes must be strings");
         }
         let mapKey = index.value.toLowerCase();
         let field = this.fields.get(mapKey);
-        let valueType = ValueKind.toString(value.kind);
+        let fieldType = ValueKind.fromString(type || "") || value.kind;
 
         if (!field) {
             field = new Field(value, alwaysNotify);
-        } else if (
-            field.getType() === ValueKind.toString(ValueKind.Invalid) ||
-            field.getType() === ValueKind.toString(ValueKind.Uninitialized) ||
-            field.getType() === valueType
-        ) {
+        } else if (field.getType() === fieldType) {
             // Fields are not overwritten if they haven't the same type.
             // The exception is if the field's "type" is invalid or uninitialized.
             field.setValue(value);
@@ -567,7 +562,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let defaultValue = getBrsValueFromFieldType(type.value);
 
             if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
-                this.set(fieldname, defaultValue, alwaysnotify.toBoolean());
+                this.set(fieldname, defaultValue, alwaysnotify.toBoolean(), type.value);
             }
 
             return BrsBoolean.True;
@@ -1192,7 +1187,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         fields.forEach(field => {
             this.fields.set(
                 field.name.toLowerCase(),
-                new Field(getBrsValueFromFieldType(field.type, field.value), false, field.hidden)
+                new Field(getBrsValueFromFieldType(field.type, field.value), false, field.hidden, field.type)
             );
         });
     }
@@ -1341,7 +1336,7 @@ function addChildren(
                             interpreter,
                             new BrsString(key),
                             // use the field type to construct the field value
-                            getBrsValueFromFieldType(field.getType(), value)
+                            getBrsValueFromFieldType(ValueKind.toString(field.getType()), value)
                         );
                     }
                 }

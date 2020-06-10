@@ -21,3 +21,14 @@ sub onFieldChangeWithEvent(event as object)
     print "child: event.getNode()"
     print event.getNode() ' => "id-field-change"
 end sub
+
+function onFieldChangeMultipleTimes(event as object)
+    if m.event <> invalid
+        print "child: previous event:"
+        print m.event.getData()
+    end if
+
+    print "child: current event:"
+    print event.getData()
+    m.event = event
+end function

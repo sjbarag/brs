@@ -24,7 +24,10 @@ interface BrsCallback {
     interpreter: Interpreter;
     environment: Environment;
     callable: Callable;
-    event: RoSGNodeEvent;
+    eventParams: {
+        fieldName: BrsString,
+        node: RoSGNode
+    }
 }
 
 export type FieldModel = { name: string; type: string; value?: string };
@@ -55,22 +58,29 @@ export class Field {
         let oldValue = this.value;
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
-            this.observers.map(this.executeCallbacks);
+            this.observers.map(this.executeCallbacks.bind(this));
         }
     }
 
-    addObserver(interpreter: Interpreter, callable: Callable, event: RoSGNodeEvent) {
+    addObserver(interpreter: Interpreter, callable: Callable, node: RoSGNode, fieldName: BrsString) {
         let brsCallback: BrsCallback = {
             interpreter,
             environment: interpreter.environment,
             callable,
-            event,
+            eventParams: {
+                node,
+                fieldName
+            }
         };
         this.observers.push(brsCallback);
     }
 
     private executeCallbacks(callback: BrsCallback) {
-        let { interpreter, callable, environment, event } = callback;
+        let { interpreter, callable, environment, eventParams } = callback;
+
+        // Every time a callback happens, a new event is created.
+        let event = new RoSGNodeEvent(eventParams.node, eventParams.fieldName, this.value);
+
         interpreter.inSubEnv(subInterpreter => {
             // Check whether the callback is expecting an event parameter.
             if (callable.getFirstSatisfiedSignature([event])) {
@@ -574,11 +584,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
-                let event = new RoSGNodeEvent(this, fieldname, field);
                 field.addObserver(
                     interpreter,
                     interpreter.getCallableFunction(functionname.value),
-                    event
+                    this,
+                    fieldname
                 );
             }
             return BrsBoolean.True;

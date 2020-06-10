@@ -3,21 +3,19 @@ import { ValueKind, BrsString, BrsValue, BrsBoolean } from "../BrsType";
 import { Callable } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { RoSGNode, Field } from "./RoSGNode";
+import { BrsType } from "..";
 
 export class RoSGNodeEvent extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
 
-    constructor(readonly node: RoSGNode, readonly fieldName: BrsString, readonly field: Field) {
+    constructor(readonly node: RoSGNode, readonly fieldName: BrsString, readonly fieldValue: BrsType) {
         super("roSGNodeEvent");
         this.appendMethods([this.getdata, this.getfield, this.getrosgnode, this.getnode]);
     }
 
-    equalTo(event: RoSGNodeEvent) {
-        return BrsBoolean.from(
-            event.field === this.field &&
-                event.fieldName.equalTo(this.fieldName).toBoolean() &&
-                event.node.equalTo(this.node).toBoolean()
-        );
+    equalTo(other: BrsType) {
+        // RBI doesn't allow events to be compared.
+        return BrsBoolean.False;
     }
 
     toString() {
@@ -31,7 +29,7 @@ export class RoSGNodeEvent extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter) => {
-            return this.field.getValue();
+            return this.fieldValue;
         },
     });
 

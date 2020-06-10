@@ -3,5 +3,6 @@
     <script type="text/brightscript" uri="pkg:/components/scripts/FieldChangeComponent.brs" />
     <interface>
         <field id="intField" type="int" onChange="onFieldChangeWithEvent" value="0" />
+        <field id="multipleTimesField" type="int" onChange="onFieldChangeMultipleTimes" value="0" alwaysNotify="true" />
     </interface>
 </component>

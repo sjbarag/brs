@@ -11,4 +11,7 @@ sub Main()
     node.id = "id-field-change"
     print "runner: modifying intField"
     node.intField = 123
+
+    node.multipleTimesField = 123
+    node.multipleTimesField = 456
 end sub

@@ -17,14 +17,14 @@ describe("RoSGNodeEvent", () => {
 
     describe("stringification", () => {
         it("prints out correctly", () => {
-            let event = new RoSGNodeEvent(node, fieldName, field);
+            let event = new RoSGNodeEvent(node, fieldName, fieldValue);
             expect(event.toString()).toEqual(`<Component: roSGNodeEvent>`);
         });
     });
 
     describe("getdata", () => {
         it("returns the field value", () => {
-            let event = new RoSGNodeEvent(node, fieldName, field);
+            let event = new RoSGNodeEvent(node, fieldName, fieldValue);
             let getData = event.getMethod("getdata");
 
             expect(getData.call(interpreter)).toEqual(fieldValue);
@@ -33,7 +33,7 @@ describe("RoSGNodeEvent", () => {
 
     describe("getfield", () => {
         it("returns the field name", () => {
-            let event = new RoSGNodeEvent(node, fieldName, field);
+            let event = new RoSGNodeEvent(node, fieldName, fieldValue);
             let getField = event.getMethod("getfield");
 
             expect(getField.call(interpreter)).toEqual(fieldName);
@@ -42,7 +42,7 @@ describe("RoSGNodeEvent", () => {
 
     describe("getrosgnode", () => {
         it("returns a pointer to the node", () => {
-            let event = new RoSGNodeEvent(node, fieldName, field);
+            let event = new RoSGNodeEvent(node, fieldName, fieldValue);
             let getRosgnode = event.getMethod("getrosgnode");
 
             expect(getRosgnode.call(interpreter)).toEqual(node);
@@ -51,7 +51,7 @@ describe("RoSGNodeEvent", () => {
 
     describe("getnode", () => {
         it("returns the node id", () => {
-            let event = new RoSGNodeEvent(node, fieldName, field);
+            let event = new RoSGNodeEvent(node, fieldName, fieldValue);
             let getNode = event.getMethod("getnode");
 
             expect(getNode.call(interpreter)).toEqual(nodeId);

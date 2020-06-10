@@ -11,6 +11,10 @@ sub Main()
     node.addField("myNode", "node", false)
     print node.myNode ' => invalid
 
+    ' set an incorrect value to the node
+    node.myNode = 123
+    print node.myNode ' => invalid
+
     node.myNode = createObject("roSGNode", "Node")
     print node.myNode.subtype() ' => "Node"
 end sub

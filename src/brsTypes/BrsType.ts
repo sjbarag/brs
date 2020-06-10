@@ -101,6 +101,39 @@ export namespace ValueKind {
 }
 
 /**
+ * Converts the data type of a field to the appropriate value kind.
+ * @param type data type of field
+ */
+export function getValueKindFromFieldType(type: string) {
+    switch (type.toLowerCase()) {
+        case "bool":
+        case "boolean":
+            return ValueKind.Boolean;
+        case "int":
+        case "integer":
+            return ValueKind.Int32;
+        case "longinteger":
+            return ValueKind.Int64;
+        case "float":
+            return ValueKind.Float;
+        case "uri":
+        case "str":
+        case "string":
+            return ValueKind.String;
+        case "function":
+            return ValueKind.Callable
+        case "node":
+        case "roarray":
+        case "array":
+        case "roassociativearray":
+        case "assocarray":
+            return ValueKind.Object;
+        default:
+            return ValueKind.Invalid;
+    }
+}
+
+/**
  *  Converts a specified brightscript type in string into BrsType representation, with actual value
  *  Note: only native types are fully supported so far. Objects such as node/array/AA are created with default values,
  *  instead of the value that gets passed in.

@@ -6,6 +6,7 @@ import {
     BrsBoolean,
     Uninitialized,
     getBrsValueFromFieldType,
+    getValueKindFromFieldType,
 } from "../BrsType";
 import { RoSGNodeEvent } from "./RoSGNodeEvent";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
@@ -37,8 +38,8 @@ class Field {
     private value: BrsType;
     private observers: BrsCallback[] = [];
 
-    constructor(value: BrsType, private alwaysNotify: boolean, private hidden: boolean = false, type?: string) {
-        this.type = ValueKind.fromString(type || "") || value.kind;
+    constructor(value: BrsType, private alwaysNotify: boolean, private hidden: boolean = false, type?: ValueKind) {
+        this.type = type || value.kind;
         this.value = value;
     }
 
@@ -251,19 +252,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return this.getMethod(index.value) || BrsInvalid.Instance;
     }
 
-    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false, type?: string) {
+    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false, kind?: ValueKind) {
         if (index.kind !== ValueKind.String) {
             throw new Error("RoSGNode indexes must be strings");
         }
         let mapKey = index.value.toLowerCase();
         let field = this.fields.get(mapKey);
-        let fieldType = ValueKind.fromString(type || "") || value.kind;
+        let fieldType = kind || value.kind;
 
         if (!field) {
-            field = new Field(value, alwaysNotify);
-        } else if (field.getType() === fieldType) {
+            field = new Field(value, alwaysNotify, fieldType);
+        } else if (field.getType() === ValueKind.toString(fieldType)) {
             // Fields are not overwritten if they haven't the same type.
-            // The exception is if the field's "type" is invalid or uninitialized.
             field.setValue(value);
         }
         this.fields.set(mapKey, field);
@@ -560,9 +560,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             alwaysnotify: BrsBoolean
         ) => {
             let defaultValue = getBrsValueFromFieldType(type.value);
+            let fieldValueKind = getValueKindFromFieldType(type.value);
 
             if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
-                this.set(fieldname, defaultValue, alwaysnotify.toBoolean(), type.value);
+                this.set(fieldname, defaultValue, alwaysnotify.toBoolean(), fieldValueKind);
             }
 
             return BrsBoolean.True;
@@ -1185,9 +1186,11 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     /* Takes a list of models and creates fields with default values, and adds them to this.fields. */
     protected registerDefaultFields(fields: FieldModel[]) {
         fields.forEach(field => {
+            let defaultValue = getBrsValueFromFieldType(field.type, field.value);
+            let fieldValueKind = getValueKindFromFieldType(field.type);
             this.fields.set(
                 field.name.toLowerCase(),
-                new Field(getBrsValueFromFieldType(field.type, field.value), false, field.hidden, field.type)
+                new Field(defaultValue, false, field.hidden, fieldValueKind)
             );
         });
     }
@@ -1336,7 +1339,7 @@ function addChildren(
                             interpreter,
                             new BrsString(key),
                             // use the field type to construct the field value
-                            getBrsValueFromFieldType(ValueKind.toString(field.getType()), value)
+                            getBrsValueFromFieldType(field.getType(), value)
                         );
                     }
                 }

@@ -634,6 +634,7 @@ describe("end to end brightscript functions", () => {
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
             "bar",
             "invalid",
+            "invalid",
             "Node",
         ]);
     });

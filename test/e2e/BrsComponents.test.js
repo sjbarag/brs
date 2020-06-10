@@ -9,6 +9,7 @@ describe("end to end brightscript functions", () => {
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
+        outputStreams.root = __dirname + "/resources";
     });
 
     afterEach(() => {
@@ -288,7 +289,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/customComponent.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -318,7 +318,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/componentExtension.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -376,7 +375,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Group.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Group.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -402,7 +400,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/LayoutGroup.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "LayoutGroup.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -422,7 +419,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Rectangle.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Rectangle.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -442,7 +438,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Label.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Label.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -464,7 +459,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Font.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Font.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -486,7 +480,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/Poster.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "Poster.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -508,7 +501,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/ArrayGrid.brs", async () => {
-        outputStreams.root = __dirname + "/resources";
         await execute([resourceFile("components", "ArrayGrid.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -543,6 +535,28 @@ describe("end to end brightscript functions", () => {
             "10",
             "markupgridAsChild fixedLayout:",
             "true",
+        ]);
+    });
+
+    test("components/scripts/FieldChangeRunner.brs", async () => {
+        await execute(
+            [resourceFile("components", "scripts", "FieldChangeRunner.brs")],
+            outputStreams
+        );
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "runner: node childHandled text field value before modifying:",
+            "childHandled initial",
+            "child: text field changed. new value:",
+            "childHandled modified",
+            "runner: node childHandled text field value after modifying:",
+            "childHandled modified",
+            "runner: node parentHandled text field value before modifying:",
+            "parentHandled initial",
+            "parent: parentHandled text field changed",
+            "parentHandled modified",
+            "runner: node parentHandled text field value after modifying:",
+            "parentHandled modified",
         ]);
     });
 });

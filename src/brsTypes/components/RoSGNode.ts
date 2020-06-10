@@ -17,9 +17,11 @@ import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { ComponentDefinition, ComponentNode } from "../../componentprocessor";
 import { ComponentFactory, BrsComponentName } from "./ComponentFactory";
+import { Environment } from "../../interpreter/Environment";
 
 interface BrsCallback {
     interpreter: Interpreter;
+    environment: Environment;
     callable: Callable;
 }
 
@@ -48,25 +50,33 @@ class Field {
     }
 
     setValue(value: BrsType) {
-        if (this.alwaysNotify || this.value !== value) {
+        let oldValue = this.value;
+        this.value = value;
+        if (this.alwaysNotify || oldValue !== value) {
             this.observers.map(this.executeCallbacks);
         }
-        this.value = value;
     }
 
     addObserver(interpreter: Interpreter, callable: Callable) {
         let brsCallback: BrsCallback = {
             interpreter: interpreter,
+            environment: interpreter.environment,
             callable: callable,
         };
         this.observers.push(brsCallback);
     }
 
     private executeCallbacks(callback: BrsCallback) {
-        callback.callable.call(callback.interpreter);
+        let { interpreter, callable, environment } = callback;
+        interpreter.inSubEnv(subInterpreter => {
+            callable.call(subInterpreter);
+            return BrsInvalid.Instance;
+        }, environment);
     }
 }
 
+// A node that represents the m.global, referenced by all other nodes
+let mGlobal: RoSGNode;
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     private fields = new Map<string, Field>();
@@ -519,7 +529,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
-            let field = this.fields.get(fieldname.value);
+            let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
                 field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value));
             }
@@ -1129,13 +1139,21 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
             node = new RoSGNode([], type.value);
         }
 
+        if (!mGlobal) {
+            mGlobal = new RoSGNode([]);
+        }
+
         // Add children, fields and call each init method starting from the
         // "basemost" component of the tree.
         while (typeDef) {
             let init: BrsType;
 
-            addChildren(interpreter, node, typeDef);
-            addFields(interpreter, node, typeDef);
+            interpreter.inSubEnv(subInterpreter => {
+                addChildren(subInterpreter, node!, typeDef!);
+                addFields(subInterpreter, node!, typeDef!);
+                return BrsInvalid.Instance;
+            }, currentEnv);
+
             interpreter.inSubEnv(subInterpreter => {
                 init = subInterpreter.getInitMethod();
                 return BrsInvalid.Instance;
@@ -1144,6 +1162,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
             interpreter.inSubEnv(subInterpreter => {
                 let mPointer = subInterpreter.environment.getM();
                 mPointer.set(new BrsString("top"), node!);
+                mPointer.set(new BrsString("global"), mGlobal);
                 if (init instanceof Callable) {
                     init.call(subInterpreter);
                 }
@@ -1163,9 +1182,9 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     let fields = typeDef.fields;
     for (let [key, value] of Object.entries(fields)) {
         if (value instanceof Object) {
+            let fieldName = new BrsString(key);
+
             let addField = node.getMethod("addField");
-            let setField = node.getMethod("setField");
-            const fieldName = new BrsString(key);
             if (addField) {
                 addField.call(
                     interpreter,
@@ -1174,13 +1193,22 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
                     BrsBoolean.from(value.alwaysNotify === "true")
                 );
             }
+
             // set default value if it was specified in xml
+            let setField = node.getMethod("setField");
             if (setField && value.value) {
-                let result = setField.call(
+                setField.call(
                     interpreter,
                     fieldName,
                     getBrsValueFromFieldType(value.type, value.value)
                 );
+            }
+
+            // Add the onChange callback if it exists.
+            let observeField = node.getMethod("observeField");
+            if (observeField && value.onChange) {
+                let onChange = new BrsString(value.onChange);
+                observeField.call(interpreter, fieldName, onChange);
             }
         }
     }

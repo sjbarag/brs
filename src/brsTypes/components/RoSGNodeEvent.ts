@@ -8,7 +8,11 @@ import { BrsType } from "..";
 export class RoSGNodeEvent extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
 
-    constructor(readonly node: RoSGNode, readonly fieldName: BrsString, readonly fieldValue: BrsType) {
+    constructor(
+        readonly node: RoSGNode,
+        readonly fieldName: BrsString,
+        readonly fieldValue: BrsType
+    ) {
         super("roSGNodeEvent");
         this.appendMethods([this.getdata, this.getfield, this.getrosgnode, this.getnode]);
     }

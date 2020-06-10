@@ -25,9 +25,9 @@ interface BrsCallback {
     environment: Environment;
     callable: Callable;
     eventParams: {
-        fieldName: BrsString,
-        node: RoSGNode
-    }
+        fieldName: BrsString;
+        node: RoSGNode;
+    };
 }
 
 export type FieldModel = { name: string; type: string; value?: string };
@@ -62,15 +62,20 @@ export class Field {
         }
     }
 
-    addObserver(interpreter: Interpreter, callable: Callable, node: RoSGNode, fieldName: BrsString) {
+    addObserver(
+        interpreter: Interpreter,
+        callable: Callable,
+        node: RoSGNode,
+        fieldName: BrsString
+    ) {
         let brsCallback: BrsCallback = {
             interpreter,
             environment: interpreter.environment,
             callable,
             eventParams: {
                 node,
-                fieldName
-            }
+                fieldName,
+            },
         };
         this.observers.push(brsCallback);
     }

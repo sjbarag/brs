@@ -571,7 +571,7 @@ describe("end to end brightscript functions", () => {
             "FieldChangeComponent",
             "child: event.getNode()",
             "id-field-change",
-            
+
             // changing a field multiple times
             "child: current event:",
             "123",

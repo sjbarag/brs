@@ -103,7 +103,7 @@ describe("end to end syntax", () => {
             "6",
             "7",
             "8",
-            "not equal"
+            "not equal",
         ]);
     });
 

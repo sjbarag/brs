@@ -17,8 +17,16 @@ interface FieldAttributes {
     alwaysNotify?: string;
 }
 
-interface ComponentField {
+interface ComponentFields {
     [key: string]: FieldAttributes;
+}
+
+interface FunctionAttributes {
+    name: string;
+}
+
+interface ComponentFunctions {
+    [key: string]: FunctionAttributes;
 }
 
 interface NodeField {
@@ -43,7 +51,8 @@ export class ComponentDefinition {
     // indicates whether this component hierarchy has been processed before
     // which means the fields, children, and inherited functions are correctly set
     public processed: boolean = false;
-    public fields: ComponentField = {};
+    public fields: ComponentFields = {};
+    public functions: ComponentFunctions = {};
     public children: ComponentNode[] = [];
     public scripts: ComponentScript[] = [];
     public environment: Environment | undefined;
@@ -115,7 +124,7 @@ async function processXmlTree(
                 }
             }
 
-            let inheritedFields: ComponentField = {};
+            let inheritedFields: ComponentFields = {};
             // pop the stack & build our component
             // we can safely assume nodes are valid ComponentDefinition objects
             while (inheritanceStack.length > 0) {
@@ -124,16 +133,17 @@ async function processXmlTree(
                     if (newNodeDef.processed) {
                         inheritedFields = newNodeDef.fields;
                     } else {
-                        let nodeFields = getFields(newNodeDef.xmlNode!);
+                        let nodeInterface = processInterface(newNodeDef.xmlNode!);
                         // we will get run-time error if any fields are duplicated
                         // between inherited components, but here we will retain
                         // the original value without throwing an error for simplicity
                         // TODO: throw exception when fields are duplicated.
-                        inheritedFields = { ...nodeFields, ...inheritedFields };
+                        inheritedFields = { ...nodeInterface.fields, ...inheritedFields };
 
                         // We don't actually want our type definition to have inherited fields on it.
                         // Inherited fields will get added when we create the actual component.
-                        newNodeDef.fields = nodeFields;
+                        newNodeDef.fields = nodeInterface.fields;
+                        newNodeDef.functions = nodeInterface.functions;
                         newNodeDef.processed = true;
                     }
                 }
@@ -171,16 +181,20 @@ async function processXmlTree(
 }
 
 /**
- * Returns all the fields found in the Xml node
+ * Returns all the fields and functions found in the Xml node.
  * @param node Xml node with fields
- * @return The fields parsed as ComponentField
+ * @return { fields, functions }: the fields and functions parsed as
+ * ComponentFields and ComponentFunctions respectively
  */
-function getFields(node: XmlDocument): ComponentField {
+function processInterface(
+    node: XmlDocument
+): { fields: ComponentFields; functions: ComponentFunctions } {
     let iface = node.childNamed("interface");
-    let fields: ComponentField = {};
+    let fields: ComponentFields = {};
+    let functions: ComponentFunctions = {};
 
     if (!iface) {
-        return fields;
+        return { fields, functions };
     }
 
     iface.eachChild(child => {
@@ -193,10 +207,14 @@ function getFields(node: XmlDocument): ComponentField {
                 alwaysNotify: child.attr.alwaysNotify,
                 value: child.attr.value,
             };
+        } else if (child.name === "function") {
+            functions[child.attr.name] = {
+                name: child.attr.name,
+            };
         }
     });
 
-    return fields;
+    return { fields, functions };
 }
 
 /**

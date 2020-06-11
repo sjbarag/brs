@@ -139,7 +139,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.insertchildren,
             ],
             ifSGNodeFocus: [this.hasfocus, this.setfocus, this.isinfocuschain],
-            ifSGNodeDict: [this.findnode, this.issamenode, this.subtype],
+            ifSGNodeDict: [this.findnode, this.issamenode, this.subtype, this.callfunc],
         });
     }
 
@@ -324,6 +324,43 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         }
         return false;
     }
+
+    /**
+     * Calls the function specified on this node.
+     */
+    private callfunc = new Callable("callfunc", {
+        signature: {
+            args: [
+                new StdlibArgument("functionname", ValueKind.String),
+                new StdlibArgument("functionargs", ValueKind.Dynamic, BrsInvalid.Instance),
+            ],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, functionname: BrsString, functionargs: BrsType) => {
+            // We need to search the callee's environment for this function rather than the caller's.
+            let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
+
+            // Only allow public functions (defined in the interface) to be called.
+            if (componentDef && functionname.value in componentDef.functions) {
+                return interpreter.inSubEnv(subInterpreter => {
+                    let functionToCall = subInterpreter.getCallableFunction(functionname.value);
+
+                    // Determine whether the function should get arguments are not.
+                    if (functionToCall.getFirstSatisfiedSignature([functionargs])) {
+                        return functionToCall.call(subInterpreter, functionargs);
+                    } else {
+                        return functionToCall.call(subInterpreter);
+                    }
+                }, componentDef.environment);
+            } else {
+                interpreter.stderr.write(
+                    `Warning calling function in ${this.nodeSubtype}: no function interface specified for ${functionname}`
+                );
+            }
+
+            return BrsInvalid.Instance;
+        },
+    });
 
     /** Removes all fields from the node */
     // ToDo: Built-in fields shouldn't be removed

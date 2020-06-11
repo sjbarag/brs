@@ -53,3 +53,8 @@ end if
 aa = {}
 if foo > 5 then aa.value = ">5" else aa.value = 8
 print aa.value
+
+bar = "abc"
+if not bar = "def" then
+    print "not equal"
+end if

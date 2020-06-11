@@ -172,6 +172,15 @@ export class Environment {
                 variableToReturn = this.getMockFunction(lowercaseName);
             }
             return variableToReturn;
+        } else {
+            // Because brs hasn't implemented every built-in global function yet,
+            // allow mocking of functions that "don't exist" in source.
+            //
+            // TODO: remove this once all built-in global functions are implemented?
+            let mockedFunc = this.getMockFunction(lowercaseName);
+            if (mockedFunc) {
+                return mockedFunc;
+            }
         }
 
         throw new NotFound(`Undefined variable '${name.text}'`);

@@ -17,7 +17,7 @@ interface FieldAttributes {
     alwaysNotify?: string;
 }
 
-interface ComponentField {
+interface ComponentFields {
     [key: string]: FieldAttributes;
 }
 
@@ -25,7 +25,7 @@ interface FunctionAttributes {
     name: string;
 }
 
-interface ComponentFunction {
+interface ComponentFunctions {
     [key: string]: FunctionAttributes;
 }
 
@@ -51,8 +51,8 @@ export class ComponentDefinition {
     // indicates whether this component hierarchy has been processed before
     // which means the fields, children, and inherited functions are correctly set
     public processed: boolean = false;
-    public fields: ComponentField = {};
-    public functions: ComponentFunction = {};
+    public fields: ComponentFields = {};
+    public functions: ComponentFunctions = {};
     public children: ComponentNode[] = [];
     public scripts: ComponentScript[] = [];
     public environment: Environment | undefined;
@@ -124,7 +124,7 @@ async function processXmlTree(
                 }
             }
 
-            let inheritedFields: ComponentField = {};
+            let inheritedFields: ComponentFields = {};
             // pop the stack & build our component
             // we can safely assume nodes are valid ComponentDefinition objects
             while (inheritanceStack.length > 0) {
@@ -181,16 +181,17 @@ async function processXmlTree(
 }
 
 /**
- * Returns all the fields found in the Xml node
+ * Returns all the fields and functions found in the Xml node.
  * @param node Xml node with fields
- * @return The fields parsed as ComponentField
+ * @return { fields, functions }: the fields and functions parsed as 
+ * ComponentFields and ComponentFunctions respectively
  */
 function processInterface(
     node: XmlDocument
-): { fields: ComponentField; functions: ComponentFunction } {
+): { fields: ComponentFields; functions: ComponentFunctions } {
     let iface = node.childNamed("interface");
-    let fields: ComponentField = {};
-    let functions: ComponentFunction = {};
+    let fields: ComponentFields = {};
+    let functions: ComponentFunctions = {};
 
     if (!iface) {
         return { fields, functions };

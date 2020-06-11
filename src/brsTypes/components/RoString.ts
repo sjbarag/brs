@@ -252,7 +252,9 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
                 return this.intrinsic;
             }
 
-            let escapedFrom = from.value.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+            // From Mozilla's guide to escaping regex:
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
+            let escapedFrom = from.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
             return new BrsString(
                 this.intrinsic.value.replace(new RegExp(escapedFrom, "g"), to.value)
             );

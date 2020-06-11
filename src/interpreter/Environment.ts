@@ -2,7 +2,6 @@ import { Identifier } from "../lexer";
 import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode, Callable } from "../brsTypes";
 import { ComponentDefinition } from "../componentprocessor";
 import { BrsError } from "../Error";
-// import { Interpreter } from ".";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {

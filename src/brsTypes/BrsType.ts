@@ -121,7 +121,7 @@ export function getValueKindFromFieldType(type: string) {
         case "string":
             return ValueKind.String;
         case "function":
-            return ValueKind.Callable
+            return ValueKind.Callable;
         case "node":
         case "roarray":
         case "array":

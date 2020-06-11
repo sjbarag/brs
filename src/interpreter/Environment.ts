@@ -2,6 +2,7 @@ import { Identifier } from "../lexer";
 import { BrsType, RoAssociativeArray, Int32, BrsInvalid, RoSGNode, Callable } from "../brsTypes";
 import { ComponentDefinition } from "../componentprocessor";
 import { BrsError } from "../Error";
+// import { Interpreter } from ".";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {
@@ -173,21 +174,25 @@ export class Environment {
                 variableToReturn = this.getMockFunction(lowercaseName);
             }
             return variableToReturn;
-        } else if (lowercaseName !== "main") {
+        } else {
             // Because brs hasn't implemented every built-in global function yet,
-            // allow mocking of functions that "don't exist" in source.
+            // allow mocking of functions that "don't exist" in source. This unblocks
+            // unit testing of code that calls the not-yet-implemented global functions.
             //
             // TODO: remove this once all built-in global functions are implemented?
-            console.log("NAME", lowercaseName)
-            let mockedFunc = this.getMockFunction(lowercaseName);
-            if (mockedFunc) {
-                console.error(
-                    new BrsError(
-                        `WARNING: using mocked function '${lowercaseName}', but no function with that name is found in-scope in source.`,
-                        name.location
-                    ).format()
-                );
-                return mockedFunc;
+
+            // Don't allow mocks of reserved functions like "init" and "main".
+            if (!name.isReserved) {
+                let mockedFunc = this.getMockFunction(lowercaseName);
+                if (mockedFunc !== BrsInvalid.Instance) {
+                    console.error(
+                        new BrsError(
+                            `WARNING: using mocked function '${lowercaseName}', but no function with that name is found in-scope in source.`,
+                            name.location
+                        ).format()
+                    );
+                    return mockedFunc;
+                }
             }
         }
 

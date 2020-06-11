@@ -28,6 +28,13 @@ sub Main()
     end function)
 
     print foo() ' => "--inline foo--"
+
+    _brs_.mockFunction("thisFuncDoesNotExist", (function()
+        return "doesn't exist in source yet here i am"
+    end function))
+
+    ' Will trigger a console.error warning that it doesn't exist in source.
+    print thisFuncDoesNotExist() ' => "doesn't exist in source yet here i am"
 end sub
 
 function mockMe()

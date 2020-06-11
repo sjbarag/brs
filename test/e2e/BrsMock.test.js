@@ -48,6 +48,7 @@ describe("end to end brightscript functions", () => {
     });
 
     test("mockFunctions.brs", async () => {
+        let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         await execute([resourceFile("mockFunctions.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
@@ -56,6 +57,17 @@ describe("end to end brightscript functions", () => {
             "Named foo",
             "--inline foo--",
             "--inline foo--",
+            "doesn't exist in source yet here i am",
         ]);
+
+        // split the warning because the line number output is user-specific.
+        let warning = allArgs(consoleErrorSpy)
+            .filter(arg => arg !== "\n")[0]
+            .split("WARNING: ")[1];
+        expect(warning).toEqual(
+            "using mocked function 'thisfuncdoesnotexist', but no function with that name is found in-scope in source."
+        );
+
+        consoleErrorSpy.mockRestore();
     });
 });

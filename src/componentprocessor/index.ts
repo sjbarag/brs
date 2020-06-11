@@ -183,7 +183,7 @@ async function processXmlTree(
 /**
  * Returns all the fields and functions found in the Xml node.
  * @param node Xml node with fields
- * @return { fields, functions }: the fields and functions parsed as 
+ * @return { fields, functions }: the fields and functions parsed as
  * ComponentFields and ComponentFunctions respectively
  */
 function processInterface(

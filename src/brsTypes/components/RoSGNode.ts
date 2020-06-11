@@ -7,6 +7,7 @@ import {
     Uninitialized,
     getBrsValueFromFieldType,
 } from "../BrsType";
+import { RoSGNodeEvent } from "./RoSGNodeEvent";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
@@ -23,11 +24,15 @@ interface BrsCallback {
     interpreter: Interpreter;
     environment: Environment;
     callable: Callable;
+    eventParams: {
+        fieldName: BrsString;
+        node: RoSGNode;
+    };
 }
 
 export type FieldModel = { name: string; type: string; value?: string };
 
-class Field {
+export class Field {
     private type: string;
     private value: BrsType;
     private observers: BrsCallback[] = [];
@@ -53,23 +58,41 @@ class Field {
         let oldValue = this.value;
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
-            this.observers.map(this.executeCallbacks);
+            this.observers.map(this.executeCallbacks.bind(this));
         }
     }
 
-    addObserver(interpreter: Interpreter, callable: Callable) {
+    addObserver(
+        interpreter: Interpreter,
+        callable: Callable,
+        node: RoSGNode,
+        fieldName: BrsString
+    ) {
         let brsCallback: BrsCallback = {
-            interpreter: interpreter,
+            interpreter,
             environment: interpreter.environment,
-            callable: callable,
+            callable,
+            eventParams: {
+                node,
+                fieldName,
+            },
         };
         this.observers.push(brsCallback);
     }
 
     private executeCallbacks(callback: BrsCallback) {
-        let { interpreter, callable, environment } = callback;
+        let { interpreter, callable, environment, eventParams } = callback;
+
+        // Every time a callback happens, a new event is created.
+        let event = new RoSGNodeEvent(eventParams.node, eventParams.fieldName, this.value);
+
         interpreter.inSubEnv(subInterpreter => {
-            callable.call(subInterpreter);
+            // Check whether the callback is expecting an event parameter.
+            if (callable.getFirstSatisfiedSignature([event])) {
+                callable.call(subInterpreter, event);
+            } else {
+                callable.call(subInterpreter);
+            }
             return BrsInvalid.Instance;
         }, environment);
     }
@@ -566,7 +589,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
-                field.addObserver(interpreter, interpreter.getCallableFunction(functionname.value));
+                field.addObserver(
+                    interpreter,
+                    interpreter.getCallableFunction(functionname.value),
+                    this,
+                    fieldname
+                );
             }
             return BrsBoolean.True;
         },

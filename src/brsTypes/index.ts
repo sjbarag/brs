@@ -41,6 +41,7 @@ export * from "./components/RoDouble";
 export * from "./components/RoFloat";
 export * from "./components/RoInt";
 export * from "./components/RoInvalid";
+export * from "./components/RoSGNodeEvent";
 export * from "./components/RoSGNode";
 export * from "./components/Group";
 export * from "./components/LayoutGroup";

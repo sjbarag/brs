@@ -538,13 +538,14 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/FieldChangeRunner.brs", async () => {
+    test("components/scripts/FieldChangeMain.brs", async () => {
         await execute(
-            [resourceFile("components", "scripts", "FieldChangeRunner.brs")],
+            [resourceFile("components", "scripts", "FieldChangeMain.brs")],
             outputStreams
         );
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            // inheritance/overrides
             "runner: node childHandled text field value before modifying:",
             "childHandled initial",
             "child: text field changed. new value:",
@@ -557,6 +558,27 @@ describe("end to end brightscript functions", () => {
             "parentHandled modified",
             "runner: node parentHandled text field value after modifying:",
             "parentHandled modified",
+
+            // onChange with an event
+            "runner: modifying intField",
+            "child: event",
+            "<Component: roSGNodeEvent>",
+            "child: event.getData()",
+            "123",
+            "child: event.getField()",
+            "intField",
+            "child: event.getRoSGNode().subtype()",
+            "FieldChangeComponent",
+            "child: event.getNode()",
+            "id-field-change",
+
+            // changing a field multiple times
+            "child: current event:",
+            "123",
+            "child: previous event:",
+            "123",
+            "child: current event:",
+            "456",
         ]);
     });
 

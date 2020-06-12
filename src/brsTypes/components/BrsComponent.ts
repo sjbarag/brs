@@ -4,7 +4,7 @@ import { Callable } from "../Callable";
 import { BrsInterface } from "../BrsInterface";
 
 export class BrsComponent {
-    private methods: Map<string, Callable> = new Map();
+    private methods: Map<string, Callable> = new Map<string, Callable>();
     private readonly componentName: string;
 
     readonly interfaces = new Map<string, BrsInterface>();
@@ -22,12 +22,11 @@ export class BrsComponent {
     }
 
     protected registerMethods(interfaces: Record<string, Callable[]>) {
-        this.methods = new Map<string, Callable>();
         Object.entries(interfaces).forEach(([interfaceName, methods]) => {
-            this.interfaces.set(
-                interfaceName.toLowerCase(),
-                new BrsInterface(interfaceName, methods)
-            );
+            let interfaceKey = interfaceName.toLowerCase();
+            if (!this.interfaces.has(interfaceKey)) {
+                this.interfaces.set(interfaceKey, new BrsInterface(interfaceName, methods));
+            }
 
             this.appendMethods(methods);
         });

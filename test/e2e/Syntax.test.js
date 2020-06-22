@@ -103,7 +103,16 @@ describe("end to end syntax", () => {
             "6",
             "7",
             "8",
-            "not equal",
+            // testing if not
+            "not false",
+            "bar does not equal 'def'",
+            "if not with or variation 1",
+            "if not with or variation 2",
+            "if not with and",
+            "if not with two expressions variation 1",
+            "if not with two expressions variation 2",
+            "if not multiple times",
+            "if not with <> operator",
         ]);
     });
 

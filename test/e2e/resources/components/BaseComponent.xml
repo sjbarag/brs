@@ -2,6 +2,8 @@
 <component name="BaseComponent">
     <script type="text/brightscript" uri="pkg:/components/scripts/BaseComponent.brs" />
     <interface>
+        <!-- This field is used to validate that we properly handle callbacks that aren't implemented. -->
+        <field id="nonImplementedField" type="boolean" onChange="nonImplementedSub" />
     </interface>
     <children>
         <BaseChild />

@@ -230,7 +230,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
     }
 
-    getCallableFunction(functionName: string): Callable {
+    getCallableFunction(functionName: string): Callable | undefined {
         let callbackVariable = new Expr.Variable({
             kind: Lexeme.Identifier,
             text: functionName,
@@ -247,12 +247,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 file: "(internal)",
             },
         });
+
         let maybeCallback = this.evaluate(callbackVariable);
         if (maybeCallback.kind === ValueKind.Callable) {
             return maybeCallback;
         }
 
-        throw new NotFound(`${functionName} was not found in scope`);
+        console.warn(`Warning: "${functionName}" was not found in scope.`);
+        return;
     }
 
     /**

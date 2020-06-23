@@ -391,6 +391,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             if (componentDef && functionname.value in componentDef.functions) {
                 return interpreter.inSubEnv(subInterpreter => {
                     let functionToCall = subInterpreter.getCallableFunction(functionname.value);
+                    if (!functionToCall) {
+                        interpreter.stderr.write(
+                            `Ignoring attempt to call non-implemented function ${functionname}`
+                        );
+                        return BrsInvalid.Instance;
+                    }
 
                     // Determine whether the function should get arguments are not.
                     if (functionToCall.getFirstSatisfiedSignature([functionargs])) {
@@ -626,12 +632,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
             let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
-                field.addObserver(
-                    interpreter,
-                    interpreter.getCallableFunction(functionname.value),
-                    this,
-                    fieldname
-                );
+                let callableFunction = interpreter.getCallableFunction(functionname.value);
+                if (callableFunction) {
+                    field.addObserver(interpreter, callableFunction, this, fieldname);
+                } else {
+                    return BrsBoolean.False;
+                }
             }
             return BrsBoolean.True;
         },

@@ -393,7 +393,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     let functionToCall = subInterpreter.getCallableFunction(functionname.value);
                     if (!functionToCall) {
                         interpreter.stderr.write(
-                            `Attempted to call non-implemented function ${functionname}`
+                            `Ignoring attempt to call non-implemented function ${functionname}`
                         );
                         return BrsInvalid.Instance;
                     }

@@ -2,6 +2,7 @@
 <component name="BaseComponent">
     <script type="text/brightscript" uri="pkg:/components/scripts/BaseComponent.brs" />
     <interface>
+        <field id="nonImplementedField" type="boolean" onChange="nonImplementedSub" />
     </interface>
     <children>
         <BaseChild />

@@ -253,7 +253,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return maybeCallback;
         }
 
-        console.warn(`${functionName} was not found in scope`);
+        console.warn(`Warning: "${functionName}" was not found in scope.`);
         return;
     }
 

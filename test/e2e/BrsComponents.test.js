@@ -458,6 +458,25 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/Timer.brs", async () => {
+        await execute([resourceFile("components", "Timer.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "timer node type:",
+            "Node",
+            "timer node subtype:",
+            "Timer",
+            "timer node control:",
+            "",
+            "timer node repeat:",
+            "false",
+            "timer node duration:",
+            "0",
+            "timer node fire:",
+            "<UNINITIALIZED>",
+        ]);
+    });
+
     test("components/Font.brs", async () => {
         await execute([resourceFile("components", "Font.brs")], outputStreams);
 

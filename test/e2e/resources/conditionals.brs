@@ -103,3 +103,21 @@ end if
 if not bar <> "abc" then
     print "if not with <> operator"
 end if
+
+' if not with > operator
+foo = 1
+if not foo > 1 then
+    print "foo is not > 1"
+end if
+
+' if not with < operator
+foo = 2
+if not foo < 2 then
+    print "foo is not < 2"
+end if
+
+' if not with < operator
+foo = 2
+if not foo < 2 and not foo > 2 then
+    print "foo is not < 2 and not > 2"
+end if

@@ -10,7 +10,7 @@ describe("ContentNode.js", () => {
             expect(node.toString()).toEqual(
                 `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -142,7 +142,7 @@ describe("ContentNode.js", () => {
                 expect(node.toString()).toEqual(
                     `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -160,7 +160,7 @@ describe("ContentNode.js", () => {
                 expect(node.toString()).toEqual(
                     `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -182,7 +182,7 @@ describe("ContentNode.js", () => {
                 expect(node.toString()).toEqual(
                     `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -205,7 +205,7 @@ describe("ContentNode.js", () => {
                 expect(node.toString()).toEqual(
                     `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -223,7 +223,7 @@ describe("ContentNode.js", () => {
                 expect(node.toString()).toEqual(
                     `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -241,7 +241,7 @@ describe("ContentNode.js", () => {
                 expect(node.toString()).toEqual(
                     `<Component: roSGNode:ContentNode> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 

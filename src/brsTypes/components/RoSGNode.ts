@@ -31,17 +31,89 @@ interface BrsCallback {
     };
 }
 
+/** Set of value types that a field could be. */
+enum FieldKind {
+    Interface = "interface",
+    Array = "array",
+    AssocArray = "assocarray",
+    Int32 = "integer",
+    Int64 = "longinteger",
+    Double = "double",
+    Float = "float",
+    Node = "node",
+    Boolean = "boolean",
+    String = "string",
+    Function = "function",
+}
+
+namespace FieldKind {
+    export function fromString(type: string): FieldKind | undefined {
+        switch (type.toLowerCase()) {
+            case "interface":
+                return FieldKind.Interface;
+            case "array":
+            case "roarray":
+                return FieldKind.Array;
+            case "roassociativearray":
+            case "assocarray":
+                return FieldKind.AssocArray;
+            case "node":
+                return FieldKind.Node;
+            case "bool":
+            case "boolean":
+                return FieldKind.Boolean;
+            case "int":
+            case "integer":
+                return FieldKind.Int32;
+            case "longint":
+            case "longinteger":
+                return FieldKind.Int64;
+            case "float":
+                return FieldKind.Float;
+            case "double":
+                return FieldKind.Double;
+            case "uri":
+            case "str":
+            case "string":
+                return FieldKind.String;
+            case "function":
+                return FieldKind.Function;
+            default:
+                return undefined;
+        }
+    }
+
+    export function fromBrsType(brsType: BrsType): FieldKind | undefined {
+        if (brsType.kind !== ValueKind.Object) {
+            return fromString(ValueKind.toString(brsType.kind));
+        }
+
+        let componentName = brsType.getComponentName();
+        switch (componentName.toLowerCase()) {
+            case "roarray":
+                return FieldKind.Array;
+            case "roassociativearray":
+                return FieldKind.AssocArray;
+            case "node":
+                return FieldKind.Node;
+            default:
+                return undefined;
+        }
+    }
+}
+
+/** This is used to define a field (usually a default/built-in field in a component definition). */
 export type FieldModel = { name: string; type: string; value?: string; hidden?: boolean };
 
-class Field {
-    private type: ValueKind;
-    private value: BrsType;
+export class Field {
     private observers: BrsCallback[] = [];
 
-    constructor(value: BrsType, private alwaysNotify: boolean, private hidden: boolean = false, type?: ValueKind) {
-        this.type = type || value.kind;
-        this.value = value;
-    }
+    constructor(
+        private value: BrsType,
+        private type: FieldKind,
+        private alwaysNotify: boolean,
+        private hidden: boolean = false
+    ) {}
 
     toString(parent?: BrsType): string {
         return this.value.toString(parent);
@@ -62,7 +134,7 @@ class Field {
         this.hidden = isHidden;
     }
 
-    getType(): ValueKind {
+    getType(): FieldKind {
         return this.type;
     }
 
@@ -252,17 +324,23 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return this.getMethod(index.value) || BrsInvalid.Instance;
     }
 
-    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false, kind?: ValueKind) {
+    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false, kind?: FieldKind) {
         if (index.kind !== ValueKind.String) {
             throw new Error("RoSGNode indexes must be strings");
         }
+
+        let fieldType = kind || FieldKind.fromBrsType(value);
+        // RBI does not set a field if the new value isn't valid
+        if (!fieldType) {
+            return BrsInvalid.Instance;
+        }
+
         let mapKey = index.value.toLowerCase();
         let field = this.fields.get(mapKey);
-        let fieldType = kind || value.kind;
 
         if (!field) {
-            field = new Field(value, alwaysNotify, fieldType);
-        } else if (field.getType() === ValueKind.toString(fieldType)) {
+            field = new Field(value, fieldType, alwaysNotify);
+        } else if (field.getType() === fieldType) {
             // Fields are not overwritten if they haven't the same type.
             field.setValue(value);
         }
@@ -484,7 +562,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         impl: (interpreter: Interpreter, obj: BrsType) => {
             if (obj instanceof RoAssociativeArray) {
                 obj.elements.forEach((value, key) => {
-                    this.fields.set(key, new Field(value, false));
+                    let fieldType = FieldKind.fromBrsType(value);
+
+                    // if the field doesn't have a valid value, RBI doesn't add it.
+                    if (fieldType) {
+                        this.fields.set(key, new Field(value, fieldType, false));
+                    }
                 });
             } else if (obj instanceof RoSGNode) {
                 obj.getFields().forEach((value, key) => {
@@ -560,10 +643,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             alwaysnotify: BrsBoolean
         ) => {
             let defaultValue = getBrsValueFromFieldType(type.value);
-            let fieldValueKind = getValueKindFromFieldType(type.value);
+            let fieldKind = FieldKind.fromString(type.value);
 
             if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
-                this.set(fieldname, defaultValue, alwaysnotify.toBoolean(), fieldValueKind);
+                this.set(fieldname, defaultValue, alwaysnotify.toBoolean(), fieldKind);
             }
 
             return BrsBoolean.True;
@@ -1186,12 +1269,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     /* Takes a list of models and creates fields with default values, and adds them to this.fields. */
     protected registerDefaultFields(fields: FieldModel[]) {
         fields.forEach(field => {
-            let defaultValue = getBrsValueFromFieldType(field.type, field.value);
-            let fieldValueKind = getValueKindFromFieldType(field.type);
-            this.fields.set(
-                field.name.toLowerCase(),
-                new Field(defaultValue, false, field.hidden, fieldValueKind)
-            );
+            let value = getBrsValueFromFieldType(field.type, field.value);
+            let fieldType = FieldKind.fromString(field.type);
+            if (fieldType) {
+                this.fields.set(
+                    field.name.toLowerCase(),
+                    new Field(value, fieldType, false, field.hidden)
+                );
+            }
         });
     }
 
@@ -1202,9 +1287,15 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
      * then Roku logs an error, because Node does not have a property called "thisisnotanodefield".
      */
     protected registerInitializedFields(fields: AAMember[]) {
-        fields.forEach(field =>
-            this.fields.set(field.name.value.toLowerCase(), new Field(field.value, false))
-        );
+        fields.forEach(field => {
+            let fieldType = FieldKind.fromBrsType(field.value);
+            if (fieldType) {
+                this.fields.set(
+                    field.name.value.toLowerCase(),
+                    new Field(field.value, fieldType, false)
+                );
+            }
+        });
     }
 }
 

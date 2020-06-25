@@ -84,7 +84,7 @@ workflows:
 
   "Publish tagged build":
     jobs:
-      - "Node 10"
+      - "Node 10":
         filters:
           tags:
             only: /^v[0-9]+(\.[0-9]+)*/

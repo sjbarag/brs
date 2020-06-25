@@ -88,12 +88,16 @@ workflows:
           filters:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
       - "Publish release":
           requires:
             - "Node 10"
           filters:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
 
   "Nightly build":
     triggers:

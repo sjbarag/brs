@@ -48,15 +48,19 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.com/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run:
-          name: Install dependencies
-          command: yarn
-      - run:
-          name: Publish
-          command: yarn publish --dry-run
+      - when:
+          condition:
+            equal: [ circleci-test-master, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Authenticate with registry
+                command: echo "//registry.npmjs.com/:_authToken=$NPM_TOKEN" > ~/.npmrc
+            - run:
+                name: Install dependencies
+                command: yarn
+            - run:
+                name: Publish
+                command: yarn publish --dry-run
 
   "Publish nightly build":
     working_directory: ~/circleci
@@ -94,8 +98,6 @@ workflows:
           filters:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
-            branches:
-              only: circleci-test-master
 
   "Nightly build":
     triggers:

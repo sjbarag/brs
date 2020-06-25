@@ -85,13 +85,17 @@ workflows:
   "Publish tagged build":
     jobs:
       - "Node 10"
-      - "Publish release":
         filters:
           tags:
-            only: /v[0-9]+(\.[0-9]+)*/
+            only: /^v[0-9]+(\.[0-9]+)*/
+      - "Publish release":
+        requires:
+          - "Node 10"
+        filters:
+          tags:
+            only: /^v[0-9]+(\.[0-9]+)*/
           branches:
-            only:
-              - circleci-test-master
+            only: /circleci-test-master/
 
   "Nightly build":
     triggers:

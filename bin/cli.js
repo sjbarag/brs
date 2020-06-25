@@ -10,7 +10,7 @@ const brs = require("../lib/");
 const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "package.json")));
 
 program
-    .description("Off-Roku BrightScript interpreter")
+    .description("Off-Roku BrightScript interpreter with a fancy new feature")
     .arguments("brs [brsFiles...]")
     .option(
         "-r, --root <directory>",

@@ -42,6 +42,22 @@ jobs:
     docker:
       - image: circleci/node:14
 
+  "Publish release":
+    working_directory: ~/circleci
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.com/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Publish
+          command: yarn publish
+
   "Publish nightly build":
     working_directory: ~/circleci
     docker:
@@ -65,6 +81,17 @@ workflows:
       - "Node 10"
       - "Node 12"
       - "Node 14"
+
+  "Publish tagged build":
+    jobs:
+      - "Node 10"
+      - "Publish release"
+        filters:
+          tags:
+            only: /v[0-9]+(\.[0-9]+)*/
+          branches:
+            only:
+              - circleci-test-master
 
   "Nightly build":
     triggers:

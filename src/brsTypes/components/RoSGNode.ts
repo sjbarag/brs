@@ -20,6 +20,7 @@ import { AAMember } from "./RoAssociativeArray";
 import { ComponentDefinition, ComponentNode } from "../../componentprocessor";
 import { ComponentFactory, BrsComponentName } from "./ComponentFactory";
 import { Environment } from "../../interpreter/Environment";
+import { roInvalid } from "./RoInvalid";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -154,6 +155,16 @@ export class Field {
         if (this.alwaysNotify || oldValue !== value) {
             this.observers.map(this.executeCallbacks.bind(this));
         }
+    }
+
+    canAcceptValue(value: BrsType) {
+        // Objects are allowed to be set to invalid.
+        let fieldIsObject = getValueKindFromFieldType(this.type) === ValueKind.Object;
+        if (fieldIsObject && (value === BrsInvalid.Instance || value instanceof roInvalid)) {
+            return true;
+        }
+
+        return this.type === FieldKind.fromBrsType(value);
     }
 
     addObserver(
@@ -329,22 +340,22 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             throw new Error("RoSGNode indexes must be strings");
         }
 
-        let fieldType = kind || FieldKind.fromBrsType(value);
-        // RBI does not set a field if the new value isn't valid
-        if (!fieldType) {
-            return BrsInvalid.Instance;
-        }
-
         let mapKey = index.value.toLowerCase();
+        let fieldType = kind || FieldKind.fromBrsType(value);
         let field = this.fields.get(mapKey);
 
         if (!field) {
-            field = new Field(value, fieldType, alwaysNotify);
-        } else if (field.getType() === fieldType) {
+            // RBI does not create a new field if the value isn't valid.
+            if (fieldType) {
+                field = new Field(value, fieldType, alwaysNotify);
+                this.fields.set(mapKey, field);
+            }
+        } else if (field.canAcceptValue(value)) {
             // Fields are not overwritten if they haven't the same type.
             field.setValue(value);
+            this.fields.set(mapKey, field);
         }
-        this.fields.set(mapKey, field);
+
         return BrsInvalid.Instance;
     }
 
@@ -745,12 +756,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, fieldname: BrsString, value: BrsType) => {
-            let field = this.get(fieldname);
-            if (!this.fields.has(fieldname.value.toLowerCase())) {
+            let field = this.fields.get(fieldname.value.toLowerCase());
+            if (!field) {
                 return BrsBoolean.False;
             }
 
-            if (ValueKind.toString(field.kind) !== ValueKind.toString(value.kind)) {
+            if (!field.canAcceptValue(value)) {
                 return BrsBoolean.False;
             }
 

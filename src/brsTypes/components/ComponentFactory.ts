@@ -9,6 +9,7 @@ import {
     ArrayGrid,
     MarkupGrid,
     ContentNode,
+    Timer,
 } from "..";
 
 export enum BrsComponentName {
@@ -22,6 +23,7 @@ export enum BrsComponentName {
     ArrayGrid = "ArrayGrid",
     MarkupGrid = "MarkupGrid",
     ContentNode = "ContentNode",
+    Timer = "Timer",
 }
 
 // TODO: update with more components as they're implemented.
@@ -52,6 +54,8 @@ export class ComponentFactory {
                 return new MarkupGrid([], name);
             case BrsComponentName.ContentNode:
                 return new ContentNode(name);
+            case BrsComponentName.Timer:
+                return new Timer([], name);
             default:
                 return;
         }

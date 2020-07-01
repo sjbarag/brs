@@ -9,27 +9,27 @@ describe("MarkupGrid", () => {
             expect(group.toString()).toEqual(
                 `<Component: roSGNode:MarkupGrid> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
     visible: true
     opacity: 1
-    translation: invalid
+    translation: <Component: roArray>
     rotation: 0
-    scale: invalid
-    scalerotatecenter: invalid
+    scale: <Component: roArray>
+    scalerotatecenter: <Component: roArray>
     childrenderorder: renderLast
     inheritparenttransform: true
     inheritparentopacity: true
-    clippingrect: invalid
+    clippingrect: <Component: roArray>
     renderpass: 0
     muteaudioguide: false
     enablerendertracking: false
     rendertracking: disabled
     content: invalid
-    itemsize: invalid
-    itemspacing: invalid
+    itemsize: <Component: roArray>
+    itemspacing: <Component: roArray>
     numrows: 12
     numcolumns: 0
     focusrow: 0
@@ -49,10 +49,10 @@ describe("MarkupGrid", () => {
     wrapdividerheight: 0
     fixedlayout: false
     numrenderpasses: 1
-    rowheights: invalid
-    columnwidths: invalid
-    rowspacings: invalid
-    columnspacings: invalid
+    rowheights: <Component: roArray>
+    columnwidths: <Component: roArray>
+    rowspacings: <Component: roArray>
+    columnspacings: <Component: roArray>
     sectiondividerbitmapuri: 
     sectiondividerfont: invalid
     sectiondividertextcolor: 0xDDDDDDFF
@@ -61,7 +61,7 @@ describe("MarkupGrid", () => {
     sectiondividerheight: 40
     sectiondividerminwidth: 117
     sectiondividerleftoffset: 0
-    itemclippingrect: invalid
+    itemclippingrect: <Component: roArray>
     itemselected: 0
     itemfocused: 0
     itemunfocused: 0

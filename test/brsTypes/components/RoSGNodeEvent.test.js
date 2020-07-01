@@ -13,7 +13,7 @@ describe("RoSGNodeEvent", () => {
     ]);
     let fieldName = new BrsString("fieldName");
     let fieldValue = new BrsString("fieldValue");
-    let field = new Field(fieldValue, false);
+    let field = new Field(fieldValue, "string", false);
 
     describe("stringification", () => {
         it("prints out correctly", () => {

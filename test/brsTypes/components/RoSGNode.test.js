@@ -25,12 +25,11 @@ describe("RoSGNode", () => {
                 { name: new BrsString("boolean"), value: BrsBoolean.True },
                 { name: new BrsString("string"), value: new BrsString("a string") },
                 { name: new BrsString("number"), value: new Int32(-1) },
-                { name: new BrsString("invalid"), value: BrsInvalid.Instance },
             ]);
             expect(node.toString()).toEqual(
                 `<Component: roSGNode:Node> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
@@ -40,7 +39,6 @@ describe("RoSGNode", () => {
     boolean: true
     string: a string
     number: -1
-    invalid: invalid
 }`
             );
         });
@@ -285,7 +283,6 @@ describe("RoSGNode", () => {
                     { name: new BrsString("letter1"), value: letter1 },
                     { name: new BrsString("letter2"), value: letter2 },
                 ]);
-
                 let change = node
                     .getFields()
                     .get("change")
@@ -389,6 +386,7 @@ describe("RoSGNode", () => {
                     { name: new BrsString("boolean"), value: BrsBoolean.True },
                     { name: new BrsString("string"), value: new BrsString("a string") },
                     { name: new BrsString("number"), value: new Int32(-1) },
+                    // should not add an invalid field
                     { name: new BrsString("invalid"), value: BrsInvalid.Instance },
                 ]);
 
@@ -397,7 +395,7 @@ describe("RoSGNode", () => {
 
                 let result = addFields.call(interpreter, fields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(10);
+                expect(node.getFields().size).toEqual(9);
             });
 
             it("doesn't add duplicated fields", () => {
@@ -415,11 +413,12 @@ describe("RoSGNode", () => {
                 let moreFields = new RoAssociativeArray([
                     { name: new BrsString("field1"), value: new BrsString("my string") },
                     { name: new BrsString("field2"), value: new Int32(-10) },
+                    // should not add an invalid field
                     { name: new BrsString("field3"), value: BrsInvalid.Instance },
                 ]);
                 result = addFields.call(interpreter, moreFields);
                 expect(result).toEqual(BrsBoolean.True);
-                expect(node.getFields().size).toEqual(7); //Only adds the non duplicated
+                expect(node.getFields().size).toEqual(6); //Only adds the non duplicated
             });
 
             it("only adds fields if passed as an associative array", () => {

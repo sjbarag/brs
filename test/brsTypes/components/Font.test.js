@@ -9,7 +9,7 @@ describe("Font", () => {
             expect(group.toString()).toEqual(
                 `<Component: roSGNode:Font> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 

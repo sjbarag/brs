@@ -5,6 +5,8 @@ import { Int32 } from "./Int32";
 import { Float } from "./Float";
 import { roBoolean } from "./components/RoBoolean";
 import { roInvalid } from "./components/RoInvalid";
+import { RoAssociativeArray } from "./components/RoAssociativeArray";
+import { RoArray } from "./components/RoArray";
 
 /** Set of values supported in BrightScript. */
 export enum ValueKind {
@@ -99,8 +101,42 @@ export namespace ValueKind {
 }
 
 /**
+ * Converts the data type of a field to the appropriate value kind.
+ * @param type data type of field
+ */
+export function getValueKindFromFieldType(type: string) {
+    switch (type.toLowerCase()) {
+        case "bool":
+        case "boolean":
+            return ValueKind.Boolean;
+        case "int":
+        case "integer":
+            return ValueKind.Int32;
+        case "longinteger":
+            return ValueKind.Int64;
+        case "float":
+            return ValueKind.Float;
+        case "uri":
+        case "str":
+        case "string":
+            return ValueKind.String;
+        case "function":
+            return ValueKind.Callable;
+        case "node":
+        case "roarray":
+        case "array":
+        case "roassociativearray":
+        case "assocarray":
+            return ValueKind.Object;
+        default:
+            return ValueKind.Invalid;
+    }
+}
+
+/**
  *  Converts a specified brightscript type in string into BrsType representation, with actual value
- *  Note: only supports native types so far.  Objects such as array/AA aren't handled at the moment.
+ *  Note: only native types are fully supported so far. Objects such as node/array/AA are created with default values,
+ *  instead of the value that gets passed in.
  *  @param {string} type data type of field
  *  @param {string} value optional value specified as string
  *  @returns {BrsType} BrsType value representation of the type
@@ -123,13 +159,13 @@ export function getBrsValueFromFieldType(type: string, value?: string): BrsType 
         case "float":
             returnValue = value ? new Float(Number.parseFloat(value)) : new Float(0);
             break;
-        case "roArray":
+        case "roarray":
         case "array":
-            returnValue = BrsInvalid.Instance;
+            returnValue = new RoArray([]);
             break;
-        case "roAssociativeArray":
+        case "roassociativearray":
         case "assocarray":
-            returnValue = BrsInvalid.Instance;
+            returnValue = new RoAssociativeArray([]);
             break;
         case "uri":
         case "str":

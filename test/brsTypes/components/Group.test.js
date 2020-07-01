@@ -9,20 +9,20 @@ describe("Group", () => {
             expect(group.toString()).toEqual(
                 `<Component: roSGNode:Group> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 
     visible: true
     opacity: 1
-    translation: invalid
+    translation: <Component: roArray>
     rotation: 0
-    scale: invalid
-    scalerotatecenter: invalid
+    scale: <Component: roArray>
+    scalerotatecenter: <Component: roArray>
     childrenderorder: renderLast
     inheritparenttransform: true
     inheritparentopacity: true
-    clippingrect: invalid
+    clippingrect: <Component: roArray>
     renderpass: 0
     muteaudioguide: false
     enablerendertracking: false

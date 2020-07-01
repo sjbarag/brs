@@ -643,4 +643,18 @@ describe("end to end brightscript functions", () => {
             "subtitle.example.com",
         ]);
     });
+
+    test("components/scripts/ComponentFields.brs", async () => {
+        await execute(
+            [resourceFile("components", "scripts", "ComponentFields.brs")],
+            outputStreams
+        );
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "bar",
+            "invalid",
+            "invalid",
+            "Node",
+        ]);
+    });
 });

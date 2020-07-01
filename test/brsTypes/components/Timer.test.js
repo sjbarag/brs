@@ -9,7 +9,7 @@ describe("Timer", () => {
             expect(timer.toString()).toEqual(
                 `<Component: roSGNode:Timer> =
 {
-    change: <UNINITIALIZED>
+    change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
     id: 

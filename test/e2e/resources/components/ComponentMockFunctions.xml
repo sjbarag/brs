@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ComponentMockFunctions">
+    <script type="text/brightscript" uri="pkg:/components/scripts/ComponentMockFunctions.brs" />
+    <script type="text/brightscript" uri="pkg:/components/scripts/MockFunctionsUtils-A.brs" />
+    <script type="text/brightscript" uri="pkg:/components/scripts/MockFunctionsUtils-B.brs" />
+    <interface>
+        <field id="json" type="string" />
+        <field id="getStatus" type="string" />
+        <field id="postStatus" type="string" />
+        <field id="isValid" type="boolean" />
+    </interface>
+    <children>
+    </children>
+</component>

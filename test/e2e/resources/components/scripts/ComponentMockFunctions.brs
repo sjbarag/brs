@@ -7,8 +7,8 @@ sub init()
 
     _brs_.mockComponentPartial({
         formatJson: function(json as object, flags=0 as integer) as dynamic
-                 return "{fake:'json'}"
-            end function,
+            return "{fake:'json'}"
+        end function,
         http_get: function()
             return "GET status: 400"
         end function,

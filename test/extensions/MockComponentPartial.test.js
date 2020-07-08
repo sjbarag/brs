@@ -2,9 +2,9 @@ const brs = require("brs");
 const { ValueKind, Callable, BrsString, RoAssociativeArray } = brs.types;
 
 const { Interpreter } = require("../../lib/interpreter");
-const { mockComponentPartial } = require("../../lib/extensions/mockComponentPartial");
+const { mockFunctions } = require("../../lib/extensions/mockFunctions");
 
-describe("mockComponentPartial", () => {
+describe("mockFunctions", () => {
     describe("methods", () => {
         let interpreter;
 
@@ -54,8 +54,8 @@ describe("mockComponentPartial", () => {
                 ];
                 const aa = new RoAssociativeArray(mockFns);
 
-                mockComponentPartial.getAllSignatureMismatches(aa);
-                mockComponentPartial.call(interpreter, aa);
+                mockFunctions.getAllSignatureMismatches(aa);
+                mockFunctions.call(interpreter, aa);
 
                 expect(interpreter.environment.getMockFunction("test1")).toBe(mockFns[0].value);
                 expect(interpreter.environment.getMockFunction("test2")).toBe(mockFns[1].value);

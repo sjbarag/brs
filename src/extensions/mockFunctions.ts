@@ -8,7 +8,7 @@ import {
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
-export const mockComponentPartial = new Callable("mockComponentPartial", {
+export const mockFunctions = new Callable("mockFunctions", {
     signature: {
         args: [new StdlibArgument("mock", ValueKind.Object)],
         returns: ValueKind.Void,
@@ -24,7 +24,7 @@ export const mockComponentPartial = new Callable("mockComponentPartial", {
                 });
         } else {
             interpreter.stderr.write(
-                "mockFunctions paramter needs to be an instance of roAssociativeArray"
+                "mockFunctions parameter needs to be an instance of roAssociativeArray"
             );
         }
         return BrsInvalid.Instance;

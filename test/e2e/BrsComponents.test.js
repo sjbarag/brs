@@ -667,7 +667,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/MockFUnctionsMain.brs", async () => {
+    test("components/scripts/MockFunctionsMain.brs", async () => {
         await execute(
             [resourceFile("components", "scripts", "MockFunctionsMain.brs")],
             outputStreams

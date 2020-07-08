@@ -5,7 +5,7 @@ sub init()
     print http_post() ' => POST status: 200
     print isValid() ' => false
 
-    _brs_.mockComponentPartial({
+    _brs_.mockFunctions({
         formatJson: function(json as object, flags=0 as integer) as dynamic
             return "{fake:'json'}"
         end function,

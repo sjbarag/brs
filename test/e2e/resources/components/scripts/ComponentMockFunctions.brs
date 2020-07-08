@@ -26,5 +26,3 @@ sub init()
     print http_post() ' => POST status: 500
     print isValid() ' => true
 end sub
-
-

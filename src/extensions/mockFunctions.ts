@@ -19,8 +19,6 @@ export const mockFunctions = new Callable("mockFunctions", {
     },
     impl: (interpreter: Interpreter, subtype: BrsString, mockFunctions: RoAssociativeArray) => {
         let maybeComponent = interpreter.environment.nodeDefMap.get(subtype.value);
-        console.log("MAYBE COMPONENT");
-        console.log(maybeComponent);
 
         if (!maybeComponent) {
             interpreter.stderr.write(
@@ -33,17 +31,7 @@ export const mockFunctions = new Callable("mockFunctions", {
                 .filter(([_, value]) => value.kind === ValueKind.Callable)
                 .forEach(([key, value]) => {
                     if (value instanceof Callable) {
-                        console.log("INTERPRETER ENV - BEFORE");
-                        console.log(interpreter.environment.getMockFunction(key.toLowerCase()));
-                        console.log("SETTING EACH MOCK FUNCTION - BEFORE");
-                        console.log(maybeComponent?.environment?.getMockFunction(key.toString()));
                         maybeComponent?.environment?.setMockFunction(key.toString(), value);
-                        console.log("SETTING EACH MOCK FUNCTION - AFTER");
-                        console.log(
-                            maybeComponent?.environment?.getMockFunction(key.toLowerCase())
-                        );
-                        console.log("INTERPRETER ENV - AFTER");
-                        console.log(interpreter.environment.getMockFunction(key.toLowerCase()));
                     }
                 });
         } else {

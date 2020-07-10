@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ComponentWithoutMockFunctions">
+    <script type="text/brightscript" uri="pkg:/components/scripts/ComponentWithoutMockFunctions.brs" />
+    <script type="text/brightscript" uri="pkg:/components/scripts/MockFunctionsUtils-A.brs" />
+    <script type="text/brightscript" uri="pkg:/components/scripts/MockFunctionsUtils-B.brs" />
+    <children>
+    </children>
+</component>

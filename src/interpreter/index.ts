@@ -177,7 +177,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return func(this);
         } catch (err) {
             if (!(err instanceof BrsError)) {
-                console.error("Runtime error encountered in BRS implementation: ", err);
+                throw `Runtime error encountered in BRS implementation: ${err}`;
             }
             throw err;
         } finally {
@@ -225,9 +225,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             } else {
                 throw err;
             }
-        } finally {
-            return results;
         }
+        return results;
     }
 
     getCallableFunction(functionName: string): Callable | undefined {

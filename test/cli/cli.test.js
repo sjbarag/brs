@@ -32,4 +32,34 @@ describe("cli", () => {
         });
         expect(stdout.trim()).toEqual("hi from foo()");
     });
+
+    it("throws syntax errors once", async () => {
+        let filename = "errors/syntax-error.brs";
+        let stderr = await runWithErrors(filename);
+        expect(stderr.split(filename).length).toEqual(3);
+    });
+
+    it("throws eval errors once", async () => {
+        let filename = "errors/uninitialized-object.brs";
+        let stderr = await runWithErrors(filename);
+        expect(stderr.split(filename).length).toEqual(2);
+    });
+
 });
+
+async function runWithErrors(filename) {
+    let command = [
+        "node",
+        path.join(process.cwd(), "bin", "cli.js"),
+        filename,
+    ].join(" ");
+
+    try {
+        await exec(command, {
+            cwd: path.join(__dirname, "resources"),
+        });
+        return Promise.reject(`Script ran without error: ${filename}`);
+    } catch (err) {
+        return err.stderr || '';
+    }
+}

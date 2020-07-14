@@ -28,7 +28,7 @@ export class BrsError extends Error {
             formattedLocation = `${location.file}(${location.start.line},${location.start.column},${location.end.line},${location.end.line})`;
         }
 
-        return `${formattedLocation}: ${this.message}`;
+        return `${formattedLocation}: ${this.message}\n`;
     }
 }
 

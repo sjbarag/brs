@@ -51,11 +51,13 @@ describe("global Run function", () => {
         }
     });
 
-    it("returns invalid for runtime errors", () => {
+    it("throws an exception for runtime errors", () => {
         fs.readFileSync.mockImplementationOnce(() => `sub main(): _ = {}: _.crash(): end sub`);
-        expect(RunInScope.call(interpreter, new BrsString("pkg:/errors/exec.brs"))).toBe(
-            BrsInvalid.Instance
-        );
+        try {
+            RunInScope.call(interpreter, new BrsString("pkg:/errors/exec.brs"))
+        } catch (err) {
+            expect(err.message).toBe("'crash' is not a function and cannot be called.");
+        }
     });
 
     it("returns invalid when provided a not-array component", () => {

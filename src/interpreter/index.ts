@@ -176,9 +176,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             this._environment = newEnv;
             return func(this);
         } catch (err) {
-            if (!(err instanceof BrsError)) {
-                throw `Runtime error encountered in BRS implementation: ${err}`;
-            }
             throw err;
         } finally {
             this._environment = originalEnvironment;

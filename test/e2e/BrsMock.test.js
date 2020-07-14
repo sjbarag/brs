@@ -66,7 +66,7 @@ describe("end to end brightscript functions", () => {
         // split the warning because the line number output is user-specific.
         let warning = allArgs(consoleErrorSpy)
             .filter((arg) => arg !== "\n")[0]
-            .split("WARNING: ")[1];
+            .split("WARNING: ")[1].trim();
         expect(warning).toEqual(
             "using mocked function 'thisfuncdoesnotexist', but no function with that name is found in-scope in source."
         );

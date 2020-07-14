@@ -997,9 +997,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 });
             } catch (reason) {
                 if (!(reason instanceof Stmt.BlockEnd)) {
-                    throw new Error(
-                        "Something terrible happened and we didn't throw a `BlockEnd` instance."
-                    );
+                    // re-throw interpreter errors
+                    throw reason;
                 }
 
                 let returnedValue = (reason as Stmt.ReturnValue).value;

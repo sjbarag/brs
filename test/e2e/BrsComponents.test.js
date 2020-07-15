@@ -333,10 +333,9 @@ describe("end to end brightscript functions", () => {
 
         let warning = allArgs(consoleWarningSpy)
             .filter(arg => arg !== "\n")[0]
-            .split("Warning: ")[1].trim();
-        expect(warning).toEqual(
-            `"nonImplementedSub" was not found in scope.`
-        );
+            .split("Warning: ")[1]
+            .trim();
+        expect(warning).toEqual(`"nonImplementedSub" was not found in scope.`);
         consoleWarningSpy.mockRestore();
     });
 

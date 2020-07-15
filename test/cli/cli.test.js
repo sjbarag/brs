@@ -44,15 +44,10 @@ describe("cli", () => {
         let stderr = await runWithErrors(filename);
         expect(stderr.split(filename).length).toEqual(2);
     });
-
 });
 
 async function runWithErrors(filename) {
-    let command = [
-        "node",
-        path.join(process.cwd(), "bin", "cli.js"),
-        filename,
-    ].join(" ");
+    let command = ["node", path.join(process.cwd(), "bin", "cli.js"), filename].join(" ");
 
     try {
         await exec(command, {
@@ -60,6 +55,6 @@ async function runWithErrors(filename) {
         });
         return Promise.reject(`Script ran without error: ${filename}`);
     } catch (err) {
-        return err.stderr || '';
+        return err.stderr || "";
     }
 }

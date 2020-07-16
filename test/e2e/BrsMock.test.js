@@ -44,6 +44,8 @@ describe("end to end brightscript functions", () => {
             "id",
             "second mock node name is not mutated by first mock:",
             "name",
+            "created mock for child node: ",
+            "true",
         ]);
     });
 

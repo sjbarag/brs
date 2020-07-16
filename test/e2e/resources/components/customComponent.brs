@@ -17,6 +17,7 @@ sub Main()
     print "child id is: " normalLabel.id ' => normalLabel
 
     otherNode = createObject("roSGNode", "NormalWidget")
+    print otherNode
     print "otherNode child count is: " otherNode.getChildCount() ' => 3
 
     anotherNode = createObject("roSGNode", "BaseWidget")

@@ -53,6 +53,15 @@ sub Main()
 
     print "second mock node id is not mutated by first mock:" secondMockNode.id     ' => id
     print "second mock node name is not mutated by first mock:" secondMockNode.name ' => name
+
+    ' mock a child of NormalWidget (Label) and ensure the mock is created when the parent is
+    _brs_.mockComponent("Label", {
+        id: "normalLabel",
+        extra_field: true
+    })
+    widget = createObject("roSGNode", "NormalWidget")
+    label = widget.findNode("normalLabel")
+    print "created mock for child node:" label.hasField("extra_field") ' => true
 end sub
 
 sub onNameChanged()

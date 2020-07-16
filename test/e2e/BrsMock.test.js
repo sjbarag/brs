@@ -22,7 +22,7 @@ describe("end to end brightscript functions", () => {
     });
 
     test("mockComponents.brs", async () => {
-        await execute([resourceFile("components", "mockComponents.brs")], outputStreams);
+        await execute([resourceFile("mockComponents.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "marking mock timespan",

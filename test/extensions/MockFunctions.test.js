@@ -1,6 +1,8 @@
 const brs = require("brs");
 const { ValueKind, Callable, BrsString, RoAssociativeArray } = brs.types;
 
+const { ComponentDefinition } = require("../../lib/componentprocessor");
+
 const { Interpreter } = require("../../lib/interpreter");
 const { mockFunctions } = require("../../lib/extensions/mockFunctions");
 
@@ -14,6 +16,7 @@ describe("mockFunctions", () => {
 
         describe("calling mock functions defined in an associative array", () => {
             it("call environment.setMockFunction for each mock function defined in the associative array", () => {
+                const mockName = new BrsString("IAmAComponent");
                 const mockFns = [
                     {
                         name: new BrsString("test1"),
@@ -52,14 +55,24 @@ describe("mockFunctions", () => {
                         }),
                     },
                 ];
+
                 const aa = new RoAssociativeArray(mockFns);
+                const mockArgs = [mockName, aa];
 
-                mockFunctions.getAllSignatureMismatches(aa);
-                mockFunctions.call(interpreter, aa);
+                let component = new ComponentDefinition("/some/path/to/IAmAComponent.xml");
 
-                expect(interpreter.environment.getMockFunction("test1")).toBe(mockFns[0].value);
-                expect(interpreter.environment.getMockFunction("test2")).toBe(mockFns[1].value);
-                expect(interpreter.environment.getMockFunction("test3")).toBe(mockFns[2].value);
+                interpreter.environment.nodeDefMap.set(mockName.value, component);
+
+                component.environment = interpreter.environment.createSubEnvironment(false);
+
+                mockFunctions.getAllSignatureMismatches(mockArgs);
+                mockFunctions.call(interpreter, ...mockArgs);
+
+                let maybeComponent = interpreter.environment.nodeDefMap.get(mockName.value);
+
+                expect(maybeComponent.environment.getMockFunction("test1")).toBe(mockFns[0].value);
+                expect(maybeComponent.environment.getMockFunction("test2")).toBe(mockFns[1].value);
+                expect(maybeComponent.environment.getMockFunction("test3")).toBe(mockFns[2].value);
             });
         });
     });

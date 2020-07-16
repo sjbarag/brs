@@ -113,7 +113,7 @@ export class ContentNode extends RoSGNode {
      * The reason to keep track is because metadata fields should print out in all caps.
      */
     private metaDataFields = new Set<string>(
-        this.defaultFields.map(field => field.name.toLowerCase())
+        this.defaultFields.map((field) => field.name.toLowerCase())
     );
 
     constructor(readonly name: string = "ContentNode") {
@@ -157,7 +157,7 @@ export class ContentNode extends RoSGNode {
         return this.getVisibleFields()
             .map(([key, value]) => key)
             .sort()
-            .map(key => new BrsString(key));
+            .map((key) => new BrsString(key));
     }
 
     /** @override */

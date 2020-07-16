@@ -37,8 +37,8 @@ describe("ComponentScopeResolver", () => {
         parseFn = LexerParser.getLexerParserFn(new Map(), defaultExecutionOptions);
 
         componentMap = await getComponentDefinitionMap("/doesnt/matter");
-        componentMap.forEach(comp => {
-            comp.scripts = comp.scripts.map(script => {
+        componentMap.forEach((comp) => {
+            comp.scripts = comp.scripts.map((script) => {
                 script.uri = path.join("scripts/", path.parse(script.uri).base);
                 return script;
             });
@@ -57,10 +57,10 @@ describe("ComponentScopeResolver", () => {
         expect(statements).toBeDefined();
         expect(statements.length).toBe(2);
 
-        let statementNames = statements.map(s => s.name.text);
+        let statementNames = statements.map((s) => s.name.text);
         expect(statementNames).toEqual(["test", "test2"]);
 
-        let testStatement = statements.find(s => s.name.text === "test");
+        let testStatement = statements.find((s) => s.name.text === "test");
         let testStatementCount = testStatement.func.body.statements.length;
         expect(testStatementCount).toEqual(2);
     });
@@ -72,11 +72,11 @@ describe("ComponentScopeResolver", () => {
         expect(statements).toBeDefined();
         expect(statements.length).toBe(5);
 
-        let statementNames = statements.map(s => s.name.text);
+        let statementNames = statements.map((s) => s.name.text);
         // Statements are in a specific order
         expect(statementNames).toEqual(["test", "util1", "util_y", "test2", "util_x"]);
 
-        let testStatement = statements.find(s => s.name.text === "util1");
+        let testStatement = statements.find((s) => s.name.text === "util1");
         let testStatementCount = testStatement.func.body.statements.length;
         expect(testStatementCount).toEqual(2);
     });
@@ -87,7 +87,7 @@ describe("ComponentScopeResolver", () => {
         let statements = await componentScopeResolver.resolve(componentToResolve);
         expect(statements).toBeDefined();
 
-        let statementNames = statements.map(s => s.name.text);
+        let statementNames = statements.map((s) => s.name.text);
         expect(statementNames).not.toContain("init");
     });
 });

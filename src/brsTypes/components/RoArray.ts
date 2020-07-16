@@ -180,7 +180,7 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
 
             this.elements = [
                 ...this.elements,
-                ...array.elements.filter(element => !!element), // don't copy "holes" where no value exists
+                ...array.elements.filter((element) => !!element), // don't copy "holes" where no value exists
             ];
 
             return BrsInvalid.Instance;
@@ -194,7 +194,7 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, separator: BrsString) => {
             if (
-                this.elements.some(function(element) {
+                this.elements.some(function (element) {
                     return !(element instanceof BrsString);
                 })
             ) {
@@ -214,7 +214,7 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
             if (flags.toString().match(/([^ir])/g) != null) {
                 interpreter.stderr.write("roArray.Sort: Flags contains invalid option(s).\n");
             } else {
-                this.elements = this.elements.sort(function(a, b) {
+                this.elements = this.elements.sort(function (a, b) {
                     var compare = 0;
                     if (a !== undefined && b !== undefined) {
                         if (a instanceof RoArray && b instanceof RoAssociativeArray) {
@@ -266,7 +266,7 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
             if (flags.toString().match(/([^ir])/g) != null) {
                 interpreter.stderr.write("roArray.SortBy: Flags contains invalid option(s).\n");
             } else {
-                this.elements = this.elements.sort(function(a, b) {
+                this.elements = this.elements.sort(function (a, b) {
                     var compare = 0;
                     if (a instanceof RoAssociativeArray && b instanceof RoAssociativeArray) {
                         if (

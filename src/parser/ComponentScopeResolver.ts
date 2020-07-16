@@ -34,14 +34,16 @@ export class ComponentScopeResolver {
     private flatten(statementMap: Stmt.Statement[][]): Stmt.Statement[] {
         let statements = statementMap.shift() || [];
         let statementMemo = new Set(
-            statements.filter((_): _ is Stmt.Function => true).map(statement => statement.name.text)
+            statements
+                .filter((_): _ is Stmt.Function => true)
+                .map((statement) => statement.name.text)
         );
         while (statementMap.length > 0) {
             let extendedFns = statementMap.shift() || [];
             statements = statements.concat(
                 extendedFns
                     .filter((_): _ is Stmt.Function => true)
-                    .filter(statement => {
+                    .filter((statement) => {
                         let statementName = statement.name.text;
                         let haveFnName = statementMemo.has(statementName);
                         if (!haveFnName) {
@@ -61,7 +63,7 @@ export class ComponentScopeResolver {
      * @returns An ordered array of component statement arrays.
      */
     private *getStatements(component: ComponentDefinition) {
-        yield this.parserLexerFn(component.scripts.map(c => c.uri));
+        yield this.parserLexerFn(component.scripts.map((c) => c.uri));
         let currentComponent: ComponentDefinition | undefined = component;
         while (currentComponent.extends) {
             // If this is a built-in component, then no work is needed and we can return.
@@ -77,7 +79,7 @@ export class ComponentScopeResolver {
                 );
                 return Promise.resolve();
             }
-            yield this.parserLexerFn(currentComponent.scripts.map(c => c.uri));
+            yield this.parserLexerFn(currentComponent.scripts.map((c) => c.uri));
         }
 
         return Promise.resolve();

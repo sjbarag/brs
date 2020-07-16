@@ -82,11 +82,11 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
     let manifest = PP.getManifestSync(executionOptions.root);
 
     return filenames
-        .map(filename => {
+        .map((filename) => {
             let lexer = new Lexer();
             let preprocessor = new PP.Preprocessor();
             let parser = new Parser();
-            [lexer, preprocessor, parser].forEach(emitter =>
+            [lexer, preprocessor, parser].forEach((emitter) =>
                 emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
             );
 
@@ -119,13 +119,13 @@ export function repl() {
         output: process.stdout,
     });
     rl.setPrompt("brs> ");
-    rl.on("line", line => {
+    rl.on("line", (line) => {
         if (line.toLowerCase() === "quit" || line.toLowerCase() === "exit") {
             process.exit();
         }
         let results = run(line, defaultExecutionOptions, replInterpreter);
         if (results) {
-            results.map(result => {
+            results.map((result) => {
                 if (result !== BrsTypes.BrsInvalid.Instance) {
                     console.log(result.toString());
                 }

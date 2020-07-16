@@ -86,8 +86,8 @@ export async function getComponentDefinitionMap(rootDir: string) {
     const componentsPattern = rootDir + "/components/**/*.xml";
     const xmlFiles: string[] = fg.sync(componentsPattern, {});
 
-    let defs = xmlFiles.map(file => new ComponentDefinition(file));
-    let parsedPromises = defs.map(async def => def.parse());
+    let defs = xmlFiles.map((file) => new ComponentDefinition(file));
+    let parsedPromises = defs.map(async (def) => def.parse());
 
     return processXmlTree(pSettle(parsedPromises));
 }
@@ -99,7 +99,7 @@ async function processXmlTree(
     let nodeDefMap = new Map<string, ComponentDefinition>();
 
     // create map of just ComponentDefinition objects
-    nodeDefs.map(item => {
+    nodeDefs.map((item) => {
         if (item.isFulfilled && !item.isRejected) {
             nodeDefMap.set(item.value!.name!, item.value!);
         }
@@ -109,7 +109,7 @@ async function processXmlTree(
     // the component backwards from most extended component first
     let inheritanceStack: ComponentDefinition[] = [];
 
-    nodeDefMap.forEach(nodeDef => {
+    nodeDefMap.forEach((nodeDef) => {
         if (nodeDef && nodeDef.processed === false) {
             let xmlNode = nodeDef.xmlNode;
             inheritanceStack.push(nodeDef);
@@ -151,7 +151,7 @@ async function processXmlTree(
         }
     });
 
-    nodeDefMap.forEach(nodeDef => {
+    nodeDefMap.forEach((nodeDef) => {
         let xmlNode = nodeDef.xmlNode;
         if (xmlNode) {
             nodeDef.children = getChildren(xmlNode);
@@ -197,7 +197,7 @@ function processInterface(
         return { fields, functions };
     }
 
-    iface.eachChild(child => {
+    iface.eachChild((child) => {
         if (child.name === "field") {
             fields[child.attr.id] = {
                 type: child.attr.type,
@@ -244,7 +244,7 @@ function getChildren(node: XmlDocument): ComponentNode[] {
  * @param children The array where parsed children will be added
  */
 function parseChildren(element: XmlElement, children: ComponentNode[]): void {
-    element.eachChild(child => {
+    element.eachChild((child) => {
         let childComponent: ComponentNode = {
             name: child.name,
             fields: child.attr,
@@ -264,7 +264,7 @@ function getScripts(node: XmlDocument): ComponentScript[] {
     let componentScripts: ComponentScript[] = [];
 
     // TODO: Verify if uri is valid
-    scripts.map(script => {
+    scripts.map((script) => {
         if (script.attr) {
             componentScripts.push({
                 type: script.attr.type,

@@ -25,7 +25,7 @@ describe("end to end syntax", () => {
     test("printLiterals.brs", async () => {
         await execute([resourceFile("printLiterals.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "invalid",
             "true",
             "false",
@@ -41,7 +41,7 @@ describe("end to end syntax", () => {
     test("arithmetic.brs", async () => {
         await execute([resourceFile("arithmetic.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "3",
             "3",
             "3",
@@ -74,7 +74,7 @@ describe("end to end syntax", () => {
     test("assignment.brs", async () => {
         await execute([resourceFile("assignment.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "new value",
         ]);
     });
@@ -82,7 +82,7 @@ describe("end to end syntax", () => {
     test("assignment-operators.brs", async () => {
         await execute([resourceFile("assignment-operators.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "5",
             "2",
             "6",
@@ -94,7 +94,7 @@ describe("end to end syntax", () => {
     test("conditionals.brs", async () => {
         await execute([resourceFile("conditionals.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "1",
             "2",
             "3",
@@ -122,7 +122,7 @@ describe("end to end syntax", () => {
     test("while-loops.brs", async () => {
         await execute([resourceFile("while-loops.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "0",
             "1",
             "2",
@@ -136,7 +136,7 @@ describe("end to end syntax", () => {
     test("for-loops.brs", async () => {
         await execute([resourceFile("for-loops.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "0",
             "2",
             "4",
@@ -175,7 +175,7 @@ describe("end to end syntax", () => {
     test("reserved-words.brs", async () => {
         await execute([resourceFile("reserved-words.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             // note: associative array keys are sorted before iteration
             "createobject",
             "in",
@@ -191,7 +191,7 @@ describe("end to end syntax", () => {
     test("increment.brs", async () => {
         await execute([resourceFile("increment.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "6", // var = 5: var++
             "2", // aa = { foo: 3 }: aa.foo--
             "14", // arr = [13]: arr[0]++

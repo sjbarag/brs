@@ -83,7 +83,7 @@ describe.only("component parsing support", () => {
                 expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
 
                 let expectedChildOrder = ["label_b"];
-                let childOrder = parsedExtendedComp.children.map(child => {
+                let childOrder = parsedExtendedComp.children.map((child) => {
                     return child.fields && child.fields.name;
                 });
                 expect(childOrder).toEqual(expectedChildOrder);
@@ -97,10 +97,10 @@ describe.only("component parsing support", () => {
                 expect(parsedExtendedComp.scripts.length).toBeGreaterThan(0);
 
                 const expectedPrefix = "pkg:/test/componentprocessor/resources/scripts/";
-                let expectedScripts = ["extendedComponent.brs", "utility.brs"].map(scriptName =>
+                let expectedScripts = ["extendedComponent.brs", "utility.brs"].map((scriptName) =>
                     path.posix.join(expectedPrefix, scriptName)
                 );
-                let actualScripts = parsedExtendedComp.scripts.map(script => script.uri);
+                let actualScripts = parsedExtendedComp.scripts.map((script) => script.uri);
                 expect(actualScripts).toEqual(expectedScripts);
             });
 

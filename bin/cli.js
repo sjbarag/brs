@@ -23,7 +23,7 @@ program
                 await brs.execute(brsFiles, { root: program.root });
             } catch (err) {
                 if (err.messages && err.messages.length) {
-                    err.messages.forEach(message => console.error(message));
+                    err.messages.forEach((message) => console.error(message));
                 } else {
                     console.error(err.message);
                 }

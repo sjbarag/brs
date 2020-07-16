@@ -90,7 +90,7 @@ export function logConsoleError(err: BrsError) {
  * @returns function that writes to given write stream.
  */
 export function getLoggerUsing(errorStream: NodeJS.WriteStream): (err: BrsError) => boolean {
-    return err => errorStream.write(err.format());
+    return (err) => errorStream.write(err.format());
 }
 
 /**

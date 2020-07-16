@@ -112,7 +112,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => this.intrinsic,
+        impl: (_interpreter) => this.intrinsic,
     });
 
     /** Appends the first len characters of s to the end of the string. */
@@ -138,7 +138,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new Int32(this.intrinsic.value.length);
         },
     });
@@ -270,7 +270,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(this.intrinsic.value.trim());
         },
     });
@@ -281,7 +281,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.Int32,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             let int = Math.trunc(Number.parseFloat(this.intrinsic.value));
 
             if (Number.isNaN(int)) {
@@ -299,7 +299,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.Float,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             let float = Number.parseFloat(this.intrinsic.value);
 
             if (Number.isNaN(float)) {
@@ -320,7 +320,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [new StdlibArgument("delim", ValueKind.String)],
             returns: ValueKind.Object,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             _interpreter.stderr.write(
                 "WARNING: tokenize not yet implemented, because it returns an RoList.  Returning `invalid`."
             );
@@ -347,7 +347,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
                 parts = this.intrinsic.value.split(separator.value);
             }
 
-            return new RoArray(parts.map(part => new BrsString(part)));
+            return new RoArray(parts.map((part) => new BrsString(part)));
         },
     });
 
@@ -360,7 +360,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(this.intrinsic.value.replace(/(['"<>&])/g, "\\$1"));
         },
     });
@@ -371,18 +371,13 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(
                 // encoding courtesy of
                 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#Description
                 encodeURIComponent(this.intrinsic.value).replace(
                     /[!'()*]/g,
-                    c =>
-                        "%" +
-                        c
-                            .charCodeAt(0)
-                            .toString(16)
-                            .toUpperCase()
+                    (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase()
                 )
             );
         },
@@ -394,7 +389,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(decodeURIComponent(this.intrinsic.value));
         },
     });
@@ -408,7 +403,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(encodeURI(this.intrinsic.value));
         },
     });
@@ -422,7 +417,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(decodeURI(this.intrinsic.value));
         },
     });
@@ -436,7 +431,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(encodeURIComponent(this.intrinsic.value));
         },
     });
@@ -446,7 +441,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => {
+        impl: (_interpreter) => {
             return new BrsString(decodeURIComponent(this.intrinsic.value));
         },
     });
@@ -456,6 +451,6 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [],
             returns: ValueKind.String,
         },
-        impl: _interpreter => this.intrinsic,
+        impl: (_interpreter) => this.intrinsic,
     });
 }

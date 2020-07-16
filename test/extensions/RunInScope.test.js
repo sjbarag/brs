@@ -81,7 +81,7 @@ describe("global Run function", () => {
                     args: [],
                     returns: ValueKind.Void,
                 },
-                impl: interpreter => {
+                impl: (interpreter) => {
                     // just an empty main function - it just needs to exist for this test
                     return BrsInvalid.Instance;
                 },
@@ -106,7 +106,7 @@ describe("global Run function", () => {
                     args: [],
                     returns: ValueKind.String,
                 },
-                impl: interpreter => {
+                impl: (interpreter) => {
                     return new BrsString("hello!");
                 },
             })

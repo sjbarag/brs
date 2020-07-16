@@ -33,28 +33,27 @@ describe("cli", () => {
         expect(stdout.trim()).toEqual("hi from foo()");
     });
 
-    it("throws syntax errors once", async () => {
+    it("prints syntax errors once", async () => {
         let filename = "errors/syntax-error.brs";
-        let stderr = await runWithErrors(filename);
-        expect(stderr.split(filename).length).toEqual(3);
+        let command = ["node", path.join(process.cwd(), "bin", "cli.js"), filename].join(" ");
+        try {
+            await exec(command, {
+                cwd: path.join(__dirname, "resources"),
+            });
+            throw `Script ran without error: ${filename}`;
+        } catch (err) {
+            let errors = err.stderr.split(filename).filter((line) => line !== "");
+            expect(errors.length).toEqual(2);
+        }
     });
 
-    it("throws eval errors once", async () => {
+    it("prints eval errors once", async () => {
         let filename = "errors/uninitialized-object.brs";
-        let stderr = await runWithErrors(filename);
-        expect(stderr.split(filename).length).toEqual(2);
-    });
-});
-
-async function runWithErrors(filename) {
-    let command = ["node", path.join(process.cwd(), "bin", "cli.js"), filename].join(" ");
-
-    try {
-        await exec(command, {
+        let command = ["node", path.join(process.cwd(), "bin", "cli.js"), filename].join(" ");
+        let { stderr } = await exec(command, {
             cwd: path.join(__dirname, "resources"),
         });
-        return Promise.reject(`Script ran without error: ${filename}`);
-    } catch (err) {
-        return err.stderr || "";
-    }
-}
+        let errors = stderr.split(filename).filter((line) => line !== "");
+        expect(errors.length).toEqual(1);
+    });
+});

@@ -222,8 +222,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             } else {
                 throw err;
             }
+        } finally {
+            return results;
         }
-        return results;
     }
 
     getCallableFunction(functionName: string): Callable | undefined {

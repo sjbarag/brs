@@ -5,6 +5,7 @@ const { ComponentDefinition } = require("../../lib/componentprocessor");
 
 const { Interpreter } = require("../../lib/interpreter");
 const { mockFunctions } = require("../../lib/extensions/mockFunctions");
+const { BrsInvalid } = require("../../lib/brsTypes/BrsType");
 
 describe("mockFunctions", () => {
     describe("methods", () => {
@@ -60,10 +61,13 @@ describe("mockFunctions", () => {
                 const mockArgs = [mockName, aa];
 
                 let component = new ComponentDefinition("/some/path/to/IAmAComponent.xml");
+                let anotherComponent = new ComponentDefinition(
+                    "/another/path/to/AnotherComponent.xml"
+                );
 
                 interpreter.environment.nodeDefMap.set(mockName.value, component);
-
                 component.environment = interpreter.environment.createSubEnvironment(false);
+                anotherComponent.environment = interpreter.environment.createSubEnvironment(false);
 
                 mockFunctions.getAllSignatureMismatches(mockArgs);
                 mockFunctions.call(interpreter, ...mockArgs);
@@ -73,6 +77,15 @@ describe("mockFunctions", () => {
                 expect(maybeComponent.environment.getMockFunction("test1")).toBe(mockFns[0].value);
                 expect(maybeComponent.environment.getMockFunction("test2")).toBe(mockFns[1].value);
                 expect(maybeComponent.environment.getMockFunction("test3")).toBe(mockFns[2].value);
+
+                /** We expect anotherComponent to return BrsInvalid when attempting to access the same mock functions */
+                /** This validates only the component subtype that declares the mock functions should be the one receiving them  */
+                let anotherComponent1 = anotherComponent.environment.getMockFunction("test1");
+                let anotherComponent2 = anotherComponent.environment.getMockFunction("test2");
+                let anotherComponent3 = anotherComponent.environment.getMockFunction("test3");
+                expect(anotherComponent1.kind).toEqual(1);
+                expect(anotherComponent2.kind).toEqual(1);
+                expect(anotherComponent3.kind).toEqual(1);
             });
         });
     });

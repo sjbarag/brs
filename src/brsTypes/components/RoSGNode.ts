@@ -21,6 +21,7 @@ import { ComponentDefinition, ComponentNode } from "../../componentprocessor";
 import { ComponentFactory, BrsComponentName } from "./ComponentFactory";
 import { Environment } from "../../interpreter/Environment";
 import { roInvalid } from "./RoInvalid";
+import type * as MockNodeModule from "../../extensions/MockNode";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -1320,6 +1321,13 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 export const mGlobal = new RoSGNode([]);
 
 export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
+    // If the requested component has been mocked, construct and return the mock instead
+    let maybeMock = interpreter.environment.getMockObject(type.value.toLowerCase());
+    if (maybeMock instanceof RoAssociativeArray) {
+        let mock: typeof MockNodeModule = require("../../extensions/MockNode");
+        return new mock.MockNode(maybeMock);
+    }
+
     // If this is a built-in component, then return it.
     let component = ComponentFactory.createComponent(type.value as BrsComponentName);
     if (component) {

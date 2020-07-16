@@ -9,6 +9,7 @@ describe("end to end brightscript functions", () => {
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
+        outputStreams.root = __dirname + "/resources";
     });
 
     afterEach(() => {
@@ -44,6 +45,8 @@ describe("end to end brightscript functions", () => {
             "id",
             "second mock node name is not mutated by first mock:",
             "name",
+            "created mock for child node:",
+            "true",
         ]);
     });
 

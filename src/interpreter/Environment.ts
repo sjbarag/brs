@@ -160,7 +160,7 @@ export class Environment {
             return this.mPointer;
         }
 
-        let source = [this.function, this.module, this.global].find((scope) =>
+        let source = [this.function, this.module, this.global].find(scope =>
             scope.has(lowercaseName)
         );
 
@@ -215,7 +215,7 @@ export class Environment {
         let lowercaseName = name.text.toLowerCase();
         return (
             scopeFilter
-                .map((scopeName) => {
+                .map(scopeName => {
                     switch (scopeName) {
                         case Scope.Global:
                             return this.global;
@@ -225,7 +225,7 @@ export class Environment {
                             return this.function;
                     }
                 })
-                .find((scope) => scope.has(lowercaseName)) != null
+                .find(scope => scope.has(lowercaseName)) != null
         );
     }
 
@@ -249,12 +249,15 @@ export class Environment {
     public createSubEnvironment(includeModuleScope: boolean = true): Environment {
         let newEnvironment = new Environment(this.rootM);
         newEnvironment.global = new Map(this.global);
-        newEnvironment.module = includeModuleScope
-            ? new Map(this.module)
-            : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
-        newEnvironment.mockFunctions = this.mockFunctions;
+        if (includeModuleScope) {
+            newEnvironment.module = this.module;
+            newEnvironment.mockFunctions = this.mockFunctions;
+        } else {
+            newEnvironment.module = new Map<string, BrsType>();
+            newEnvironment.mockFunctions = new Map<string, Callable>();
+        }
         newEnvironment.focusedNode = this.focusedNode;
         newEnvironment.nodeDefMap = this.nodeDefMap;
 

@@ -59,7 +59,7 @@ export function parseManifest(contents: string) {
         // for each line
         .split("\n")
         // remove leading/trailing whitespace
-        .map(line => line.trim())
+        .map((line) => line.trim())
         // separate keys and values
         .map((line, index) => {
             // skip empty lines and comments
@@ -70,8 +70,9 @@ export function parseManifest(contents: string) {
             let equals = line.indexOf("=");
             if (equals === -1) {
                 throw new Error(
-                    `[manifest:${index +
-                        1}] No '=' detected.  Manifest attributes must be of the form 'key=value'.`
+                    `[manifest:${
+                        index + 1
+                    }] No '=' detected.  Manifest attributes must be of the form 'key=value'.`
                 );
             }
             return [line.slice(0, equals), line.slice(equals + 1)];
@@ -123,9 +124,9 @@ export function getBsConst(manifest: Manifest): Map<string, boolean> {
         // for each key-value pair
         .split(";")
         // ignore empty key-value pairs
-        .filter(keyValuePair => !!keyValuePair)
+        .filter((keyValuePair) => !!keyValuePair)
         // separate keys and values
-        .map(keyValuePair => {
+        .map((keyValuePair) => {
             let equals = keyValuePair.indexOf("=");
             if (equals === -1) {
                 throw new Error(

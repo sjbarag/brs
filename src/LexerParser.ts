@@ -21,7 +21,7 @@ export function getLexerParserFn(
     const executionOptions = Object.assign(defaultExecutionOptions, options);
     return async function parse(filenames: string[]): Promise<Stmt.Statement[]> {
         let parsedFiles = await pSettle(
-            filenames.map(async filename => {
+            filenames.map(async (filename) => {
                 let contents;
                 try {
                     contents = await readFile(filename, "utf-8");
@@ -34,7 +34,7 @@ export function getLexerParserFn(
                 let lexer = new Lexer();
                 let preprocessor = new PP.Preprocessor();
                 let parser = new Parser();
-                [lexer, preprocessor, parser].forEach(emitter =>
+                [lexer, preprocessor, parser].forEach((emitter) =>
                     emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
                 );
 
@@ -64,17 +64,17 @@ export function getLexerParserFn(
         );
 
         // don't execute anything if there were reading, lexing, or parsing errors
-        if (parsedFiles.some(file => file.isRejected)) {
+        if (parsedFiles.some((file) => file.isRejected)) {
             return Promise.reject({
                 messages: parsedFiles
-                    .filter(file => file.isRejected)
-                    .map(rejection => rejection.reason.message),
+                    .filter((file) => file.isRejected)
+                    .map((rejection) => rejection.reason.message),
             });
         }
 
         // combine statements from all files into one array
         return parsedFiles
-            .map(file => file.value || [])
+            .map((file) => file.value || [])
             .reduce((allStatements, fileStatements) => [...allStatements, ...fileStatements], []);
     };
 }

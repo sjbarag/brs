@@ -36,8 +36,8 @@ describe("integration tests", () => {
 
     test("interpreter environments have the right functions per component", async () => {
         let componentMap = await getComponentDefinitionMap("/doesnt/matter");
-        componentMap.forEach(comp => {
-            comp.scripts = comp.scripts.map(script => {
+        componentMap.forEach((comp) => {
+            comp.scripts = comp.scripts.map((script) => {
                 script.uri = path.join("scripts/", path.parse(script.uri).base);
                 return script;
             });
@@ -53,7 +53,7 @@ describe("integration tests", () => {
 
         let extendedComp = interpreter.environment.nodeDefMap.get("ExtendedComponent");
         expect(extendedComp).not.toBeUndefined();
-        let actualFns = Array.from(extendedComp.environment.module).map(methodKV => {
+        let actualFns = Array.from(extendedComp.environment.module).map((methodKV) => {
             let [fnName] = methodKV;
             return fnName;
         });

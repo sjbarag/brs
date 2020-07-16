@@ -23,7 +23,7 @@ describe("end to end brightscript functions", () => {
     test("mockComponents.brs", async () => {
         await execute([resourceFile("mockComponents.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "marking mock timespan",
             "mocked timespan should return 8: ",
             "8",
@@ -51,7 +51,7 @@ describe("end to end brightscript functions", () => {
         let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         await execute([resourceFile("mockFunctions.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
             "your wish is my command",
             "Named foo",
@@ -62,7 +62,7 @@ describe("end to end brightscript functions", () => {
 
         // split the warning because the line number output is user-specific.
         let warning = allArgs(consoleErrorSpy)
-            .filter(arg => arg !== "\n")[0]
+            .filter((arg) => arg !== "\n")[0]
             .split("WARNING: ")[1];
         expect(warning).toEqual(
             "using mocked function 'thisfuncdoesnotexist', but no function with that name is found in-scope in source."

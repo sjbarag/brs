@@ -160,7 +160,7 @@ export class Environment {
             return this.mPointer;
         }
 
-        let source = [this.function, this.module, this.global].find(scope =>
+        let source = [this.function, this.module, this.global].find((scope) =>
             scope.has(lowercaseName)
         );
 
@@ -215,7 +215,7 @@ export class Environment {
         let lowercaseName = name.text.toLowerCase();
         return (
             scopeFilter
-                .map(scopeName => {
+                .map((scopeName) => {
                     switch (scopeName) {
                         case Scope.Global:
                             return this.global;
@@ -225,7 +225,7 @@ export class Environment {
                             return this.function;
                     }
                 })
-                .find(scope => scope.has(lowercaseName)) != null
+                .find((scope) => scope.has(lowercaseName)) != null
         );
     }
 

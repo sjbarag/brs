@@ -283,10 +283,7 @@ describe("RoSGNode", () => {
                     { name: new BrsString("letter1"), value: letter1 },
                     { name: new BrsString("letter2"), value: letter2 },
                 ]);
-                let change = node
-                    .getFields()
-                    .get("change")
-                    .getValue();
+                let change = node.getFields().get("change").getValue();
 
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();
@@ -316,10 +313,7 @@ describe("RoSGNode", () => {
                 let id = new BrsString("");
 
                 let node = new RoSGNode([]);
-                let change = node
-                    .getFields()
-                    .get("change")
-                    .getValue();
+                let change = node.getFields().get("change").getValue();
 
                 let items = node.getMethod("items");
                 expect(items).toBeTruthy();

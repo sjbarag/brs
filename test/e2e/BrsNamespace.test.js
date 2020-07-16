@@ -20,7 +20,7 @@ describe("end to end brightscript functions", () => {
     test("_brs_-namespace.brs", async () => {
         await execute([resourceFile("stdlib", "_brs_-namespace.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "_brs_.process.argv is non-empty: ",
             "true",
         ]);

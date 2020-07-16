@@ -50,7 +50,7 @@ export const FindMemberFunction = new Callable("FindMemberFunction", {
     },
     impl: (interpreter, object: BrsComponent, funName: BrsString): BrsInterface | BrsInvalid => {
         let iface: BrsType = BrsInvalid.Instance;
-        object.interfaces.forEach(interfaceName => {
+        object.interfaces.forEach((interfaceName) => {
             if (interfaceName.methodNames.has(funName.value.toLowerCase())) {
                 iface = interfaceName;
             }

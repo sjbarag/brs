@@ -115,13 +115,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         let componentScopeResolver = new ComponentScopeResolver(componentMap, parseFn);
         await pSettle(
-            Array.from(componentMap).map(async componentKV => {
+            Array.from(componentMap).map(async (componentKV) => {
                 let [_, component] = componentKV;
                 component.environment = interpreter.environment.createSubEnvironment(
                     /* includeModuleScope */ false
                 );
                 let statements = await componentScopeResolver.resolve(component);
-                interpreter.inSubEnv(subInterpreter => {
+                interpreter.inSubEnv((subInterpreter) => {
                     let componentMPointer = new RoAssociativeArray([]);
                     subInterpreter.environment.setM(componentMPointer);
                     subInterpreter.environment.setRootM(componentMPointer);
@@ -145,8 +145,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.options = options;
 
         Object.keys(StdLib)
-            .map(name => (StdLib as any)[name])
-            .filter(func => func instanceof Callable)
+            .map((name) => (StdLib as any)[name])
+            .filter((func) => func instanceof Callable)
             .filter((func: Callable) => {
                 if (!func.name) {
                     throw new Error("Unnamed standard library function detected!");
@@ -187,7 +187,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     exec(statements: ReadonlyArray<Stmt.Statement>, ...args: BrsType[]) {
-        let results = statements.map(statement => this.execute(statement));
+        let results = statements.map((statement) => this.execute(statement));
         try {
             let mainVariable = new Expr.Variable({
                 kind: Lexeme.Identifier,
@@ -214,7 +214,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         new Expr.Call(
                             mainVariable,
                             mainVariable.name,
-                            args.map(arg => new Expr.Literal(arg, mainVariable.location))
+                            args.map((arg) => new Expr.Literal(arg, mainVariable.location))
                         )
                     ),
                 ];
@@ -916,7 +916,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitBlock(block: Stmt.Block): BrsType {
-        block.statements.forEach(statement => this.execute(statement));
+        block.statements.forEach((statement) => this.execute(statement));
         return BrsInvalid.Instance;
     }
 
@@ -991,7 +991,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     }
                 }
 
-                return this.inSubEnv(subInterpreter => {
+                return this.inSubEnv((subInterpreter) => {
                     subInterpreter.environment.setM(mPointer);
                     return callee.call(this, ...args);
                 });
@@ -1060,7 +1060,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 let messageParts = [];
 
                 let args = sig.args
-                    .map(a => {
+                    .map((a) => {
                         let requiredArg = `${a.name.text} as ${ValueKind.toString(a.type.kind)}`;
                         if (a.defaultValue) {
                             return `[${requiredArg}]`;
@@ -1074,7 +1074,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 );
                 messageParts.push(
                     ...mismatches
-                        .map(mm => {
+                        .map((mm) => {
                             switch (mm.reason) {
                                 case MismatchReason.TooFewArguments:
                                     return `* ${functionName} requires at least ${mm.expected} arguments, but received ${mm.received}.`;
@@ -1084,10 +1084,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                                     return `* Argument '${mm.argName}' must be of type ${mm.expected}, but received ${mm.received}.`;
                             }
                         })
-                        .map(line => `    ${line}`)
+                        .map((line) => `    ${line}`)
                 );
 
-                return messageParts.map(line => `    ${line}`).join("\n");
+                return messageParts.map((line) => `    ${line}`).join("\n");
             }
 
             let mismatchedSignatures = callee.getAllSignatureMismatches(args);
@@ -1285,7 +1285,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             );
         }
 
-        target.getElements().every(element => {
+        target.getElements().every((element) => {
             this.environment.define(Scope.Function, statement.item.text!, element);
 
             // execute the block
@@ -1309,11 +1309,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitWhile(statement: Stmt.While): BrsType {
-        while (
-            this.evaluate(statement.condition)
-                .equalTo(BrsBoolean.True)
-                .toBoolean()
-        ) {
+        while (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
             try {
                 this.execute(statement.body);
             } catch (reason) {
@@ -1330,20 +1326,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitIf(statement: Stmt.If): BrsType {
-        if (
-            this.evaluate(statement.condition)
-                .equalTo(BrsBoolean.True)
-                .toBoolean()
-        ) {
+        if (this.evaluate(statement.condition).equalTo(BrsBoolean.True).toBoolean()) {
             this.execute(statement.thenBranch);
             return BrsInvalid.Instance;
         } else {
             for (const elseIf of statement.elseIfs || []) {
-                if (
-                    this.evaluate(elseIf.condition)
-                        .equalTo(BrsBoolean.True)
-                        .toBoolean()
-                ) {
+                if (this.evaluate(elseIf.condition).equalTo(BrsBoolean.True).toBoolean()) {
                     this.execute(elseIf.thenBranch);
                     return BrsInvalid.Instance;
                 }
@@ -1366,12 +1354,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitArrayLiteral(expression: Expr.ArrayLiteral): RoArray {
-        return new RoArray(expression.elements.map(expr => this.evaluate(expr)));
+        return new RoArray(expression.elements.map((expr) => this.evaluate(expr)));
     }
 
     visitAALiteral(expression: Expr.AALiteral): BrsType {
         return new RoAssociativeArray(
-            expression.elements.map(member => ({
+            expression.elements.map((member) => ({
                 name: member.name,
                 value: this.evaluate(member.value),
             }))

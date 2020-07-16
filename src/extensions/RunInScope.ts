@@ -27,18 +27,18 @@ import { Scope } from "../interpreter/Environment";
  * @returns the value returned by the executed file(s) if no errors are detected, otherwise `invalid`
  */
 function runFilesInScope(interpreter: Interpreter, filenames: BrsString[], args: BrsType[]) {
-    let volumes = filenames.map(filename => getVolumeByPath(interpreter, filename.value));
-    let pathsToFiles = filenames.map(filename =>
+    let volumes = filenames.map((filename) => getVolumeByPath(interpreter, filename.value));
+    let pathsToFiles = filenames.map((filename) =>
         path.join(interpreter.options.root, getPath(filename.value))
     );
 
     // if the file-to-run doesn't exist, RBI returns invalid
-    if (!volumes.every(volume => volume != null)) {
+    if (!volumes.every((volume) => volume != null)) {
         return BrsInvalid.Instance;
     }
 
     let ast = brs.lexParseSync(pathsToFiles, interpreter.options);
-    return interpreter.inSubEnv(subInterpreter => {
+    return interpreter.inSubEnv((subInterpreter) => {
         // remove the original `main` function so we can execute the new file
         subInterpreter.environment.remove("main", Scope.Module);
         return subInterpreter.exec(ast, ...args)[0] || BrsInvalid.Instance;

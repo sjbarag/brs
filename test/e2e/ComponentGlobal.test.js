@@ -20,7 +20,7 @@ describe("m.global usage in scenegraph components", () => {
     test("components/componentGlobalUsage.brs", async () => {
         await execute([resourceFile("components", "componentGlobalUsage.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "inside component init, m.global.brsIntField: ",
             "123",
             "MGlobalWidget.text: ",

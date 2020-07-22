@@ -75,7 +75,7 @@ export class ComponentScopeResolver {
             currentComponent = this.componentMap.get(currentComponent.extends);
             if (!currentComponent) {
                 console.error(
-                    `Cannot find extended component ${previousComponent.extends} defined on ${previousComponent.name}`
+                    `XML component '${previousComponent.extends}' extends unknown component '${previousComponent.name}'. Ignoring extension.`
                 );
                 return Promise.resolve();
             }

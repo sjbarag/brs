@@ -1,5 +1,5 @@
 sub main()
-     _brs_.mockFunctions("ComponentMockFunctions", {
+     _brs_.mockComponentPartial("ComponentMockFunctions", {
         formatJson: function(json as object, flags=0 as integer) as dynamic
             return "{fake:'json'}"
         end function,
@@ -14,6 +14,6 @@ sub main()
         end function
     })
 
-    mock = createObject("roSGNode", "ComponentMockFunctions")
+    m1 = createObject("roSGNode", "ComponentMockFunctions")
     real = createObject("roSGNode", "ComponentWithoutMockFunctions")
 end sub

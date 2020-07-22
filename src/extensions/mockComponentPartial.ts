@@ -9,7 +9,7 @@ import {
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
-export const mockFunctions = new Callable("mockFunctions", {
+export const mockComponentPartial = new Callable("mockComponentPartial", {
     signature: {
         args: [
             new StdlibArgument("subtype", ValueKind.String),
@@ -39,6 +39,7 @@ export const mockFunctions = new Callable("mockFunctions", {
                 "mockFunctions parameter needs to be an instance of roAssociativeArray"
             );
         }
+
         return BrsInvalid.Instance;
     },
 });

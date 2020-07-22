@@ -4,10 +4,10 @@ const { ValueKind, Callable, BrsString, RoAssociativeArray } = brs.types;
 const { ComponentDefinition } = require("../../lib/componentprocessor");
 
 const { Interpreter } = require("../../lib/interpreter");
-const { mockFunctions } = require("../../lib/extensions/mockFunctions");
+const { mockComponentPartial } = require("../../lib/extensions/mockComponentPartial");
 const { BrsInvalid } = require("../../lib/brsTypes/BrsType");
 
-describe("mockFunctions", () => {
+describe("mockComponentPartial", () => {
     describe("methods", () => {
         let interpreter;
 
@@ -69,8 +69,8 @@ describe("mockFunctions", () => {
                 component.environment = interpreter.environment.createSubEnvironment(false);
                 anotherComponent.environment = interpreter.environment.createSubEnvironment(false);
 
-                mockFunctions.getAllSignatureMismatches(mockArgs);
-                mockFunctions.call(interpreter, ...mockArgs);
+                mockComponentPartial.getAllSignatureMismatches(mockArgs);
+                mockComponentPartial.call(interpreter, ...mockArgs);
 
                 let maybeComponent = interpreter.environment.nodeDefMap.get(mockName.value);
 

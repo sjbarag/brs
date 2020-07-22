@@ -74,8 +74,11 @@ export class ComponentScopeResolver {
             let previousComponent = currentComponent;
             currentComponent = this.componentMap.get(currentComponent.extends);
             if (!currentComponent) {
+                // The reference implementation doesn't allow extensions of unknown node subtypes, but
+                // BRS hasn't implemented every node type in the reference implementation!  For now,
+                // let's warn when we detect unknown subtypes.
                 console.error(
-                    `Cannot find extended component ${previousComponent.extends} defined on ${previousComponent.name}`
+                    `Warning: XML component '${previousComponent.extends}' extends unknown component '${previousComponent.name}'. Ignoring extension.`
                 );
                 return Promise.resolve();
             }

@@ -1,8 +1,4 @@
-import {
-    ValueKind,
-    Callable,
-    BrsInvalid,
-} from "../brsTypes";
+import { ValueKind, Callable, BrsInvalid } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
 export const resetMocks = new Callable("resetMocks", {

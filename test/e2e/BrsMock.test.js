@@ -74,4 +74,19 @@ describe("end to end brightscript functions", () => {
 
         consoleErrorSpy.mockRestore();
     });
+
+    test("resetMocks.brs", async () => {
+        await execute([resourceFile("resetMocks.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "fake",
+            "foo bar",
+            "fake",
+            "bar",
+            "foo bar",
+            "fake",
+            "fake",
+            "bar",
+        ]);
+    });
 });

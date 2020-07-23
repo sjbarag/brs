@@ -305,6 +305,28 @@ export class Environment {
     }
 
     /**
+     * resets all of the mocked functions and objects in this environment
+     */
+    public resetMocks() {
+        this.resetMockObjects();
+        this.resetMockFunctions();
+    }
+
+    /**
+     * resets all of the mocked objects in this environment
+     */
+    public resetMockObjects() {
+        this.mockObjects.clear();
+    }
+
+    /**
+     * resets all of the mocked functions in this environment
+     */
+    public resetMockFunctions() {
+        this.mockFunctions.clear();
+    }
+
+    /**
      * Sets the currently focused node, which reacts to onKey button presses
      * @param node either node object or invalid
      */

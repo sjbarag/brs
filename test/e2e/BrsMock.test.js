@@ -81,7 +81,7 @@ describe("end to end brightscript functions", () => {
             outputStreams
         );
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
             "GET status: 400",
             "POST status: 500",

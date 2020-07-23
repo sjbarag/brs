@@ -24,7 +24,7 @@ describe("end to end brightscript functions", () => {
     test("components/roArray.brs", async () => {
         await execute([resourceFile("components", "roArray.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "array length: ",
             "4",
             "last element: ",
@@ -41,7 +41,7 @@ describe("end to end brightscript functions", () => {
     test("components/roAssociativeArray.brs", async () => {
         await execute([resourceFile("components", "roAssociativeArray.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "AA size: ",
             "3",
             "AA keys size: ",
@@ -68,7 +68,7 @@ describe("end to end brightscript functions", () => {
     test("components/roDateTime.brs", async () => {
         await execute([resourceFile("components", "roDateTime.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "Full Date: ",
             "Friday November 12, 2010",
             "No Week Day: ",
@@ -103,7 +103,7 @@ describe("end to end brightscript functions", () => {
     test("components/roTimespan.brs", async () => {
         await execute([resourceFile("components", "roTimespan.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "can return seconds from date until now: ",
             "373447701",
             "can return 2077252342 for date that can't be parsed: ",
@@ -114,7 +114,7 @@ describe("end to end brightscript functions", () => {
     test("components/roSGNode.brs", async () => {
         await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "node size: ",
             "7",
             "node keys size: ",
@@ -240,7 +240,7 @@ describe("end to end brightscript functions", () => {
     test("components/roRegex.brs", async () => {
         await execute([resourceFile("components", "roRegex.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "HeLlO_123_WoRlD is match of hello_[0-9]*_world: ",
             "true",
             "goodbye_123_WoRlD isn't match of hello_[0-9]*_world: ",
@@ -277,7 +277,7 @@ describe("end to end brightscript functions", () => {
         await execute([resourceFile("components", "roString.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stderr.write)).toEqual([]);
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "bar",
             "bar",
             "true", // comparison
@@ -291,7 +291,7 @@ describe("end to end brightscript functions", () => {
     test("components/customComponent.brs", async () => {
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "node.baseBoolField: ",
             "false",
             "node.baseIntField: ",
@@ -322,7 +322,7 @@ describe("end to end brightscript functions", () => {
 
         await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "BaseChild init",
             "BaseComponent init",
             "ExtendedComponent start",
@@ -343,7 +343,7 @@ describe("end to end brightscript functions", () => {
         await execute([resourceFile("components", "roIntrinsics.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stderr.write)).toEqual([]);
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "Boolean object A ",
             "true",
             "Boolean object B ",
@@ -375,7 +375,7 @@ describe("end to end brightscript functions", () => {
         await execute([resourceFile("components", "roInvalid.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stderr.write)).toEqual([]);
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "roInvalid",
             "<Component: roInvalid>",
             "invalid",
@@ -386,7 +386,7 @@ describe("end to end brightscript functions", () => {
     test("components/Group.brs", async () => {
         await execute([resourceFile("components", "Group.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "group node type:",
             "Node",
             "group node subtype:",
@@ -411,7 +411,7 @@ describe("end to end brightscript functions", () => {
     test("components/LayoutGroup.brs", async () => {
         await execute([resourceFile("components", "LayoutGroup.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "layoutGroup node type:",
             "Node",
             "layoutGroup node subtype:",
@@ -430,7 +430,7 @@ describe("end to end brightscript functions", () => {
     test("components/Rectangle.brs", async () => {
         await execute([resourceFile("components", "Rectangle.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "rectangle node type:",
             "Node",
             "rectangle node subtype:",
@@ -449,7 +449,7 @@ describe("end to end brightscript functions", () => {
     test("components/Label.brs", async () => {
         await execute([resourceFile("components", "Label.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "label node type:",
             "Node",
             "label node subtype:",
@@ -470,7 +470,7 @@ describe("end to end brightscript functions", () => {
     test("components/Timer.brs", async () => {
         await execute([resourceFile("components", "Timer.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "timer node type:",
             "Node",
             "timer node subtype:",
@@ -489,7 +489,7 @@ describe("end to end brightscript functions", () => {
     test("components/Font.brs", async () => {
         await execute([resourceFile("components", "Font.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "font node type:",
             "Node",
             "font node subtype:",
@@ -510,7 +510,7 @@ describe("end to end brightscript functions", () => {
     test("components/Poster.brs", async () => {
         await execute([resourceFile("components", "Poster.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "poster node type:",
             "Node",
             "poster node subtype:",
@@ -531,7 +531,7 @@ describe("end to end brightscript functions", () => {
     test("components/ArrayGrid.brs", async () => {
         await execute([resourceFile("components", "ArrayGrid.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "arraygrid node type:",
             "Node",
             "arraygrid node subtype:",
@@ -550,7 +550,7 @@ describe("end to end brightscript functions", () => {
     test("components/MarkupGrid.brs", async () => {
         await execute([resourceFile("components", "MarkupGrid.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "markupgrid node type:",
             "Node",
             "markupgrid node subtype:",
@@ -572,7 +572,7 @@ describe("end to end brightscript functions", () => {
             outputStreams
         );
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             // inheritance/overrides
             "runner: node childHandled text field value before modifying:",
             "childHandled initial",
@@ -613,7 +613,7 @@ describe("end to end brightscript functions", () => {
     test("components/scripts/CallFuncMain.brs", async () => {
         await execute([resourceFile("components", "scripts", "CallFuncMain.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "component: inside componentFunction, args.test: ",
             "123",
             "component: componentField:",
@@ -629,7 +629,7 @@ describe("end to end brightscript functions", () => {
             "invalid",
         ]);
 
-        expect(allArgs(outputStreams.stderr.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n")).toEqual([
             "Warning calling function in CallFuncComponent: no function interface specified for componentPrivateFunction",
         ]);
     });
@@ -637,7 +637,7 @@ describe("end to end brightscript functions", () => {
     test("components/ContentNode.brs", async () => {
         await execute([resourceFile("components", "scripts", "ContentNode.brs")], outputStreams);
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "contentnode node type:",
             "Node",
             "contentnode node subtype:",
@@ -659,7 +659,7 @@ describe("end to end brightscript functions", () => {
             outputStreams
         );
 
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "bar",
             "invalid",
             "invalid",
@@ -672,8 +672,7 @@ describe("end to end brightscript functions", () => {
             [resourceFile("components", "scripts", "MockFunctionsMain.brs")],
             outputStreams
         );
-
-        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
             "GET status: 400",
             "POST status: 500",

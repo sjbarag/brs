@@ -318,6 +318,8 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/componentExtension.brs", async () => {
+        let consoleWarningSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
         await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
@@ -328,6 +330,13 @@ describe("end to end brightscript functions", () => {
             "ExtendedComponent init",
             "ExtendedComponent start",
         ]);
+
+        let warning = allArgs(consoleWarningSpy)
+            .filter((arg) => arg !== "\n")[0]
+            .split("Warning: ")[1]
+            .trim();
+        expect(warning).toEqual(`"nonImplementedSub" was not found in scope.`);
+        consoleWarningSpy.mockRestore();
     });
 
     test("components/roIntrinsics.brs", async () => {

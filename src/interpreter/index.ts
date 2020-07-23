@@ -176,9 +176,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             this._environment = newEnv;
             return func(this);
         } catch (err) {
-            if (!(err instanceof BrsError)) {
-                console.error("Runtime error encountered in BRS implementation: ", err);
-            }
             throw err;
         } finally {
             this._environment = originalEnvironment;
@@ -997,9 +994,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 });
             } catch (reason) {
                 if (!(reason instanceof Stmt.BlockEnd)) {
-                    throw new Error(
-                        "Something terrible happened and we didn't throw a `BlockEnd` instance."
-                    );
+                    // re-throw interpreter errors
+                    throw reason;
                 }
 
                 let returnedValue = (reason as Stmt.ReturnValue).value;

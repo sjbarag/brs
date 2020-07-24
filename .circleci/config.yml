@@ -60,12 +60,6 @@ jobs:
 
 workflows:
   version: 2
-  "Node - supported versions":
-    jobs:
-      - "Node 10"
-      - "Node 12"
-      - "Node 14"
-
   "Publish tagged build":
     jobs:
       - "Node 10":

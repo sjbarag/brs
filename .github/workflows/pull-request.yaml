@@ -1,0 +1,40 @@
+{
+  name: "PR & Push",
+  on: {
+    push: {
+      branches: [ "master" ]
+    },
+    pull_request: {
+      branches: [ "master" ]
+    }
+  },
+  jobs: {
+    build: {
+      runs-on: "ubuntu-latest",
+      strategy: {
+        matrix: {
+          node_version: [ 10, 12, 14 ]
+        }
+      },
+      steps: [
+        { uses: "actions/checkout@v2" },
+        {
+          name: "Node v${{ matrix.node_version}}",
+          uses: "actions/setup-node@v1",
+          with: {
+            node-version: "${{ matrix.node_version }}"
+          }
+        },
+        { run: "yarn" },
+        { run: "yarn build" },
+        { run: "yarn lint" },
+        { run: "yarn prettier" },
+        { run: "yarn test" }
+      ],
+      env: {
+        CI: true
+      }
+    }
+  }
+}
+

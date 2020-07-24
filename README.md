@@ -124,3 +124,84 @@ Thanks to the [npm-run-all](https://www.npmjs.com/package/npm-run-all) package, 
 ```shell
 $ yarn run-s clean build test
 ```
+
+## Extensions
+
+For the most part, `brs` attempts to emulate BrightScript as closely as possible. However, in the spirit of unit testing, it also has a few extensions that will help with testing.
+
+### `_brs_.process`
+
+Allows you to access the command line arguments. Usage:
+
+```brightscript
+print _brs_.process
+' {
+'   argv: [ "some", "arg" ]
+' }
+```
+
+### `_brs_.global`
+
+Allows you to access `m.global` from inside your unit tests. Usage:
+
+```brightscript
+print _brs_.global
+' {
+'   someGlobalField: "someGlobalValue"
+' }
+```
+
+### `_brs_.runInScope`
+
+Runs a file (or set of files) **in the current global + module scope** with the provided arguments, returning either the value returned by those files' `main` function or `invalid` if an error occurs.
+
+```brightscript
+_brs_.runInScope("/path/to/myFile.brs", { foo: "bar" })
+```
+
+### `_brs_.mockComponent`
+
+Allows you to mock a component. Usage:
+
+```brightscript
+_brs_.mockComponent("ComponentName", {
+    someField: "foobar",
+    someFunc: sub()
+      return 123
+    end sub
+})
+```
+
+### `_brs_.mockFunction`
+
+Allows you to mock a function. Usage:
+
+```brightscript
+_brs_.mockFunction("FunctionName", sub()
+    print "foobar"
+end sub)
+```
+
+### `_brs_.resetMocks`
+
+Resets all component and function mocks. Usage:
+
+```brightscript
+_brs_.resetMocks()
+```
+
+### `_brs_.resetMockComponents`
+
+Resets all component mocks. Usage:
+
+```brightscript
+_brs_.resetMockComponents()
+```
+
+### `_brs_.resetMockFunctions`
+
+Resets all function mocks. Usage:
+
+```brightscript
+_brs_.resetMockFunctions()
+```

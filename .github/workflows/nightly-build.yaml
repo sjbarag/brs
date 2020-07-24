@@ -1,0 +1,36 @@
+{
+  name: "Nightly build",
+  on: {
+      schedule: [
+          { cron: "30 21 * * *" }
+      ]
+  },
+  jobs: {
+    publish: {
+      runs-on: "ubuntu-latest",
+      steps: [
+        { uses: "actions/checkout@v2" },
+        {
+          name: "Set up node 12",
+          uses: "actions/setup-node@v1",
+          with: {
+            registry: "https://registry.npmjs.com",
+            scope: "",
+            node-version: "12"
+          }
+        },
+        { run: "yarn" },
+        {
+            run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly",
+            env: {
+                NODE_AUTH_TOKEN: "not a real token :)"
+            }
+        },
+      ],
+      env: {
+        CI: true
+      }
+    }
+  }
+}
+

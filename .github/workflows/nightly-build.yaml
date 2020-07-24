@@ -2,7 +2,7 @@
   name: "Nightly build",
   on: {
       schedule: [
-          { cron: "30 21 * * *" }
+          { cron: "05 7 * * *" }
       ]
   },
   jobs: {
@@ -23,7 +23,7 @@
         {
             run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly",
             env: {
-                NODE_AUTH_TOKEN: "not a real token :)"
+                NODE_AUTH_TOKEN: "${{ secrets.NPM_PUBLISH_TOKEN }}"
             }
         },
       ],

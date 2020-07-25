@@ -6,7 +6,7 @@ import pSettle = require("p-settle");
 const readFile = promisify(fs.readFile);
 import * as fg from "fast-glob";
 import { Environment } from "../interpreter/Environment";
-import { BrsComponentName } from "../brsTypes";
+import { BrsError } from "../Error";
 
 interface FieldAttributes {
     id: string;
@@ -89,11 +89,12 @@ export async function getComponentDefinitionMap(rootDir: string) {
     let defs = xmlFiles.map((file) => new ComponentDefinition(file));
     let parsedPromises = defs.map(async (def) => def.parse());
 
-    return processXmlTree(pSettle(parsedPromises));
+    return processXmlTree(pSettle(parsedPromises), rootDir);
 }
 
 async function processXmlTree(
-    settledPromises: Promise<pSettle.SettledResult<ComponentDefinition>[]>
+    settledPromises: Promise<pSettle.SettledResult<ComponentDefinition>[]>,
+    rootDir: string
 ) {
     let nodeDefs = await settledPromises;
     let nodeDefMap = new Map<string, ComponentDefinition>();
@@ -151,13 +152,13 @@ async function processXmlTree(
         }
     });
 
-    nodeDefMap.forEach((nodeDef) => {
+    for (let nodeDef of nodeDefMap.values()) {
         let xmlNode = nodeDef.xmlNode;
         if (xmlNode) {
             nodeDef.children = getChildren(xmlNode);
-            nodeDef.scripts = getScripts(xmlNode);
+            nodeDef.scripts = await getScripts(xmlNode, nodeDef.xmlPath, rootDir);
         }
-    });
+    }
 
     return nodeDefMap;
 }
@@ -241,19 +242,64 @@ function parseChildren(element: XmlElement, children: ComponentNode[]): void {
     });
 }
 
-function getScripts(node: XmlDocument): ComponentScript[] {
+async function getScripts(
+    node: XmlDocument,
+    xmlPath: string,
+    rootDir: string
+): Promise<ComponentScript[]> {
     let scripts = node.childrenNamed("script");
     let componentScripts: ComponentScript[] = [];
 
-    // TODO: Verify if uri is valid
-    scripts.map((script) => {
+    for (let script of scripts) {
+        let absoluteUri: URL;
+        try {
+            absoluteUri = new URL(script.attr.uri, `pkg:/${path.posix.relative(rootDir, xmlPath)}`);
+        } catch (err) {
+            let file = await readFile(xmlPath, "utf-8");
+
+            let tag = file.substring(script.startTagPosition, script.position);
+            let tagLines = tag.split("\n");
+            let leadingLines = file.substring(0, script.startTagPosition).split("\n");
+            let start = {
+                line: leadingLines.length,
+                column: columnsInLastLine(leadingLines),
+            };
+
+            return Promise.reject({
+                message: BrsError.format(
+                    `Invalid path '${script.attr.uri}' found in <script/> tag`,
+                    {
+                        file: xmlPath,
+                        start: start,
+                        end: {
+                            line: start.line + tagLines.length - 1,
+                            column: start.column + columnsInLastLine(tagLines),
+                        },
+                    }
+                ).trim(),
+            });
+        }
+
         if (script.attr) {
             componentScripts.push({
                 type: script.attr.type,
-                uri: script.attr.uri,
+                uri: absoluteUri.href,
             });
         }
-    });
+    }
 
     return componentScripts;
+}
+
+/**
+ * Returns the number of columns occupied by the final line in an array of lines as parsed by `xmldoc`.
+ * xmldoc parses positions to ignore `\n` characters, which is pretty confusing.  This function
+ * compensates for that.
+ *
+ * @param lines an array of strings, where each is a line from an XML document
+ *
+ * @return the corrected column number for the last line of text as parsed by `xmlDoc`
+ */
+function columnsInLastLine(lines: string[]): number {
+    return lines[lines.length - 1].length + lines.length - 1;
 }

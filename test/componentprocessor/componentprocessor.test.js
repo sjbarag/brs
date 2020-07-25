@@ -8,7 +8,7 @@ const fs = require("fs");
 
 const realFs = jest.requireActual("fs");
 
-describe.only("component parsing support", () => {
+describe("component parsing support", () => {
     afterEach(() => {
         fg.sync.mockRestore();
         fs.readFile.mockRestore();
@@ -65,11 +65,10 @@ describe.only("component parsing support", () => {
                         "scripts/baseComp.brs",
                         "scripts/extendedComp.brs",
                         "scripts/utility.brs",
-                    ];
+                    ].map((f) => path.join(__dirname, "resources", f));
                 });
                 fs.readFile.mockImplementation((filename, _, cb) => {
-                    resourcePath = path.join(__dirname, "resources", filename);
-                    realFs.readFile(resourcePath, (err, contents) => {
+                    realFs.readFile(filename, (err, contents) => {
                         cb(/* no error */ null, contents);
                     });
                 });
@@ -90,7 +89,7 @@ describe.only("component parsing support", () => {
             });
 
             it("adds all scripts into node in correct order", async () => {
-                let map = await getComponentDefinitionMap("/doesnt/matter");
+                let map = await getComponentDefinitionMap(process.cwd());
                 let parsedExtendedComp = map.get("ExtendedComponent");
                 expect(parsedExtendedComp).not.toBeUndefined();
                 expect(parsedExtendedComp.scripts).not.toBeUndefined();
@@ -106,7 +105,7 @@ describe.only("component parsing support", () => {
 
             it("ignores extensions of unknown node subtypes", async () => {
                 fg.sync.mockImplementation(() => {
-                    return ["unknownExtensionComponent.xml"];
+                    return [path.join(__dirname, "resources", "unknownExtensionComponent.xml")];
                 });
 
                 jest.spyOn(global.console, "error").mockImplementation();

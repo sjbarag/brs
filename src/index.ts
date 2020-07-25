@@ -38,7 +38,12 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     const executionOptions = Object.assign(defaultExecutionOptions, options);
 
     let manifest = await PP.getManifest(executionOptions.root);
-    let componentDefinitions = await getComponentDefinitionMap(executionOptions.root);
+    let componentDefinitions: Map<string, ComponentDefinition>;
+    try {
+        componentDefinitions = await getComponentDefinitionMap(executionOptions.root);
+    } catch (err) {
+        throw err;
+    }
 
     componentDefinitions.forEach((component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;

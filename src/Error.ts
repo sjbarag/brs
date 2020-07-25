@@ -11,11 +11,22 @@ export class BrsError extends Error {
      * and column, and the message associated with the error, e.g.:
      *
      * `lorem.brs(1,1-3): Expected '(' after sub name`
-     * ```
+     * @see BrsError#format
      */
     format() {
-        let location = this.location;
+        return BrsError.format(this.message, this.location);
+    }
 
+    /**
+     * Formats a location and message into a human-readable string including filename, starting
+     * and ending line and column, and the message associated with the error, e.g.:
+     *
+     * `lorem.brs(1,1-3): Expected '(' after sub name`
+     *
+     * @param message a string describing the error
+     * @param location where the error occurred
+     */
+    static format(message: string, location: Location): string {
         let formattedLocation: string;
 
         if (location.start.line === location.end.line) {
@@ -28,9 +39,11 @@ export class BrsError extends Error {
             formattedLocation = `${location.file}(${location.start.line},${location.start.column},${location.end.line},${location.end.line})`;
         }
 
-        return `${formattedLocation}: ${this.message}\n`;
+        return `${formattedLocation}: ${message}\n`;
     }
 }
+
+export function formatError(location: Location, message: string) {}
 
 /** Wraps up the metadata associated with a type mismatch error. */
 export interface TypeMismatchMetadata {

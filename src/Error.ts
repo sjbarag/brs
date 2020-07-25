@@ -43,8 +43,6 @@ export class BrsError extends Error {
     }
 }
 
-export function formatError(location: Location, message: string) {}
-
 /** Wraps up the metadata associated with a type mismatch error. */
 export interface TypeMismatchMetadata {
     /**

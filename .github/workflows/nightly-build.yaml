@@ -2,7 +2,7 @@
   name: "Nightly build",
   on: {
     schedule: [
-      { cron: "05 16 * * *" }
+      { cron: "20 17 * * *" }
     ]
   },
   jobs: {
@@ -20,10 +20,18 @@
         },
         { run: "yarn" },
         {
-          run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly",
+          name: "Re-initialize node w/ auth token",
+          uses: "actions/setup-node@v1",
+          with: {
+            registry-url: "https://registry.npmjs.org",
+            node-version: "12"
+          },
           env: {
             NODE_AUTH_TOKEN: "${{ secrets.NPM_PUBLISH_TOKEN }}"
           }
+        },
+        {
+          run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly"
         },
       ],
       env: {

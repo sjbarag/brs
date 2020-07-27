@@ -1,9 +1,9 @@
 {
   name: "Nightly build",
   on: {
-      schedule: [
-          { cron: "05 7 * * *" }
-      ]
+    schedule: [
+      { cron: "05 16 * * *" }
+    ]
   },
   jobs: {
     publish: {
@@ -14,17 +14,16 @@
           name: "Set up node 12",
           uses: "actions/setup-node@v1",
           with: {
-            registry: "https://registry.npmjs.com",
-            scope: "",
+            registry-url: "https://registry.npmjs.org",
             node-version: "12"
           }
         },
         { run: "yarn" },
         {
-            run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly",
-            env: {
-                NODE_AUTH_TOKEN: "${{ secrets.NPM_PUBLISH_TOKEN }}"
-            }
+          run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly",
+          env: {
+            NODE_AUTH_TOKEN: "${{ secrets.NPM_PUBLISH_TOKEN }}"
+          }
         },
       ],
       env: {

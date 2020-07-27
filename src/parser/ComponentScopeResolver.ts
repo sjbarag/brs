@@ -1,9 +1,16 @@
-import { ComponentDefinition } from "../componentprocessor";
+import { ComponentDefinition, ComponentScript } from "../componentprocessor";
 import * as Stmt from "./Statement";
 import { BrsComponentName } from "../brsTypes";
 
 export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];
+
+    /**
+     * A map of file URIs to a promise that resolves to an array of that file's statements.
+     * Used primary to avoid re-lexing and re-parsing files that are included
+     * in <script /> tags in multiple components.
+     */
+    private memoizedStatements = new Map<string, Promise<Stmt.Statement[]>>();
 
     /**
      * @param componentMap Component definition map to reference for function resolution.
@@ -63,7 +70,10 @@ export class ComponentScopeResolver {
      * @returns An ordered array of component statement arrays.
      */
     private *getStatements(component: ComponentDefinition) {
-        yield this.parserLexerFn(component.scripts.map((c) => c.uri));
+        for (const statements of this.fetchMemoizedStatements(component.scripts)) {
+            yield statements;
+        }
+
         let currentComponent: ComponentDefinition | undefined = component;
         while (currentComponent.extends) {
             // If this is a built-in component, then no work is needed and we can return.
@@ -82,9 +92,33 @@ export class ComponentScopeResolver {
                 );
                 return Promise.resolve();
             }
-            yield this.parserLexerFn(currentComponent.scripts.map((c) => c.uri));
+            for (const statements of this.fetchMemoizedStatements(currentComponent.scripts)) {
+                yield statements;
+            }
         }
 
         return Promise.resolve();
+    }
+
+    /**
+     * Generator function that fetches statements from an array of script files without repeatedly
+     * lexing, preprocessing, and parsing files (via memoization).
+     * @param scripts the array of scripts to get statements for
+     * @yields promises that each resolve to an array of statements; one promise per file in `scripts`.
+     */
+    private *fetchMemoizedStatements(scripts: ComponentScript[]) {
+        for (let { uri } of scripts) {
+            let maybeStatements = this.memoizedStatements.get(uri);
+            if (maybeStatements) {
+                yield maybeStatements;
+            } else {
+                let statementsPromise = this.parserLexerFn([uri]);
+                if (!this.memoizedStatements.has(uri)) {
+                    this.memoizedStatements.set(uri, statementsPromise);
+                }
+
+                yield statementsPromise;
+            }
+        }
     }
 }

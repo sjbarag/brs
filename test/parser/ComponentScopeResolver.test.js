@@ -55,7 +55,6 @@ describe("ComponentScopeResolver", () => {
         let componentScopeResolver = new brs.parser.ComponentScopeResolver(componentMap, parseFn);
         let statements = await componentScopeResolver.resolve(componentToResolve);
         expect(statements).toBeDefined();
-        expect(statements.length).toBe(2);
 
         let statementNames = statements.map((s) => s.name.text);
         expect(statementNames).toEqual(["test", "test2"]);
@@ -70,7 +69,6 @@ describe("ComponentScopeResolver", () => {
         let componentScopeResolver = new brs.parser.ComponentScopeResolver(componentMap, parseFn);
         let statements = await componentScopeResolver.resolve(componentToResolve);
         expect(statements).toBeDefined();
-        expect(statements.length).toBe(5);
 
         let statementNames = statements.map((s) => s.name.text);
         // Statements are in a specific order

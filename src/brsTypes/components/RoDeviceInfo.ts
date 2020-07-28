@@ -1,11 +1,13 @@
 import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
-import { BrsType, Int32, BrsString } from "..";
+import { BrsType, Int32 } from "..";
 import { BrsComponent } from "./BrsComponent";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { RoAssociativeArray, AAMember } from "./RoAssociativeArray";
 
 export class RoDeviceInfo extends BrsComponent implements BrsValue {
+    readonly kind = ValueKind.Object;
+
     constructor() {
         super("roDeviceInfo");
         this.registerMethods({
@@ -80,7 +82,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("5000x");
+            return new BrsString("4280x");
         },
     });
 
@@ -193,7 +195,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let countryCode = process.env.LOCALE;
-            return new BrsString(countryCode);
+            return countryCode ? new BrsString(countryCode) : BrsInvalid.Instance;
         },
     });
 
@@ -214,7 +216,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let timeZone = process.env.TZ;
-            return new BrsString(timeZone);
+            return timeZone ? new BrsString(timeZone) : BrsInvalid.Instance;
         },
     });
 
@@ -235,7 +237,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let locale = process.env.LOCALE;
-            return new BrsString(locale);
+            return locale ? new BrsString(locale) : BrsInvalid.Instance;
         },
     });
 
@@ -246,7 +248,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let countryCode = process.env.LOCALE;
-            return new BrsString(countryCode);
+            return countryCode ? new BrsString(countryCode) : BrsInvalid.Instance;
         },
     });
 

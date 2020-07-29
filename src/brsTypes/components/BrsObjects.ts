@@ -1,5 +1,5 @@
 import { RoAssociativeArray } from "./RoAssociativeArray";
-import { RoDeviceInfo } from "./roDeviceInfo";
+import { RoDeviceInfo } from "./RoDeviceInfo";
 import { RoArray } from "./RoArray";
 import { RoDateTime } from "./RoDateTime";
 import { Timespan } from "./Timespan";

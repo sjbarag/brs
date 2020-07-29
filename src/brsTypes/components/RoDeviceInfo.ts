@@ -45,7 +45,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
                 this.enableLinkStatusEvent,
                 this.getConnectionType,
                 this.getExternalIp,
-                this.getIPAddress,
+                this.getIPAddrs,
                 this.getConnectionInfo,
                 this.getDisplayType,
                 this.getDisplayMode,
@@ -437,7 +437,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
     });
 
-    private getIPAddress = new Callable("getIPAddrs", {
+    private getIPAddrs = new Callable("getIPAddrs", {
         signature: {
             args: [],
             returns: ValueKind.Object,
@@ -537,8 +537,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         impl: (_interpreter) => {
             let result = new Array<AAMember>();
 
-            result.push({ name: new BrsString("Width"), value: new BrsString("120 cm") });
-            result.push({ name: new BrsString("Height"), value: new BrsString("120 cm") });
+            result.push({ name: new BrsString("Width"), value: new BrsString("1200cm") });
+            result.push({ name: new BrsString("Height"), value: new BrsString("1200cm") });
 
             return new RoAssociativeArray(result);
         },
@@ -675,7 +675,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
     });
 
-    private enableAudioGuideChangedEvent = new Callable("enableAudioGuideEvent", {
+    private enableAudioGuideChangedEvent = new Callable("enableAudioGuideChangedEvent", {
         signature: {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Dynamic,

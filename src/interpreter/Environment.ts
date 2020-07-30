@@ -254,7 +254,15 @@ export class Environment {
             : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
-        newEnvironment.mockFunctions = this.mockFunctions;
+
+        if (includeModuleScope) {
+            newEnvironment.module = this.module;
+            newEnvironment.mockFunctions = this.mockFunctions;
+        } else {
+            newEnvironment.module = new Map<string, BrsType>();
+            newEnvironment.mockFunctions = new Map<string, Callable>();
+        }
+
         newEnvironment.focusedNode = this.focusedNode;
         newEnvironment.nodeDefMap = this.nodeDefMap;
 

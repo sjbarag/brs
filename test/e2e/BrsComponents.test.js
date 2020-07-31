@@ -5,11 +5,16 @@ const lolex = require("lolex");
 describe("end to end brightscript functions", () => {
     let outputStreams;
     let clock;
+    const OLD_ENV = process.env;
 
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
         outputStreams.root = __dirname + "/resources";
+    });
+
+    beforeEach(() => {
+        process.env = { ...OLD_ENV };
     });
 
     afterEach(() => {
@@ -19,6 +24,7 @@ describe("end to end brightscript functions", () => {
     afterAll(() => {
         clock.uninstall();
         jest.restoreAllMocks();
+        process.env = OLD_ENV;
     });
 
     test("components/roArray.brs", async () => {
@@ -695,8 +701,10 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roDeviceInfo.brs", async () => {
-        await execute([resourceFile("components", "roDeviceInfo.brs")], outputStreams);
+        process.env.TZ = "PST";
+        process.env.LOCALE = "en_US";
 
+        await execute([resourceFile("components", "roDeviceInfo.brs")], outputStreams);
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "4280x",
             "Roku 4 XD",
@@ -716,7 +724,7 @@ describe("end to end brightscript functions", () => {
             "123e4567-e89b-12d3-a456-426655440000",
             "en_US",
             "123e4567-e89b-12d3-a456-426655440000",
-            "Pacific",
+            "PST",
             "true",
             "en_US",
             "en_US",

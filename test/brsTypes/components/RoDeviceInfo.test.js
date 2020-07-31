@@ -13,6 +13,16 @@ const {
 const { Interpreter } = require("../../../lib/interpreter");
 
 describe("RoDeviceInfo", () => {
+    const OLD_ENV = process.env;
+
+    beforeEach(() => {
+        process.env = { ...OLD_ENV };
+    });
+
+    afterAll(() => {
+        process.env = OLD_ENV;
+    });
+
     describe("comparisons", () => {
         it("is equal to nothing", () => {
             let a = new RoDeviceInfo();
@@ -143,10 +153,10 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getUserCountryCode");
 
-                let countryCode = process.env.LOCALE;
+                process.env.LOCALE = "en_US";
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString(countryCode));
+                expect(method.call(interpreter)).toEqual(new BrsString("en_US"));
             });
         });
         describe("getRandomUUID", () => {
@@ -165,10 +175,10 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getTimeZone");
 
-                let timeZone = process.env.TZ;
+                process.env.TZ = "PST";
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString(timeZone));
+                expect(method.call(interpreter)).toEqual(new BrsString("PST"));
             });
         });
         describe("hasFeature", () => {
@@ -185,10 +195,10 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getCurrentLocale");
 
-                let locale = process.env.LOCALE;
+                process.env.LOCALE = "en_US";
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString(locale));
+                expect(method.call(interpreter)).toEqual(new BrsString("en_US"));
             });
         });
         describe("getCountryCode", () => {
@@ -196,10 +206,10 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getCountryCode");
 
-                let cc = process.env.LOCALE;
+                process.env.LOCALE = "en_US";
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString(cc));
+                expect(method.call(interpreter)).toEqual(new BrsString("en_US"));
             });
         });
         describe("getPreferredCaptionLanguage", () => {

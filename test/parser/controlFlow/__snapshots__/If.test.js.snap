@@ -67,7 +67,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 7,
         },
       },
@@ -198,7 +198,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 30,
+              "column": 29,
               "line": 4,
             },
           },
@@ -331,7 +331,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 25,
+          "column": 24,
           "line": 2,
         },
       },
@@ -526,7 +526,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 30,
+          "column": 29,
           "line": 2,
         },
       },
@@ -774,7 +774,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 4,
         },
       },
@@ -905,7 +905,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 30,
+          "column": 29,
           "line": 2,
         },
       },
@@ -1096,7 +1096,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 7,
         },
       },
@@ -1227,7 +1227,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 35,
+              "column": 34,
               "line": 4,
             },
           },
@@ -1360,7 +1360,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 30,
+          "column": 29,
           "line": 2,
         },
       },
@@ -1514,7 +1514,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 24,
+            "column": 23,
             "line": 2,
           },
         },
@@ -1546,7 +1546,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 25,
+                  "column": 24,
                   "line": 7,
                 },
               },
@@ -1624,7 +1624,7 @@ Array [
                     },
                     "file": "",
                     "start": Object {
-                      "column": 38,
+                      "column": 37,
                       "line": 5,
                     },
                   },
@@ -1685,7 +1685,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 33,
+                  "column": 32,
                   "line": 3,
                 },
               },
@@ -1936,12 +1936,12 @@ Array [
     "thenBranch": Block {
       "location": Object {
         "end": Object {
-          "column": 41,
-          "line": 2,
+          "column": 8,
+          "line": 3,
         },
         "file": "",
         "start": Object {
-          "column": 35,
+          "column": 21,
           "line": 2,
         },
       },
@@ -2085,7 +2085,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 22,
+          "column": 21,
           "line": 2,
         },
       },
@@ -2190,7 +2190,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 36,
+            "column": 35,
             "line": 2,
           },
         },
@@ -2365,7 +2365,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 40,
+          "column": 41,
           "line": 2,
         },
       },
@@ -2422,7 +2422,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 22,
+          "column": 21,
           "line": 2,
         },
       },
@@ -2537,13 +2537,13 @@ Array [
     "elseBranch": Block {
       "location": Object {
         "end": Object {
-          "column": 9,
+          "column": 8,
           "line": 3,
         },
         "file": "",
         "start": Object {
-          "column": 8,
-          "line": 3,
+          "column": 51,
+          "line": 2,
         },
       },
       "statements": Array [
@@ -2632,12 +2632,12 @@ Array [
     "thenBranch": Block {
       "location": Object {
         "end": Object {
-          "column": 52,
+          "column": 51,
           "line": 2,
         },
         "file": "",
         "start": Object {
-          "column": 51,
+          "column": 25,
           "line": 2,
         },
       },
@@ -2828,6 +2828,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -2952,6 +2953,7 @@ Array [
               "column": -9,
               "line": -9,
             },
+            "file": undefined,
             "start": Object {
               "column": -9,
               "line": -9,
@@ -3024,6 +3026,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -3142,7 +3145,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 17,
+          "column": 16,
           "line": 4,
         },
       },
@@ -3158,7 +3161,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 20,
+          "column": 19,
           "line": 2,
         },
       },
@@ -3187,13 +3190,13 @@ Array [
           "thenBranch": Block {
             "location": Object {
               "end": Object {
-                "column": 16,
-                "line": 4,
+                "column": 34,
+                "line": 3,
               },
               "file": "",
               "start": Object {
-                "column": 12,
-                "line": 4,
+                "column": 29,
+                "line": 3,
               },
             },
             "statements": Array [
@@ -3494,7 +3497,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 17,
+          "column": 16,
           "line": 7,
         },
       },
@@ -3792,7 +3795,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 62,
+              "column": 61,
               "line": 5,
             },
           },
@@ -3910,7 +3913,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 59,
+          "column": 58,
           "line": 2,
         },
       },
@@ -4159,13 +4162,13 @@ Array [
           "thenBranch": Block {
             "location": Object {
               "end": Object {
-                "column": 19,
-                "line": 5,
+                "column": 60,
+                "line": 4,
               },
               "file": "",
               "start": Object {
-                "column": 12,
-                "line": 5,
+                "column": 39,
+                "line": 4,
               },
             },
             "statements": Array [
@@ -4439,6 +4442,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4605,6 +4609,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4675,6 +4680,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4841,6 +4847,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4965,6 +4972,7 @@ Array [
               "column": -9,
               "line": -9,
             },
+            "file": undefined,
             "start": Object {
               "column": -9,
               "line": -9,
@@ -5037,6 +5045,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -5172,7 +5181,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 22,
+          "column": 21,
           "line": 2,
         },
       },
@@ -5294,7 +5303,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 75,
+          "column": 74,
           "line": 2,
         },
       },
@@ -5372,7 +5381,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 52,
+              "column": 51,
               "line": 2,
             },
           },
@@ -5433,7 +5442,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 20,
+          "column": 19,
           "line": 2,
         },
       },
@@ -5613,7 +5622,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 2,
         },
       },
@@ -5735,7 +5744,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 26,
+          "column": 25,
           "line": 2,
         },
       },
@@ -5787,7 +5796,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 41,
+                  "column": 40,
                   "line": 2,
                 },
               },
@@ -5950,7 +5959,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -6020,7 +6029,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 22,
+                  "column": 20,
                   "line": 7,
                 },
               },
@@ -6136,7 +6145,7 @@ Array [
                     },
                     "file": "",
                     "start": Object {
-                      "column": 31,
+                      "column": 29,
                       "line": 5,
                     },
                   },
@@ -6197,7 +6206,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 26,
+                  "column": 24,
                   "line": 3,
                 },
               },
@@ -6437,7 +6446,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 2,
         },
       },

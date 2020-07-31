@@ -12,7 +12,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 27,
+            "column": 26,
             "line": 2,
           },
         },
@@ -194,7 +194,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 27,
+            "column": 26,
             "line": 2,
           },
         },
@@ -296,7 +296,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 27,
+            "column": 26,
             "line": 2,
           },
         },
@@ -433,7 +433,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -3606,7 +3606,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },

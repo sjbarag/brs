@@ -1444,11 +1444,6 @@ function addChildren(
     children.forEach((child) => {
         let newChild = createNodeByType(interpreter, new BrsString(child.name));
         if (newChild instanceof RoSGNode) {
-            if (child.children.length > 0) {
-                // we need to add the child's own children
-                addChildren(interpreter, newChild, child);
-            }
-
             if (appendChild) {
                 appendChild.call(interpreter, newChild);
                 let setField = newChild.getMethod("setfield");
@@ -1466,6 +1461,11 @@ function addChildren(
                         }
                     }
                 }
+            }
+
+            if (child.children.length > 0) {
+                // we need to add the child's own children
+                addChildren(interpreter, newChild, child);
             }
         }
     });

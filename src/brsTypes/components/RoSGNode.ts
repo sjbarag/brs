@@ -1443,31 +1443,30 @@ function addChildren(
 
     children.forEach((child) => {
         let newChild = createNodeByType(interpreter, new BrsString(child.name));
-        if (newChild instanceof RoSGNode && appendChild) {
-            appendChild.call(interpreter, newChild);
-            let setField = newChild.getMethod("setfield");
-            if (setField) {
-                let nodeFields = newChild.getFields();
-                for (let [key, value] of Object.entries(child.fields)) {
-                    let field = nodeFields.get(key.toLowerCase());
-                    if (field) {
-                        setField.call(
-                            interpreter,
-                            new BrsString(key),
-                            // use the field type to construct the field value
-                            getBrsValueFromFieldType(field.getType(), value)
-                        );
+        if (newChild instanceof RoSGNode) {
+            if (child.children.length > 0) {
+                // we need to add the child's own children
+                addChildren(interpreter, newChild, child);
+            }
+
+            if (appendChild) {
+                appendChild.call(interpreter, newChild);
+                let setField = newChild.getMethod("setfield");
+                if (setField) {
+                    let nodeFields = newChild.getFields();
+                    for (let [key, value] of Object.entries(child.fields)) {
+                        let field = nodeFields.get(key.toLowerCase());
+                        if (field) {
+                            setField.call(
+                                interpreter,
+                                new BrsString(key),
+                                // use the field type to construct the field value
+                                getBrsValueFromFieldType(field.getType(), value)
+                            );
+                        }
                     }
                 }
             }
-        }
-
-        // If there is no type definition, that means it's a built-in component.
-        // In that case, use the child's ComponentNode information to keep recursing.
-        let newTypeDef = interpreter.environment.nodeDefMap.get(child.name) || child;
-
-        if (child.children.length > 0 && newChild instanceof RoSGNode && newTypeDef) {
-            addChildren(interpreter, newChild, newTypeDef);
         }
     });
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="NestedInlineChildren">
+    <script type="text/brightscript" uri="pkg:/components/scripts/NestedInlineChildren.brs" />
+    <children>
+        <ExtendedGroup id="extendedGroup">
+            <Rectangle id="rect1">
+                <Rectangle id="rect2" />
+            </Rectangle>
+        </ExtendedGroup>
+        <Rectangle id="rect3" />
+    </children>
+</component>

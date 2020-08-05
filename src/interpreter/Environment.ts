@@ -49,9 +49,13 @@ export class Environment {
      */
     private mockObjects = new Map<string, RoAssociativeArray>();
     /**
-     * Mocked functions
+     * Unscoped mock functions. These mocks are used across all components and files.
      */
-    private mockFunctions = new Map<string, Callable>();
+    private unscopedMockFunctions = new Map<string, Callable>();
+    /**
+     * Scoped mock functions. These mocks are only used in this component.
+     */
+    private scopedMockFunctions = new Map<string, Callable>();
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
     private rootM: RoAssociativeArray;
@@ -249,19 +253,22 @@ export class Environment {
     public createSubEnvironment(includeModuleScope: boolean = true): Environment {
         let newEnvironment = new Environment(this.rootM);
         newEnvironment.global = new Map(this.global);
+        newEnvironment.module = includeModuleScope
+            ? new Map(this.module)
+            : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
+        newEnvironment.unscopedMockFunctions = this.unscopedMockFunctions;
+        newEnvironment.focusedNode = this.focusedNode;
+        newEnvironment.nodeDefMap = this.nodeDefMap;
 
         if (includeModuleScope) {
             newEnvironment.module = new Map(this.module);
-            newEnvironment.mockFunctions = this.mockFunctions;
+            newEnvironment.scopedMockFunctions = this.scopedMockFunctions;
         } else {
             newEnvironment.module = new Map<string, BrsType>();
-            newEnvironment.mockFunctions = new Map<string, Callable>();
+            newEnvironment.scopedMockFunctions = new Map<string, Callable>();
         }
-
-        newEnvironment.focusedNode = this.focusedNode;
-        newEnvironment.nodeDefMap = this.nodeDefMap;
 
         return newEnvironment;
     }
@@ -287,17 +294,31 @@ export class Environment {
      * places the mockValue function into list of mocks
      * @param functionName the function we are mocking
      * @param mockValue the mock to return
+     * @param isScoped whether this function should be scoped to this module or universally mocked.
      */
-    public setMockFunction(functionName: string, mockValue: Callable): void {
-        this.mockFunctions.set(functionName.toLowerCase(), mockValue);
+    public setMockFunction(
+        functionName: string,
+        mockValue: Callable,
+        isScoped: boolean = false
+    ): void {
+        if (isScoped) {
+            this.scopedMockFunctions.set(functionName.toLowerCase(), mockValue);
+        } else {
+            this.unscopedMockFunctions.set(functionName.toLowerCase(), mockValue);
+        }
     }
 
     /**
-     * retrieves mocked function if it exists
+     * Retrieves mocked function if it exists. If there is a scoped and unscoped function
+     * by the same name, it will return the scoped.
      * @param functionName the function to mock
      */
     public getMockFunction(functionName: string): Callable | BrsInvalid {
-        return this.mockFunctions.get(functionName) || BrsInvalid.Instance;
+        if (this.scopedMockFunctions.has(functionName)) {
+            return this.scopedMockFunctions.get(functionName)!;
+        }
+
+        return this.unscopedMockFunctions.get(functionName) || BrsInvalid.Instance;
     }
 
     /**
@@ -306,7 +327,11 @@ export class Environment {
      * @param possibleMockName the identifier/name for the mocked function
      */
     private isMockedFunction(possibleMockFunction: BrsType, possibleMockName: string): boolean {
-        return possibleMockFunction instanceof Callable && this.mockFunctions.has(possibleMockName);
+        return (
+            (possibleMockFunction instanceof Callable &&
+                this.scopedMockFunctions.has(possibleMockName)) ||
+            this.unscopedMockFunctions.has(possibleMockName)
+        );
     }
 
     /**
@@ -328,7 +353,8 @@ export class Environment {
      * resets all of the mocked functions in this environment
      */
     public resetMockFunctions() {
-        this.mockFunctions.clear();
+        this.scopedMockFunctions.clear();
+        this.unscopedMockFunctions.clear();
     }
 
     /**

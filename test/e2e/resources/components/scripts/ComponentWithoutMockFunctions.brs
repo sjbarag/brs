@@ -3,5 +3,5 @@ sub init()
     print http_get() ' => GET status: 200
     print http_post() ' => POST status: 200
     print isValid() ' => false
-    print indirectCall() ' => {real:'json'}
+    print shouldBeMocked() ' => "mocked correctly!"
 end sub

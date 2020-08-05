@@ -14,6 +14,10 @@ sub main()
         end function
     })
 
+    _brs_.mockFunction("shouldBeMocked", function() as dynamic
+        return "mocked correctly!"
+    end function)
+
     m1 = createObject("roSGNode", "ComponentMockFunctions")
     real = createObject("roSGNode", "ComponentWithoutMockFunctions")
 end sub

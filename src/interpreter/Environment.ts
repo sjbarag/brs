@@ -253,9 +253,6 @@ export class Environment {
     public createSubEnvironment(includeModuleScope: boolean = true): Environment {
         let newEnvironment = new Environment(this.rootM);
         newEnvironment.global = new Map(this.global);
-        newEnvironment.module = includeModuleScope
-            ? new Map(this.module)
-            : new Map<string, BrsType>();
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mockObjects = this.mockObjects;
         newEnvironment.unscopedMockFunctions = this.unscopedMockFunctions;

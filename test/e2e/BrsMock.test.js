@@ -91,7 +91,7 @@ describe("end to end brightscript functions", () => {
             "GET status: 200",
             "POST status: 200",
             "false",
-            "mocked correctly!"
+            "mocked correctly!",
         ]);
     });
 

@@ -328,9 +328,9 @@ export class Environment {
      */
     private isMockedFunction(possibleMockFunction: BrsType, possibleMockName: string): boolean {
         return (
-            (possibleMockFunction instanceof Callable &&
-                this.scopedMockFunctions.has(possibleMockName)) ||
-            this.unscopedMockFunctions.has(possibleMockName)
+            possibleMockFunction instanceof Callable &&
+            (this.scopedMockFunctions.has(possibleMockName) ||
+                this.unscopedMockFunctions.has(possibleMockName))
         );
     }
 

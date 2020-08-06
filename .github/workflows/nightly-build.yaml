@@ -1,10 +1,9 @@
 {
   name: "Nightly build",
   on: {
-    schedule: [
-      # build at ~00:05 UTC daily (startup delays may affect that)
-      { cron: "05 07 * * *" }
-    ]
+    push: {
+      branches: [ "debug-nightly-build" ]
+    },
   },
   jobs: {
     publish: {

@@ -44,7 +44,7 @@ export function getPath(fileUri: string) {
  * so that we're searching the correct place.
  *   ex. "tmp:/test/test1.txt" -> "/test/test1.txt"
  *   ex. "pkg:/test/test1.txt" -> "/path/to/proj/test/test1.txt"
- * 
+ *
  */
 export function getScopedPath(interpreter: Interpreter, fileUri: string) {
     let url = new URL(fileUri);

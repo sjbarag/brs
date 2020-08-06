@@ -25,7 +25,7 @@ let interpreter;
 describe("global file I/O functions", () => {
     beforeEach(() => {
         interpreter = new Interpreter({
-            root: "hello/world"
+            root: "hello/world",
         }); // reset the file systems
     });
 

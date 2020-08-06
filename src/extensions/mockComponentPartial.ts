@@ -31,7 +31,11 @@ export const mockComponentPartial = new Callable("mockComponentPartial", {
                 .filter(([_, value]) => value.kind === ValueKind.Callable)
                 .forEach(([key, value]) => {
                     if (value instanceof Callable) {
-                        maybeComponent?.environment?.setMockFunction(key.toString(), value);
+                        maybeComponent?.environment?.setMockFunction(
+                            key.toString(),
+                            value,
+                            /* isScoped */ true
+                        );
                     }
                 });
         } else {

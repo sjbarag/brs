@@ -666,21 +666,4 @@ describe("end to end brightscript functions", () => {
             "Node",
         ]);
     });
-
-    test("components/scripts/MockFunctionsMain.brs", async () => {
-        await execute(
-            [resourceFile("components", "scripts", "MockFunctionsMain.brs")],
-            outputStreams
-        );
-        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
-            "{fake:'json'}",
-            "GET status: 400",
-            "POST status: 500",
-            "true",
-            "{real: 'json'}",
-            "GET status: 200",
-            "POST status: 200",
-            "false",
-        ]);
-    });
 });

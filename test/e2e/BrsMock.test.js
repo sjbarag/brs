@@ -86,10 +86,12 @@ describe("end to end brightscript functions", () => {
             "GET status: 400",
             "POST status: 500",
             "true",
+            "mocked correctly!",
             "{real: 'json'}",
             "GET status: 200",
             "POST status: 200",
             "false",
+            "mocked correctly!",
         ]);
     });
 

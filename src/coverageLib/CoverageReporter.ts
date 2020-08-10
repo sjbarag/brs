@@ -126,7 +126,7 @@ export class CoverageReporter {
                 partiallyCoveredFiles.push(relPath);
             }
 
-            if (coverage.lines === coverage.coveredLines) {
+            if (coverage.lines > 0 && coverage.lines === coverage.coveredLines) {
                 fullyCoveredFiles.push(relPath);
             }
         });

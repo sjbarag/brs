@@ -3,7 +3,7 @@ import path from "path";
 import { table } from "table";
 
 import { ComponentScopeResolver, Stmt, Expr } from "../parser";
-import { ExecutionOptions } from "../interpreter";
+import { ExecutionOptions, Interpreter } from "../interpreter";
 import { FileCoverage } from "./FileCoverage";
 import { LexerParserFn } from "../LexerParser";
 import { BrsInvalid, BrsType } from "../brsTypes";
@@ -26,7 +26,7 @@ export class CoverageReporter {
         readonly componentScopeResolver: ComponentScopeResolver
     ) {}
 
-    public async crawlBrsFiles(lexerParserFn: LexerParserFn) {
+    public async crawlBrsFiles() {
         let filePattern = path.join(
             this.executionOptions.root,
             "(components|source)",
@@ -38,13 +38,6 @@ export class CoverageReporter {
             return { type: "text/brightscript", uri: filePath };
         });
 
-        // let lexedAndParsed = await lexerParserFn(filePaths);
-        // lexedAndParsed.map((statement: Stmt.Statement) => {
-        //     if (!(statement instanceof Stmt.Function)) {
-        //         console.log("IT'S NOT ONE");
-        //     }
-        // });
-
         scripts.forEach((script) => {
             this.files.set(script.uri, new FileCoverage(script.uri));
         });
@@ -53,28 +46,19 @@ export class CoverageReporter {
 
         statementCollection.forEach((statements) => {
             statements.forEach((statement) => {
-                // console.log(statement.location);
                 let file = this.files.get(statement.location.file);
                 if (!file) {
                     return;
-                    // throw new Error(
-                    //     "No file found for statement. File path: " + statement.location.file
-                    // );
                 }
 
                 file.addStatement(statement);
             });
         });
-
-        // console.log(this.files);
     }
 
     public logStatementHit(statement: Stmt.Statement) {
         let file = this.files.get(statement.location.file);
         if (!file) {
-            // throw new Error(
-            //     "No file found for statement. File path: " + statement.location.file
-            // );
             return;
         }
 
@@ -84,16 +68,13 @@ export class CoverageReporter {
     public logExpressionHit(expression: Expr.Expression) {
         let file = this.files.get(expression.location.file);
         if (!file) {
-            // throw new Error(
-            //     "No file found for statement. File path: " + statement.location.file
-            // );
             return;
         }
 
         file.logExpressionHit(expression);
     }
 
-    public printCoverage(files?: string[]) {
+    public printCoverage(interpreter: Interpreter) {
         let coverageReport: any[] = [["File", "Lines", "Covered", "Uncovered lines"]];
         let totalLines = 0;
         let totalCoveredLines = 0;
@@ -123,7 +104,7 @@ export class CoverageReporter {
         });
 
         // print full coverage report
-        console.log(
+        interpreter.stdout.write(
             table(coverageReport, {
                 columns: {
                     3: {
@@ -134,7 +115,7 @@ export class CoverageReporter {
         );
 
         // print summary
-        console.log(
+        interpreter.stdout.write(
             table([
                 ["Files", "Partially Covered Files", "Fully Covered Files", "Lines", "% Lines Covered"],
                 [

@@ -73,7 +73,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
             executionOptions,
             componentScopeResolver
         );
-        await coverageReporter.crawlBrsFiles(lexerParserFn);
+        await coverageReporter.crawlBrsFiles();
         interpreter.setCoverageReporter(coverageReporter);
     }
 
@@ -82,7 +82,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     let returnValues = interpreter.exec(mainStatements);
 
     if (executionOptions.generateCoverage && coverageReporter) {
-        coverageReporter.printCoverage(filenames);
+        coverageReporter.printCoverage(interpreter);
     }
 
     return returnValues;

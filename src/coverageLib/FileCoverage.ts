@@ -22,8 +22,12 @@ interface LineCoverage extends Hits {
 
 interface FileCoverageReport {
     lines: number;
-    covered: number;
-    uncoveredLines: number[];
+    coveredLines: number;
+    uncoveredLineList: number[];
+    statements: number;
+    coveredStatements: number;
+    expressions: number;
+    coveredExpressions: number;
 }
 
 export class FileCoverage {
@@ -33,19 +37,42 @@ export class FileCoverage {
 
     public getCoverage(): FileCoverageReport {
         let coveredLines = 0;
-        let uncoveredLines: number[] = [];
+        let uncoveredLineList: number[] = [];
+        let statements = 0;
+        let coveredStatements = 0;
+        let expressions = 0;
+        let coveredExpressions = 0;
         this.lines.forEach(line => {
             if (line.hits > 0) {
                 coveredLines++;
             } else {
-                uncoveredLines.push(line.lineNumber);
+                uncoveredLineList.push(line.lineNumber);
             }
+
+            statements += line.statements.length;
+            expressions += line.expressions.length;
+
+            line.statements.forEach((statement) => {
+                if (statement.hits > 0) {
+                    coveredStatements++;
+                }
+            });
+
+            line.expressions.forEach((expression) => {
+                if (expression.hits > 0) {
+                    coveredExpressions++;
+                }
+            });
         });
 
         return {
             lines: this.lines.size,
-            covered: coveredLines,
-            uncoveredLines
+            coveredLines: coveredLines,
+            uncoveredLineList,
+            statements,
+            coveredStatements,
+            expressions,
+            coveredExpressions
         }
     }
 

@@ -75,30 +75,58 @@ export class CoverageReporter {
     }
 
     public printCoverage(interpreter: Interpreter) {
-        let coverageReport: any[] = [["File", "Lines", "Covered", "Uncovered lines"]];
-        let totalLines = 0;
-        let totalCoveredLines = 0;
+        function getPercentStr(num: number, denom: number) {
+            if (denom === 0) {
+                return `0/0`
+            }
 
+            let percent = (num / denom) * 100;
+            return `${percent > 0 ? percent.toFixed(2) : 0}% (${num}/${denom})`
+        }
+
+        let coverageReport: any[] = [["File", "Lines", "Statements", "Expressions", "Uncovered lines"]];
+
+        // lines
+        let lines = 0;
+        let coveredLines = 0;
+
+        // files
         let partiallyCoveredFiles: string[] = [];
         let fullyCoveredFiles: string[] = [];
+
+        // statements
+        let statements = 0;
+        let coveredStatements = 0
+
+        // expressions
+        let expressions = 0;
+        let coveredExpressions = 0
+
         this.files.forEach((file) => {
             let relPath = path.posix.relative(this.executionOptions.root, file.filePath);
             let coverage = file.getCoverage();
             coverageReport.push([
                 relPath,
-                coverage.lines,
-                coverage.covered,
-                coverage.uncoveredLines.join().slice(0, 15),
+                getPercentStr(coverage.coveredLines, coverage.lines),
+                getPercentStr(coverage.coveredStatements, coverage.statements),
+                getPercentStr(coverage.coveredExpressions, coverage.expressions),
+                coverage.coveredLines > 0 ? coverage.uncoveredLineList.join().slice(0, 25): "all"
             ]);
 
-            totalLines += coverage.lines;
-            totalCoveredLines += coverage.covered;
+            lines += coverage.lines;
+            coveredLines += coverage.coveredLines;
 
-            if (coverage.covered > 0) {
+            statements += coverage.statements;
+            coveredStatements += coverage.coveredStatements;
+
+            expressions += coverage.expressions;
+            coveredExpressions += coverage.coveredExpressions;
+
+            if (coverage.coveredLines > 0) {
                 partiallyCoveredFiles.push(relPath);
             }
 
-            if (coverage.lines === coverage.covered) {
+            if (coverage.lines === coverage.coveredLines) {
                 fullyCoveredFiles.push(relPath);
             }
         });
@@ -107,23 +135,32 @@ export class CoverageReporter {
         interpreter.stdout.write(
             table(coverageReport, {
                 columns: {
-                    3: {
-                        truncate: 13,
+                    4: {
+                        truncate: 20,
                     },
                 },
             })
         );
 
+
         // print summary
         interpreter.stdout.write(
             table([
-                ["Files", "Partially Covered Files", "Fully Covered Files", "Lines", "% Lines Covered"],
+                [
+                    "Files",
+                    "Partially Covered Files",
+                    "Fully Covered Files",
+                    "Lines",
+                    "Statements",
+                    "Expressions",
+                ],
                 [
                     this.files.size,
-                    `${partiallyCoveredFiles.length} (${((partiallyCoveredFiles.length / this.files.size) * 100).toFixed(2)}%)`,
-                    `${fullyCoveredFiles.length} (${((fullyCoveredFiles.length / this.files.size) * 100).toFixed(2)}%)`,
-                    totalLines,
-                    ((totalCoveredLines / totalLines) * 100).toFixed(2)
+                    getPercentStr(partiallyCoveredFiles.length, this.files.size),
+                    getPercentStr(fullyCoveredFiles.length, this.files.size),
+                    getPercentStr(coveredLines, lines),
+                    getPercentStr(coveredStatements, statements),
+                    getPercentStr(coveredExpressions, expressions),
                 ],
             ])
         );

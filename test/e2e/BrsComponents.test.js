@@ -680,8 +680,6 @@ describe("end to end brightscript functions", () => {
             "Node",
         ]);
     });
-<<<<<<< HEAD
-=======
 
     test("components/scripts/MockFunctionsMain.brs", async () => {
         await execute(
@@ -761,5 +759,4 @@ describe("end to end brightscript functions", () => {
             "true",
         ]);
     });
->>>>>>> add e2e tests WIP
 });

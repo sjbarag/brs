@@ -482,10 +482,8 @@ describe("RoDeviceInfo", () => {
                 ]);
                 let aa = method.call(interpreter, config);
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("result"))).toEqual(BrsBoolean.False);
-                expect(aa.get(new BrsString("updated"))).toEqual(new BrsString("level;profile"));
+                expect(aa.get(new BrsString("result"))).toEqual(BrsBoolean.True);
                 expect(aa.get(new BrsString("codec"))).toEqual(new BrsString("mpeg4 avc"));
-                expect(aa.get(new BrsString("level"))).toEqual(new BrsString("4.1"));
             });
         });
         describe("getUIResolution", () => {

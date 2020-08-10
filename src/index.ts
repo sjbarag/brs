@@ -8,10 +8,11 @@ import {
     ComponentDefinition,
     ComponentScript,
 } from "./componentprocessor";
-import { Parser } from "./parser";
+import { Parser, ComponentScopeResolver } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
+import { CoverageReporter } from "./coverageLib";
 
 import * as _lexer from "./lexer";
 export { _lexer as lexer };
@@ -55,16 +56,36 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     });
 
     let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);
+    let componentScopeResolver = new ComponentScopeResolver(componentDefinitions, lexerParserFn);
+
     const interpreter = await Interpreter.withSubEnvsFromComponents(
         componentDefinitions,
+        componentScopeResolver,
         lexerParserFn
     );
     if (!interpreter) {
         throw new Error("Unable to build interpreter.");
     }
+    
+    let coverageReporter = null;
+    if (executionOptions.generateCoverage) {
+        coverageReporter = new CoverageReporter(
+            executionOptions,
+            componentScopeResolver
+        );
+        await coverageReporter.crawlBrsFiles(lexerParserFn);
+        interpreter.setCoverageReporter(coverageReporter);
+    }
 
     let mainStatements = await lexerParserFn(filenames);
-    return interpreter.exec(mainStatements);
+
+    let returnValues = interpreter.exec(mainStatements);
+
+    if (executionOptions.generateCoverage && coverageReporter) {
+        coverageReporter.printCoverage(filenames);
+    }
+
+    return returnValues;
 }
 
 /**

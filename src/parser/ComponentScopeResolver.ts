@@ -24,6 +24,15 @@ export class ComponentScopeResolver {
     }
 
     /**
+     * Resolves the component functions in scope based on the extends hierarchy.
+     * @param component Instance of the component to resolve function scope for.
+     * @returns All statements in scope for the resolved component
+     */
+    public async resolveScripts(scripts: ComponentScript[]) {
+        return Promise.all(this.fetchMemoizedStatements(scripts));
+    }
+
+    /**
      * Takes a sequence of statement collections and flattens them into a
      * single statement collection. This function assumes that the components
      * given in the statement map are in order of hierarchy with the furthest
@@ -31,7 +40,7 @@ export class ComponentScopeResolver {
      * @param statementMap Statement collections broken up by component.
      * @returns A collection of statements that have been flattened based on hierarchy.
      */
-    private flatten(statementMap: Stmt.Statement[][]): Stmt.Statement[] {
+    public flatten(statementMap: Stmt.Statement[][]): Stmt.Statement[] {
         let statements = statementMap.shift() || [];
         let statementMemo = new Set(
             statements

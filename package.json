@@ -26,6 +26,7 @@
     "types/"
   ],
   "dependencies": {
+    "@types/table": "^5.0.0",
     "commander": "^2.12.2",
     "fast-glob": "^3.0.1",
     "long": "^3.2.0",

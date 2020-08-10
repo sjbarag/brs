@@ -41,6 +41,7 @@ import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 
 import { ComponentDefinition } from "../componentprocessor";
 import pSettle from "p-settle";
+import { CoverageReporter } from "../coverageLib";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -48,6 +49,7 @@ export interface ExecutionOptions {
     root: string;
     stdout: NodeJS.WriteStream;
     stderr: NodeJS.WriteStream;
+    generateCoverage: boolean;
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
@@ -55,6 +57,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
     root: process.cwd(),
     stdout: process.stdout,
     stderr: process.stderr,
+    generateCoverage: true
 };
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
@@ -75,6 +78,22 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     get environment() {
         return this._environment;
+    }
+
+    public setCoverageReporter(reporter: CoverageReporter) {
+        this.coverageReporter = reporter;
+    }
+
+    public reportStatementHit(statement: Stmt.Statement) {
+        if (this.options.generateCoverage && this.coverageReporter) {
+            this.coverageReporter.logStatementHit(statement);
+        }
+    }
+
+    public reportExpressionHit(expression: Expr.Expression) {
+        if (this.options.generateCoverage && this.coverageReporter) {
+            this.coverageReporter.logExpressionHit(expression);
+        }
     }
 
     /**
@@ -108,6 +127,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
      */
     public static async withSubEnvsFromComponents(
         componentMap: Map<string, ComponentDefinition>,
+        componentScopeResolver: ComponentScopeResolver,
         parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>,
         options: ExecutionOptions = defaultExecutionOptions
     ) {
@@ -116,7 +136,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         interpreter.environment.nodeDefMap = componentMap;
 
-        let componentScopeResolver = new ComponentScopeResolver(componentMap, parseFn);
         await pSettle(
             Array.from(componentMap).map(async (componentKV) => {
                 let [_, component] = componentKV;

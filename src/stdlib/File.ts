@@ -38,6 +38,24 @@ export function getPath(fileUri: string) {
     return new URL(fileUri).pathname;
 }
 
+/*
+ * Returns a memfs file path from a brs file uri. If the brs file uri
+ * has the "pkg" protocol, append the file path with our root directory
+ * so that we're searching the correct place.
+ *   ex. "tmp:/test/test1.txt" -> "/test/test1.txt"
+ *   ex. "pkg:/test/test1.txt" -> "/path/to/proj/test/test1.txt"
+ *
+ */
+export function getScopedPath(interpreter: Interpreter, fileUri: string) {
+    let url = new URL(fileUri);
+    let filePath = getPath(fileUri);
+    if (url.protocol === "pkg:") {
+        return path.join(interpreter.options.root, filePath);
+    }
+
+    return filePath;
+}
+
 /** Copies a file from src to dst, return true if successful */
 export const CopyFile = new Callable("CopyFile", {
     signature: {
@@ -57,8 +75,8 @@ export const CopyFile = new Callable("CopyFile", {
             return BrsBoolean.False;
         }
 
-        const srcMemfsPath = getPath(src.value);
-        const dstMemfsPath = getPath(dst.value);
+        const srcMemfsPath = getScopedPath(interpreter, src.value);
+        const dstMemfsPath = getScopedPath(interpreter, dst.value);
         try {
             let contents = srcVolume.readFileSync(srcMemfsPath);
             dstVolume.writeFileSync(dstMemfsPath, contents);
@@ -88,8 +106,8 @@ export const MoveFile = new Callable("MoveFile", {
             return BrsBoolean.False;
         }
 
-        const srcMemfsPath = getPath(src.value);
-        const dstMemfsPath = getPath(dst.value);
+        const srcMemfsPath = getScopedPath(interpreter, src.value);
+        const dstMemfsPath = getScopedPath(interpreter, dst.value);
         try {
             let contents = srcVolume.readFileSync(srcMemfsPath);
             dstVolume.writeFileSync(dstMemfsPath, contents);
@@ -113,7 +131,7 @@ export const DeleteFile = new Callable("DeleteFile", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getPath(file.value);
+        const memfsPath = getScopedPath(interpreter, file.value);
         try {
             volume.unlinkSync(memfsPath);
             return BrsBoolean.True;
@@ -135,7 +153,7 @@ export const DeleteDirectory = new Callable("DeleteDirectory", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getPath(dir.value);
+        const memfsPath = getScopedPath(interpreter, dir.value);
         try {
             volume.rmdirSync(memfsPath);
             return BrsBoolean.True;
@@ -157,7 +175,7 @@ export const CreateDirectory = new Callable("CreateDirectory", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getPath(dir.value);
+        const memfsPath = getScopedPath(interpreter, dir.value);
         try {
             volume.mkdirSync(memfsPath);
             return BrsBoolean.True;
@@ -190,15 +208,15 @@ export const ListDir = new Callable("ListDir", {
         args: [new StdlibArgument("path", ValueKind.String)],
         returns: ValueKind.Object,
     },
-    impl: (interpreter: Interpreter, path: BrsString) => {
-        const volume = getVolumeByPath(interpreter, path.value);
+    impl: (interpreter: Interpreter, pathArg: BrsString) => {
+        const volume = getVolumeByPath(interpreter, pathArg.value);
         if (volume === null) {
             return new RoArray([]);
         }
 
-        const memfsPath = getPath(path.value);
+        let localPath = getScopedPath(interpreter, pathArg.value);
         try {
-            let subPaths = volume.readdirSync(memfsPath).map((s) => new BrsString(s));
+            let subPaths = volume.readdirSync(localPath).map((s) => new BrsString(s));
             return new RoArray(subPaths);
         } catch (err) {
             return new RoArray([]);
@@ -218,7 +236,7 @@ export const ReadAsciiFile = new Callable("ReadAsciiFile", {
             return new BrsString("");
         }
 
-        const memfsPath = getPath(filepath.value);
+        const memfsPath = getScopedPath(interpreter, filepath.value);
         return new BrsString(volume.readFileSync(memfsPath).toString());
     },
 });
@@ -238,7 +256,7 @@ export const WriteAsciiFile = new Callable("WriteAsciiFile", {
             return BrsBoolean.False;
         }
 
-        const memfsPath = getPath(filepath.value);
+        const memfsPath = getScopedPath(interpreter, filepath.value);
         volume.writeFileSync(memfsPath, text.value);
         return BrsBoolean.True;
     },
@@ -260,7 +278,7 @@ export const MatchFiles = new Callable("MatchFiles", {
             return new RoArray([]);
         }
 
-        let localPath = path.join(interpreter.options.root, getPath(pathArg.value));
+        let localPath = getScopedPath(interpreter, pathArg.value);
         try {
             let knownFiles = fs.readdirSync(localPath, "utf8");
             let matchedFiles = nanomatch.match(knownFiles, patternIn.value, {

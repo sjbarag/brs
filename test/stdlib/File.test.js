@@ -10,6 +10,7 @@ const {
     WriteAsciiFile,
     MatchFiles,
     getPath,
+    getScopedPath,
     getVolumeByPath,
 } = require("../../lib/stdlib/index");
 const { Interpreter } = require("../../lib/interpreter");
@@ -23,7 +24,9 @@ let interpreter;
 
 describe("global file I/O functions", () => {
     beforeEach(() => {
-        interpreter = new Interpreter(); // reset the file systems
+        interpreter = new Interpreter({
+            root: "hello/world",
+        }); // reset the file systems
     });
 
     describe("file I/O utility utilities", () => {
@@ -36,6 +39,11 @@ describe("global file I/O functions", () => {
         it("converts a brs path to a memfs path", () => {
             expect(getPath("tmp:/test.txt")).toEqual("/test.txt");
             expect(getPath("tmp:///test.txt")).toEqual("/test.txt");
+        });
+
+        it("converts a brs path to a scoped memfs path", () => {
+            expect(getScopedPath(interpreter, "tmp:/test.txt")).toEqual("/test.txt");
+            expect(getScopedPath(interpreter, "pkg:/test.txt")).toEqual("hello/world/test.txt");
         });
     });
 

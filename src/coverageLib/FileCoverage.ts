@@ -1,31 +1,9 @@
 import { Stmt, Expr } from "../parser";
 import { Location, isToken } from "../lexer";
-import { BrsInvalid, BrsType, BrsInterface, isIterable } from "../brsTypes";
-import { ExitFor } from "../parser/Statement";
-
-interface Line {
-    location: Location;
-}
-
-interface Branch {
-    statement: Stmt.If | Stmt.ElseIf | Stmt.Block;
-}
-
-interface File {
-    path: string;
-    lines: Line[];
-
-    // branches: string[];
-    // functions: string[];
-    // statements: string[];
-}
+import { BrsInvalid, BrsType } from "../brsTypes";
 
 interface Hits {
     hits: number;
-}
-
-interface FunctionCoverage extends Hits {
-    statement: Stmt.Function;
 }
 
 interface StatementCoverage extends Hits {
@@ -54,15 +32,6 @@ export class FileCoverage {
     constructor(readonly filePath: string) {}
 
     public getCoverage(): FileCoverageReport {
-        // console.log(`File: ${this.filePath}`);
-        // if (this.filePath.includes("LoginOptionsPage.brs") || this.filePath.includes("Coverage.brs")) {
-        //     this.lines.forEach(line => {
-        //         console.log(line.lineNumber);
-        //         console.log(line.statements);
-        //         console.log(line.expressions);
-        //     })
-        // }
-
         let coveredLines = 0;
         let uncoveredLines: number[] = [];
         this.lines.forEach(line => {
@@ -72,8 +41,6 @@ export class FileCoverage {
                 uncoveredLines.push(line.lineNumber);
             }
         });
-
-        // console.log(`    Lines: ${this.lines.size}, Covered: ${coveredLines}\n`);
 
         return {
             lines: this.lines.size,
@@ -111,8 +78,8 @@ export class FileCoverage {
             if (Location.equals(existingExpr.expression.location, expression.location)) {
                 existingExpr.hits++;
                 
-                // in the event that there are multiple statements on a line, i.e. a single line
-                // if-then-else statement, we don't want to count every statement hit as a line hit.
+                // If there's a statement on the line, let statement access be the decider
+                // of whether or not this line has been hit. Otherwise, use the first expression.
                 if (line.statements.length === 0 && index === 0) {
                     line!.hits++;
                 }

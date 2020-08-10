@@ -48,7 +48,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getModel");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("4280x"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getModelDisplayName", () => {
@@ -57,7 +57,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getModelDisplayName");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("Roku 4 XD"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getModelType", () => {
@@ -66,7 +66,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getModelType");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("TV"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getModelDetails", () => {
@@ -77,10 +77,6 @@ describe("RoDeviceInfo", () => {
                 let aa = method.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("VendorName"))).toEqual(new BrsString("Roku"));
-                expect(aa.get(new BrsString("ModelNumber"))).toEqual(new BrsString("5000x"));
-                expect(aa.get(new BrsString("VendorUSBName"))).toEqual(new BrsString(""));
-                expect(aa.get(new BrsString("ScreenSize"))).toEqual(new BrsString("71"));
             });
         });
         describe("getFriendlyName", () => {
@@ -89,9 +85,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getFriendlyName");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(
-                    new BrsString("Roku 5000X, Serial Number: 12121212121212")
-                );
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getOSVersion", () => {
@@ -100,12 +94,12 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getOSVersion");
 
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("name"))).toEqual(new BrsString("9"));
-                expect(aa.get(new BrsString("minor"))).toEqual(new BrsString("2"));
-                expect(aa.get(new BrsString("revision"))).toEqual(new BrsString("6"));
-                expect(aa.get(new BrsString("build"))).toEqual(new BrsString("4127"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getVersion", () => {
@@ -114,7 +108,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getVersion");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("034.08E01185A"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getRIDA", () => {
@@ -123,9 +117,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getRIDA");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(
-                    new BrsString("123e4567-e89b-12d3-a456-426655440000")
-                );
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("isRIDADisabled", () => {
@@ -143,9 +135,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getChannelClientId");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(
-                    new BrsString("123e4567-e89b-12d3-a456-426655440000")
-                );
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getUserCountryCode", () => {
@@ -164,10 +154,9 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getRandomUUID");
 
+                let uuid = method.call(interpreter);
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(
-                    new BrsString("123e4567-e89b-12d3-a456-426655440000")
-                );
+                expect(uuid).toBeTruthy();
             });
         });
         describe("getTimeZone", () => {
@@ -187,7 +176,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("hasFeature");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, new BrsString("on"))).toEqual(BrsBoolean.True);
+                expect(method.call(interpreter, new BrsString("on"))).toEqual(BrsBoolean.False);
             });
         });
         describe("getCurrentLocale", () => {
@@ -218,7 +207,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getPreferredCaptionLanguage");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("eng"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("timeSinceLastKeyPress", () => {
@@ -227,7 +216,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("timeSinceLastKeyPress");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new Int32(360));
+                expect(method.call(interpreter)).toEqual(new Int32(0));
             });
         });
         describe("getDrmInfo", () => {
@@ -236,9 +225,12 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getDrmInfo");
 
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("playready"))).toEqual(new BrsString("tee;ss"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getDrmInfoEx", () => {
@@ -247,22 +239,24 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getDrmInfoEx");
 
                 let aa = method.call(interpreter);
-                let sub = aa.get(new BrsString("playready"));
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(sub.get(new BrsString("multikey"))).toEqual(BrsBoolean.False);
-                expect(sub.get(new BrsString("securestop"))).toEqual(BrsBoolean.True);
-                expect(sub.get(new BrsString("tee"))).toEqual(BrsBoolean.False);
-                expect(sub.get(new BrsString("version"))).toEqual(new Int32(2));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getCaptionsMode", () => {
             it("should fake captions mode setting to on", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getCaptionsMode");
+                let setCapMethod = deviceInfo.getMethod("setCaptionsMode");
+
+                setCapMethod.call(interpreter, new BrsString("on"));
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("On"));
+                expect(method.call(interpreter)).toEqual(new BrsString("on"));
             });
         });
         describe("setCaptionsMode", () => {
@@ -280,8 +274,8 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getCaptionsOption");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, new BrsString("default"))).toEqual(
-                    new BrsString("Default")
+                expect(method.call(interpreter, new BrsString("mode"))).toEqual(
+                    new BrsString("on")
                 );
             });
         });
@@ -291,7 +285,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getClockFormat");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("12h"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("enableAppFocusEvent", () => {
@@ -300,9 +294,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("enableAppFocusEvent");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, BrsBoolean.True)).toEqual(
-                    new BrsString("Event notifications are enabled")
-                );
+                expect(method.call(interpreter, BrsBoolean.True)).toEqual(BrsBoolean.True);
             });
         });
         describe("enableScreensaverExitedEvent", () => {
@@ -311,9 +303,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("enableScreensaverExitedEvent");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, BrsBoolean.True)).toEqual(
-                    new BrsString("Screen saver exit event notifications are enabled")
-                );
+                expect(method.call(interpreter, BrsBoolean.True)).toEqual(BrsBoolean.True);
             });
         });
         describe("enableLowGeneralMemoryEvent", () => {
@@ -322,9 +312,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("enableLowGeneralMemoryEvent");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, BrsBoolean.True)).toEqual(
-                    new BrsString("lowGeneralMemoryLevel event notifications are enabled")
-                );
+                expect(method.call(interpreter, BrsBoolean.True)).toEqual(BrsBoolean.True);
             });
         });
         describe("getGeneralMemoryLevel", () => {
@@ -333,7 +321,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getGeneralMemoryLevel");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("normal"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("isStoreDemoMode", () => {
@@ -369,7 +357,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getConnectionType");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("WiFi Connection"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getExternalIp", () => {
@@ -378,7 +366,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getExternalIp");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("192.0.0.101"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getIPAddrs", () => {
@@ -387,9 +375,12 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getIPAddrs");
 
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("network"))).toEqual(new BrsString("192.0.0.101"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getConnectionInfo", () => {
@@ -398,17 +389,12 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getConnectionInfo");
 
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("ip"))).toEqual(new BrsString("192.0.0.101"));
-                expect(aa.get(new BrsString("ssid"))).toEqual(new BrsString("ssid"));
-                expect(aa.get(new BrsString("gateway"))).toEqual(new BrsString("gateway"));
-                expect(aa.get(new BrsString("type"))).toEqual(new BrsString("WiFi Connection"));
-                expect(aa.get(new BrsString("name"))).toEqual(
-                    new BrsString("Connection Interface")
-                );
-                expect(aa.get(new BrsString("dns.0"))).toEqual(new BrsString("dns.0"));
-                expect(aa.get(new BrsString("dns.1"))).toEqual(new BrsString("dns.1"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getDisplayType", () => {
@@ -417,7 +403,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getDisplayType");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("HDTV"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getDisplayMode", () => {
@@ -426,7 +412,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getDisplayMode");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("1080p"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getDisplayAspectRatio", () => {
@@ -435,7 +421,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getDisplayAspectRatio");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("16x9"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getDisplaySize", () => {
@@ -443,10 +429,12 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getDisplaySize");
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("w"))).toEqual(new BrsString("720"));
-                expect(aa.get(new BrsString("h"))).toEqual(new BrsString("1280"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getVideoMode", () => {
@@ -455,7 +443,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getVideoMode");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("1280x720"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getDisplayProperties", () => {
@@ -464,25 +452,25 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getDisplayProperties");
 
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("Width"))).toEqual(new BrsString("1200cm"));
-                expect(aa.get(new BrsString("Height"))).toEqual(new BrsString("1200cm"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getSupportedGraphicsResolutions", () => {
             it("should return fake supported gfx resolution info.", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getSupportedGraphicsResolutions");
-
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("width"))).toEqual(new Int32(2880));
-                expect(aa.get(new BrsString("height"))).toEqual(new Int32(1880));
-                expect(aa.get(new BrsString("name"))).toEqual(new BrsString("120 cm"));
-                expect(aa.get(new BrsString("ui"))).toEqual(BrsBoolean.True);
-                expect(aa.get(new BrsString("preferred"))).toEqual(BrsBoolean.True);
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("canDecodeVideo", () => {
@@ -505,11 +493,12 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getUIResolution");
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
 
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("name"))).toEqual(new BrsString("HD"));
-                expect(aa.get(new BrsString("width"))).toEqual(new BrsString("1920"));
-                expect(aa.get(new BrsString("height"))).toEqual(new BrsString("1080"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
 
@@ -519,7 +508,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getGraphicsPlatform");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("opengl"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getModel", () => {
@@ -528,7 +517,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getModel");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("4280x"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("enableCodecCapChangedEvent", () => {
@@ -537,9 +526,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("enableCodecCapChangedEvent");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, BrsBoolean.True)).toEqual(
-                    new BrsString("Codec event notifications are enabled")
-                );
+                expect(method.call(interpreter, BrsBoolean.True)).toEqual(BrsBoolean.True);
             });
         });
         describe("getAudioOutputChannel", () => {
@@ -548,7 +535,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getAudioOutputChannel");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("5.1 surround"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("getAudioDecoderInfo", () => {
@@ -556,10 +543,12 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getAudioDecoderInfo");
                 let aa = method.call(interpreter);
+                let items = aa.getMethod("items");
+                let result = items.call(interpreter);
+
                 expect(method).toBeTruthy();
-                expect(aa.get(new BrsString("DD+"))).toEqual(new BrsString("8:6:0:1"));
-                expect(aa.get(new BrsString("AC3"))).toEqual(new BrsString("8:6:0:1"));
-                expect(aa.get(new BrsString("DTS"))).toEqual(new BrsString("8:6:0:1"));
+                expect(items).toBeTruthy();
+                expect(result.elements).toEqual(new RoArray([]).elements);
             });
         });
         describe("getSoundEffectsVolume", () => {
@@ -568,7 +557,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getSoundEffectsVolume");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new Int32(100));
+                expect(method.call(interpreter)).toEqual(new Int32(0));
             });
         });
         describe("isAudioGuideEnabled", () => {
@@ -577,7 +566,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("isAudioGuideEnabled");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(new BrsString("Audio guide is enabled"));
+                expect(method.call(interpreter)).toEqual(new BrsString(""));
             });
         });
         describe("enableAudioGuideChangedEvent", () => {
@@ -586,9 +575,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("enableAudioGuideChangedEvent");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, BrsBoolean.True)).toEqual(
-                    new BrsString("Audio guide change event notifications are enabled")
-                );
+                expect(method.call(interpreter, BrsBoolean.True)).toEqual(BrsBoolean.True);
             });
         });
     });

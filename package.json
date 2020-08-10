@@ -33,6 +33,7 @@
     "memory-fs": "^0.4.1",
     "nanomatch": "^1.2.13",
     "p-settle": "^2.1.0",
+    "uuid": "^8.3.0",
     "xmldoc": "^1.1.2"
   },
   "devDependencies": {

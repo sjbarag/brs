@@ -4,9 +4,22 @@ import { BrsComponent } from "./BrsComponent";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { RoAssociativeArray, AAMember } from "./RoAssociativeArray";
+import { v4 as uuidv4 } from "uuid";
+import { RoArray } from "./RoArray";
 
 export class RoDeviceInfo extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
+
+    private captionsMode = new BrsString("");
+    private captionsOption = new BrsString("");
+    private enableAppFocus = BrsBoolean.True;
+    private enableScreenSaverExited = BrsBoolean.True;
+    private enableLowGeneralMemory = BrsBoolean.True;
+    private enableLinkStatus = BrsBoolean.True;
+    private enableAudioGuideChanged = BrsBoolean.True;
+    private enableCodecCapChanged = BrsBoolean.True;
+    private videoFormat = ValueKind.Object;
+    private audioFormat = ValueKind.Object;
 
     constructor() {
         super("roDeviceInfo");
@@ -76,13 +89,136 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         return BrsBoolean.False;
     }
 
+    getCapsMode(): BrsString {
+        return this.captionsMode;
+    }
+
+    setCapsMode(mode: BrsString) {
+        this.captionsMode = mode;
+    }
+
+    setCaptionsOption(option: BrsString) {
+        this.captionsOption = option;
+    }
+
+    getCapsOption(option: BrsString) {
+        if (option.equalTo(new BrsString("mode"))) {
+            return new BrsString("on");
+        }
+        if (option.equalTo(new BrsString("text/font"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("text/effect"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("text/size"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("text/color"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("text/opacity"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("background/color"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("background/opacity"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("window/color"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("window/opacity"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("track"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("track_composite"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("track_analog"))) {
+            return new BrsString("default");
+        }
+        if (option.equalTo(new BrsString("muted"))) {
+            return new BrsString("default");
+        }
+
+        return new BrsString("");
+    }
+
+    getEnableAppFocusStatus() {
+        return this.enableAppFocus;
+    }
+
+    setEnableAppFocusStatus(enable: BrsBoolean) {
+        this.enableAppFocus = enable;
+    }
+
+    getEnableScreenSaverExitedStatus() {
+        return this.enableScreenSaverExited;
+    }
+
+    setEnableScreenSaverExitedStatus(enable: BrsBoolean) {
+        this.enableScreenSaverExited = enable;
+    }
+
+    getEnableLowGeneralMemoryStatus() {
+        return this.enableLowGeneralMemory;
+    }
+
+    setEnableLowGeneralMemoryStatus(enable: BrsBoolean) {
+        this.enableLowGeneralMemory = enable;
+    }
+
+    getEnableLinkStatus() {
+        return this.enableLinkStatus;
+    }
+
+    setEnableLinkStatus(enable: BrsBoolean) {
+        this.enableLinkStatus = enable;
+    }
+
+    getEnableAudioGuideChangedStatus() {
+        return this.enableAudioGuideChanged;
+    }
+
+    setEnableAudioGuideChangedStatus(enable: BrsBoolean) {
+        this.enableAudioGuideChanged = enable;
+    }
+
+    getEnableCodecCapChangedStatus() {
+        return this.enableCodecCapChanged;
+    }
+
+    setEnableCodecCapChangedStatus(enable: BrsBoolean) {
+        this.enableCodecCapChanged = enable;
+    }
+
+    setVideoFormat(videoFormat: ValueKind.Object) {
+        this.videoFormat = videoFormat;
+    }
+
+    getVideoFormat() {
+        return this.videoFormat;
+    }
+
+    setAudioFormat(audioFormat: ValueKind.Object) {
+        this.audioFormat = audioFormat;
+    }
+
+    getAudioFormat() {
+        return this.audioFormat;
+    }
+
     private getModel = new Callable("getModel", {
         signature: {
             args: [],
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("4280x");
+            return new BrsString("");
         },
     });
 
@@ -92,7 +228,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("Roku 4 XD");
+            return new BrsString("");
         },
     });
 
@@ -102,7 +238,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("TV");
+            return new BrsString("");
         },
     });
 
@@ -112,13 +248,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-            result.push({ name: new BrsString("VendorName"), value: new BrsString("Roku") });
-            result.push({ name: new BrsString("ModelNumber"), value: new BrsString("5000x") });
-            result.push({ name: new BrsString("VendorUSBName"), value: new BrsString("") });
-            result.push({ name: new BrsString("ScreenSize"), value: new BrsString("71") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -128,7 +258,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("Roku 5000X, Serial Number: 12121212121212");
+            return new BrsString("");
         },
     });
 
@@ -138,13 +268,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-            result.push({ name: new BrsString("name"), value: new BrsString("9") });
-            result.push({ name: new BrsString("minor"), value: new BrsString("2") });
-            result.push({ name: new BrsString("revision"), value: new BrsString("6") });
-            result.push({ name: new BrsString("build"), value: new BrsString("4127") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -154,7 +278,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("034.08E01185A");
+            return new BrsString("");
         },
     });
 
@@ -164,7 +288,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("123e4567-e89b-12d3-a456-426655440000");
+            return new BrsString("");
         },
     });
 
@@ -184,7 +308,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("123e4567-e89b-12d3-a456-426655440000");
+            return new BrsString("");
         },
     });
 
@@ -205,7 +329,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("123e4567-e89b-12d3-a456-426655440000");
+            let uuid = uuidv4();
+            return new BrsString(uuid);
         },
     });
 
@@ -226,7 +351,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Boolean,
         },
         impl: (_interpreter) => {
-            return BrsBoolean.True;
+            return BrsBoolean.False;
         },
     });
 
@@ -258,7 +383,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("eng");
+            return new BrsString("");
         },
     });
 
@@ -268,7 +393,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Int32,
         },
         impl: (_interpreter) => {
-            return new Int32(360);
+            return new Int32(0);
         },
     });
 
@@ -278,10 +403,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-            result.push({ name: new BrsString("playready"), value: new BrsString("tee;ss") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -291,19 +413,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-            let subresult = new Array<AAMember>();
-            subresult.push({ name: new BrsString("multikey"), value: BrsBoolean.False });
-            subresult.push({ name: new BrsString("securestop"), value: BrsBoolean.True });
-            subresult.push({ name: new BrsString("tee"), value: BrsBoolean.False });
-            subresult.push({ name: new BrsString("version"), value: new Int32(2) });
-
-            result.push({
-                name: new BrsString("playready"),
-                value: new RoAssociativeArray(subresult),
-            });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -313,7 +423,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("On");
+            return this.getCapsMode();
         },
     });
 
@@ -322,7 +432,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("mode", ValueKind.String)],
             returns: ValueKind.Boolean,
         },
-        impl: (_interpreter) => {
+        impl: (_interpreter, mode: BrsString) => {
+            this.setCapsMode(mode);
             return BrsBoolean.True;
         },
     });
@@ -332,8 +443,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("option", ValueKind.String)],
             returns: ValueKind.String,
         },
-        impl: (_interpreter) => {
-            return new BrsString("Default");
+        impl: (_interpreter, option: BrsString) => {
+            this.setCaptionsOption(option);
+            return this.getCapsOption(option);
         },
     });
 
@@ -343,7 +455,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("12h");
+            return new BrsString("");
         },
     });
 
@@ -352,8 +464,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Dynamic,
         },
-        impl: (_interpreter) => {
-            return new BrsString("Event notifications are enabled");
+        impl: (_interpreter, enable: BrsBoolean) => {
+            this.setEnableAppFocusStatus(enable);
+            return this.getEnableAppFocusStatus();
         },
     });
 
@@ -362,8 +475,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Dynamic,
         },
-        impl: (_interpreter) => {
-            return new BrsString("Screen saver exit event notifications are enabled");
+        impl: (_interpreter, enable: BrsBoolean) => {
+            this.setEnableScreenSaverExitedStatus(enable);
+            return this.getEnableScreenSaverExitedStatus();
         },
     });
 
@@ -372,8 +486,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Dynamic,
         },
-        impl: (_interpreter) => {
-            return new BrsString("lowGeneralMemoryLevel event notifications are enabled");
+        impl: (_interpreter, enable: BrsBoolean) => {
+            this.setEnableLowGeneralMemoryStatus(enable);
+            return this.getEnableLowGeneralMemoryStatus();
         },
     });
 
@@ -383,7 +498,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("normal");
+            return new BrsString("");
         },
     });
 
@@ -412,8 +527,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Boolean,
         },
-        impl: (_interpreter) => {
-            return BrsBoolean.True;
+        impl: (_interpreter, enable: BrsBoolean) => {
+            this.setEnableLinkStatus(enable);
+            return this.getEnableLinkStatus();
         },
     });
 
@@ -423,7 +539,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("WiFi Connection");
+            return new BrsString("");
         },
     });
 
@@ -433,7 +549,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("192.0.0.101");
+            return new BrsString("");
         },
     });
 
@@ -443,11 +559,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("network"), value: new BrsString("192.0.0.101") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -457,20 +569,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("type"), value: new BrsString("WiFi Connection") });
-            result.push({
-                name: new BrsString("name"),
-                value: new BrsString("Connection Interface"),
-            });
-            result.push({ name: new BrsString("ip"), value: new BrsString("192.0.0.101") });
-            result.push({ name: new BrsString("ssid"), value: new BrsString("ssid") });
-            result.push({ name: new BrsString("gateway"), value: new BrsString("gateway") });
-            result.push({ name: new BrsString("dns.0"), value: new BrsString("dns.0") });
-            result.push({ name: new BrsString("dns.1"), value: new BrsString("dns.1") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -480,7 +579,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("HDTV");
+            return new BrsString("");
         },
     });
 
@@ -490,7 +589,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("1080p");
+            return new BrsString("");
         },
     });
 
@@ -500,7 +599,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("16x9");
+            return new BrsString("");
         },
     });
 
@@ -510,12 +609,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("w"), value: new BrsString("720") });
-            result.push({ name: new BrsString("h"), value: new BrsString("1280") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -525,7 +619,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("1280x720");
+            return new BrsString("");
         },
     });
 
@@ -535,12 +629,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("Width"), value: new BrsString("1200cm") });
-            result.push({ name: new BrsString("Height"), value: new BrsString("1200cm") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -550,15 +639,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("width"), value: new Int32(2880) });
-            result.push({ name: new BrsString("height"), value: new Int32(1880) });
-            result.push({ name: new BrsString("name"), value: new BrsString("120 cm") });
-            result.push({ name: new BrsString("ui"), value: BrsBoolean.True });
-            result.push({ name: new BrsString("preferred"), value: BrsBoolean.True });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -567,13 +648,13 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("video_format", ValueKind.Object)],
             returns: ValueKind.Object,
         },
-        impl: (_interpreter) => {
+        impl: (_interpreter, videoFormat: ValueKind.Object) => {
+            this.setVideoFormat(videoFormat);
+
             let result = new Array<AAMember>();
 
-            result.push({ name: new BrsString("result"), value: BrsBoolean.False });
-            result.push({ name: new BrsString("updated"), value: new BrsString("level;profile") });
+            result.push({ name: new BrsString("result"), value: BrsBoolean.True });
             result.push({ name: new BrsString("codec"), value: new BrsString("mpeg4 avc") });
-            result.push({ name: new BrsString("level"), value: new BrsString("4.1") });
 
             return new RoAssociativeArray(result);
         },
@@ -585,13 +666,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("name"), value: new BrsString("HD") });
-            result.push({ name: new BrsString("width"), value: new BrsString("1920") });
-            result.push({ name: new BrsString("height"), value: new BrsString("1080") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -601,7 +676,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("opengl");
+            return new BrsString("");
         },
     });
 
@@ -610,8 +685,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Dynamic,
         },
-        impl: (_interpreter) => {
-            return new BrsString("Codec event notifications are enabled");
+        impl: (_interpreter, enable: BrsBoolean) => {
+            this.setEnableCodecCapChangedStatus(enable);
+            return this.getEnableAudioGuideChangedStatus();
         },
     });
 
@@ -621,7 +697,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return new BrsString("5.1 surround");
+            return new BrsString("");
         },
     });
 
@@ -631,13 +707,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter) => {
-            let result = new Array<AAMember>();
-
-            result.push({ name: new BrsString("DD+"), value: new BrsString("8:6:0:1") });
-            result.push({ name: new BrsString("AC3"), value: new BrsString("8:6:0:1") });
-            result.push({ name: new BrsString("DTS"), value: new BrsString("8:6:0:1") });
-
-            return new RoAssociativeArray(result);
+            return new RoAssociativeArray([]);
         },
     });
 
@@ -646,10 +716,11 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("audio_format", ValueKind.Object)],
             returns: ValueKind.Object,
         },
-        impl: (_interpreter) => {
+        impl: (_interpreter, audioFormat: ValueKind.Object) => {
+            this.setAudioFormat(audioFormat);
             let result = new Array<AAMember>();
 
-            result.push({ name: new BrsString("canPlayAudioFormat"), value: BrsBoolean.True });
+            result.push({ name: new BrsString("result"), value: BrsBoolean.True });
 
             return new RoAssociativeArray(result);
         },
@@ -661,7 +732,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Int32,
         },
         impl: (_interpreter) => {
-            return new Int32(100);
+            return new Int32(0);
         },
     });
 
@@ -671,7 +742,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (_interpreter) => {
-            return new BrsString("Audio guide is enabled");
+            return new BrsString("");
         },
     });
 
@@ -680,8 +751,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             args: [new StdlibArgument("enable", ValueKind.Boolean)],
             returns: ValueKind.Dynamic,
         },
-        impl: (_interpreter) => {
-            return new BrsString("Audio guide change event notifications are enabled");
+        impl: (_interpreter, enable: BrsBoolean) => {
+            this.setEnableAudioGuideChangedStatus(enable);
+            return this.getEnableAudioGuideChangedStatus();
         },
     });
 }

@@ -1,4 +1,4 @@
-import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
+import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid, BrsString } from "../BrsType";
 import { BrsType, Int32 } from "..";
 import { BrsComponent } from "./BrsComponent";
 import { Callable, StdlibArgument } from "../Callable";
@@ -319,7 +319,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let countryCode = process.env.LOCALE;
-            return countryCode ? new BrsString(countryCode) : BrsInvalid.Instance;
+            return countryCode ? new BrsString(countryCode) : new BrsString("");
         },
     });
 
@@ -341,7 +341,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let timeZone = process.env.TZ;
-            return timeZone ? new BrsString(timeZone) : BrsInvalid.Instance;
+            return timeZone ? new BrsString(timeZone) : new BrsString("");
         },
     });
 
@@ -362,7 +362,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let locale = process.env.LOCALE;
-            return locale ? new BrsString(locale) : BrsInvalid.Instance;
+            return locale ? new BrsString(locale) : new BrsString("");
         },
     });
 
@@ -373,7 +373,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         },
         impl: (_interpreter) => {
             let countryCode = process.env.LOCALE;
-            return countryCode ? new BrsString(countryCode) : BrsInvalid.Instance;
+            return countryCode ? new BrsString(countryCode) : new BrsString("");
         },
     });
 

@@ -1,4 +1,4 @@
-import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid, BrsString } from "../BrsType";
+import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
 import { BrsType, Int32 } from "..";
 import { BrsComponent } from "./BrsComponent";
 import { Callable, StdlibArgument } from "../Callable";

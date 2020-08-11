@@ -1,5 +1,7 @@
+import * as IstanbulLibCoverage from "istanbul-lib-coverage";
+
 import { Stmt, Expr } from "../parser";
-import { Location, isToken } from "../lexer";
+import { LineAndColumn, Location, isToken } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 
 interface Hits {
@@ -20,7 +22,7 @@ interface LineCoverage extends Hits {
     expressions: ExpressionCoverage[];
 }
 
-interface FileCoverageReport {
+export interface FileCoverageReport {
     lines: number;
     coveredLines: number;
     uncoveredLineList: number[];
@@ -28,6 +30,21 @@ interface FileCoverageReport {
     coveredStatements: number;
     expressions: number;
     coveredExpressions: number;
+}
+
+export interface IstanbulFileCoverage {
+    path: string;
+    statementMap: { [key: string]: Location };
+    fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number } };
+    branchMap: {
+        [key: string]: { loc: Location; type: string; locations: Location[]; line: number };
+    };
+    // hit count map for statements
+    s: { [key:string]: number };
+    // hit count map for functions
+    f: { [key:string]: number };
+    // hit count map for branches
+    b: { [key:string]: number[] };
 }
 
 export class FileCoverage {
@@ -42,7 +59,7 @@ export class FileCoverage {
         let coveredStatements = 0;
         let expressions = 0;
         let coveredExpressions = 0;
-        this.lines.forEach(line => {
+        this.lines.forEach((line) => {
             if (line.hits > 0) {
                 coveredLines++;
             } else {
@@ -72,8 +89,40 @@ export class FileCoverage {
             statements,
             coveredStatements,
             expressions,
-            coveredExpressions
-        }
+            coveredExpressions,
+        };
+    }
+
+    public toIstanbul() {
+        let statementMap: { [key: string]: Location } = {};
+        let hitMap: { [key: string]: number } = {};
+
+        let data: IstanbulFileCoverage = {
+            path: this.filePath,
+            statementMap: {},
+            fnMap: {},
+            branchMap: {},
+            // hit count map for statements
+            s: {},
+            // hit count map for functions
+            f: {},
+            // hit count map for branches
+            b: {},
+        };
+
+        this.lines.forEach((line) => {
+            line.statements.forEach((statement, index) => {
+                let key = `${line.lineNumber}-${index}`;
+                if (statement instanceof Stmt.Function) {
+                    // do something
+                } else {
+                    data.statementMap[key] = statement.statement.location;
+                    hitMap[key] = statement.hits;
+                }
+            });
+        });
+
+        return new (IstanbulLibCoverage.classes.FileCoverage as any)(data);
     }
 
     public addStatement(statement: Stmt.Statement) {
@@ -86,7 +135,7 @@ export class FileCoverage {
         line.statements.forEach((existingStatement, index) => {
             if (Location.equals(existingStatement.statement.location, statement.location)) {
                 existingStatement.hits++;
-                
+
                 // in the event that there are multiple statements on a line, i.e. a single line
                 // if-then-else statement, we don't want to count every statement hit as a line hit.
                 if (index === 0) {
@@ -104,7 +153,7 @@ export class FileCoverage {
         line.expressions.forEach((existingExpr, index) => {
             if (Location.equals(existingExpr.expression.location, expression.location)) {
                 existingExpr.hits++;
-                
+
                 // If there's a statement on the line, let statement access be the decider
                 // of whether or not this line has been hit. Otherwise, use the first expression.
                 if (line.statements.length === 0 && index === 0) {
@@ -302,7 +351,7 @@ export class FileCoverage {
         expression.elements.forEach((expr) => this.evaluate(expr));
         return BrsInvalid.Instance;
     }
- 
+
     visitAALiteral(expression: Expr.AALiteral) {
         expression.elements.forEach((member) => this.evaluate(member.value));
         return BrsInvalid.Instance;
@@ -323,7 +372,7 @@ export class FileCoverage {
     }
 
     private execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
-        if (!(statement instanceof Stmt.Block || statement instanceof Stmt.Function)) {
+        if (!(statement instanceof Stmt.Block)) {
             this.addStatementToLine(statement);
         }
 

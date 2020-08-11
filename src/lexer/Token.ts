@@ -48,7 +48,7 @@ export namespace Location {
 }
 
 /** A line-column pair. */
-type LineAndColumn = {
+export type LineAndColumn = {
     /** A *one-indexed* line number. */
     line: number;
     /** A *zero-indexed* column number. */

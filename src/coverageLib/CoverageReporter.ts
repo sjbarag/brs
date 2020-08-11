@@ -1,10 +1,13 @@
 import * as fg from "fast-glob";
 import path from "path";
 import { table } from "table";
+import { createContext } from "istanbul-lib-report";
+import { create as createReport } from "istanbul-reports";
+import * as IstanbulLibCoverage from "istanbul-lib-coverage";
 
 import { ComponentScopeResolver, Stmt, Expr } from "../parser";
 import { ExecutionOptions, Interpreter } from "../interpreter";
-import { FileCoverage } from "./FileCoverage";
+import { FileCoverage, FileCoverageReport } from "./FileCoverage";
 import { LexerParserFn } from "../LexerParser";
 import { BrsInvalid, BrsType } from "../brsTypes";
 
@@ -75,16 +78,30 @@ export class CoverageReporter {
     }
 
     public printCoverage(interpreter: Interpreter) {
+        let coverageMapData: { [key: string]: IstanbulLibCoverage.FileCoverage } = {};
+        this.files.forEach((file, key) => {
+            coverageMapData[key] = file.toIstanbul();
+        });
+
+        let context = createContext({
+            coverageMap: IstanbulLibCoverage.createCoverageMap(coverageMapData),
+        });
+        (createReport("html") as any).execute(context);
+    }
+
+    public printSimpleCoverage(interpreter: Interpreter) {
         function getPercentStr(num: number, denom: number) {
             if (denom === 0) {
-                return `0/0`
+                return `0/0`;
             }
 
             let percent = (num / denom) * 100;
-            return `${percent > 0 ? percent.toFixed(2) : 0}% (${num}/${denom})`
+            return `${percent > 0 ? percent.toFixed(2) : 0}% (${num}/${denom})`;
         }
 
-        let coverageReport: any[] = [["File", "Lines", "Statements", "Expressions", "Uncovered lines"]];
+        let coverageReport: any[] = [
+            ["File", "Lines", "Statements", "Expressions", "Uncovered lines"],
+        ];
 
         // lines
         let lines = 0;
@@ -96,21 +113,22 @@ export class CoverageReporter {
 
         // statements
         let statements = 0;
-        let coveredStatements = 0
+        let coveredStatements = 0;
 
         // expressions
         let expressions = 0;
-        let coveredExpressions = 0
+        let coveredExpressions = 0;
 
         this.files.forEach((file) => {
             let relPath = path.posix.relative(this.executionOptions.root, file.filePath);
             let coverage = file.getCoverage();
+
             coverageReport.push([
                 relPath,
                 getPercentStr(coverage.coveredLines, coverage.lines),
                 getPercentStr(coverage.coveredStatements, coverage.statements),
                 getPercentStr(coverage.coveredExpressions, coverage.expressions),
-                coverage.coveredLines > 0 ? coverage.uncoveredLineList.join().slice(0, 25): "all"
+                coverage.coveredLines > 0 ? coverage.uncoveredLineList.join().slice(0, 25) : "all",
             ]);
 
             lines += coverage.lines;
@@ -142,7 +160,6 @@ export class CoverageReporter {
             })
         );
 
-
         // print summary
         interpreter.stdout.write(
             table([
@@ -165,4 +182,6 @@ export class CoverageReporter {
             ])
         );
     }
+
+    private runIstanbulCoverage(coverageReport: Map<string, FileCoverageReport>) {}
 }

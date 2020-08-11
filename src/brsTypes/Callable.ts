@@ -161,6 +161,8 @@ export class Callable implements Brs.BrsValue {
 
         let mutableArgs = args.slice();
 
+        // interpreter.reportExpressionHit(this.)
+
         return interpreter.inSubEnv((subInterpreter) => {
             // first, we need to evaluate all of the parameter default values
             // and define them in a new environment

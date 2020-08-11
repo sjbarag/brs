@@ -797,6 +797,7 @@ export class Parser {
             let thenToken: Token | undefined;
             let elseIfTokens: Token[] = [];
             let endIfToken: Token | undefined;
+            let elseToken: Token | undefined;
 
             /**
              * A simple wrapper around `check`, to make tests for a `then` identifier.
@@ -966,6 +967,7 @@ export class Parser {
                     then: thenToken,
                     elseIfs: elseIfTokens,
                     endIf: endIfToken,
+                    else: elseToken
                 },
                 condition,
                 thenBranch,

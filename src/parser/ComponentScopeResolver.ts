@@ -11,7 +11,7 @@ export class ComponentScopeResolver {
      */
     constructor(
         readonly componentMap: Map<string, ComponentDefinition>,
-        readonly parserLexerFn: (filenames: string[]) => Promise<Stmt.Statement[]> // TODO: Remove and just build here?
+        readonly parserLexerFn: (filenames: string[]) => Promise<Stmt.Statement[]>, // TODO: Remove and just build here?
     ) {}
 
     /**
@@ -21,15 +21,6 @@ export class ComponentScopeResolver {
      */
     public async resolve(component: ComponentDefinition): Promise<Stmt.Statement[]> {
         return Promise.all(this.getStatements(component)).then(this.flatten.bind(this));
-    }
-
-    /**
-     * Resolves the component functions in scope based on the extends hierarchy.
-     * @param component Instance of the component to resolve function scope for.
-     * @returns All statements in scope for the resolved component
-     */
-    public async resolveScripts(scripts: ComponentScript[]) {
-        return Promise.all(this.fetchMemoizedStatements(scripts));
     }
 
     /**

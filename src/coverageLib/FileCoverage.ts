@@ -1,38 +1,15 @@
 import * as IstanbulLibCoverage from "istanbul-lib-coverage";
 
 import { Stmt, Expr } from "../parser";
-import { LineAndColumn, Location, isToken } from "../lexer";
+import { Location, isToken } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 
-interface Hits {
+interface StatementCoverage {
     hits: number;
+    // combine expressions and statements
+    statement: Expr.Expression | Stmt.Statement;
 }
-
-interface StatementCoverage extends Hits {
-    statement: Stmt.Statement;
-}
-
-interface ExpressionCoverage extends Hits {
-    expression: Expr.Expression;
-}
-
-interface LineCoverage extends Hits {
-    lineNumber: number;
-    statements: StatementCoverage[];
-    expressions: ExpressionCoverage[];
-}
-
-export interface FileCoverageReport {
-    lines: number;
-    coveredLines: number;
-    uncoveredLineList: number[];
-    statements: number;
-    coveredStatements: number;
-    expressions: number;
-    coveredExpressions: number;
-}
-
-export interface IstanbulFileCoverage {
+export interface CoverageSummary {
     path: string;
     statementMap: { [key: string]: Location };
     fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number } };
@@ -48,215 +25,122 @@ export interface IstanbulFileCoverage {
 }
 
 export class FileCoverage {
-    private lines = new Map<number, LineCoverage>();
+    private lines = new Map<number, StatementCoverage[]>();
 
     constructor(readonly filePath: string) {}
 
-    public getCoverage(): FileCoverageReport {
-        let coveredLines = 0;
-        let uncoveredLineList: number[] = [];
-        let statements = 0;
-        let coveredStatements = 0;
-        let expressions = 0;
-        let coveredExpressions = 0;
-        this.lines.forEach((line) => {
-            if (line.hits > 0) {
-                coveredLines++;
-            } else {
-                uncoveredLineList.push(line.lineNumber);
-            }
-
-            statements += line.statements.length;
-            expressions += line.expressions.length;
-
-            line.statements.forEach((statement) => {
-                if (statement.hits > 0) {
-                    coveredStatements++;
-                }
-            });
-
-            line.expressions.forEach((expression) => {
-                if (expression.hits > 0) {
-                    coveredExpressions++;
-                }
-            });
-        });
-
-        return {
-            lines: this.lines.size,
-            coveredLines: coveredLines,
-            uncoveredLineList,
-            statements,
-            coveredStatements,
-            expressions,
-            coveredExpressions,
-        };
+    private getLine(lineNumber: number) {
+        if (!this.lines.has(lineNumber)) {
+            this.lines.set(lineNumber, []);
+        }
+        return this.lines.get(lineNumber)!;
     }
 
-    public toIstanbul() {
-        let data: IstanbulFileCoverage = {
+    logHit(statement: Expr.Expression | Stmt.Statement) {
+        let lineNumber = statement.location.start.line;
+        let lineStatements = this.getLine(lineNumber);
+        this.lines.set(
+            lineNumber,
+            lineStatements.map((existingStatement) => {
+                if (Location.equals(existingStatement.statement.location, statement.location)) {
+                    existingStatement.hits++;
+                }
+                return existingStatement;
+            })
+        );
+    }
+
+    addStatementToLine(statement: Expr.Expression | Stmt.Statement) {
+        let lineNumber = statement.location.start.line;
+        let lineStatements = this.getLine(lineNumber);
+        lineStatements.push({ hits: 0, statement });
+        this.lines.set(lineNumber, lineStatements);
+    }
+
+    /**
+     * Converts the coverage data to a more friendly (i.e. `istanbul`-compliant) format.
+     */
+    getCoverage(): CoverageSummary {
+        let coverageSummary: CoverageSummary = {
             path: this.filePath,
             statementMap: {},
             fnMap: {},
             branchMap: {},
-            // hit count map for statements
             s: {},
-            // hit count map for functions
             f: {},
-            // hit count map for branches
-            b: {},
+            b: {}
         };
 
-        this.lines.forEach((line) => {
-            line.statements.forEach(({ statement, hits }, index) => {
-                let key = `stmt-${line.lineNumber}-${index}`;
+        Array.from(this.lines).forEach(([lineNumber, statements]) => {
+            statements.forEach(({ statement, hits }, index) => {
+                let key = `stmt-${lineNumber}-${index}`;
                 if (statement instanceof Stmt.If) {
                     // first add the if statement
                     let ifLocation = statement.tokens.if.location;
-                    let locations: Location[] = [
+                    let locations = [
                         {
                             file: this.filePath,
                             start: ifLocation.start,
                             end: statement.tokens.then?.location.end || ifLocation.end,
                         },
                     ];
-                    let branchHits: number[] = [hits];
-
+                    let branchHits = [hits];
+    
                     // then add the else-ifs
                     statement.elseIfs.forEach((branch, index) => {
-                        let branchLine = this.getLine(branch.condition.location.start.line);
-                        let elseIf = branchLine.expressions.find((expr) =>
-                            Location.equals(branch.condition.location, expr.expression.location)
+                        let branchStatements = this.getLine(branch.condition.location.start.line);
+                        let elseIf = branchStatements.find(({statement}) =>
+                            Location.equals(branch.condition.location, statement.location)
                         );
-
+    
                         let tokenLocation = statement.tokens.elseIfs?.[index]?.location;
                         if (tokenLocation && elseIf) {
                             locations.push(tokenLocation);
                             branchHits.push(elseIf.hits);
                         }
                     });
-
+    
                     // then add the else
                     if (statement.elseBranch) {
                         let elseBranchLocation = statement.elseBranch.location;
                         let elseBlock = this.getLine(
                             elseBranchLocation.start.line
-                        ).statements.find((stmt) =>
+                        ).find((stmt) =>
                             Location.equals(elseBranchLocation, stmt.statement.location)
                         );
-
-                        debugger;
+    
                         let tokenLocation = statement.tokens.else?.location;
                         if (tokenLocation && elseBlock) {
                             locations.push(tokenLocation);
                             branchHits.push(elseBlock.hits);
                         }
                     }
-                    data.branchMap[key] = {
+
+                    // put it into the summary
+                    coverageSummary.branchMap[key] = {
                         loc: statement.location,
                         type: "if",
                         locations,
-                        line: line.lineNumber,
+                        line: lineNumber,
                     };
-                    data.b[key] = branchHits;
-
-                    debugger;
-                } else {
-                    data.statementMap[key] = statement.location;
-                    data.s[key] = hits;
-                }
-            });
-
-            line.expressions.forEach(({ expression, hits }, index) => {
-                let key = `expr-${line.lineNumber}-${index}`;
-                if (expression instanceof Expr.Function) {
-                    data.fnMap[key] = {
-                        name: expression.keyword.text,
-                        decl: expression.location,
-                        loc: expression.location,
-                        line: line.lineNumber,
+                    coverageSummary.b[key] = branchHits;
+    
+                } else if (statement instanceof Expr.Function) {
+                    coverageSummary.fnMap[key] = {
+                        name: statement.keyword.text,
+                        decl: statement.location,
+                        loc: statement.location,
+                        line: lineNumber,
                     };
-                    data.f[key] = hits;
+                    coverageSummary.f[key] = hits;
                 } else {
-                    data.statementMap[key] = expression.location;
-                    data.s[key] = hits;
+                    coverageSummary.statementMap[key] = statement.location;
+                    coverageSummary.s[key] = hits;
                 }
             });
         });
 
-        return new (IstanbulLibCoverage.classes.FileCoverage as any)(data);
-    }
-
-    public addStatement(statement: Stmt.Statement) {
-        this.execute(statement);
-    }
-
-    public logStatementHit(statement: Stmt.Statement) {
-        let lineNumsToLog = [statement.location.start.line];
-        if (statement instanceof Stmt.Function) {
-            lineNumsToLog.push(statement.func.end.location.start.line);
-        }
-        lineNumsToLog.forEach((lineNum) => {
-            let line = this.getLine(lineNum);
-            line.statements.forEach((existingStatement, index) => {
-                if (Location.equals(existingStatement.statement.location, statement.location)) {
-                    existingStatement.hits++;
-
-                    // in the event that there are multiple statements on a line, i.e. a single line
-                    // if-then-else statement, we don't want to count every statement hit as a line hit.
-                    if (index === 0) {
-                        line!.hits++;
-                    }
-                }
-            });
-            this.lines.set(line.lineNumber, line);
-        });
-    }
-
-    public logExpressionHit(expression: Expr.Expression) {
-        [expression.location.start.line].forEach((lineNum) => {
-            let line = this.getLine(lineNum);
-
-            line.expressions.forEach((existingExpr, index) => {
-                if (Location.equals(existingExpr.expression.location, expression.location)) {
-                    existingExpr.hits++;
-
-                    // If there's a statement on the line, let statement access be the decider
-                    // of whether or not this line has been hit. Otherwise, use the first expression.
-                    if (line.statements.length === 0 && index === 0) {
-                        line!.hits++;
-                    }
-                }
-            });
-
-            this.lines.set(line.lineNumber, line);
-        });
-    }
-
-    private getLine(lineNumber: number) {
-        if (!this.lines.has(lineNumber)) {
-            this.lines.set(lineNumber, { lineNumber, hits: 0, statements: [], expressions: [] });
-        }
-
-        return this.lines.get(lineNumber)!;
-    }
-
-    private addStatementToLine(statement: Stmt.Statement) {
-        [statement.location.start.line].forEach((lineNum) => {
-            let line = this.getLine(lineNum);
-
-            line.statements.push({ hits: 0, statement });
-            this.lines.set(line.lineNumber, line);
-        });
-    }
-
-    private addExpressionToLine(expression: Expr.Expression) {
-        [expression.location.start.line].forEach((lineNum) => {
-            let line = this.getLine(lineNum);
-
-            line.expressions.push({ hits: 0, expression });
-            this.lines.set(line.lineNumber, line);
-        });
+        return coverageSummary;
     }
 
     /**
@@ -437,12 +321,12 @@ export class FileCoverage {
         return BrsInvalid.Instance;
     }
 
-    private evaluate(this: FileCoverage, expression: Expr.Expression) {
-        this.addExpressionToLine(expression);
+    evaluate(this: FileCoverage, expression: Expr.Expression) {
+        this.addStatementToLine(expression);
         return expression.accept<BrsType>(this);
     }
 
-    private execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
+    execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
         if (!(statement instanceof Stmt.Function)) {
             this.addStatementToLine(statement);
         }

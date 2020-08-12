@@ -1,1 +1,1 @@
-export * from "./CoverageReporter";
+export * from "./CoverageCollector";

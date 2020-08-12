@@ -12,7 +12,7 @@ import { Parser, ComponentScopeResolver } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
-import { CoverageReporter } from "./coverageLib";
+import { CoverageCollector } from "./coverageLib";
 
 import * as _lexer from "./lexer";
 export { _lexer as lexer };
@@ -23,6 +23,8 @@ import * as _parser from "./parser";
 export { _parser as parser };
 import { URL } from "url";
 import * as path from "path";
+
+let coverageCollector: CoverageCollector | null = null;
 
 /**
  * Executes a BrightScript file by path and writes its output to the streams
@@ -56,36 +58,38 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     });
 
     let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);
-    let componentScopeResolver = new ComponentScopeResolver(componentDefinitions, lexerParserFn);
-
     const interpreter = await Interpreter.withSubEnvsFromComponents(
         componentDefinitions,
-        componentScopeResolver,
         lexerParserFn
     );
     if (!interpreter) {
         throw new Error("Unable to build interpreter.");
     }
     
-    let coverageReporter = null;
     if (executionOptions.generateCoverage) {
-        coverageReporter = new CoverageReporter(
+        coverageCollector = new CoverageCollector(
             executionOptions,
-            componentScopeResolver
+            lexerParserFn
         );
-        await coverageReporter.crawlBrsFiles();
-        interpreter.setCoverageReporter(coverageReporter);
+        await coverageCollector.crawlBrsFiles();
+        interpreter.setCoverageCollector(coverageCollector);
     }
 
     let mainStatements = await lexerParserFn(filenames);
+    return interpreter.exec(mainStatements);
+}
 
-    let returnValues = interpreter.exec(mainStatements);
-
-    if (executionOptions.generateCoverage && coverageReporter) {
-        coverageReporter.printCoverage(interpreter);
+/**
+ * 
+ * @param filenames 
+ * @param options 
+ */
+export function getCoverageResults() {
+    if (!coverageCollector) {
+        return;
     }
 
-    return returnValues;
+    return coverageCollector.getCoverage();
 }
 
 /**

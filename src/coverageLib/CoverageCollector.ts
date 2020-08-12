@@ -57,11 +57,9 @@ export class CoverageCollector {
 
     public logHit(statement: Expr.Expression | Stmt.Statement) {
         let file = this.files.get(statement.location.file);
-        if (!file) {
-            return;
+        if (file) {
+            file.logHit(statement);
         }
-
-        file.logHit(statement);
     }
 
     public getCoverage() {

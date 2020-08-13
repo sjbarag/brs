@@ -80,15 +80,12 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 }
 
 /**
- * 
- * @param filenames 
- * @param options 
+ * Returns a friendly (`instabul`-compliant) summary of the code coverage.
  */
 export function getCoverageResults() {
     if (!coverageCollector) {
         return;
     }
-
     return coverageCollector.getCoverage();
 }
 

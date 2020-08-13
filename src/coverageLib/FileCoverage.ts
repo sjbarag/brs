@@ -1,12 +1,11 @@
-import * as IstanbulLibCoverage from "istanbul-lib-coverage";
-
 import { Stmt, Expr } from "../parser";
 import { Location, isToken } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 
 interface StatementCoverage {
     hits: number;
-    // combine expressions and statements
+    // combine expressions and statements because there is
+    // no real difference when it comes to coverage
     statement: Expr.Expression | Stmt.Statement;
 }
 export interface CoverageSummary {

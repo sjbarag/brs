@@ -1,6 +1,8 @@
 import { Stmt, Expr } from "../parser";
 import { Location, isToken } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
+import { ExpressionKind } from "../parser/Expression";
+import { StatementKind } from "../parser/Statement";
 
 interface StatementCoverage {
     hits: number;
@@ -41,7 +43,10 @@ export class FileCoverage {
         this.lines.set(
             lineNumber,
             lineStatements.map((existingStatement) => {
-                if (Location.equals(existingStatement.statement.location, statement.location)) {
+                if (
+                    existingStatement.statement.kind === statement.kind &&
+                    Location.equals(existingStatement.statement.location, statement.location)
+                ) {
                     existingStatement.hits++;
                 }
                 return existingStatement;
@@ -67,7 +72,7 @@ export class FileCoverage {
             branchMap: {},
             s: {},
             f: {},
-            b: {}
+            b: {},
         };
 
         Array.from(this.lines).forEach(([lineNumber, statements]) => {
@@ -84,30 +89,28 @@ export class FileCoverage {
                         },
                     ];
                     let branchHits = [hits];
-    
+
                     // then add the else-ifs
                     statement.elseIfs.forEach((branch, index) => {
                         let branchStatements = this.getLine(branch.condition.location.start.line);
-                        let elseIf = branchStatements.find(({statement}) =>
+                        let elseIf = branchStatements.find(({ statement }) =>
                             Location.equals(branch.condition.location, statement.location)
                         );
-    
+
                         let tokenLocation = statement.tokens.elseIfs?.[index]?.location;
                         if (tokenLocation && elseIf) {
                             locations.push(tokenLocation);
                             branchHits.push(elseIf.hits);
                         }
                     });
-    
+
                     // then add the else
                     if (statement.elseBranch) {
                         let elseBranchLocation = statement.elseBranch.location;
-                        let elseBlock = this.getLine(
-                            elseBranchLocation.start.line
-                        ).find((stmt) =>
+                        let elseBlock = this.getLine(elseBranchLocation.start.line).find((stmt) =>
                             Location.equals(elseBranchLocation, stmt.statement.location)
                         );
-    
+
                         let tokenLocation = statement.tokens.else?.location;
                         if (tokenLocation && elseBlock) {
                             locations.push(tokenLocation);
@@ -123,7 +126,6 @@ export class FileCoverage {
                         line: lineNumber,
                     };
                     coverageSummary.b[key] = branchHits;
-    
                 } else if (statement instanceof Expr.Function) {
                     coverageSummary.fnMap[key] = {
                         name: statement.keyword.text,
@@ -270,9 +272,7 @@ export class FileCoverage {
     }
 
     visitCall(expression: Expr.Call) {
-        this.evaluate(expression.callee);
         expression.args.map(this.evaluate, this);
-
         return BrsInvalid.Instance;
     }
 
@@ -326,7 +326,8 @@ export class FileCoverage {
     }
 
     execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
-        if (!(statement instanceof Stmt.Function)) {
+        // don't double-count functions -- we'll count them when we get Expr.Function
+        if (!(statement.kind === StatementKind.NamedFunction)) {
             this.addStatementToLine(statement);
         }
 

@@ -17,6 +17,20 @@ export interface Visitor<T> {
     visitVariable(expression: Variable): T;
 }
 
+export enum ExpressionKind {
+    Binary = "Binary",
+    Call = "Call",
+    Function = "Function",
+    DottedGet = "DottedGet",
+    IndexedGet = "IndexedGet",
+    Grouping = "Grouping",
+    Literal = "Literal",
+    ArrayLiteral = "ArrayLiteral",
+    AALiteral = "AALiteral",
+    Unary = "Unary",
+    Variable = "Variable"
+}
+
 /** A BrightScript expression */
 export interface Expression {
     /**
@@ -28,6 +42,9 @@ export interface Expression {
 
     /** The starting and ending location of the expression. */
     location: Location;
+
+    /** Identifier to compare expressions. */
+    readonly kind: ExpressionKind;
 }
 
 export class Binary extends AstNode implements Expression {

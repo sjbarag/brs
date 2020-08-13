@@ -26,6 +26,28 @@ export interface Visitor<T> {
     visitLibrary(statement: Library): BrsInvalid;
 }
 
+export enum StatementKind {
+    Assignment = "Assignment",
+    Expression = "Expression",
+    ExitFor = "ExitFor",
+    ExitWhile = "ExitWhile",
+    Print = "Print",
+    Goto = "Goto",
+    Label = "Label",
+    If = "If",
+    Block = "Block",
+    For = "For",
+    ForEach = "ForEach",
+    While = "While",
+    NamedFunction = "NamedFunction",
+    Return = "Return",
+    End = "End",
+    DottedSet = "DottedSet",
+    IndexedSet = "IndexedSet",
+    Increment = "Increment",
+    Library = "Library"
+}
+
 /** A BrightScript statement */
 export interface Statement {
     /**
@@ -38,6 +60,9 @@ export interface Statement {
 
     /** The starting and ending location of the expression. */
     location: Location;
+
+    /** Identifier to compare expressions */
+    readonly kind: StatementKind;
 }
 
 export class Assignment extends AstNode implements Statement {

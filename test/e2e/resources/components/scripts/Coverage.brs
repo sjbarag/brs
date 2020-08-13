@@ -7,7 +7,15 @@ sub main()
 
     ' return
 
-    if true then
+    m.abc = {
+        def: sub()
+            print "here"
+        end sub
+    }
+    m.abc.def()
+
+    foo =true
+    if foo then
         print "hello"
     else if false then
         print "world"

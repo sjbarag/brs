@@ -18,7 +18,7 @@ describe("checking coverage output", () => {
     });
 
     test("running test", async () => {
-        await execute([resourceFile("components", "scripts", "Coverage.brs")], outputStreams);
+        await execute([resourceFile("components", "scripts", "Coverage.brs")], { generateCoverage: true, ...outputStreams});
 
         // expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([]);
         // expect(true).toEqual(true);

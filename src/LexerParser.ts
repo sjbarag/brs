@@ -14,12 +14,10 @@ import { ManifestValue } from "./preprocessor/Manifest";
 import * as BrsError from "./Error";
 import { defaultExecutionOptions, ExecutionOptions } from "./interpreter";
 
-export type LexerParserFn = (filenames: string[]) => Promise<Stmt.Statement[]>;
-
 export function getLexerParserFn(
     manifest: Map<string, ManifestValue>,
     options: Partial<ExecutionOptions>
-): LexerParserFn {
+) {
     const executionOptions = Object.assign(defaultExecutionOptions, options);
     /**
      * Map file URIs to promises. The promises resolve to an array of that file's statements.

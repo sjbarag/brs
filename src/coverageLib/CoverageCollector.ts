@@ -23,7 +23,7 @@ export class CoverageCollector {
             "**",
             "*.brs"
         );
-        let scripts = fg.sync(filePattern, {});
+        let scripts = fg.sync(filePattern);
 
         scripts.forEach((script) => {
             this.files.set(script, new FileCoverage(script));
@@ -33,12 +33,9 @@ export class CoverageCollector {
 
         statements.forEach((statement) => {
             let file = this.files.get(statement.location.file);
-            if (!file) {
-                // TODO: maybe log an error?
-                return;
+            if (file) {
+                file.execute(statement);
             }
-
-            file.execute(statement);
         });
     }
 

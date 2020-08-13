@@ -8,7 +8,7 @@ import {
     ComponentDefinition,
     ComponentScript,
 } from "./componentprocessor";
-import { Parser, ComponentScopeResolver } from "./parser";
+import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";

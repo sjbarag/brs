@@ -11,7 +11,7 @@ export class ComponentScopeResolver {
      */
     constructor(
         readonly componentMap: Map<string, ComponentDefinition>,
-        readonly parserLexerFn: (filenames: string[]) => Promise<Stmt.Statement[]>, // TODO: Remove and just build here?
+        readonly parserLexerFn: (filenames: string[]) => Promise<Stmt.Statement[]> // TODO: Remove and just build here?
     ) {}
 
     /**
@@ -31,7 +31,7 @@ export class ComponentScopeResolver {
      * @param statementMap Statement collections broken up by component.
      * @returns A collection of statements that have been flattened based on hierarchy.
      */
-    public flatten(statementMap: Stmt.Statement[][]): Stmt.Statement[] {
+    private flatten(statementMap: Stmt.Statement[][]): Stmt.Statement[] {
         let statements = statementMap.shift() || [];
         let statementMemo = new Set(
             statements

@@ -26,14 +26,8 @@
     "types/"
   ],
   "dependencies": {
-    "@types/istanbul-lib-report": "^3.0.0",
-    "@types/istanbul-reports": "^3.0.0",
-    "@types/table": "^5.0.0",
     "commander": "^2.12.2",
     "fast-glob": "^3.0.1",
-    "istanbul-lib-coverage": "^3.0.0",
-    "istanbul-lib-report": "^3.0.0",
-    "istanbul-reports": "^3.0.2",
     "long": "^3.2.0",
     "luxon": "^1.8.3",
     "memory-fs": "^0.4.1",

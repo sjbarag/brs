@@ -3,6 +3,7 @@
 exports[`parser multiplicative expressions parses left-associative division chains 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -39,7 +40,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Binary {
+        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {
@@ -134,6 +137,7 @@ Array [
 exports[`parser multiplicative expressions parses left-associative integer-division chains 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -170,7 +174,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Binary {
+        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {
@@ -265,6 +271,7 @@ Array [
 exports[`parser multiplicative expressions parses left-associative modulo chains 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -301,7 +308,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Binary {
+        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {
@@ -396,6 +405,7 @@ Array [
 exports[`parser multiplicative expressions parses left-associative multiplication chains 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -432,7 +442,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Binary {
+        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {

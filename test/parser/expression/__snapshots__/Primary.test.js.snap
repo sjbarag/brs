@@ -3,6 +3,7 @@
 exports[`parser primary expressions parses expressions in parentheses 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -39,6 +40,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -58,6 +60,7 @@ Array [
       },
       "right": Grouping {
         "expression": Binary {
+          "kind": "Binary",
           "left": Literal {
             "_location": Object {
               "end": Object {
@@ -110,6 +113,7 @@ Array [
           },
           "type": "Binary",
         },
+        "kind": "Grouping",
         "tokens": Object {
           "left": Object {
             "isReserved": false,
@@ -171,6 +175,7 @@ Array [
 exports[`parser primary expressions parses numeric literals 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -230,6 +235,7 @@ Array [
 exports[`parser primary expressions parses string literals 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",

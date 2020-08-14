@@ -468,6 +468,7 @@ exports[`parser while statements while with exit 1`] = `
 Array [
   While {
     "body": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -500,6 +501,7 @@ Array [
               },
             },
           ],
+          "kind": "Print",
           "tokens": Object {
             "print": Object {
               "isReserved": true,
@@ -521,6 +523,7 @@ Array [
           "type": "Print",
         },
         ExitWhile {
+          "kind": "ExitWhile",
           "tokens": Object {
             "exitWhile": Object {
               "isReserved": false,
@@ -561,6 +564,7 @@ Array [
         "value": true,
       },
     },
+    "kind": "While",
     "tokens": Object {
       "endWhile": Object {
         "isReserved": false,
@@ -604,6 +608,7 @@ exports[`parser while statements while without exit 1`] = `
 Array [
   While {
     "body": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -636,6 +641,7 @@ Array [
               },
             },
           ],
+          "kind": "Print",
           "tokens": Object {
             "print": Object {
               "isReserved": true,
@@ -676,6 +682,7 @@ Array [
         "value": true,
       },
     },
+    "kind": "While",
     "tokens": Object {
       "endWhile": Object {
         "isReserved": false,

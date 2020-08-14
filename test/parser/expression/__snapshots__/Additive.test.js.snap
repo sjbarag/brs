@@ -3,6 +3,7 @@
 exports[`parser additive expressions parses left-associative addition chains 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -39,7 +40,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Binary {
+        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {
@@ -134,6 +137,7 @@ Array [
 exports[`parser additive expressions parses left-associative subtraction chains 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -170,7 +174,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Binary {
+        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {

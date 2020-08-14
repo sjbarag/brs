@@ -3,6 +3,7 @@
 exports[`parser indexing multi-level bracketed 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -72,6 +73,7 @@ Array [
           "value": 6,
         },
       },
+      "kind": "IndexedGet",
       "obj": IndexedGet {
         "closingSquare": Object {
           "isReserved": false,
@@ -106,6 +108,7 @@ Array [
             "value": 0,
           },
         },
+        "kind": "IndexedGet",
         "obj": IndexedGet {
           "closingSquare": Object {
             "isReserved": false,
@@ -140,7 +143,9 @@ Array [
               "value": 2,
             },
           },
+          "kind": "IndexedGet",
           "obj": Variable {
+            "kind": "Variable",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -172,6 +177,7 @@ Array [
 exports[`parser indexing multi-level dotted 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -208,6 +214,7 @@ Array [
     },
     "type": "Assignment",
     "value": DottedGet {
+      "kind": "DottedGet",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -225,6 +232,7 @@ Array [
         "text": "bar",
       },
       "obj": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -252,6 +260,7 @@ Array [
 exports[`parser indexing multi-level mixed 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -288,6 +297,7 @@ Array [
     },
     "type": "Assignment",
     "value": DottedGet {
+      "kind": "DottedGet",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -338,7 +348,9 @@ Array [
             "value": 0,
           },
         },
+        "kind": "IndexedGet",
         "obj": DottedGet {
+          "kind": "DottedGet",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -356,6 +368,7 @@ Array [
             "text": "bar",
           },
           "obj": Variable {
+            "kind": "Variable",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -387,6 +400,7 @@ Array [
 exports[`parser indexing one level bracketed 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -456,7 +470,9 @@ Array [
           "value": 2,
         },
       },
+      "kind": "IndexedGet",
       "obj": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -484,6 +500,7 @@ Array [
 exports[`parser indexing one level dotted 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -520,6 +537,7 @@ Array [
     },
     "type": "Assignment",
     "value": DottedGet {
+      "kind": "DottedGet",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -537,6 +555,7 @@ Array [
         "text": "bar",
       },
       "obj": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -564,6 +583,7 @@ Array [
 exports[`parser indexing one level dotted and bracketed single dot 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -633,7 +653,9 @@ Array [
           "value": 2,
         },
       },
+      "kind": "IndexedGet",
       "obj": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",

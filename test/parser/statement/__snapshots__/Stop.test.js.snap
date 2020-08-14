@@ -5,6 +5,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -18,6 +19,7 @@ Array [
         },
         "statements": Array [
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -99,6 +101,7 @@ Array [
                   },
                 },
               ],
+              "kind": "AALiteral",
               "open": Object {
                 "isReserved": false,
                 "kind": "LeftBrace",
@@ -120,6 +123,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -138,6 +142,7 @@ Array [
               "text": "stop",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -214,10 +219,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -243,6 +250,7 @@ Array [
 exports[`stop statement cannot be used as a local variable 1`] = `
 Array [
   Stop {
+    "kind": undefined,
     "tokens": Object {
       "stop": Object {
         "isReserved": true,
@@ -269,6 +277,7 @@ Array [
 exports[`stop statement is valid as a statement 1`] = `
 Array [
   Stop {
+    "kind": undefined,
     "tokens": Object {
       "stop": Object {
         "isReserved": true,

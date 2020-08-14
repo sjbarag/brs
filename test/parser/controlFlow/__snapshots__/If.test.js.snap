@@ -4,6 +4,7 @@ exports[`parser if statements block if allows 'then' to be skipped 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -60,6 +61,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -73,6 +75,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -135,6 +138,7 @@ Array [
     "elseIfs": Array [
       Object {
         "condition": Binary {
+          "kind": "Binary",
           "left": Literal {
             "_location": Object {
               "end": Object {
@@ -191,6 +195,7 @@ Array [
           "type": "Binary",
         },
         "thenBranch": Block {
+          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -204,6 +209,7 @@ Array [
           },
           "statements": Array [
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -261,6 +267,7 @@ Array [
               },
             },
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -323,7 +330,9 @@ Array [
         "type": "ElseIf",
       },
     ],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -337,6 +346,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -397,6 +407,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 7,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 7,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -461,6 +488,7 @@ exports[`parser if statements block if parses if only 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -518,7 +546,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -532,6 +562,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -589,6 +620,7 @@ Array [
           },
         },
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -649,6 +681,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -711,6 +744,7 @@ exports[`parser if statements block if parses if-else 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -767,6 +801,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -780,6 +815,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -837,6 +873,7 @@ Array [
           },
         },
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -897,7 +934,9 @@ Array [
       "type": "Block",
     },
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -911,6 +950,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -971,6 +1011,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 4,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -1033,6 +1090,7 @@ exports[`parser if statements block if parses if-elseif-else 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -1089,6 +1147,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -1102,6 +1161,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -1164,6 +1224,7 @@ Array [
     "elseIfs": Array [
       Object {
         "condition": Binary {
+          "kind": "Binary",
           "left": Literal {
             "_location": Object {
               "end": Object {
@@ -1220,6 +1281,7 @@ Array [
           "type": "Binary",
         },
         "thenBranch": Block {
+          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -1233,6 +1295,7 @@ Array [
           },
           "statements": Array [
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1290,6 +1353,7 @@ Array [
               },
             },
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1352,7 +1416,9 @@ Array [
         "type": "ElseIf",
       },
     ],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 16,
@@ -1366,6 +1432,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -1426,6 +1493,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 7,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 7,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -1507,6 +1591,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 16,
@@ -1539,6 +1624,7 @@ Array [
               },
             },
             "elseBranch": Block {
+              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 20,
@@ -1572,6 +1658,7 @@ Array [
                       },
                     },
                   ],
+                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -1617,6 +1704,7 @@ Array [
                   },
                 },
                 "thenBranch": Block {
+                  "kind": "Block",
                   "location": Object {
                     "end": Object {
                       "column": 20,
@@ -1650,6 +1738,7 @@ Array [
                           },
                         },
                       ],
+                      "kind": "Print",
                       "tokens": Object {
                         "print": Object {
                           "isReserved": true,
@@ -1677,7 +1766,9 @@ Array [
                 "type": "ElseIf",
               },
             ],
+            "kind": "If",
             "thenBranch": Block {
+              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 20,
@@ -1711,6 +1802,7 @@ Array [
                       },
                     },
                   ],
+                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -1736,6 +1828,23 @@ Array [
               "type": "Block",
             },
             "tokens": Object {
+              "else": Object {
+                "isReserved": true,
+                "kind": "Else",
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 24,
+                    "line": 7,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 20,
+                    "line": 7,
+                  },
+                },
+                "text": "else",
+              },
               "elseIfs": Array [
                 Object {
                   "isReserved": false,
@@ -1846,10 +1955,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1876,6 +1987,7 @@ exports[`parser if statements catches one-line if statement missing first colon 
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -1933,7 +2045,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 41,
@@ -1947,6 +2061,7 @@ Array [
       },
       "statements": Array [
         Return {
+          "kind": "Return",
           "tokens": Object {
             "return": Object {
               "isReserved": true,
@@ -1990,6 +2105,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -2020,6 +2136,7 @@ exports[`parser if statements catches one-line if statement missing second colon
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -2077,7 +2194,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 35,
@@ -2091,6 +2210,7 @@ Array [
       },
       "statements": Array [
         Return {
+          "kind": "Return",
           "tokens": Object {
             "return": Object {
               "isReserved": true,
@@ -2134,6 +2254,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -2183,6 +2304,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -2196,6 +2318,7 @@ Array [
         },
         "statements": Array [
           Return {
+            "kind": "Return",
             "tokens": Object {
               "return": Object {
                 "isReserved": true,
@@ -2272,10 +2395,12 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2302,6 +2427,7 @@ exports[`parser if statements catches one-line if statement with else missing co
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -2358,6 +2484,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 54,
@@ -2371,6 +2498,7 @@ Array [
       },
       "statements": Array [
         Return {
+          "kind": "Return",
           "tokens": Object {
             "return": Object {
               "isReserved": true,
@@ -2414,7 +2542,9 @@ Array [
       "type": "Block",
     },
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 36,
@@ -2428,6 +2558,7 @@ Array [
       },
       "statements": Array [
         Return {
+          "kind": "Return",
           "tokens": Object {
             "return": Object {
               "isReserved": true,
@@ -2471,6 +2602,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 40,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 36,
+            "line": 2,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -2535,6 +2683,7 @@ Array [
       },
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 72,
@@ -2548,6 +2697,7 @@ Array [
       },
       "statements": Array [
         DottedSet {
+          "kind": "DottedSet",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -2566,6 +2716,7 @@ Array [
             "text": "visible",
           },
           "obj": DottedGet {
+            "kind": "DottedGet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -2584,6 +2735,7 @@ Array [
               "text": "top",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2629,7 +2781,9 @@ Array [
       "type": "Block",
     },
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 46,
@@ -2643,6 +2797,7 @@ Array [
       },
       "statements": Array [
         DottedSet {
+          "kind": "DottedSet",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -2661,6 +2816,7 @@ Array [
             "text": "visible",
           },
           "obj": DottedGet {
+            "kind": "DottedGet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -2679,6 +2835,7 @@ Array [
               "text": "top",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2724,6 +2881,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -2770,6 +2928,7 @@ exports[`parser if statements single-line if allows 'then' to be skipped 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -2823,6 +2982,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -2836,6 +2996,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -2895,6 +3056,7 @@ Array [
     "elseIfs": Array [
       Object {
         "condition": Binary {
+          "kind": "Binary",
           "left": Literal {
             "_location": Object {
               "end": Object {
@@ -2948,6 +3110,7 @@ Array [
           "type": "Binary",
         },
         "thenBranch": Block {
+          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": -9,
@@ -2961,6 +3124,7 @@ Array [
           },
           "statements": Array [
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3020,7 +3184,9 @@ Array [
         "type": "ElseIf",
       },
     ],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -3034,6 +3200,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -3155,6 +3322,7 @@ Array [
       },
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 12,
@@ -3170,7 +3338,9 @@ Array [
       "type": "Block",
     },
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 12,
@@ -3204,7 +3374,9 @@ Array [
           },
           "elseBranch": undefined,
           "elseIfs": Array [],
+          "kind": "If",
           "thenBranch": Block {
+            "kind": "Block",
             "location": Object {
               "end": Object {
                 "column": 34,
@@ -3218,6 +3390,7 @@ Array [
             },
             "statements": Array [
               Assignment {
+                "kind": "Assignment",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -3278,6 +3451,7 @@ Array [
             "type": "Block",
           },
           "tokens": Object {
+            "else": undefined,
             "elseIfs": Array [],
             "endIf": undefined,
             "if": Object {
@@ -3321,6 +3495,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 4,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -3367,9 +3558,11 @@ exports[`parser if statements single-line if next to else or endif 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Call {
         "args": Array [
           DottedGet {
+            "kind": "DottedGet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3388,6 +3581,7 @@ Array [
               "text": "font",
             },
             "obj": DottedGet {
+              "kind": "DottedGet",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3406,6 +3600,7 @@ Array [
                 "text": "TextAttrs",
               },
               "obj": Variable {
+                "kind": "Variable",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -3431,6 +3626,7 @@ Array [
           },
         ],
         "callee": Variable {
+          "kind": "Variable",
           "name": Object {
             "isReserved": true,
             "kind": "Identifier",
@@ -3507,6 +3703,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 12,
@@ -3520,6 +3717,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -3560,6 +3758,7 @@ Array [
           "value": Call {
             "args": Array [],
             "callee": DottedGet {
+              "kind": "DottedGet",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3578,6 +3777,7 @@ Array [
                 "text": "GetDefaultFont",
               },
               "obj": DottedGet {
+                "kind": "DottedGet",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -3596,6 +3796,7 @@ Array [
                   "text": "reg",
                 },
                 "obj": DottedGet {
+                  "kind": "DottedGet",
                   "name": Object {
                     "isReserved": false,
                     "kind": "Identifier",
@@ -3614,6 +3815,7 @@ Array [
                     "text": "fonts",
                   },
                   "obj": Variable {
+                    "kind": "Variable",
                     "name": Object {
                       "isReserved": false,
                       "kind": "Identifier",
@@ -3665,9 +3867,11 @@ Array [
     "elseIfs": Array [
       Object {
         "condition": Binary {
+          "kind": "Binary",
           "left": Call {
             "args": Array [
               DottedGet {
+                "kind": "DottedGet",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -3686,6 +3890,7 @@ Array [
                   "text": "font",
                 },
                 "obj": DottedGet {
+                  "kind": "DottedGet",
                   "name": Object {
                     "isReserved": false,
                     "kind": "Identifier",
@@ -3704,6 +3909,7 @@ Array [
                     "text": "TextAttrs",
                   },
                   "obj": Variable {
+                    "kind": "Variable",
                     "name": Object {
                       "isReserved": false,
                       "kind": "Identifier",
@@ -3729,6 +3935,7 @@ Array [
               },
             ],
             "callee": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": true,
                 "kind": "Identifier",
@@ -3805,6 +4012,7 @@ Array [
           "type": "Binary",
         },
         "thenBranch": Block {
+          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 12,
@@ -3818,6 +4026,7 @@ Array [
           },
           "statements": Array [
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3856,6 +4065,7 @@ Array [
               },
               "type": "Assignment",
               "value": DottedGet {
+                "kind": "DottedGet",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -3874,6 +4084,7 @@ Array [
                   "text": "font",
                 },
                 "obj": DottedGet {
+                  "kind": "DottedGet",
                   "name": Object {
                     "isReserved": false,
                     "kind": "Identifier",
@@ -3892,6 +4103,7 @@ Array [
                     "text": "TextAttrs",
                   },
                   "obj": Variable {
+                    "kind": "Variable",
                     "name": Object {
                       "isReserved": false,
                       "kind": "Identifier",
@@ -3922,7 +4134,9 @@ Array [
         "type": "ElseIf",
       },
     ],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 12,
@@ -3936,6 +4150,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -3976,6 +4191,7 @@ Array [
           "value": Call {
             "args": Array [
               DottedGet {
+                "kind": "DottedGet",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -3994,6 +4210,7 @@ Array [
                   "text": "font",
                 },
                 "obj": DottedGet {
+                  "kind": "DottedGet",
                   "name": Object {
                     "isReserved": false,
                     "kind": "Identifier",
@@ -4012,6 +4229,7 @@ Array [
                     "text": "TextAttrs",
                   },
                   "obj": Variable {
+                    "kind": "Variable",
                     "name": Object {
                       "isReserved": false,
                       "kind": "Identifier",
@@ -4037,6 +4255,7 @@ Array [
               },
             ],
             "callee": DottedGet {
+              "kind": "DottedGet",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -4055,6 +4274,7 @@ Array [
                 "text": "Lookup",
               },
               "obj": DottedGet {
+                "kind": "DottedGet",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -4073,6 +4293,7 @@ Array [
                   "text": "fonts",
                 },
                 "obj": Variable {
+                  "kind": "Variable",
                   "name": Object {
                     "isReserved": false,
                     "kind": "Identifier",
@@ -4118,7 +4339,9 @@ Array [
         },
         If {
           "condition": Binary {
+            "kind": "Binary",
             "left": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -4176,7 +4399,9 @@ Array [
           },
           "elseBranch": undefined,
           "elseIfs": Array [],
+          "kind": "If",
           "thenBranch": Block {
+            "kind": "Block",
             "location": Object {
               "end": Object {
                 "column": 60,
@@ -4190,6 +4415,7 @@ Array [
             },
             "statements": Array [
               Assignment {
+                "kind": "Assignment",
                 "name": Object {
                   "isReserved": false,
                   "kind": "Identifier",
@@ -4228,6 +4454,7 @@ Array [
                 },
                 "type": "Assignment",
                 "value": DottedGet {
+                  "kind": "DottedGet",
                   "name": Object {
                     "isReserved": false,
                     "kind": "Identifier",
@@ -4246,6 +4473,7 @@ Array [
                     "text": "medium",
                   },
                   "obj": DottedGet {
+                    "kind": "DottedGet",
                     "name": Object {
                       "isReserved": false,
                       "kind": "Identifier",
@@ -4264,6 +4492,7 @@ Array [
                       "text": "fonts",
                     },
                     "obj": Variable {
+                      "kind": "Variable",
                       "name": Object {
                         "isReserved": false,
                         "kind": "Identifier",
@@ -4292,6 +4521,7 @@ Array [
             "type": "Block",
           },
           "tokens": Object {
+            "else": undefined,
             "elseIfs": Array [],
             "endIf": undefined,
             "if": Object {
@@ -4335,6 +4565,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 7,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 7,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -4399,6 +4646,7 @@ exports[`parser if statements single-line if parses if only 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -4453,7 +4701,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -4467,6 +4717,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -4524,6 +4775,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -4568,6 +4820,7 @@ exports[`parser if statements single-line if parses if-else 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -4621,6 +4874,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -4634,6 +4888,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -4691,7 +4946,9 @@ Array [
       "type": "Block",
     },
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -4705,6 +4962,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -4762,6 +5020,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -4806,6 +5065,7 @@ exports[`parser if statements single-line if parses if-elseif-else 1`] = `
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -4859,6 +5119,7 @@ Array [
       "type": "Binary",
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -4872,6 +5133,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -4931,6 +5193,7 @@ Array [
     "elseIfs": Array [
       Object {
         "condition": Binary {
+          "kind": "Binary",
           "left": Literal {
             "_location": Object {
               "end": Object {
@@ -4984,6 +5247,7 @@ Array [
           "type": "Binary",
         },
         "thenBranch": Block {
+          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": -9,
@@ -4997,6 +5261,7 @@ Array [
           },
           "statements": Array [
             Assignment {
+              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -5056,7 +5321,9 @@ Array [
         "type": "ElseIf",
       },
     ],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -5070,6 +5337,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -5207,7 +5475,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 38,
@@ -5241,6 +5511,7 @@ Array [
               },
             },
           ],
+          "kind": "Print",
           "tokens": Object {
             "print": Object {
               "isReserved": true,
@@ -5266,6 +5537,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -5330,6 +5602,7 @@ Array [
       },
     },
     "elseBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 93,
@@ -5363,6 +5636,7 @@ Array [
               },
             },
           ],
+          "kind": "Print",
           "tokens": Object {
             "print": Object {
               "isReserved": true,
@@ -5408,6 +5682,7 @@ Array [
           },
         },
         "thenBranch": Block {
+          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 70,
@@ -5441,6 +5716,7 @@ Array [
                   },
                 },
               ],
+              "kind": "Print",
               "tokens": Object {
                 "print": Object {
                   "isReserved": true,
@@ -5468,7 +5744,9 @@ Array [
         "type": "ElseIf",
       },
     ],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 39,
@@ -5502,6 +5780,7 @@ Array [
               },
             },
           ],
+          "kind": "Print",
           "tokens": Object {
             "print": Object {
               "isReserved": true,
@@ -5527,6 +5806,23 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 74,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 70,
+            "line": 2,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -5591,6 +5887,7 @@ exports[`parser if statements supports if statement with condition and action on
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -5648,7 +5945,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 12,
@@ -5662,6 +5961,7 @@ Array [
       },
       "statements": Array [
         Return {
+          "kind": "Return",
           "tokens": Object {
             "return": Object {
               "isReserved": true,
@@ -5705,6 +6005,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -5770,7 +6071,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 66,
@@ -5784,6 +6087,7 @@ Array [
       },
       "statements": Array [
         Assignment {
+          "kind": "Assignment",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -5823,6 +6127,7 @@ Array [
           "type": "Assignment",
           "value": Function {
             "body": Block {
+              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 56,
@@ -5856,6 +6161,7 @@ Array [
                       },
                     },
                   ],
+                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -5914,6 +6220,7 @@ Array [
               },
               "text": "sub",
             },
+            "kind": "Function",
             "parameters": Array [],
             "returns": 11,
             "type": "Function",
@@ -5923,6 +6230,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -5986,6 +6294,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -6000,6 +6309,7 @@ Array [
         "statements": Array [
           If {
             "condition": Binary {
+              "kind": "Binary",
               "left": Literal {
                 "_location": Object {
                   "end": Object {
@@ -6056,6 +6366,7 @@ Array [
               "type": "Binary",
             },
             "elseBranch": Block {
+              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 16,
@@ -6089,6 +6400,7 @@ Array [
                       },
                     },
                   ],
+                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -6116,6 +6428,7 @@ Array [
             "elseIfs": Array [
               Object {
                 "condition": Binary {
+                  "kind": "Binary",
                   "left": Literal {
                     "_location": Object {
                       "end": Object {
@@ -6172,6 +6485,7 @@ Array [
                   "type": "Binary",
                 },
                 "thenBranch": Block {
+                  "kind": "Block",
                   "location": Object {
                     "end": Object {
                       "column": 16,
@@ -6205,6 +6519,7 @@ Array [
                           },
                         },
                       ],
+                      "kind": "Print",
                       "tokens": Object {
                         "print": Object {
                           "isReserved": true,
@@ -6232,7 +6547,9 @@ Array [
                 "type": "ElseIf",
               },
             ],
+            "kind": "If",
             "thenBranch": Block {
+              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 16,
@@ -6266,6 +6583,7 @@ Array [
                       },
                     },
                   ],
+                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -6291,6 +6609,23 @@ Array [
               "type": "Block",
             },
             "tokens": Object {
+              "else": Object {
+                "isReserved": true,
+                "kind": "Else",
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 20,
+                    "line": 7,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 16,
+                    "line": 7,
+                  },
+                },
+                "text": "else",
+              },
               "elseIfs": Array [
                 Object {
                   "isReserved": false,
@@ -6385,10 +6720,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -6415,6 +6752,7 @@ exports[`parser if statements supports trailing colons for one-line if statement
 Array [
   If {
     "condition": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -6472,7 +6810,9 @@ Array [
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
+    "kind": "If",
     "thenBranch": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": 35,
@@ -6486,6 +6826,7 @@ Array [
       },
       "statements": Array [
         Return {
+          "kind": "Return",
           "tokens": Object {
             "return": Object {
               "isReserved": true,
@@ -6529,6 +6870,7 @@ Array [
       "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,

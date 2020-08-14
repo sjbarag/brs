@@ -3,6 +3,7 @@
 exports[`parser relational expressions parses equality expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -39,6 +40,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -98,6 +100,7 @@ Array [
 exports[`parser relational expressions parses greater-than expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -134,6 +137,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -193,6 +197,7 @@ Array [
 exports[`parser relational expressions parses greater-than-or-equal-to expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -229,6 +234,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -288,6 +294,7 @@ Array [
 exports[`parser relational expressions parses inequality expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -324,6 +331,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -383,6 +391,7 @@ Array [
 exports[`parser relational expressions parses less-than expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -419,6 +428,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -478,6 +488,7 @@ Array [
 exports[`parser relational expressions parses less-than-or-equal-to expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -514,6 +525,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {

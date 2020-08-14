@@ -4,6 +4,7 @@ exports[`parser for loops accepts a 'step' clause 1`] = `
 Array [
   For {
     "body": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -19,6 +20,7 @@ Array [
       "type": "Block",
     },
     "counterDeclaration": Assignment {
+      "kind": "Assignment",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -106,6 +108,7 @@ Array [
         "value": 2,
       },
     },
+    "kind": "For",
     "tokens": Object {
       "endFor": Object {
         "isReserved": false,
@@ -181,6 +184,7 @@ exports[`parser for loops allows 'next' to terminate loop 1`] = `
 Array [
   For {
     "body": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -196,6 +200,7 @@ Array [
       "type": "Block",
     },
     "counterDeclaration": Assignment {
+      "kind": "Assignment",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -283,6 +288,7 @@ Array [
         "value": 1,
       },
     },
+    "kind": "For",
     "tokens": Object {
       "endFor": Object {
         "isReserved": true,
@@ -343,6 +349,7 @@ exports[`parser for loops defaults a missing 'step' clause to '1' 1`] = `
 Array [
   For {
     "body": Block {
+      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -358,6 +365,7 @@ Array [
       "type": "Block",
     },
     "counterDeclaration": Assignment {
+      "kind": "Assignment",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -445,6 +453,7 @@ Array [
         "value": 1,
       },
     },
+    "kind": "For",
     "tokens": Object {
       "endFor": Object {
         "isReserved": false,

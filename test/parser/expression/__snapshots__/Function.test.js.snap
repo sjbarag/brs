@@ -3,6 +3,7 @@
 exports[`parser function expressions parses colon-separated function declarations 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -40,6 +41,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -72,6 +74,7 @@ Array [
                 },
               },
             ],
+            "kind": "Print",
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
@@ -127,6 +130,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
@@ -138,6 +142,7 @@ Array [
 exports[`parser function expressions parses functions with default argument expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -175,6 +180,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -221,6 +227,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -344,7 +351,9 @@ Array [
         },
         Object {
           "defaultValue": Binary {
+            "kind": "Binary",
             "left": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -451,6 +460,7 @@ Array [
 exports[`parser function expressions parses functions with implicit-dynamic arguments 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -488,6 +498,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -534,6 +545,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -634,6 +646,7 @@ Array [
 exports[`parser function expressions parses functions with typed arguments 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -671,6 +684,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -717,6 +731,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -858,6 +873,7 @@ Array [
 exports[`parser function expressions parses functions with typed arguments and default expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -895,6 +911,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -941,6 +958,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -1003,7 +1021,9 @@ Array [
         },
         Object {
           "defaultValue": Binary {
+            "kind": "Binary",
             "left": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1109,6 +1129,7 @@ Array [
 exports[`parser function expressions parses minimal empty function expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1146,6 +1167,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1192,6 +1214,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
@@ -1203,6 +1226,7 @@ Array [
 exports[`parser function expressions parses non-empty function expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1240,6 +1264,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1272,6 +1297,7 @@ Array [
                 },
               },
             ],
+            "kind": "Print",
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
@@ -1327,6 +1353,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
@@ -1338,6 +1365,7 @@ Array [
 exports[`parser function expressions parses return types 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1375,6 +1403,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1421,6 +1450,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
@@ -1432,6 +1462,7 @@ Array [
 exports[`parser sub expressions parses minimal sub expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1469,6 +1500,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1515,6 +1547,7 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
@@ -1526,6 +1559,7 @@ Array [
 exports[`parser sub expressions parses non-empty sub expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1563,6 +1597,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1595,6 +1630,7 @@ Array [
                 },
               },
             ],
+            "kind": "Print",
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
@@ -1650,6 +1686,7 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
@@ -1661,6 +1698,7 @@ Array [
 exports[`parser sub expressions parses subs with default argument expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1698,6 +1736,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1744,6 +1783,7 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -1867,7 +1907,9 @@ Array [
         },
         Object {
           "defaultValue": Binary {
+            "kind": "Binary",
             "left": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1974,6 +2016,7 @@ Array [
 exports[`parser sub expressions parses subs with implicit-dynamic arguments 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2011,6 +2054,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2057,6 +2101,7 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -2157,6 +2202,7 @@ Array [
 exports[`parser sub expressions parses subs with typed arguments 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2194,6 +2240,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2240,6 +2287,7 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -2381,6 +2429,7 @@ Array [
 exports[`parser sub expressions parses subs with typed arguments and default expressions 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2418,6 +2467,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2464,6 +2514,7 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -2526,7 +2577,9 @@ Array [
         },
         Object {
           "defaultValue": Binary {
+            "kind": "Binary",
             "left": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2632,6 +2685,7 @@ Array [
 exports[`parser usage allows function expressions in assignment RHS 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2669,6 +2723,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2701,6 +2756,7 @@ Array [
                 },
               },
             ],
+            "kind": "Print",
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
@@ -2756,6 +2812,7 @@ Array [
         },
         "text": "function",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
@@ -2771,6 +2828,7 @@ Array [
       "args": Array [
         Function {
           "body": Block {
+            "kind": "Block",
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2803,6 +2861,7 @@ Array [
                     },
                   },
                 ],
+                "kind": "Print",
                 "tokens": Object {
                   "print": Object {
                     "isReserved": true,
@@ -2858,12 +2917,14 @@ Array [
             },
             "text": "function",
           },
+          "kind": "Function",
           "parameters": Array [],
           "returns": 10,
           "type": "Function",
         },
       ],
       "callee": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",

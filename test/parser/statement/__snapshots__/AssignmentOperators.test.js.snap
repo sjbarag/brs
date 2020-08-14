@@ -3,6 +3,7 @@
 exports[`parser assignment operators *= 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -39,7 +40,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -100,6 +103,7 @@ Array [
 exports[`parser assignment operators += 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -136,7 +140,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -197,6 +203,7 @@ Array [
 exports[`parser assignment operators /= 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -233,7 +240,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -294,6 +303,7 @@ Array [
 exports[`parser assignment operators <<= 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -330,7 +340,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -391,6 +403,7 @@ Array [
 exports[`parser assignment operators >>= 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -427,7 +440,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -488,6 +503,7 @@ Array [
 exports[`parser assignment operators \\= 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -524,7 +540,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -585,6 +603,7 @@ Array [
 exports[`parser assignment operators -= 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -621,7 +640,9 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
+      "kind": "Binary",
       "left": Variable {
+        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",

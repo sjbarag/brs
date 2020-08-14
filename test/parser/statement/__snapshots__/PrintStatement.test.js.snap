@@ -56,6 +56,7 @@ Array [
         },
       },
     ],
+    "kind": "Print",
     "tokens": Object {
       "print": Object {
         "isReserved": false,
@@ -167,6 +168,7 @@ Array [
         },
       },
     ],
+    "kind": "Print",
     "tokens": Object {
       "print": Object {
         "isReserved": false,
@@ -209,6 +211,7 @@ Array [
         "value": undefined,
       },
     ],
+    "kind": "Print",
     "tokens": Object {
       "print": Object {
         "isReserved": false,
@@ -254,6 +257,7 @@ Array [
         },
       },
     ],
+    "kind": "Print",
     "tokens": Object {
       "print": Object {
         "isReserved": false,

@@ -3,6 +3,7 @@
 exports[`parser prefix unary expressions parses consecutive unary '-' 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -39,6 +40,7 @@ Array [
     },
     "type": "Assignment",
     "value": Unary {
+      "kind": "Unary",
       "operator": Object {
         "isReserved": false,
         "kind": "Minus",
@@ -56,6 +58,7 @@ Array [
         "text": "-",
       },
       "right": Unary {
+        "kind": "Unary",
         "operator": Object {
           "isReserved": false,
           "kind": "Minus",
@@ -73,6 +76,7 @@ Array [
           "text": "-",
         },
         "right": Unary {
+          "kind": "Unary",
           "operator": Object {
             "isReserved": false,
             "kind": "Minus",
@@ -90,6 +94,7 @@ Array [
             "text": "-",
           },
           "right": Unary {
+            "kind": "Unary",
             "operator": Object {
               "isReserved": false,
               "kind": "Minus",
@@ -107,6 +112,7 @@ Array [
               "text": "-",
             },
             "right": Unary {
+              "kind": "Unary",
               "operator": Object {
                 "isReserved": false,
                 "kind": "Minus",
@@ -157,6 +163,7 @@ Array [
 exports[`parser prefix unary expressions parses consecutive unary 'not' 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -193,6 +200,7 @@ Array [
     },
     "type": "Assignment",
     "value": Unary {
+      "kind": "Unary",
       "operator": Object {
         "isReserved": true,
         "kind": "Not",
@@ -210,6 +218,7 @@ Array [
         "text": "not",
       },
       "right": Unary {
+        "kind": "Unary",
         "operator": Object {
           "isReserved": true,
           "kind": "Not",
@@ -227,6 +236,7 @@ Array [
           "text": "not",
         },
         "right": Unary {
+          "kind": "Unary",
           "operator": Object {
             "isReserved": true,
             "kind": "Not",
@@ -244,6 +254,7 @@ Array [
             "text": "not",
           },
           "right": Unary {
+            "kind": "Unary",
             "operator": Object {
               "isReserved": true,
               "kind": "Not",
@@ -261,6 +272,7 @@ Array [
               "text": "not",
             },
             "right": Unary {
+              "kind": "Unary",
               "operator": Object {
                 "isReserved": true,
                 "kind": "Not",
@@ -311,6 +323,7 @@ Array [
 exports[`parser prefix unary expressions parses unary '-' 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -347,6 +360,7 @@ Array [
     },
     "type": "Assignment",
     "value": Unary {
+      "kind": "Unary",
       "operator": Object {
         "isReserved": false,
         "kind": "Minus",
@@ -389,6 +403,7 @@ Array [
 exports[`parser prefix unary expressions parses unary 'not' 1`] = `
 Array [
   Assignment {
+    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -425,6 +440,7 @@ Array [
     },
     "type": "Assignment",
     "value": Unary {
+      "kind": "Unary",
       "operator": Object {
         "isReserved": true,
         "kind": "Not",

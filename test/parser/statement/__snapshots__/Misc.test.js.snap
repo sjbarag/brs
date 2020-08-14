@@ -5,6 +5,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 16,
@@ -18,6 +19,7 @@ Array [
         },
         "statements": Array [
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -99,6 +101,7 @@ Array [
                   },
                 },
               ],
+              "kind": "AALiteral",
               "open": Object {
                 "isReserved": false,
                 "kind": "LeftBrace",
@@ -156,10 +159,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -187,6 +192,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 16,
@@ -200,6 +206,7 @@ Array [
         },
         "statements": Array [
           End {
+            "kind": "End",
             "tokens": Object {
               "end": Object {
                 "isReserved": false,
@@ -258,10 +265,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -289,6 +298,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 16,
@@ -302,6 +312,7 @@ Array [
         },
         "statements": Array [
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -395,10 +406,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -426,6 +439,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -439,6 +453,7 @@ Array [
         },
         "statements": Array [
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -495,6 +510,7 @@ Array [
                 "text": "}",
               },
               "elements": Array [],
+              "kind": "AALiteral",
               "open": Object {
                 "isReserved": false,
                 "kind": "LeftBrace",
@@ -516,6 +532,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -534,6 +551,7 @@ Array [
               "text": "and",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -574,6 +592,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -592,6 +611,7 @@ Array [
               "text": "box",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -632,6 +652,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -650,6 +671,7 @@ Array [
               "text": "createobject",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -690,6 +712,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -708,6 +731,7 @@ Array [
               "text": "dim",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -748,6 +772,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -766,6 +791,7 @@ Array [
               "text": "double",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -806,6 +832,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -824,6 +851,7 @@ Array [
               "text": "each",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -864,6 +892,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -882,6 +911,7 @@ Array [
               "text": "else",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -922,6 +952,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -940,6 +971,7 @@ Array [
               "text": "elseif",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -980,6 +1012,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -998,6 +1031,7 @@ Array [
               "text": "end",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1038,6 +1072,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -1056,6 +1091,7 @@ Array [
               "text": "endfor",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1096,6 +1132,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -1114,6 +1151,7 @@ Array [
               "text": "endfunction",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1154,6 +1192,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -1172,6 +1211,7 @@ Array [
               "text": "endif",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1212,6 +1252,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1230,6 +1271,7 @@ Array [
               "text": "endsub",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1270,6 +1312,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1288,6 +1331,7 @@ Array [
               "text": "endwhile",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1328,6 +1372,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1346,6 +1391,7 @@ Array [
               "text": "eval",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1386,6 +1432,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1404,6 +1451,7 @@ Array [
               "text": "exit",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1444,6 +1492,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -1462,6 +1511,7 @@ Array [
               "text": "exitfor",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1502,6 +1552,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1520,6 +1571,7 @@ Array [
               "text": "exitwhile",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1560,6 +1612,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1578,6 +1631,7 @@ Array [
               "text": "false",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1618,6 +1672,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -1636,6 +1691,7 @@ Array [
               "text": "float",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1676,6 +1732,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1694,6 +1751,7 @@ Array [
               "text": "for",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1734,6 +1792,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -1752,6 +1811,7 @@ Array [
               "text": "foreach",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1792,6 +1852,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1810,6 +1871,7 @@ Array [
               "text": "function",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1850,6 +1912,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1868,6 +1931,7 @@ Array [
               "text": "getglobalaa",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1908,6 +1972,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1926,6 +1991,7 @@ Array [
               "text": "getlastruncompileerror",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1966,6 +2032,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -1984,6 +2051,7 @@ Array [
               "text": "getlastrunruntimeerror",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2024,6 +2092,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2042,6 +2111,7 @@ Array [
               "text": "goto",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2082,6 +2152,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2100,6 +2171,7 @@ Array [
               "text": "if",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2140,6 +2212,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -2158,6 +2231,7 @@ Array [
               "text": "integer",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2198,6 +2272,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2216,6 +2291,7 @@ Array [
               "text": "invalid",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2256,6 +2332,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2274,6 +2351,7 @@ Array [
               "text": "let",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2314,6 +2392,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2332,6 +2411,7 @@ Array [
               "text": "line_num",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2372,6 +2452,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -2390,6 +2471,7 @@ Array [
               "text": "longinteger",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2430,6 +2512,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2448,6 +2531,7 @@ Array [
               "text": "next",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2488,6 +2572,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2506,6 +2591,7 @@ Array [
               "text": "not",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2546,6 +2632,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2564,6 +2651,7 @@ Array [
               "text": "objfun",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2604,6 +2692,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2622,6 +2711,7 @@ Array [
               "text": "or",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2662,6 +2752,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2680,6 +2771,7 @@ Array [
               "text": "pos",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2720,6 +2812,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2738,6 +2831,7 @@ Array [
               "text": "print",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2778,6 +2872,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2796,6 +2891,7 @@ Array [
               "text": "rem",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2836,6 +2932,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2854,6 +2951,7 @@ Array [
               "text": "return",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2894,6 +2992,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2912,6 +3011,7 @@ Array [
               "text": "run",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2952,6 +3052,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -2970,6 +3071,7 @@ Array [
               "text": "step",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3010,6 +3112,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3028,6 +3131,7 @@ Array [
               "text": "stop",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3068,6 +3172,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3086,6 +3191,7 @@ Array [
               "text": "string",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3126,6 +3232,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3144,6 +3251,7 @@ Array [
               "text": "sub",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3184,6 +3292,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3202,6 +3311,7 @@ Array [
               "text": "tab",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3242,6 +3352,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3260,6 +3371,7 @@ Array [
               "text": "then",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3300,6 +3412,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3318,6 +3431,7 @@ Array [
               "text": "to",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3358,6 +3472,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3376,6 +3491,7 @@ Array [
               "text": "true",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3416,6 +3532,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3434,6 +3551,7 @@ Array [
               "text": "type",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3474,6 +3592,7 @@ Array [
             },
           },
           DottedSet {
+            "kind": "DottedSet",
             "name": Object {
               "isReserved": true,
               "kind": "Identifier",
@@ -3492,6 +3611,7 @@ Array [
               "text": "while",
             },
             "obj": Variable {
+              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3568,10 +3688,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -3599,6 +3721,7 @@ Array [
   Function {
     "func": Function {
       "body": Block {
+        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -3612,6 +3735,7 @@ Array [
         },
         "statements": Array [
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "EndFor",
@@ -3669,6 +3793,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3726,6 +3851,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3783,6 +3909,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3840,6 +3967,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3897,6 +4025,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -3954,6 +4083,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -4011,6 +4141,7 @@ Array [
             },
           },
           Assignment {
+            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -4104,10 +4235,12 @@ Array [
         },
         "text": "sub",
       },
+      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
+    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",

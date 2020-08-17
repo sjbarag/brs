@@ -2,7 +2,6 @@ import * as fg from "fast-glob";
 import path from "path";
 
 import { Stmt, Expr } from "../parser";
-import { ExecutionOptions} from "../interpreter";
 import { FileCoverage, CoverageSummary } from "./FileCoverage";
 
 export class CoverageCollector {
@@ -12,13 +11,13 @@ export class CoverageCollector {
     private files = new Map<string, FileCoverage>();
 
     constructor(
-        readonly executionOptions: ExecutionOptions,
+        readonly projectRoot: string,
         readonly parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>
     ) {}
 
     public async crawlBrsFiles() {
         let filePattern = path.join(
-            this.executionOptions.root,
+            this.projectRoot,
             "(components|source)",
             "**",
             "*.brs"

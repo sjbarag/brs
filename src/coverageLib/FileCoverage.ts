@@ -1,7 +1,6 @@
 import { Stmt, Expr } from "../parser";
 import { Location, isToken } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
-import { ExpressionKind } from "../parser/Expression";
 import { StatementKind } from "../parser/Statement";
 
 interface StatementCoverage {
@@ -10,6 +9,7 @@ interface StatementCoverage {
     // no real difference when it comes to coverage
     statement: Expr.Expression | Stmt.Statement;
 }
+
 export interface CoverageSummary {
     path: string;
     statementMap: { [key: string]: Location };
@@ -62,7 +62,7 @@ export class FileCoverage {
     }
 
     /**
-     * Converts the coverage data to a more friendly (i.e. `istanbul`-compliant) format.
+     * Converts the coverage data to a POJO that is more friendly for consumers like istanbul.
      */
     getCoverage(): CoverageSummary {
         let coverageSummary: CoverageSummary = {

@@ -68,7 +68,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     
     if (executionOptions.generateCoverage) {
         coverageCollector = new CoverageCollector(
-            executionOptions,
+            executionOptions.root,
             lexerParserFn
         );
         await coverageCollector.crawlBrsFiles();

@@ -34,6 +34,7 @@ Array [
               },
               "text": "++",
             },
+            "type": "Increment",
             "value": Variable {
               "name": Object {
                 "isReserved": false,
@@ -51,9 +52,11 @@ Array [
                 },
                 "text": "someValue",
               },
+              "type": "Variable",
             },
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -89,6 +92,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -106,6 +110,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -129,6 +134,7 @@ Array [
       },
       "text": "++",
     },
+    "type": "Increment",
     "value": IndexedGet {
       "closingSquare": Object {
         "isReserved": false,
@@ -163,6 +169,7 @@ Array [
           },
           "text": "property",
         },
+        "type": "Variable",
       },
       "obj": Variable {
         "name": Object {
@@ -181,7 +188,9 @@ Array [
           },
           "text": "obj",
         },
+        "type": "Variable",
       },
+      "type": "IndexedGet",
     },
   },
 ]
@@ -206,6 +215,7 @@ Array [
       },
       "text": "++",
     },
+    "type": "Increment",
     "value": Variable {
       "name": Object {
         "isReserved": false,
@@ -223,6 +233,7 @@ Array [
         },
         "text": "foo",
       },
+      "type": "Variable",
     },
   },
 ]
@@ -247,6 +258,7 @@ Array [
       },
       "text": "--",
     },
+    "type": "Increment",
     "value": DottedGet {
       "name": Object {
         "isReserved": false,
@@ -281,7 +293,9 @@ Array [
           },
           "text": "obj",
         },
+        "type": "Variable",
       },
+      "type": "DottedGet",
     },
   },
 ]

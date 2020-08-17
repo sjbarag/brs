@@ -16,6 +16,7 @@ Array [
               "line": -9,
             },
           },
+          "type": "Literal",
           "value": Int32 {
             "kind": 4,
             "value": 1,
@@ -32,6 +33,7 @@ Array [
               "line": -9,
             },
           },
+          "type": "Literal",
           "value": Int32 {
             "kind": 4,
             "value": 2,
@@ -55,6 +57,7 @@ Array [
           },
           "text": "add",
         },
+        "type": "Variable",
       },
       "closingParen": Object {
         "isReserved": false,
@@ -72,7 +75,9 @@ Array [
         },
         "text": ")",
       },
+      "type": "Call",
     },
+    "type": "Expression",
   },
 ]
 `;
@@ -99,6 +104,7 @@ Array [
           },
           "text": "RebootSystem",
         },
+        "type": "Variable",
       },
       "closingParen": Object {
         "isReserved": false,
@@ -116,7 +122,9 @@ Array [
         },
         "text": ")",
       },
+      "type": "Call",
     },
+    "type": "Expression",
   },
 ]
 `;
@@ -175,6 +183,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -187,6 +196,7 @@ Array [
                   "line": 4,
                 },
               },
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "bob",
@@ -194,6 +204,7 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -231,6 +242,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -249,6 +261,7 @@ Array [
       },
       "text": "DoThingOne",
     },
+    "type": "Function",
   },
   Function {
     "func": Function {
@@ -265,6 +278,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -302,6 +316,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -320,6 +335,7 @@ Array [
       },
       "text": "DoThingTwo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -341,6 +357,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -378,6 +395,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -396,6 +414,7 @@ Array [
       },
       "text": "DoThingOne",
     },
+    "type": "Function",
   },
   Function {
     "func": Function {
@@ -412,6 +431,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -449,6 +469,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -467,6 +488,7 @@ Array [
       },
       "text": "DoThingTwo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -493,6 +515,7 @@ Array [
           },
           "text": "RebootSystem",
         },
+        "type": "Variable",
       },
       "closingParen": Object {
         "isReserved": false,
@@ -510,7 +533,9 @@ Array [
         },
         "text": ")",
       },
+      "type": "Call",
     },
+    "type": "Expression",
   },
 ]
 `;

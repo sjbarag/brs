@@ -15,6 +15,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "Foo",
@@ -31,6 +32,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "bar",
@@ -47,6 +49,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "baz",
@@ -71,6 +74,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Print",
   },
 ]
 `;
@@ -90,6 +94,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "Foo",
@@ -122,6 +127,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "bar",
@@ -154,6 +160,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "baz",
@@ -178,6 +185,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Print",
   },
 ]
 `;
@@ -197,6 +205,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": undefined,
       },
     ],
@@ -218,6 +227,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Print",
   },
 ]
 `;
@@ -237,6 +247,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "",
@@ -261,6 +272,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Print",
   },
 ]
 `;

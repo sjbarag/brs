@@ -37,6 +37,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -55,6 +56,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -67,6 +69,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 3,
@@ -88,6 +91,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -130,6 +134,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -148,6 +153,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -160,6 +166,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "lorem",
@@ -181,6 +188,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -223,6 +231,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -241,6 +250,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -253,6 +263,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 4,
@@ -274,6 +285,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -316,6 +328,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -334,6 +347,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -346,6 +360,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 6,
@@ -367,6 +382,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -409,6 +425,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -427,6 +444,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -439,6 +457,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 7,
@@ -460,6 +479,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -502,6 +522,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -520,6 +541,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -532,6 +554,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -553,6 +576,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -595,6 +619,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Variable {
         "name": Object {
@@ -613,6 +638,7 @@ Array [
           },
           "text": "_",
         },
+        "type": "Variable",
       },
       "right": Literal {
         "_location": Object {
@@ -625,6 +651,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -646,6 +673,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]

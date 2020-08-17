@@ -37,6 +37,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": IndexedGet {
       "closingSquare": Object {
         "isReserved": false,
@@ -65,6 +66,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 6,
@@ -98,6 +100,7 @@ Array [
               "line": -9,
             },
           },
+          "type": "Literal",
           "value": Int32 {
             "kind": 4,
             "value": 0,
@@ -131,6 +134,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 2,
@@ -153,9 +157,13 @@ Array [
               },
               "text": "foo",
             },
+            "type": "Variable",
           },
+          "type": "IndexedGet",
         },
+        "type": "IndexedGet",
       },
+      "type": "IndexedGet",
     },
   },
 ]
@@ -198,6 +206,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": DottedGet {
       "name": Object {
         "isReserved": false,
@@ -232,7 +241,9 @@ Array [
           },
           "text": "foo",
         },
+        "type": "Variable",
       },
+      "type": "DottedGet",
     },
   },
 ]
@@ -275,6 +286,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": DottedGet {
       "name": Object {
         "isReserved": false,
@@ -320,6 +332,7 @@ Array [
               "line": -9,
             },
           },
+          "type": "Literal",
           "value": Int32 {
             "kind": 4,
             "value": 0,
@@ -359,9 +372,13 @@ Array [
               },
               "text": "foo",
             },
+            "type": "Variable",
           },
+          "type": "DottedGet",
         },
+        "type": "IndexedGet",
       },
+      "type": "DottedGet",
     },
   },
 ]
@@ -404,6 +421,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": IndexedGet {
       "closingSquare": Object {
         "isReserved": false,
@@ -432,6 +450,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -454,7 +473,9 @@ Array [
           },
           "text": "foo",
         },
+        "type": "Variable",
       },
+      "type": "IndexedGet",
     },
   },
 ]
@@ -497,6 +518,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": DottedGet {
       "name": Object {
         "isReserved": false,
@@ -531,7 +553,9 @@ Array [
           },
           "text": "foo",
         },
+        "type": "Variable",
       },
+      "type": "DottedGet",
     },
   },
 ]
@@ -574,6 +598,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": IndexedGet {
       "closingSquare": Object {
         "isReserved": false,
@@ -602,6 +627,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -624,7 +650,9 @@ Array [
           },
           "text": "foo",
         },
+        "type": "Variable",
       },
+      "type": "IndexedGet",
     },
   },
 ]

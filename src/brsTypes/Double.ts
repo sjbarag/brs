@@ -20,8 +20,8 @@ export class Double implements Numeric, Comparable, Boxable {
      * @param value the value to store in the BrightScript double, rounded to 64-bit (double)
      *              precision.
      */
-    constructor(value: number) {
-        this.value = value;
+    constructor(value: number | Long) {
+        this.value = Number(value);
     }
 
     /**

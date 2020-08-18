@@ -20,8 +20,8 @@ export class Int32 implements Numeric, Comparable, Boxable {
      * @param value the value to store in the BrightScript number, truncated to a 32-bit
      *              integer.
      */
-    constructor(initialValue: number) {
-        this.value = Math.trunc(initialValue);
+    constructor(initialValue: number | Long) {
+        this.value = Math.trunc(Number(initialValue));
     }
 
     /**

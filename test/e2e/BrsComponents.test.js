@@ -234,6 +234,8 @@ describe("end to end brightscript functions", () => {
             "newValue",
             "updatedId",
             "invalid",
+            "33",
+            "37",
         ]);
     });
 

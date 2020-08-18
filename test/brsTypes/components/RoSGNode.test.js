@@ -6,6 +6,9 @@ const {
     BrsBoolean,
     BrsString,
     Int32,
+    Int64,
+    Float,
+    Double,
     BrsInvalid,
     ValueKind,
     Uninitialized,
@@ -76,6 +79,51 @@ describe("RoSGNode", () => {
             node.set(new BrsString("foo"), new Int32(66));
 
             expect(node.get(new BrsString("foo"))).toEqual(new Int32(66));
+        });
+
+        it("converts types on number fields", () => {
+            let node = new RoSGNode([
+                {
+                    name: new BrsString("intFoo"),
+                    value: new Int32(99),
+                },
+                {
+                    name: new BrsString("longBar"),
+                    value: new Int64(4321),
+                },
+                {
+                    name: new BrsString("floatBat"),
+                    value: new Float(33.7),
+                },
+                {
+                    name: new BrsString("doubleTrouble"),
+                    value: new Double(33.7),
+                },
+            ]);
+
+            node.set(new BrsString("intFoo"), new Float(34.3));
+            expect(node.get(new BrsString("intFoo"))).toEqual(new Int32(34));
+
+            node.set(new BrsString("intFoo"), new Double(38.7));
+            expect(node.get(new BrsString("intFoo"))).toEqual(new Int32(38));
+
+            node.set(new BrsString("longBar"), new Float(34.3));
+            expect(node.get(new BrsString("longBar"))).toEqual(new Int64(34));
+
+            node.set(new BrsString("longBar"), new Double(38.7));
+            expect(node.get(new BrsString("longBar"))).toEqual(new Int64(38));
+
+            node.set(new BrsString("floatBat"), new Int32(38));
+            expect(node.get(new BrsString("floatBat"))).toEqual(new Float(38));
+
+            node.set(new BrsString("floatBat"), new Double(31.7));
+            expect(node.get(new BrsString("floatBat"))).toEqual(new Float(31.7));
+
+            node.set(new BrsString("doubleTrouble"), new Int32(49));
+            expect(node.get(new BrsString("doubleTrouble"))).toEqual(new Double(49));
+
+            node.set(new BrsString("doubleTrouble"), new Float(11.2));
+            expect(node.get(new BrsString("doubleTrouble"))).toEqual(new Double(11.2));
         });
     });
 

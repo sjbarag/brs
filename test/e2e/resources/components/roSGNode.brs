@@ -214,6 +214,13 @@ sub main()
     }, false)
     print node.id
     print node.newField
+
+    ' setting numbers of different types on fields
+    node = createObject("roSGNode", "ContentNode")
+    node.FrameRate = 33.3
+    ?node.FrameRate
+    node.ClipStart = 37
+    ?node.ClipStart
 end sub
 
 sub onCB1Called()

@@ -10,10 +10,13 @@ import {
 } from "../BrsType";
 import { RoSGNodeEvent } from "./RoSGNodeEvent";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
-import { BrsType } from "..";
+import { BrsType, isBrsNumber } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
+import { Int64 } from "../Int64";
+import { Float } from "../Float";
+import { Double } from "../Double";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
@@ -151,6 +154,18 @@ export class Field {
         // Once a field is set, it is no longer hidden.
         this.hidden = false;
 
+        if (isBrsNumber(value) && value.kind !== getValueKindFromFieldType(this.type)) {
+            if (this.type === FieldKind.Float) {
+                value = new Float(value.getValue());
+            } else if (this.type === FieldKind.Int32) {
+                value = new Int32(value.getValue());
+            } else if (this.type === FieldKind.Int64) {
+                value = new Int64(value.getValue());
+            } else if (this.type === FieldKind.Double) {
+                value = new Double(value.getValue());
+            }
+        }
+
         let oldValue = this.value;
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
@@ -162,6 +177,9 @@ export class Field {
         // Objects are allowed to be set to invalid.
         let fieldIsObject = getValueKindFromFieldType(this.type) === ValueKind.Object;
         if (fieldIsObject && (value === BrsInvalid.Instance || value instanceof roInvalid)) {
+            return true;
+        } else if (isBrsNumber(this.value) && isBrsNumber(value)) {
+            // can convert between number types
             return true;
         }
 

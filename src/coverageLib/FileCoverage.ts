@@ -1,13 +1,15 @@
 import { Stmt, Expr } from "../parser";
-import { Location, isToken } from "../lexer";
+import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
-import { StatementKind } from "../parser/Statement";
+import { StatementKind, Expression } from "../parser/Statement";
 
 interface StatementCoverage {
+    /** Number of times the interpreter has executed/evaluated this statement. */
     hits: number;
-    // combine expressions and statements because there is
-    // no real difference when it comes to coverage
+    /** Combine expressions and statements because we need to log some expressions to get the coverage report. */
     statement: Expr.Expression | Stmt.Statement;
+    /** Keep track of whether we've already used this statement in the coverage report. */
+    used: boolean;
 }
 
 export interface CoverageSummary {
@@ -57,8 +59,15 @@ export class FileCoverage {
     addStatementToLine(statement: Expr.Expression | Stmt.Statement) {
         let lineNumber = statement.location.start.line;
         let lineStatements = this.getLine(lineNumber);
-        lineStatements.push({ hits: 0, statement });
+        lineStatements.push({ hits: 0, statement, used: false });
         this.lines.set(lineNumber, lineStatements);
+    }
+
+    private getStatement(statement: Stmt.Statement | Expr.Expression) {
+        return this.getLine(statement.location.start.line).find((other) => {
+            other.statement.kind === statement.kind &&
+                Location.equals(other.statement.location, statement.location);
+        });
     }
 
     /**
@@ -75,32 +84,41 @@ export class FileCoverage {
             b: {},
         };
 
+
         Array.from(this.lines).forEach(([lineNumber, statements]) => {
-            statements.forEach(({ statement, hits }, index) => {
-                let key = `stmt-${lineNumber}-${index}`;
+            statements.forEach(({ statement, hits, used }, index) => {
+                // Don't double-count statements.
+                if (used) return;
+
+                // unique key for this statement
+                let key = `line-${lineNumber}/stmt-${index}`;
                 if (statement instanceof Stmt.If) {
+                    let locations: Location[] = [];
+                    let branchHits: number[] = [];
+
                     // first add the if statement
-                    let ifLocation = statement.tokens.if.location;
-                    let locations = [
-                        {
-                            file: this.filePath,
-                            start: ifLocation.start,
-                            end: statement.tokens.then?.location.end || ifLocation.end,
-                        },
-                    ];
-                    let branchHits = [hits];
+                    let ifStatement = this.getLine((statement.condition.location.start.line)).find((branchStatement) => 
+                        branchStatement.statement.kind === statement.condition.kind &&
+                        Location.equals(branchStatement.statement.location, statement.condition.location)
+                    );
+                    let ifStatement = this.getStatement(statement.condition);
+                    if (ifStatement) {
+                        locations.push(ifStatement.statement.location);
+                        branchHits.push(ifStatement.hits);
+                    }
 
                     // then add the else-ifs
                     statement.elseIfs.forEach((branch, index) => {
                         let branchStatements = this.getLine(branch.condition.location.start.line);
-                        let elseIf = branchStatements.find(({ statement }) =>
-                            Location.equals(branch.condition.location, statement.location)
+                        let elseIf = branchStatements.find((branchStatement) =>
+                            Location.equals(branch.condition.location, branchStatement.statement.location)
                         );
 
                         let tokenLocation = statement.tokens.elseIfs?.[index]?.location;
                         if (tokenLocation && elseIf) {
                             locations.push(tokenLocation);
                             branchHits.push(elseIf.hits);
+                            
                         }
                     });
 
@@ -118,7 +136,6 @@ export class FileCoverage {
                         }
                     }
 
-                    // put it into the summary
                     coverageSummary.branchMap[key] = {
                         loc: statement.location,
                         type: "if",
@@ -134,6 +151,26 @@ export class FileCoverage {
                         line: lineNumber,
                     };
                     coverageSummary.f[key] = hits;
+                } else if (statement instanceof Expr.Binary) {
+                    let locations: Location[] = [];
+                    let branchHits: number[] = [];
+                    [statement.left, statement.right].forEach((branch) => {
+                        let branchCov = this.getLine(branch.location.start.line).find((stmt) => {
+                            stmt.statement.kind === branch.kind &&
+                                Location.equals(stmt.statement.location, branch.location);
+                        });
+                        if (branchCov) {
+                            locations.push(branchCov.statement.location);
+                            branchHits.push(branchCov.hits);
+                        }
+                    });
+                    coverageSummary.branchMap[key] = {
+                        loc: statement.location,
+                        type: statement.token.kind,
+                        locations,
+                        line: lineNumber,
+                    };
+                    coverageSummary.b[key] = branchHits;
                 } else {
                     coverageSummary.statementMap[key] = statement.location;
                     coverageSummary.s[key] = hits;

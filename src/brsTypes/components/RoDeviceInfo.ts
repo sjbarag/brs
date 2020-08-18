@@ -148,70 +148,6 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         return new BrsString("");
     }
 
-    getEnableAppFocusStatus() {
-        return this.enableAppFocus;
-    }
-
-    setEnableAppFocusStatus(enable: BrsBoolean) {
-        this.enableAppFocus = enable;
-    }
-
-    getEnableScreenSaverExitedStatus() {
-        return this.enableScreenSaverExited;
-    }
-
-    setEnableScreenSaverExitedStatus(enable: BrsBoolean) {
-        this.enableScreenSaverExited = enable;
-    }
-
-    getEnableLowGeneralMemoryStatus() {
-        return this.enableLowGeneralMemory;
-    }
-
-    setEnableLowGeneralMemoryStatus(enable: BrsBoolean) {
-        this.enableLowGeneralMemory = enable;
-    }
-
-    getEnableLinkStatus() {
-        return this.enableLinkStatus;
-    }
-
-    setEnableLinkStatus(enable: BrsBoolean) {
-        this.enableLinkStatus = enable;
-    }
-
-    getEnableAudioGuideChangedStatus() {
-        return this.enableAudioGuideChanged;
-    }
-
-    setEnableAudioGuideChangedStatus(enable: BrsBoolean) {
-        this.enableAudioGuideChanged = enable;
-    }
-
-    getEnableCodecCapChangedStatus() {
-        return this.enableCodecCapChanged;
-    }
-
-    setEnableCodecCapChangedStatus(enable: BrsBoolean) {
-        this.enableCodecCapChanged = enable;
-    }
-
-    setVideoFormat(videoFormat: ValueKind.Object) {
-        this.videoFormat = videoFormat;
-    }
-
-    getVideoFormat() {
-        return this.videoFormat;
-    }
-
-    setAudioFormat(audioFormat: ValueKind.Object) {
-        this.audioFormat = audioFormat;
-    }
-
-    getAudioFormat() {
-        return this.audioFormat;
-    }
-
     private getModel = new Callable("getModel", {
         signature: {
             args: [],
@@ -465,8 +401,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (_interpreter, enable: BrsBoolean) => {
-            this.setEnableAppFocusStatus(enable);
-            return this.getEnableAppFocusStatus();
+            this.enableAppFocus = enable;
+            return this.enableAppFocus;
         },
     });
 
@@ -476,8 +412,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (_interpreter, enable: BrsBoolean) => {
-            this.setEnableScreenSaverExitedStatus(enable);
-            return this.getEnableScreenSaverExitedStatus();
+            this.enableScreenSaverExited = enable;
+            return this.enableScreenSaverExited;
         },
     });
 
@@ -487,8 +423,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (_interpreter, enable: BrsBoolean) => {
-            this.setEnableLowGeneralMemoryStatus(enable);
-            return this.getEnableLowGeneralMemoryStatus();
+            this.enableLowGeneralMemory = enable;
+            return this.enableLowGeneralMemory;
         },
     });
 
@@ -528,8 +464,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Boolean,
         },
         impl: (_interpreter, enable: BrsBoolean) => {
-            this.setEnableLinkStatus(enable);
-            return this.getEnableLinkStatus();
+            this.enableLinkStatus = enable;
+            return this.enableLinkStatus;
         },
     });
 
@@ -649,7 +585,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter, videoFormat: ValueKind.Object) => {
-            this.setVideoFormat(videoFormat);
+            this.videoFormat = videoFormat;
 
             let result = new Array<AAMember>();
 
@@ -686,8 +622,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (_interpreter, enable: BrsBoolean) => {
-            this.setEnableCodecCapChangedStatus(enable);
-            return this.getEnableAudioGuideChangedStatus();
+            this.enableCodecCapChanged = enable;
+            return this.enableCodecCapChanged;
         },
     });
 
@@ -717,7 +653,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter, audioFormat: ValueKind.Object) => {
-            this.setAudioFormat(audioFormat);
+            this.audioFormat = audioFormat;
             let result = new Array<AAMember>();
 
             result.push({ name: new BrsString("result"), value: BrsBoolean.True });
@@ -752,8 +688,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Dynamic,
         },
         impl: (_interpreter, enable: BrsBoolean) => {
-            this.setEnableAudioGuideChangedStatus(enable);
-            return this.getEnableAudioGuideChangedStatus();
+            this.enableAudioGuideChanged = enable;
+            return this.enableAudioGuideChanged;
         },
     });
 }

@@ -33,7 +33,6 @@
     "memory-fs": "^0.4.1",
     "nanomatch": "^1.2.13",
     "p-settle": "^2.1.0",
-    "uuid": "^8.3.0",
     "xmldoc": "^1.1.2"
   },
   "devDependencies": {
@@ -43,6 +42,7 @@
     "@types/memory-fs": "^0.3.2",
     "@types/node": "^8.5.2",
     "@types/p-settle": "^2.0.1",
+    "@types/uuid": "^8.3.0",
     "@types/xmldoc": "^1.1.4",
     "husky": ">=1",
     "jest": "26",

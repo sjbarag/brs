@@ -6,13 +6,6 @@ export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];
 
     /**
-     * A map of file URIs to a promise that resolves to an array of that file's statements.
-     * Used primary to avoid re-lexing and re-parsing files that are included
-     * in <script /> tags in multiple components.
-     */
-    private memoizedStatements = new Map<string, Promise<Stmt.Statement[]>>();
-
-    /**
      * @param componentMap Component definition map to reference for function resolution.
      * @param parserLexerFn Function used to parse statements out of given components
      */
@@ -70,9 +63,7 @@ export class ComponentScopeResolver {
      * @returns An ordered array of component statement arrays.
      */
     private *getStatements(component: ComponentDefinition) {
-        for (const statements of this.fetchMemoizedStatements(component.scripts)) {
-            yield statements;
-        }
+        yield this.parserLexerFn(component.scripts.map((c) => c.uri));
 
         let currentComponent: ComponentDefinition | undefined = component;
         while (currentComponent.extends) {
@@ -92,33 +83,9 @@ export class ComponentScopeResolver {
                 );
                 return Promise.resolve();
             }
-            for (const statements of this.fetchMemoizedStatements(currentComponent.scripts)) {
-                yield statements;
-            }
+            yield this.parserLexerFn(currentComponent.scripts.map((c) => c.uri));
         }
 
         return Promise.resolve();
-    }
-
-    /**
-     * Generator function that fetches statements from an array of script files without repeatedly
-     * lexing, preprocessing, and parsing files (via memoization).
-     * @param scripts the array of scripts to get statements for
-     * @yields promises that each resolve to an array of statements; one promise per file in `scripts`.
-     */
-    private *fetchMemoizedStatements(scripts: ComponentScript[]) {
-        for (let { uri } of scripts) {
-            let maybeStatements = this.memoizedStatements.get(uri);
-            if (maybeStatements) {
-                yield maybeStatements;
-            } else {
-                let statementsPromise = this.parserLexerFn([uri]);
-                if (!this.memoizedStatements.has(uri)) {
-                    this.memoizedStatements.set(uri, statementsPromise);
-                }
-
-                yield statementsPromise;
-            }
-        }
     }
 }

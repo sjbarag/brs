@@ -308,7 +308,7 @@ describe("RoAssociativeArray", () => {
             });
         });
 
-        describe.only("setModeCaseSensitive", () => {
+        describe("setModeCaseSensitive", () => {
             it("looks for key using case insensitive by default", () => {
                 let v1 = new BrsString("value1");
 

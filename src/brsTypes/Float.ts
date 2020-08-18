@@ -6,6 +6,7 @@ import { Int32 } from "./Int32";
 import { Double } from "./Double";
 import { Int64 } from "./Int64";
 import { roFloat } from "./components/RoFloat";
+import Long from "long";
 
 /**
  * Number of significant digits represented in an IEEE 32-bit floating point number.
@@ -27,7 +28,8 @@ export class Float implements Numeric, Comparable, Boxable {
      *              precision and maintaining only seven significant digits of accuracy.
      */
     constructor(value: number | Long) {
-        this.value = parseFloat(Math.fround(Number(value)).toPrecision(IEEE_FLOAT_SIGFIGS));
+        if (value instanceof Long) value = value.toNumber();
+        this.value = parseFloat(Math.fround(value).toPrecision(IEEE_FLOAT_SIGFIGS));
     }
 
     /**

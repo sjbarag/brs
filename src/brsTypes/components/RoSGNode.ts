@@ -154,14 +154,14 @@ export class Field {
         // Once a field is set, it is no longer hidden.
         this.hidden = false;
 
-        if (isBrsNumber(value)) {
-            if (this.type === FieldKind.Float && value.kind !== ValueKind.Float) {
+        if (isBrsNumber(value) && value.kind !== getValueKindFromFieldType(this.type)) {
+            if (this.type === FieldKind.Float) {
                 value = new Float(value.getValue());
-            } else if (this.type === FieldKind.Int32 && value.kind !== ValueKind.Int32) {
+            } else if (this.type === FieldKind.Int32) {
                 value = new Int32(value.getValue());
-            } else if (this.type === FieldKind.Int64 && value.kind !== ValueKind.Int64) {
+            } else if (this.type === FieldKind.Int64) {
                 value = new Int64(value.getValue());
-            } else if (this.type === FieldKind.Double && value.kind !== ValueKind.Double) {
+            } else if (this.type === FieldKind.Double) {
                 value = new Double(value.getValue());
             }
         }

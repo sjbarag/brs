@@ -6,6 +6,7 @@ import { Int64 } from "./Int64";
 import { Float } from "./Float";
 import { roDouble } from "./components/RoDouble";
 import { Boxable } from "./Boxing";
+import Long from "long";
 
 export class Double implements Numeric, Comparable, Boxable {
     readonly kind = ValueKind.Double;
@@ -21,7 +22,7 @@ export class Double implements Numeric, Comparable, Boxable {
      *              precision.
      */
     constructor(value: number | Long) {
-        this.value = Number(value);
+        this.value = value instanceof Long ? value.toNumber() : value;
     }
 
     /**

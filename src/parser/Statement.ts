@@ -2,6 +2,7 @@ import * as Expr from "./Expression";
 import { Token, Identifier, Location, Lexeme } from "../lexer";
 import { BrsType, BrsInvalid } from "../brsTypes";
 import { InvalidZone } from "luxon";
+import { AstNode } from "./AstNode";
 
 /** A set of reasons why a `Block` stopped executing. */
 export * from "./BlockEndReason";
@@ -39,14 +40,16 @@ export interface Statement {
     location: Location;
 }
 
-export class Assignment implements Statement {
+export class Assignment extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             equals: Token;
         },
         readonly name: Identifier,
         readonly value: Expr.Expression
-    ) {}
+    ) {
+        super("Assignment");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitAssignment(this);
@@ -61,16 +64,20 @@ export class Assignment implements Statement {
     }
 }
 
-export class Block implements Statement {
-    constructor(readonly statements: ReadonlyArray<Statement>, readonly location: Location) {}
+export class Block extends AstNode implements Statement {
+    constructor(readonly statements: ReadonlyArray<Statement>, readonly location: Location) {
+        super("Block");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitBlock(this);
     }
 }
 
-export class Expression implements Statement {
-    constructor(readonly expression: Expr.Expression) {}
+export class Expression extends AstNode implements Statement {
+    constructor(readonly expression: Expr.Expression) {
+        super("Expression");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExpression(this);
@@ -81,12 +88,14 @@ export class Expression implements Statement {
     }
 }
 
-export class ExitFor implements Statement {
+export class ExitFor extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             exitFor: Token;
         }
-    ) {}
+    ) {
+        super("ExitFor");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExitFor(this);
@@ -97,12 +106,14 @@ export class ExitFor implements Statement {
     }
 }
 
-export class ExitWhile implements Statement {
+export class ExitWhile extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             exitWhile: Token;
         }
-    ) {}
+    ) {
+        super("ExitWhile");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitExitWhile(this);
@@ -113,8 +124,10 @@ export class ExitWhile implements Statement {
     }
 }
 
-export class Function implements Statement {
-    constructor(readonly name: Identifier, readonly func: Expr.Function) {}
+export class Function extends AstNode implements Statement {
+    constructor(readonly name: Identifier, readonly func: Expr.Function) {
+        super("Function");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitNamedFunction(this);
@@ -132,9 +145,11 @@ export class Function implements Statement {
 export interface ElseIf {
     condition: Expr.Expression;
     thenBranch: Block;
+    /** Signal to ESLint to walk condition and thenBranch */
+    type: string;
 }
 
-export class If implements Statement {
+export class If extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             if: Token;
@@ -149,7 +164,9 @@ export class If implements Statement {
         readonly thenBranch: Block,
         readonly elseIfs: ElseIf[],
         readonly elseBranch?: Block
-    ) {}
+    ) {
+        super("If");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIf(this);
@@ -176,8 +193,10 @@ export class If implements Statement {
     }
 }
 
-export class Increment implements Statement {
-    constructor(readonly value: Expr.Expression, readonly token: Token) {}
+export class Increment extends AstNode implements Statement {
+    constructor(readonly value: Expr.Expression, readonly token: Token) {
+        super("Increment");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIncrement(this);
@@ -208,7 +227,7 @@ export namespace PrintSeparator {
 /**
  * Represents a `print` statement within BrightScript.
  */
-export class Print implements Statement {
+export class Print extends AstNode implements Statement {
     /**
      * Creates a new internal representation of a BrightScript `print` statement.
      * @param expressions an array of expressions or `PrintSeparator`s to be
@@ -219,7 +238,9 @@ export class Print implements Statement {
             print: Token;
         },
         readonly expressions: (Expr.Expression | Token)[]
-    ) {}
+    ) {
+        super("Print");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitPrint(this);
@@ -238,15 +259,17 @@ export class Print implements Statement {
     }
 }
 
-export class Goto implements Statement {
+export class Goto extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             goto: Token;
             label: Token;
         }
-    ) {}
+    ) {
+        super("Goto");
+    }
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(_visitor: Visitor<R>): BrsType {
         //should search the code for the corresponding label, and set that as the next line to execute
         throw new Error("Not implemented");
     }
@@ -260,15 +283,17 @@ export class Goto implements Statement {
     }
 }
 
-export class Label implements Statement {
+export class Label extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             identifier: Token;
             colon: Token;
         }
-    ) {}
+    ) {
+        super("Label");
+    }
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(_visitor: Visitor<R>): BrsType {
         throw new Error("Not implemented");
     }
 
@@ -281,13 +306,15 @@ export class Label implements Statement {
     }
 }
 
-export class Return implements Statement {
+export class Return extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             return: Token;
         },
         readonly value?: Expr.Expression
-    ) {}
+    ) {
+        super("Return");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitReturn(this);
@@ -302,14 +329,16 @@ export class Return implements Statement {
     }
 }
 
-export class End implements Statement {
+export class End extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             end: Token;
         }
-    ) {}
+    ) {
+        super("End");
+    }
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(_visitor: Visitor<R>): BrsType {
         //TODO implement this in the runtime. It should immediately terminate program execution, without error
         throw new Error("Not implemented");
     }
@@ -323,14 +352,16 @@ export class End implements Statement {
     }
 }
 
-export class Stop implements Statement {
+export class Stop extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             stop: Token;
         }
-    ) {}
+    ) {
+        super("Stop");
+    }
 
-    accept<R>(visitor: Visitor<R>): BrsType {
+    accept<R>(_visitor: Visitor<R>): BrsType {
         //TODO implement this in the runtime. It should pause code execution until a `c` command is issued from the console
         throw new Error("Not implemented");
     }
@@ -344,7 +375,7 @@ export class Stop implements Statement {
     }
 }
 
-export class For implements Statement {
+export class For extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             for: Token;
@@ -356,7 +387,9 @@ export class For implements Statement {
         readonly finalValue: Expr.Expression,
         readonly increment: Expr.Expression,
         readonly body: Block
-    ) {}
+    ) {
+        super("For");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitFor(this);
@@ -371,7 +404,7 @@ export class For implements Statement {
     }
 }
 
-export class ForEach implements Statement {
+export class ForEach extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             forEach: Token;
@@ -381,7 +414,9 @@ export class ForEach implements Statement {
         readonly item: Token,
         readonly target: Expr.Expression,
         readonly body: Block
-    ) {}
+    ) {
+        super("ForEach");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitForEach(this);
@@ -396,7 +431,7 @@ export class ForEach implements Statement {
     }
 }
 
-export class While implements Statement {
+export class While extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             while: Token;
@@ -404,7 +439,9 @@ export class While implements Statement {
         },
         readonly condition: Expr.Expression,
         readonly body: Block
-    ) {}
+    ) {
+        super("While");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitWhile(this);
@@ -419,12 +456,14 @@ export class While implements Statement {
     }
 }
 
-export class DottedSet implements Statement {
+export class DottedSet extends AstNode implements Statement {
     constructor(
         readonly obj: Expr.Expression,
         readonly name: Identifier,
         readonly value: Expr.Expression
-    ) {}
+    ) {
+        super("DottedSet");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitDottedSet(this);
@@ -439,13 +478,15 @@ export class DottedSet implements Statement {
     }
 }
 
-export class IndexedSet implements Statement {
+export class IndexedSet extends AstNode implements Statement {
     constructor(
         readonly obj: Expr.Expression,
         readonly index: Expr.Expression,
         readonly value: Expr.Expression,
         readonly closingSquare: Token
-    ) {}
+    ) {
+        super("IndexedSet");
+    }
 
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitIndexedSet(this);
@@ -460,13 +501,16 @@ export class IndexedSet implements Statement {
     }
 }
 
-export class Library implements Statement {
+export class Library extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             library: Token;
             filePath: Token | undefined;
         }
-    ) {}
+    ) {
+        super("Library");
+    }
+
     accept<R>(visitor: Visitor<R>): BrsType {
         return visitor.visitLibrary(this);
     }

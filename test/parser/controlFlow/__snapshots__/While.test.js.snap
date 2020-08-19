@@ -29,6 +29,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "looping",
@@ -53,6 +54,7 @@ Array [
               "text": "print",
             },
           },
+          "type": "Print",
         },
         ExitWhile {
           "tokens": Object {
@@ -73,8 +75,10 @@ Array [
               "text": "exit while",
             },
           },
+          "type": "ExitWhile",
         },
       ],
+      "type": "Block",
     },
     "condition": Literal {
       "_location": Object {
@@ -87,6 +91,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": true,
@@ -126,6 +131,7 @@ Array [
         "text": "while",
       },
     },
+    "type": "While",
   },
 ]
 `;
@@ -159,6 +165,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "looping",
@@ -183,8 +190,10 @@ Array [
               "text": "print",
             },
           },
+          "type": "Print",
         },
       ],
+      "type": "Block",
     },
     "condition": Literal {
       "_location": Object {
@@ -197,6 +206,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": true,
@@ -236,6 +246,7 @@ Array [
         "text": "while",
       },
     },
+    "type": "While",
   },
 ]
 `;

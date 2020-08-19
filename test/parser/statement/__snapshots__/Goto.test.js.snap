@@ -54,6 +54,7 @@ Array [
                 "text": "myLabel",
               },
             },
+            "type": "Goto",
           },
           Goto {
             "tokens": Object {
@@ -92,6 +93,7 @@ Array [
                 "text": "myLabel",
               },
             },
+            "type": "Goto",
           },
           Label {
             "tokens": Object {
@@ -130,8 +132,10 @@ Array [
                 "text": "myLabel",
               },
             },
+            "type": "Label",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -169,6 +173,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -187,6 +192,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -228,6 +234,7 @@ Array [
         "text": "SomeLabel",
       },
     },
+    "type": "Label",
   },
 ]
 `;
@@ -271,6 +278,7 @@ Object {
           "text": "SomeLabel",
         },
       },
+      "type": "Goto",
     },
   ],
 }

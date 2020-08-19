@@ -30,6 +30,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 0,
@@ -52,7 +53,9 @@ Array [
         },
         "text": "someArray",
       },
+      "type": "Variable",
     },
+    "type": "IndexedSet",
     "value": Binary {
       "left": IndexedGet {
         "closingSquare": Object {
@@ -82,6 +85,7 @@ Array [
               "line": -9,
             },
           },
+          "type": "Literal",
           "value": Int32 {
             "kind": 4,
             "value": 0,
@@ -104,7 +108,9 @@ Array [
             },
             "text": "someArray",
           },
+          "type": "Variable",
         },
+        "type": "IndexedGet",
       },
       "right": Literal {
         "_location": Object {
@@ -117,6 +123,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 3,
@@ -138,6 +145,7 @@ Array [
         },
         "text": "*=",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -173,6 +181,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 0,
@@ -195,7 +204,9 @@ Array [
         },
         "text": "someArray",
       },
+      "type": "Variable",
     },
+    "type": "IndexedSet",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -210,6 +221,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -245,6 +257,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -280,6 +293,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 0,
@@ -302,7 +316,9 @@ Array [
         },
         "text": "someArray",
       },
+      "type": "Variable",
     },
+    "type": "IndexedSet",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -315,6 +331,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsBoolean {
           "kind": 2,
           "value": true,
@@ -331,6 +348,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsBoolean {
           "kind": 2,
           "value": false,
@@ -352,6 +370,7 @@ Array [
         },
         "text": "and",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -393,7 +412,9 @@ Array [
         },
         "text": "foo",
       },
+      "type": "Variable",
     },
+    "type": "DottedSet",
     "value": Binary {
       "left": DottedGet {
         "name": Object {
@@ -429,7 +450,9 @@ Array [
             },
             "text": "foo",
           },
+          "type": "Variable",
         },
+        "type": "DottedGet",
       },
       "right": Literal {
         "_location": Object {
@@ -442,6 +465,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -463,6 +487,7 @@ Array [
         },
         "text": "*=",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -504,7 +529,9 @@ Array [
         },
         "text": "foo",
       },
+      "type": "Variable",
     },
+    "type": "DottedSet",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -519,6 +546,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -554,6 +582,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -595,7 +624,9 @@ Array [
         },
         "text": "foo",
       },
+      "type": "Variable",
     },
+    "type": "DottedSet",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -608,6 +639,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsBoolean {
           "kind": 2,
           "value": true,
@@ -624,6 +656,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsBoolean {
           "kind": 2,
           "value": false,
@@ -645,6 +678,7 @@ Array [
         },
         "text": "and",
       },
+      "type": "Binary",
     },
   },
 ]

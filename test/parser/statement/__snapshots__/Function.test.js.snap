@@ -44,6 +44,7 @@ Object {
                   "text": "return",
                 },
               },
+              "type": "Return",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -56,6 +57,7 @@ Object {
                     "line": 3,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 1,
@@ -63,6 +65,7 @@ Object {
               },
             },
           ],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -100,6 +103,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -118,6 +122,7 @@ Object {
         },
         "text": "StringFunc#",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -154,6 +159,7 @@ Object {
                   "text": "return",
                 },
               },
+              "type": "Return",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -166,6 +172,7 @@ Object {
                     "line": 7,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 1,
@@ -173,6 +180,7 @@ Object {
               },
             },
           ],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -210,6 +218,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -228,6 +237,7 @@ Object {
         },
         "text": "IntegerFunc%",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -264,6 +274,7 @@ Object {
                   "text": "return",
                 },
               },
+              "type": "Return",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -276,6 +287,7 @@ Object {
                     "line": 11,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 1,
@@ -283,6 +295,7 @@ Object {
               },
             },
           ],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -320,6 +333,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -338,6 +352,7 @@ Object {
         },
         "text": "FloatFunc!",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -374,6 +389,7 @@ Object {
                   "text": "return",
                 },
               },
+              "type": "Return",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -386,6 +402,7 @@ Object {
                     "line": 15,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 1,
@@ -393,6 +410,7 @@ Object {
               },
             },
           ],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -430,6 +448,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -448,6 +467,7 @@ Object {
         },
         "text": "DoubleFunc#",
       },
+      "type": "Function",
     },
   ],
 }
@@ -470,6 +490,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -516,6 +537,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -575,6 +597,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 4,
@@ -641,6 +664,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -653,6 +677,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -674,6 +699,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -719,6 +745,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -736,6 +763,7 @@ Array [
       },
       "text": "add",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -757,6 +785,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -881,6 +910,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -898,6 +928,7 @@ Array [
       },
       "text": "add2",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -919,6 +950,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1041,6 +1073,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1058,6 +1091,7 @@ Array [
       },
       "text": "repeat",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -1079,6 +1113,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1125,6 +1160,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -1190,6 +1226,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -1202,6 +1239,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -1223,6 +1261,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -1267,6 +1306,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1284,6 +1324,7 @@ Array [
       },
       "text": "add",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -1305,6 +1346,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1340,6 +1382,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1357,6 +1400,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -1391,6 +1435,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Lorem ipsum",
@@ -1415,8 +1460,10 @@ Array [
                 "text": "print",
               },
             },
+            "type": "Print",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1452,6 +1499,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1469,6 +1517,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -1490,6 +1539,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1525,6 +1575,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1542,6 +1593,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -1581,6 +1633,7 @@ Object {
                       "line": 3,
                     },
                   },
+                  "type": "Literal",
                   "value": BrsString {
                     "kind": 3,
                     "value": "Hello world",
@@ -1606,8 +1659,10 @@ Object {
                   "text": "print",
                 },
               },
+              "type": "Print",
             },
           ],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -1645,6 +1700,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1663,6 +1719,7 @@ Object {
         },
         "text": "Main",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -1679,6 +1736,7 @@ Object {
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -1716,6 +1774,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1734,6 +1793,7 @@ Object {
         },
         "text": "DoSomething",
       },
+      "type": "Function",
     },
   ],
 }
@@ -1763,6 +1823,7 @@ Object {
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -1800,6 +1861,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1818,6 +1880,7 @@ Object {
         },
         "text": "StringSub#",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -1834,6 +1897,7 @@ Object {
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -1871,6 +1935,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1889,6 +1954,7 @@ Object {
         },
         "text": "IntegerSub%",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -1905,6 +1971,7 @@ Object {
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -1942,6 +2009,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1960,6 +2028,7 @@ Object {
         },
         "text": "FloatSub!",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -1976,6 +2045,7 @@ Object {
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -2013,6 +2083,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -2031,6 +2102,7 @@ Object {
         },
         "text": "DoubleSub#",
       },
+      "type": "Function",
     },
   ],
 }
@@ -2053,6 +2125,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2088,6 +2161,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2105,6 +2179,7 @@ Array [
       },
       "text": "bar",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -2139,6 +2214,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Lorem ipsum",
@@ -2163,8 +2239,10 @@ Array [
                 "text": "print",
               },
             },
+            "type": "Print",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2200,6 +2278,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2217,6 +2296,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -2238,6 +2318,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2284,6 +2365,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -2343,6 +2425,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 4,
@@ -2409,6 +2492,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -2421,6 +2505,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -2442,6 +2527,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -2487,6 +2573,7 @@ Array [
         },
       ],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2504,6 +2591,7 @@ Array [
       },
       "text": "add",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -2525,6 +2613,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2649,6 +2738,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2666,6 +2756,7 @@ Array [
       },
       "text": "add2",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -2687,6 +2778,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2809,6 +2901,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2826,6 +2919,7 @@ Array [
       },
       "text": "repeat",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -2847,6 +2941,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2893,6 +2988,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -2958,6 +3054,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -2970,6 +3067,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -2991,6 +3089,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -3035,6 +3134,7 @@ Array [
         },
       ],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -3052,6 +3152,7 @@ Array [
       },
       "text": "add",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -3091,6 +3192,7 @@ Object {
                       "line": 3,
                     },
                   },
+                  "type": "Literal",
                   "value": BrsString {
                     "kind": 3,
                     "value": "Hello world",
@@ -3116,8 +3218,10 @@ Object {
                   "text": "print",
                 },
               },
+              "type": "Print",
             },
           ],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -3155,6 +3259,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -3173,6 +3278,7 @@ Object {
         },
         "text": "Main",
       },
+      "type": "Function",
     },
     Function {
       "func": Function {
@@ -3189,6 +3295,7 @@ Object {
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
         "end": Object {
           "isReserved": false,
@@ -3226,6 +3333,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Function",
       },
       "name": Object {
         "isReserved": false,
@@ -3244,6 +3352,7 @@ Object {
         },
         "text": "DoSomething",
       },
+      "type": "Function",
     },
   ],
 }

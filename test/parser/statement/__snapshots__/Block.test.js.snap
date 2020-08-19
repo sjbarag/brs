@@ -51,6 +51,7 @@ Array [
                         },
                         "text": "i",
                       },
+                      "type": "Variable",
                     },
                   ],
                   "tokens": Object {
@@ -72,8 +73,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "counterDeclaration": Assignment {
               "name": Object {
@@ -112,6 +115,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -124,6 +128,7 @@ Array [
                     "line": 3,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 0,
@@ -142,6 +147,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 10,
@@ -159,6 +165,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 1,
@@ -234,8 +241,10 @@ Array [
                 "text": "To",
               },
             },
+            "type": "For",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -273,6 +282,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -291,6 +301,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -349,6 +360,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -361,6 +373,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 1,
@@ -368,6 +381,7 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -405,6 +419,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -423,6 +438,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Function",
   },
 ]
 `;
@@ -457,6 +473,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -489,6 +506,7 @@ Array [
                           "line": 8,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "true",
@@ -514,8 +532,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "elseIfs": Array [
               Object {
@@ -531,6 +551,7 @@ Array [
                       "line": 5,
                     },
                   },
+                  "type": "Literal",
                   "value": BrsBoolean {
                     "kind": 2,
                     "value": true,
@@ -563,6 +584,7 @@ Array [
                               "line": 6,
                             },
                           },
+                          "type": "Literal",
                           "value": BrsString {
                             "kind": 3,
                             "value": "true",
@@ -588,9 +610,12 @@ Array [
                           "text": "print",
                         },
                       },
+                      "type": "Print",
                     },
                   ],
+                  "type": "Block",
                 },
+                "type": "ElseIf",
               },
             ],
             "thenBranch": Block {
@@ -620,6 +645,7 @@ Array [
                           "line": 4,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "true",
@@ -645,8 +671,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "tokens": Object {
               "elseIfs": Array [
@@ -720,8 +748,10 @@ Array [
                 "text": "then",
               },
             },
+            "type": "If",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -759,6 +789,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
     "name": Object {
       "isReserved": false,
@@ -777,6 +808,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Function",
   },
 ]
 `;

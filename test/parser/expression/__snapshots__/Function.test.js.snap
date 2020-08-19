@@ -37,6 +37,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -64,6 +65,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Lorem ipsum",
@@ -88,8 +90,10 @@ Array [
                 "text": "print",
               },
             },
+            "type": "Print",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -125,6 +129,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -167,6 +172,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -181,6 +187,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -227,6 +234,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -286,6 +294,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 4,
@@ -352,6 +361,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -364,6 +374,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -385,6 +396,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -430,6 +442,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -472,6 +485,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -486,6 +500,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -610,6 +625,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -652,6 +668,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -666,6 +683,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -831,6 +849,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -873,6 +892,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -887,6 +907,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -933,6 +954,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -998,6 +1020,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -1010,6 +1033,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -1031,6 +1055,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -1075,6 +1100,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -1117,6 +1143,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1131,6 +1158,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1166,6 +1194,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -1208,6 +1237,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1235,6 +1265,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Lorem ipsum",
@@ -1259,8 +1290,10 @@ Array [
                 "text": "print",
               },
             },
+            "type": "Print",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1296,6 +1329,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -1338,6 +1372,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1352,6 +1387,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1387,6 +1423,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
   },
 ]
@@ -1429,6 +1466,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1443,6 +1481,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1478,6 +1517,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
   },
 ]
@@ -1520,6 +1560,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1547,6 +1588,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Lorem ipsum",
@@ -1571,8 +1613,10 @@ Array [
                 "text": "print",
               },
             },
+            "type": "Print",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1608,6 +1652,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Function",
     },
   },
 ]
@@ -1650,6 +1695,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1664,6 +1710,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -1710,6 +1757,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -1769,6 +1817,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 4,
@@ -1835,6 +1884,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -1847,6 +1897,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -1868,6 +1919,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -1913,6 +1965,7 @@ Array [
         },
       ],
       "returns": 11,
+      "type": "Function",
     },
   },
 ]
@@ -1955,6 +2008,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -1969,6 +2023,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2093,6 +2148,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -2135,6 +2191,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -2149,6 +2206,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2314,6 +2372,7 @@ Array [
         },
       ],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -2356,6 +2415,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -2370,6 +2430,7 @@ Array [
           },
         },
         "statements": Array [],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2416,6 +2477,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -2481,6 +2543,7 @@ Array [
                 },
                 "text": "a",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -2493,6 +2556,7 @@ Array [
                   "line": -9,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 5,
@@ -2514,6 +2578,7 @@ Array [
               },
               "text": "+",
             },
+            "type": "Binary",
           },
           "location": Object {
             "end": Object {
@@ -2558,6 +2623,7 @@ Array [
         },
       ],
       "returns": 11,
+      "type": "Function",
     },
   },
 ]
@@ -2600,6 +2666,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Function {
       "body": Block {
         "location": Object {
@@ -2627,6 +2694,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "I'm anonymous",
@@ -2651,8 +2719,10 @@ Array [
                 "text": "print",
               },
             },
+            "type": "Print",
           },
         ],
+        "type": "Block",
       },
       "end": Object {
         "isReserved": false,
@@ -2688,6 +2758,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Function",
     },
   },
 ]
@@ -2725,6 +2796,7 @@ Array [
                         "line": -9,
                       },
                     },
+                    "type": "Literal",
                     "value": BrsString {
                       "kind": 3,
                       "value": "I'm a callback",
@@ -2749,8 +2821,10 @@ Array [
                     "text": "print",
                   },
                 },
+                "type": "Print",
               },
             ],
+            "type": "Block",
           },
           "end": Object {
             "isReserved": false,
@@ -2786,6 +2860,7 @@ Array [
           },
           "parameters": Array [],
           "returns": 10,
+          "type": "Function",
         },
       ],
       "callee": Variable {
@@ -2805,6 +2880,7 @@ Array [
           },
           "text": "acceptsCallback",
         },
+        "type": "Variable",
       },
       "closingParen": Object {
         "isReserved": false,
@@ -2822,7 +2898,9 @@ Array [
         },
         "text": ")",
       },
+      "type": "Call",
     },
+    "type": "Expression",
   },
 ]
 `;

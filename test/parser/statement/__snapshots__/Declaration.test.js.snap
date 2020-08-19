@@ -37,6 +37,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -49,6 +50,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -65,6 +67,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 3,
@@ -86,6 +89,7 @@ Array [
         },
         "text": undefined,
       },
+      "type": "Binary",
     },
   },
 ]
@@ -128,6 +132,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Literal {
       "_location": Object {
         "end": Object {
@@ -139,6 +144,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 5,
@@ -185,6 +191,7 @@ Array [
         "text": undefined,
       },
     },
+    "type": "Assignment",
     "value": Variable {
       "name": Object {
         "isReserved": false,
@@ -202,6 +209,7 @@ Array [
         },
         "text": "foo",
       },
+      "type": "Variable",
     },
   },
 ]

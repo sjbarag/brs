@@ -860,6 +860,7 @@ export class Parser {
                     }
 
                     elseIfBranches.push({
+                        type: "ElseIf",
                         condition: elseIfCondition,
                         thenBranch: elseIfThen,
                     });
@@ -928,6 +929,7 @@ export class Parser {
                     }
 
                     elseIfBranches.push({
+                        type: "ElseIf",
                         condition: elseIfCondition,
                         thenBranch: new Stmt.Block([elseIfThen], peek().location),
                     });

@@ -1,6 +1,7 @@
 import { Token, Identifier, Location } from "../lexer";
 import { BrsType, Argument, ValueKind, BrsString } from "../brsTypes";
-import { Block } from "./Statement";
+import { Block, Statement } from "./Statement";
+import { AstNode } from "./AstNode";
 
 export interface Visitor<T> {
     visitBinary(expression: Binary): T;
@@ -29,8 +30,10 @@ export interface Expression {
     location: Location;
 }
 
-export class Binary implements Expression {
-    constructor(readonly left: Expression, readonly token: Token, readonly right: Expression) {}
+export class Binary extends AstNode implements Expression {
+    constructor(readonly left: Expression, readonly token: Token, readonly right: Expression) {
+        super("Binary");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitBinary(this);
@@ -45,14 +48,16 @@ export class Binary implements Expression {
     }
 }
 
-export class Call implements Expression {
+export class Call extends AstNode implements Expression {
     static MaximumArguments = 32;
 
     constructor(
         readonly callee: Expression,
         readonly closingParen: Token,
         readonly args: Expression[]
-    ) {}
+    ) {
+        super("Call");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitCall(this);
@@ -67,14 +72,16 @@ export class Call implements Expression {
     }
 }
 
-export class Function implements Expression {
+export class Function extends AstNode implements Expression {
     constructor(
         readonly parameters: ReadonlyArray<Argument>,
         readonly returns: ValueKind,
         readonly body: Block,
         readonly keyword: Token,
         readonly end: Token
-    ) {}
+    ) {
+        super("Function");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitAnonymousFunction(this);
@@ -89,8 +96,10 @@ export class Function implements Expression {
     }
 }
 
-export class DottedGet implements Expression {
-    constructor(readonly obj: Expression, readonly name: Identifier) {}
+export class DottedGet extends AstNode implements Expression {
+    constructor(readonly obj: Expression, readonly name: Identifier) {
+        super("DottedGet");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitDottedGet(this);
@@ -105,12 +114,14 @@ export class DottedGet implements Expression {
     }
 }
 
-export class IndexedGet implements Expression {
+export class IndexedGet extends AstNode implements Expression {
     constructor(
         readonly obj: Expression,
         readonly index: Expression,
         readonly closingSquare: Token
-    ) {}
+    ) {
+        super("IndexedGet");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitIndexedGet(this);
@@ -125,14 +136,16 @@ export class IndexedGet implements Expression {
     }
 }
 
-export class Grouping implements Expression {
+export class Grouping extends AstNode implements Expression {
     constructor(
         readonly tokens: {
             left: Token;
             right: Token;
         },
         readonly expression: Expression
-    ) {}
+    ) {
+        super("Grouping");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitGrouping(this);
@@ -147,8 +160,10 @@ export class Grouping implements Expression {
     }
 }
 
-export class Literal implements Expression {
-    constructor(readonly value: BrsType, readonly _location: Location | undefined) {}
+export class Literal extends AstNode implements Expression {
+    constructor(readonly value: BrsType, readonly _location: Location | undefined) {
+        super("Literal");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitLiteral(this);
@@ -171,8 +186,10 @@ export class Literal implements Expression {
     }
 }
 
-export class ArrayLiteral implements Expression {
-    constructor(readonly elements: Expression[], readonly open: Token, readonly close: Token) {}
+export class ArrayLiteral extends AstNode implements Expression {
+    constructor(readonly elements: Expression[], readonly open: Token, readonly close: Token) {
+        super("ArrayLiteral");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitArrayLiteral(this);
@@ -195,8 +212,10 @@ export interface AAMember {
     value: Expression;
 }
 
-export class AALiteral implements Expression {
-    constructor(readonly elements: AAMember[], readonly open: Token, readonly close: Token) {}
+export class AALiteral extends AstNode implements Expression {
+    constructor(readonly elements: AAMember[], readonly open: Token, readonly close: Token) {
+        super("AALiteral");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitAALiteral(this);
@@ -211,8 +230,10 @@ export class AALiteral implements Expression {
     }
 }
 
-export class Unary implements Expression {
-    constructor(readonly operator: Token, readonly right: Expression) {}
+export class Unary extends AstNode implements Expression {
+    constructor(readonly operator: Token, readonly right: Expression) {
+        super("Unary");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitUnary(this);
@@ -227,8 +248,10 @@ export class Unary implements Expression {
     }
 }
 
-export class Variable implements Expression {
-    constructor(readonly name: Identifier) {}
+export class Variable extends AstNode implements Expression {
+    constructor(readonly name: Identifier) {
+        super("Variable");
+    }
 
     accept<R>(visitor: Visitor<R>): R {
         return visitor.visitVariable(this);

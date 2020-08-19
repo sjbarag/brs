@@ -728,7 +728,7 @@ describe("end to end brightscript functions", () => {
             "0",
             "true",
             "on",
-            "on",
+            "default",
             "",
             "true",
             "true",

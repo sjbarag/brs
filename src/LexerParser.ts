@@ -67,7 +67,7 @@ export function getLexerParserFn(
         }
 
         let parsedFiles = await pSettle(
-            filenames.map(async filename => {
+            filenames.map(async (filename) => {
                 let maybeStatements = memoizedStatements.get(filename);
                 if (maybeStatements) {
                     return maybeStatements;
@@ -76,7 +76,7 @@ export function getLexerParserFn(
                     if (!memoizedStatements.has(filename)) {
                         memoizedStatements.set(filename, statementsPromise);
                     }
-    
+
                     return statementsPromise;
                 }
             })

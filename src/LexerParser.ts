@@ -19,47 +19,66 @@ export function getLexerParserFn(
     options: Partial<ExecutionOptions>
 ) {
     const executionOptions = Object.assign(defaultExecutionOptions, options);
+    /**
+     * Map file URIs to promises. The promises resolve to an array of that file's statements.
+     * This allows us to only parse each file once.
+     */
+    let memoizedStatements = new Map<string, Promise<Stmt.Statement[]>>();
     return async function parse(filenames: string[]): Promise<Stmt.Statement[]> {
+        async function lexAndParseFile(filename: string) {
+            let contents;
+            try {
+                contents = await readFile(filename, "utf-8");
+            } catch (err) {
+                return Promise.reject({
+                    message: `brs: can't open file '${filename}': [Errno ${err.errno}]`,
+                });
+            }
+
+            let lexer = new Lexer();
+            let preprocessor = new PP.Preprocessor();
+            let parser = new Parser();
+            [lexer, preprocessor, parser].forEach((emitter) =>
+                emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
+            );
+
+            let scanResults = lexer.scan(contents, filename);
+            if (scanResults.errors.length > 0) {
+                return Promise.reject({
+                    message: "Error occurred during lexing",
+                });
+            }
+
+            let preprocessResults = preprocessor.preprocess(scanResults.tokens, manifest);
+            if (preprocessResults.errors.length > 0) {
+                return Promise.reject({
+                    message: "Error occurred during pre-processing",
+                });
+            }
+
+            let parseResults = parser.parse(preprocessResults.processedTokens);
+            if (parseResults.errors.length > 0) {
+                return Promise.reject({
+                    message: "Error occurred parsing",
+                });
+            }
+
+            return Promise.resolve(parseResults.statements);
+        }
+
         let parsedFiles = await pSettle(
             filenames.map(async (filename) => {
-                let contents;
-                try {
-                    contents = await readFile(filename, "utf-8");
-                } catch (err) {
-                    return Promise.reject({
-                        message: `brs: can't open file '${filename}': [Errno ${err.errno}]`,
-                    });
+                let maybeStatements = memoizedStatements.get(filename);
+                if (maybeStatements) {
+                    return maybeStatements;
+                } else {
+                    let statementsPromise = lexAndParseFile(filename);
+                    if (!memoizedStatements.has(filename)) {
+                        memoizedStatements.set(filename, statementsPromise);
+                    }
+
+                    return statementsPromise;
                 }
-
-                let lexer = new Lexer();
-                let preprocessor = new PP.Preprocessor();
-                let parser = new Parser();
-                [lexer, preprocessor, parser].forEach((emitter) =>
-                    emitter.onError(BrsError.getLoggerUsing(executionOptions.stderr))
-                );
-
-                let scanResults = lexer.scan(contents, filename);
-                if (scanResults.errors.length > 0) {
-                    return Promise.reject({
-                        message: "Error occurred during lexing",
-                    });
-                }
-
-                let preprocessResults = preprocessor.preprocess(scanResults.tokens, manifest);
-                if (preprocessResults.errors.length > 0) {
-                    return Promise.reject({
-                        message: "Error occurred during pre-processing",
-                    });
-                }
-
-                let parseResults = parser.parse(preprocessResults.processedTokens);
-                if (parseResults.errors.length > 0) {
-                    return Promise.reject({
-                        message: "Error occurred parsing",
-                    });
-                }
-
-                return Promise.resolve(parseResults.statements);
             })
         );
 

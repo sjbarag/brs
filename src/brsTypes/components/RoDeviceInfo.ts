@@ -89,18 +89,6 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         return BrsBoolean.False;
     }
 
-    getCapsMode(): BrsString {
-        return this.captionsMode;
-    }
-
-    setCapsMode(mode: BrsString) {
-        this.captionsMode = mode;
-    }
-
-    setCaptionsOption(option: BrsString) {
-        this.captionsOption = option;
-    }
-
     getCapsOption(option: BrsString) {
         if (option.equalTo(new BrsString("mode"))) {
             return new BrsString("on");
@@ -359,7 +347,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            return this.getCapsMode();
+            return this.captionsMode;
         },
     });
 
@@ -369,7 +357,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Boolean,
         },
         impl: (_interpreter, mode: BrsString) => {
-            this.setCapsMode(mode);
+            this.captionsMode = mode;
             return BrsBoolean.True;
         },
     });
@@ -380,8 +368,8 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter, option: BrsString) => {
-            this.setCaptionsOption(option);
-            return this.getCapsOption(option);
+            this.captionsOption = option;
+            return this.captionsOption;
         },
     });
 

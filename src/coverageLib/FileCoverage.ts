@@ -1,7 +1,7 @@
 import { Stmt, Expr } from "../parser";
 import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
-import { StatementKind, Expression } from "../parser/Statement";
+import { StatementKind, Expression, isStatement } from "../parser/Statement";
 
 interface StatementCoverage {
     /** Number of times the interpreter has executed/evaluated this statement. */
@@ -14,60 +14,60 @@ interface StatementCoverage {
 
 export interface CoverageSummary {
     path: string;
-    statementMap: { [key: string]: Location };
-    fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number } };
+    statementMap: { [key: string]: Location; };
+    fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number; }; };
     branchMap: {
-        [key: string]: { loc: Location; type: string; locations: Location[]; line: number };
+        [key: string]: { loc: Location; type: string; locations: Location[]; line: number; };
     };
     // hit count map for statements
-    s: { [key: string]: number };
+    s: { [key: string]: number; };
     // hit count map for functions
-    f: { [key: string]: number };
+    f: { [key: string]: number; };
     // hit count map for branches
-    b: { [key: string]: number[] };
+    b: { [key: string]: number[]; };
 }
 
 export class FileCoverage {
-    private lines = new Map<number, StatementCoverage[]>();
+    private statements = new Map<string, StatementCoverage>();
 
     constructor(readonly filePath: string) {}
 
-    private getLine(lineNumber: number) {
-        if (!this.lines.has(lineNumber)) {
-            this.lines.set(lineNumber, []);
-        }
-        return this.lines.get(lineNumber)!;
+    /**
+     * Returns the StatementCoverage object for a given statement.
+     * @param statement statement for which to get coverage.
+     */
+    private get(statement: Expr.Expression | Stmt.Statement) {
+        let key = this.getStatementKey(statement);
+        return this.statements.get(key);
     }
 
+    /**
+     * Creates a StatementCoverage object for a given statement.
+     * @param statement statement to add.
+     */
+    private add(statement: Expr.Expression | Stmt.Statement) {
+        let key = this.getStatementKey(statement);
+        this.statements.set(key, { hits: 0, statement, used: false });
+    }
+
+    /**
+     * Generates a key for the statement using its location and type.
+     * @param statement statement for which to generate a key.
+     */
+    private getStatementKey(statement: Expr.Expression | Stmt.Statement) {
+        let { start, end } = statement.location;
+        return `${statement.kind}:${start.line},${start.column}-${end.line},${end.column}`;
+    }
+
+    /**
+     * Logs a hit to a particular statement, indicating the statement was used.
+     * @param statement statement for which to log a hit
+     */
     logHit(statement: Expr.Expression | Stmt.Statement) {
-        let lineNumber = statement.location.start.line;
-        let lineStatements = this.getLine(lineNumber);
-        this.lines.set(
-            lineNumber,
-            lineStatements.map((existingStatement) => {
-                if (
-                    existingStatement.statement.kind === statement.kind &&
-                    Location.equals(existingStatement.statement.location, statement.location)
-                ) {
-                    existingStatement.hits++;
-                }
-                return existingStatement;
-            })
-        );
-    }
-
-    addStatementToLine(statement: Expr.Expression | Stmt.Statement) {
-        let lineNumber = statement.location.start.line;
-        let lineStatements = this.getLine(lineNumber);
-        lineStatements.push({ hits: 0, statement, used: false });
-        this.lines.set(lineNumber, lineStatements);
-    }
-
-    private getStatement(statement: Stmt.Statement | Expr.Expression) {
-        return this.getLine(statement.location.start.line).find((other) => {
-            other.statement.kind === statement.kind &&
-                Location.equals(other.statement.location, statement.location);
-        });
+        let coverage = this.get(statement);
+        if (coverage) {
+            coverage.hits++;
+        }
     }
 
     /**
@@ -84,98 +84,74 @@ export class FileCoverage {
             b: {},
         };
 
+        this.statements.forEach(({statement, hits, used}, key) => {
+            if (statement instanceof Stmt.If) {
+                let locations: Location[] = [];
+                let branchHits: number[] = [];
+                
+                // Add the "if" coverage
+                locations.push(statement.location);
+                branchHits.push(hits);
 
-        Array.from(this.lines).forEach(([lineNumber, statements]) => {
-            statements.forEach(({ statement, hits, used }, index) => {
-                // Don't double-count statements.
-                if (used) return;
-
-                // unique key for this statement
-                let key = `line-${lineNumber}/stmt-${index}`;
-                if (statement instanceof Stmt.If) {
-                    let locations: Location[] = [];
-                    let branchHits: number[] = [];
-
-                    // first add the if statement
-                    let ifStatement = this.getLine((statement.condition.location.start.line)).find((branchStatement) => 
-                        branchStatement.statement.kind === statement.condition.kind &&
-                        Location.equals(branchStatement.statement.location, statement.condition.location)
-                    );
-                    let ifStatement = this.getStatement(statement.condition);
-                    if (ifStatement) {
-                        locations.push(ifStatement.statement.location);
-                        branchHits.push(ifStatement.hits);
+                // Add the "else if" coverage
+                statement.elseIfs.forEach((branch) => {
+                    let elseIfCoverage = this.get(branch.condition);
+                    if (elseIfCoverage) {
+                        locations.push(branch.condition.location);
+                        branchHits.push(elseIfCoverage.hits);
                     }
+                });
 
-                    // then add the else-ifs
-                    statement.elseIfs.forEach((branch, index) => {
-                        let branchStatements = this.getLine(branch.condition.location.start.line);
-                        let elseIf = branchStatements.find((branchStatement) =>
-                            Location.equals(branch.condition.location, branchStatement.statement.location)
-                        );
-
-                        let tokenLocation = statement.tokens.elseIfs?.[index]?.location;
-                        if (tokenLocation && elseIf) {
-                            locations.push(tokenLocation);
-                            branchHits.push(elseIf.hits);
-                            
-                        }
-                    });
-
-                    // then add the else
-                    if (statement.elseBranch) {
-                        let elseBranchLocation = statement.elseBranch.location;
-                        let elseBlock = this.getLine(elseBranchLocation.start.line).find((stmt) =>
-                            Location.equals(elseBranchLocation, stmt.statement.location)
-                        );
-
-                        let tokenLocation = statement.tokens.else?.location;
-                        if (tokenLocation && elseBlock) {
-                            locations.push(tokenLocation);
-                            branchHits.push(elseBlock.hits);
-                        }
+                // Add the "else" coverage
+                if (statement.elseBranch) {
+                    let elseCoverage = this.get(statement.elseBranch);
+                    if (elseCoverage) {
+                        locations.push(statement.elseBranch.location);
+                        branchHits.push(elseCoverage.hits);
                     }
-
-                    coverageSummary.branchMap[key] = {
-                        loc: statement.location,
-                        type: "if",
-                        locations,
-                        line: lineNumber,
-                    };
-                    coverageSummary.b[key] = branchHits;
-                } else if (statement instanceof Expr.Function) {
-                    coverageSummary.fnMap[key] = {
-                        name: statement.keyword.text,
-                        decl: statement.location,
-                        loc: statement.location,
-                        line: lineNumber,
-                    };
-                    coverageSummary.f[key] = hits;
-                } else if (statement instanceof Expr.Binary) {
-                    let locations: Location[] = [];
-                    let branchHits: number[] = [];
-                    [statement.left, statement.right].forEach((branch) => {
-                        let branchCov = this.getLine(branch.location.start.line).find((stmt) => {
-                            stmt.statement.kind === branch.kind &&
-                                Location.equals(stmt.statement.location, branch.location);
-                        });
-                        if (branchCov) {
-                            locations.push(branchCov.statement.location);
-                            branchHits.push(branchCov.hits);
-                        }
-                    });
-                    coverageSummary.branchMap[key] = {
-                        loc: statement.location,
-                        type: statement.token.kind,
-                        locations,
-                        line: lineNumber,
-                    };
-                    coverageSummary.b[key] = branchHits;
-                } else {
-                    coverageSummary.statementMap[key] = statement.location;
-                    coverageSummary.s[key] = hits;
                 }
-            });
+
+                coverageSummary.branchMap[key] = {
+                    loc: statement.location,
+                    type: "if",
+                    locations,
+                    line: statement.location.start.line,
+                };
+                coverageSummary.b[key] = branchHits;
+            } else if (statement instanceof Expr.Function) {
+                coverageSummary.fnMap[key] = {
+                    name: statement.keyword.text,
+                    decl: statement.location,
+                    loc: statement.location,
+                    line: statement.location.start.line,
+                };
+                coverageSummary.f[key] = hits;
+            } else if (statement instanceof Expr.Binary) {
+                let locations: Location[] = [];
+                let branchHits: number[] = [];
+
+                let leftCoverage = this.get(statement.left);
+                if (leftCoverage) {
+                    locations.push(statement.left.location);
+                    branchHits.push(leftCoverage.hits);
+                }
+                let rightCoverage = this.get(statement.right);
+                if (rightCoverage) {
+                    locations.push(statement.right.location);
+                    branchHits.push(rightCoverage.hits);
+                }
+
+                coverageSummary.branchMap[key] = {
+                    loc: statement.location,
+                    type: statement.token.kind,
+                    locations,
+                    line: statement.location.start.line,
+                };
+                coverageSummary.b[key] = branchHits;
+            } else if (isStatement(statement)) {
+                coverageSummary.statementMap[key] = statement.location;
+                coverageSummary.s[key] = hits;
+            }
         });
 
         return coverageSummary;
@@ -217,13 +193,13 @@ export class FileCoverage {
         this.execute(statement.thenBranch);
 
         statement.elseIfs.forEach((elseIf) => {
-            this.addStatementToLine(elseIf.thenBranch);
+            this.add(elseIf.thenBranch);
             this.evaluate(elseIf.condition);
             this.execute(elseIf.thenBranch);
         });
 
         if (statement.elseBranch) {
-            this.addStatementToLine(statement.elseBranch);
+            this.add(statement.elseBranch);
             this.execute(statement.elseBranch);
         }
 
@@ -358,14 +334,14 @@ export class FileCoverage {
     }
 
     evaluate(this: FileCoverage, expression: Expr.Expression) {
-        this.addStatementToLine(expression);
+        this.add(expression);
         return expression.accept<BrsType>(this);
     }
 
     execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
         // don't double-count functions -- we'll count them when we get Expr.Function
         if (!(statement.kind === StatementKind.NamedFunction)) {
-            this.addStatementToLine(statement);
+            this.add(statement);
         }
 
         try {

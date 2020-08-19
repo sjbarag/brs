@@ -26,6 +26,10 @@ export interface Visitor<T> {
     visitLibrary(statement: Library): BrsInvalid;
 }
 
+export function isStatement(obj: Expr.Expression | Stmt.Statement) {
+    return obj.kind in StatementKind;
+}
+
 export enum StatementKind {
     Assignment = "Assignment",
     Expression = "Expression",
@@ -42,6 +46,7 @@ export enum StatementKind {
     NamedFunction = "NamedFunction",
     Return = "Return",
     End = "End",
+    Stop = "Stop",
     DottedSet = "DottedSet",
     IndexedSet = "IndexedSet",
     Increment = "Increment",

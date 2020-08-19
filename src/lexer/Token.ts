@@ -45,6 +45,11 @@ export namespace Location {
             LineAndColumn.equals(location1.end, location2.end)
         );
     }
+
+    export function toString(location: Location) {
+        let { file, start, end } = location;
+        return `${file}:${start.line},${start.column}-${end.line},${end.column}`;
+    }
 }
 
 /** A line-column pair. */

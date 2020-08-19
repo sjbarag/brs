@@ -274,9 +274,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("getCaptionsOption");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter, new BrsString("mode"))).toEqual(
-                    new BrsString("on")
-                );
+                expect(method.call(interpreter, new BrsString("on"))).toEqual(new BrsString("on"));
             });
         });
         describe("getClockFormat", () => {

@@ -30,7 +30,7 @@ export interface CoverageSummary {
 export class FileCoverage {
     private statements = new Map<string, StatementCoverage>();
 
-    constructor(readonly filePath: string) {}
+    constructor(readonly filePath: string) { }
 
     /**
      * Returns the StatementCoverage object for a given statement.
@@ -84,20 +84,22 @@ export class FileCoverage {
             b: {},
         };
 
-        this.statements.forEach(({statement, hits, used}, key) => {
+        this.statements.forEach(({ statement, hits, used }, key) => {
             if (statement instanceof Stmt.If) {
                 let locations: Location[] = [];
                 let branchHits: number[] = [];
-                
+
                 // Add the "if" coverage
                 locations.push(statement.location);
                 branchHits.push(hits);
 
                 // Add the "else if" coverage
-                statement.elseIfs.forEach((branch) => {
+                statement.elseIfs.forEach((branch, index) => {
                     let elseIfCoverage = this.get(branch.condition);
                     if (elseIfCoverage) {
-                        locations.push(branch.condition.location);
+                        // use the tokens as the start rather than the condition
+                        let start = statement.tokens.elseIfs?.[index].location.start || branch.condition.location.start;
+                        locations.push({ ...branch.condition.location, start });
                         branchHits.push(elseIfCoverage.hits);
                     }
                 });
@@ -106,7 +108,9 @@ export class FileCoverage {
                 if (statement.elseBranch) {
                     let elseCoverage = this.get(statement.elseBranch);
                     if (elseCoverage) {
-                        locations.push(statement.elseBranch.location);
+                        // use the tokens as the start rather than the condition
+                        let start = statement.tokens.else?.location.start || statement.elseBranch.location.start;
+                        locations.push({ ...statement.elseBranch.location, start});
                         branchHits.push(elseCoverage.hits);
                     }
                 }

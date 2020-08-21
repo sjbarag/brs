@@ -89,53 +89,6 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         return BrsBoolean.False;
     }
 
-    getCapsOption(option: BrsString) {
-        if (option.equalTo(new BrsString("mode"))) {
-            return new BrsString("on");
-        }
-        if (option.equalTo(new BrsString("text/font"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("text/effect"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("text/size"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("text/color"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("text/opacity"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("background/color"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("background/opacity"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("window/color"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("window/opacity"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("track"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("track_composite"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("track_analog"))) {
-            return new BrsString("default");
-        }
-        if (option.equalTo(new BrsString("muted"))) {
-            return new BrsString("default");
-        }
-
-        return new BrsString("");
-    }
-
     private getModel = new Callable("getModel", {
         signature: {
             args: [],

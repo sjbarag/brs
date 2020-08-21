@@ -26,31 +26,11 @@ export interface Visitor<T> {
     visitLibrary(statement: Library): BrsInvalid;
 }
 
-export function isStatement(obj: Expr.Expression | Stmt.Statement) {
-    return obj.kind in StatementKind;
-}
+let statementTypes = new Set<string>(["Assignment", "Expression", "ExitFor", "ExitWhile", "Print", "If",
+    "Block", "For", "ForEach", "While", "Function", "Return", "DottedSet", "IndexedSet", "Increment", "Library"]);
 
-export enum StatementKind {
-    Assignment = "Assignment",
-    Expression = "Expression",
-    ExitFor = "ExitFor",
-    ExitWhile = "ExitWhile",
-    Print = "Print",
-    Goto = "Goto",
-    Label = "Label",
-    If = "If",
-    Block = "Block",
-    For = "For",
-    ForEach = "ForEach",
-    While = "While",
-    NamedFunction = "NamedFunction",
-    Return = "Return",
-    End = "End",
-    Stop = "Stop",
-    DottedSet = "DottedSet",
-    IndexedSet = "IndexedSet",
-    Increment = "Increment",
-    Library = "Library"
+export function isStatement(obj: Statement | Expr.Expression): obj is Statement {
+    return obj.type in statementTypes;
 }
 
 /** A BrightScript statement */
@@ -66,8 +46,8 @@ export interface Statement {
     /** The starting and ending location of the expression. */
     location: Location;
 
-    /** Identifier to compare expressions */
-    readonly kind: StatementKind;
+    /** The type of statement. */
+    type: string;
 }
 
 export class Assignment extends AstNode implements Statement {

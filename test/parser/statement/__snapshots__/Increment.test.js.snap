@@ -5,7 +5,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -19,7 +18,6 @@ Array [
         },
         "statements": Array [
           Increment {
-            "kind": "Increment",
             "token": Object {
               "isReserved": false,
               "kind": "PlusPlus",
@@ -38,7 +36,6 @@ Array [
             },
             "type": "Increment",
             "value": Variable {
-              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -93,12 +90,10 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -123,7 +118,6 @@ Array [
 exports[`parser postfix unary expressions parses postfix '++' for indexed get expressions 1`] = `
 Array [
   Increment {
-    "kind": "Increment",
     "token": Object {
       "isReserved": false,
       "kind": "PlusPlus",
@@ -159,7 +153,6 @@ Array [
         "text": "]",
       },
       "index": Variable {
-        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -178,9 +171,7 @@ Array [
         },
         "type": "Variable",
       },
-      "kind": "IndexedGet",
       "obj": Variable {
-        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -208,7 +199,6 @@ Array [
 exports[`parser postfix unary expressions parses postfix '++' for variables 1`] = `
 Array [
   Increment {
-    "kind": "Increment",
     "token": Object {
       "isReserved": false,
       "kind": "PlusPlus",
@@ -227,7 +217,6 @@ Array [
     },
     "type": "Increment",
     "value": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -253,7 +242,6 @@ Array [
 exports[`parser postfix unary expressions parses postfix '--' for dotted get expressions 1`] = `
 Array [
   Increment {
-    "kind": "Increment",
     "token": Object {
       "isReserved": false,
       "kind": "MinusMinus",
@@ -272,7 +260,6 @@ Array [
     },
     "type": "Increment",
     "value": DottedGet {
-      "kind": "DottedGet",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -290,7 +277,6 @@ Array [
         "text": "property",
       },
       "obj": Variable {
-        "kind": "Variable",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",

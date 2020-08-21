@@ -4,7 +4,6 @@ exports[`parser foreach loops allows 'next' to terminate loop 1`] = `
 Array [
   ForEach {
     "body": Block {
-      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -35,9 +34,7 @@ Array [
       },
       "text": "word",
     },
-    "kind": "ForEach",
     "target": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -115,7 +112,6 @@ exports[`parser foreach loops requires a name and target 1`] = `
 Array [
   ForEach {
     "body": Block {
-      "kind": "Block",
       "location": Object {
         "end": Object {
           "column": -9,
@@ -146,9 +142,7 @@ Array [
       },
       "text": "word",
     },
-    "kind": "ForEach",
     "target": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",

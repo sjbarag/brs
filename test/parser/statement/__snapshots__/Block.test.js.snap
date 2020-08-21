@@ -5,7 +5,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -20,7 +19,6 @@ Array [
         "statements": Array [
           For {
             "body": Block {
-              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 16,
@@ -36,7 +34,6 @@ Array [
                 Print {
                   "expressions": Array [
                     Variable {
-                      "kind": "Variable",
                       "name": Object {
                         "isReserved": false,
                         "kind": "Identifier",
@@ -57,7 +54,6 @@ Array [
                       "type": "Variable",
                     },
                   ],
-                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -83,7 +79,6 @@ Array [
               "type": "Block",
             },
             "counterDeclaration": Assignment {
-              "kind": "Assignment",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -176,7 +171,6 @@ Array [
                 "value": 1,
               },
             },
-            "kind": "For",
             "tokens": Object {
               "endFor": Object {
                 "isReserved": false,
@@ -286,12 +280,10 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -319,7 +311,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -333,7 +324,6 @@ Array [
         },
         "statements": Array [
           Assignment {
-            "kind": "Assignment",
             "name": Object {
               "isReserved": false,
               "kind": "Identifier",
@@ -427,12 +417,10 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -460,7 +448,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": 12,
@@ -493,7 +480,6 @@ Array [
               },
             },
             "elseBranch": Block {
-              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 16,
@@ -527,7 +513,6 @@ Array [
                       },
                     },
                   ],
-                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -573,7 +558,6 @@ Array [
                   },
                 },
                 "thenBranch": Block {
-                  "kind": "Block",
                   "location": Object {
                     "end": Object {
                       "column": 16,
@@ -607,7 +591,6 @@ Array [
                           },
                         },
                       ],
-                      "kind": "Print",
                       "tokens": Object {
                         "print": Object {
                           "isReserved": true,
@@ -635,9 +618,7 @@ Array [
                 "type": "ElseIf",
               },
             ],
-            "kind": "If",
             "thenBranch": Block {
-              "kind": "Block",
               "location": Object {
                 "end": Object {
                   "column": 16,
@@ -671,7 +652,6 @@ Array [
                       },
                     },
                   ],
-                  "kind": "Print",
                   "tokens": Object {
                     "print": Object {
                       "isReserved": true,
@@ -697,23 +677,7 @@ Array [
               "type": "Block",
             },
             "tokens": Object {
-              "else": Object {
-                "isReserved": true,
-                "kind": "Else",
-                "literal": undefined,
-                "location": Object {
-                  "end": Object {
-                    "column": 20,
-                    "line": 7,
-                  },
-                  "file": "",
-                  "start": Object {
-                    "column": 16,
-                    "line": 7,
-                  },
-                },
-                "text": "else",
-              },
+              "else": undefined,
               "elseIfs": Array [
                 Object {
                   "isReserved": false,
@@ -824,12 +788,10 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",

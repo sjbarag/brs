@@ -344,7 +344,7 @@ export class FileCoverage {
 
     execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
         // don't double-count functions -- we'll count them when we get Expr.Function
-        if (!(statement.kind === StatementKind.NamedFunction)) {
+        if (!(statement.type === "NamedFunction")) {
             this.add(statement);
         }
 

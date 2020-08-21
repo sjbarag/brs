@@ -12,7 +12,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -26,7 +25,6 @@ Object {
           },
           "statements": Array [
             Return {
-              "kind": "Return",
               "tokens": Object {
                 "return": Object {
                   "isReserved": true,
@@ -103,12 +101,10 @@ Object {
           },
           "text": "function",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 10,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -131,7 +127,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -145,7 +140,6 @@ Object {
           },
           "statements": Array [
             Return {
-              "kind": "Return",
               "tokens": Object {
                 "return": Object {
                   "isReserved": true,
@@ -222,12 +216,10 @@ Object {
           },
           "text": "function",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 10,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -250,7 +242,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -264,7 +255,6 @@ Object {
           },
           "statements": Array [
             Return {
-              "kind": "Return",
               "tokens": Object {
                 "return": Object {
                   "isReserved": true,
@@ -341,12 +331,10 @@ Object {
           },
           "text": "function",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 10,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -369,7 +357,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -383,7 +370,6 @@ Object {
           },
           "statements": Array [
             Return {
-              "kind": "Return",
               "tokens": Object {
                 "return": Object {
                   "isReserved": true,
@@ -460,12 +446,10 @@ Object {
           },
           "text": "function",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 10,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -494,7 +478,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -541,7 +524,6 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -665,9 +647,7 @@ Array [
         },
         Object {
           "defaultValue": Binary {
-            "kind": "Binary",
             "left": Variable {
-              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -767,7 +747,6 @@ Array [
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -794,7 +773,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -841,7 +819,6 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -935,7 +912,6 @@ Array [
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -962,7 +938,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1009,7 +984,6 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -1101,7 +1075,6 @@ Array [
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1128,7 +1101,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1175,7 +1147,6 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -1238,9 +1209,7 @@ Array [
         },
         Object {
           "defaultValue": Binary {
-            "kind": "Binary",
             "left": Variable {
-              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -1339,7 +1308,6 @@ Array [
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1366,7 +1334,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1413,12 +1380,10 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1445,7 +1410,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1478,7 +1442,6 @@ Array [
                 },
               },
             ],
-            "kind": "Print",
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
@@ -1534,12 +1497,10 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1566,7 +1527,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -1613,12 +1573,10 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -1649,7 +1607,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -1683,7 +1640,6 @@ Object {
                   },
                 },
               ],
-              "kind": "Print",
               "tokens": Object {
                 "print": Object {
                   "isReserved": true,
@@ -1742,12 +1698,10 @@ Object {
           },
           "text": "function",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 10,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -1770,7 +1724,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -1819,12 +1772,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -1860,7 +1811,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -1909,12 +1859,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -1937,7 +1885,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -1986,12 +1933,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -2014,7 +1959,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -2063,12 +2007,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -2091,7 +2033,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -2140,12 +2081,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -2174,7 +2113,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2221,12 +2159,10 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2253,7 +2189,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2286,7 +2221,6 @@ Array [
                 },
               },
             ],
-            "kind": "Print",
             "tokens": Object {
               "print": Object {
                 "isReserved": true,
@@ -2342,12 +2276,10 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2374,7 +2306,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2421,7 +2352,6 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -2545,9 +2475,7 @@ Array [
         },
         Object {
           "defaultValue": Binary {
-            "kind": "Binary",
             "left": Variable {
-              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -2647,7 +2575,6 @@ Array [
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2674,7 +2601,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2721,7 +2647,6 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -2815,7 +2740,6 @@ Array [
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -2842,7 +2766,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -2889,7 +2812,6 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": undefined,
@@ -2981,7 +2903,6 @@ Array [
       "returns": 10,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -3008,7 +2929,6 @@ Array [
   Function {
     "func": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -3055,7 +2975,6 @@ Array [
         },
         "text": "sub",
       },
-      "kind": "Function",
       "parameters": Array [
         Object {
           "defaultValue": Literal {
@@ -3118,9 +3037,7 @@ Array [
         },
         Object {
           "defaultValue": Binary {
-            "kind": "Binary",
             "left": Variable {
-              "kind": "Variable",
               "name": Object {
                 "isReserved": false,
                 "kind": "Identifier",
@@ -3219,7 +3136,6 @@ Array [
       "returns": 11,
       "type": "Function",
     },
-    "kind": "NamedFunction",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -3250,7 +3166,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -3284,7 +3199,6 @@ Object {
                   },
                 },
               ],
-              "kind": "Print",
               "tokens": Object {
                 "print": Object {
                   "isReserved": true,
@@ -3343,12 +3257,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -3371,7 +3283,6 @@ Object {
     Function {
       "func": Function {
         "body": Block {
-          "kind": "Block",
           "location": Object {
             "end": Object {
               "column": 16,
@@ -3420,12 +3331,10 @@ Object {
           },
           "text": "sub",
         },
-        "kind": "Function",
         "parameters": Array [],
         "returns": 11,
         "type": "Function",
       },
-      "kind": "NamedFunction",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",

@@ -36,9 +36,7 @@ Array [
         "value": 0,
       },
     },
-    "kind": "IndexedSet",
     "obj": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -59,7 +57,6 @@ Array [
     },
     "type": "IndexedSet",
     "value": Binary {
-      "kind": "Binary",
       "left": IndexedGet {
         "closingSquare": Object {
           "isReserved": false,
@@ -94,9 +91,7 @@ Array [
             "value": 0,
           },
         },
-        "kind": "IndexedGet",
         "obj": Variable {
-          "kind": "Variable",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -192,9 +187,7 @@ Array [
         "value": 0,
       },
     },
-    "kind": "IndexedSet",
     "obj": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -216,7 +209,6 @@ Array [
     "type": "IndexedSet",
     "value": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -263,7 +255,6 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
@@ -308,9 +299,7 @@ Array [
         "value": 0,
       },
     },
-    "kind": "IndexedSet",
     "obj": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -331,7 +320,6 @@ Array [
     },
     "type": "IndexedSet",
     "value": Binary {
-      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -391,7 +379,6 @@ Array [
 exports[`parser indexed assignment dotted assignment operator 1`] = `
 Array [
   DottedSet {
-    "kind": "DottedSet",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -409,7 +396,6 @@ Array [
       "text": "bar",
     },
     "obj": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -430,9 +416,7 @@ Array [
     },
     "type": "DottedSet",
     "value": Binary {
-      "kind": "Binary",
       "left": DottedGet {
-        "kind": "DottedGet",
         "name": Object {
           "isReserved": false,
           "kind": "Identifier",
@@ -450,7 +434,6 @@ Array [
           "text": "bar",
         },
         "obj": Variable {
-          "kind": "Variable",
           "name": Object {
             "isReserved": false,
             "kind": "Identifier",
@@ -513,7 +496,6 @@ Array [
 exports[`parser indexed assignment dotted assigns anonymous functions 1`] = `
 Array [
   DottedSet {
-    "kind": "DottedSet",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -531,7 +513,6 @@ Array [
       "text": "bar",
     },
     "obj": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -553,7 +534,6 @@ Array [
     "type": "DottedSet",
     "value": Function {
       "body": Block {
-        "kind": "Block",
         "location": Object {
           "end": Object {
             "column": -9,
@@ -600,7 +580,6 @@ Array [
         },
         "text": "function",
       },
-      "kind": "Function",
       "parameters": Array [],
       "returns": 10,
       "type": "Function",
@@ -612,7 +591,6 @@ Array [
 exports[`parser indexed assignment dotted assigns boolean expressions 1`] = `
 Array [
   DottedSet {
-    "kind": "DottedSet",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -630,7 +608,6 @@ Array [
       "text": "bar",
     },
     "obj": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",
@@ -651,7 +628,6 @@ Array [
     },
     "type": "DottedSet",
     "value": Binary {
-      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {

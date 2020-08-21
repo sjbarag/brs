@@ -3,7 +3,6 @@
 exports[`parser exponential expressions parses exponential operators 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -40,7 +39,6 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
-      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -100,7 +98,6 @@ Array [
 exports[`parser exponential expressions parses repeated exponential operators as left-associative 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -137,9 +134,7 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
-      "kind": "Binary",
       "left": Binary {
-        "kind": "Binary",
         "left": Literal {
           "_location": Object {
             "end": Object {

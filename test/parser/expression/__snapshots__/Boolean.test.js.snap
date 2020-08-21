@@ -3,7 +3,6 @@
 exports[`parser boolean expressions parses boolean ANDs 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -40,7 +39,6 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
-      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -100,7 +98,6 @@ Array [
 exports[`parser boolean expressions parses boolean ORs 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -137,7 +134,6 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
-      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {

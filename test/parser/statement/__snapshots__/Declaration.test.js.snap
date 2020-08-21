@@ -3,7 +3,6 @@
 exports[`parser variable declarations parses evaluated value assignments 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -40,7 +39,6 @@ Array [
     },
     "type": "Assignment",
     "value": Binary {
-      "kind": "Binary",
       "left": Literal {
         "_location": Object {
           "end": Object {
@@ -100,7 +98,6 @@ Array [
 exports[`parser variable declarations parses literal value assignments 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -160,7 +157,6 @@ Array [
 exports[`parser variable declarations parses variable aliasing 1`] = `
 Array [
   Assignment {
-    "kind": "Assignment",
     "name": Object {
       "isReserved": false,
       "kind": "Identifier",
@@ -197,7 +193,6 @@ Array [
     },
     "type": "Assignment",
     "value": Variable {
-      "kind": "Variable",
       "name": Object {
         "isReserved": false,
         "kind": "Identifier",

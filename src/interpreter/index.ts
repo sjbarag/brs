@@ -57,7 +57,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
     root: process.cwd(),
     stdout: process.stdout,
     stderr: process.stderr,
-    generateCoverage: false
+    generateCoverage: false,
 };
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {

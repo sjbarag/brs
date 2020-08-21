@@ -16,11 +16,7 @@ const realFs = jest.requireActual("fs");
 describe("CoverageCollector.ts", () => {
     beforeEach(() => {
         fg.sync.mockImplementation(() => {
-            return [
-                "script1.brs",
-                "scripts/script2.brs",
-                "scripts/script3.brs",
-            ];
+            return ["script1.brs", "scripts/script2.brs", "scripts/script3.brs"];
         });
 
         fs.readFile.mockImplementation((filename, _, cb) => {
@@ -55,13 +51,13 @@ describe("CoverageCollector.ts", () => {
         );
         await coverageCollector.crawlBrsFiles();
 
-        coverageCollector.logHit({ location: { file: "script1.brs"}});
+        coverageCollector.logHit({ location: { file: "script1.brs" } });
 
         FileCoverage.mock.instances.forEach((fileMock, index) => {
             // only the first one should have been called
             let calledTimes = index === 0 ? 1 : 0;
             expect(fileMock.logHit).toHaveBeenCalledTimes(calledTimes);
-        })
+        });
     });
 
     test("getCoverage maps file names to coverage information", async () => {

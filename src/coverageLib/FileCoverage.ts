@@ -14,23 +14,23 @@ interface StatementCoverage {
 
 export interface CoverageSummary {
     path: string;
-    statementMap: { [key: string]: Location; };
-    fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number; }; };
+    statementMap: { [key: string]: Location };
+    fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number } };
     branchMap: {
-        [key: string]: { loc: Location; type: string; locations: Location[]; line: number; };
+        [key: string]: { loc: Location; type: string; locations: Location[]; line: number };
     };
     // hit count map for statements
-    s: { [key: string]: number; };
+    s: { [key: string]: number };
     // hit count map for functions
-    f: { [key: string]: number; };
+    f: { [key: string]: number };
     // hit count map for branches
-    b: { [key: string]: number[]; };
+    b: { [key: string]: number[] };
 }
 
 export class FileCoverage {
     private statements = new Map<string, StatementCoverage>();
 
-    constructor(readonly filePath: string) { }
+    constructor(readonly filePath: string) {}
 
     /**
      * Returns the StatementCoverage object for a given statement.
@@ -98,7 +98,9 @@ export class FileCoverage {
                     let elseIfCoverage = this.get(branch.condition);
                     if (elseIfCoverage) {
                         // use the tokens as the start rather than the condition
-                        let start = statement.tokens.elseIfs?.[index].location.start || branch.condition.location.start;
+                        let start =
+                            statement.tokens.elseIfs?.[index].location.start ||
+                            branch.condition.location.start;
                         locations.push({ ...branch.condition.location, start });
                         branchHits.push(elseIfCoverage.hits);
                     }
@@ -109,8 +111,10 @@ export class FileCoverage {
                     let elseCoverage = this.get(statement.elseBranch);
                     if (elseCoverage) {
                         // use the tokens as the start rather than the condition
-                        let start = statement.tokens.else?.location.start || statement.elseBranch.location.start;
-                        locations.push({ ...statement.elseBranch.location, start});
+                        let start =
+                            statement.tokens.else?.location.start ||
+                            statement.elseBranch.location.start;
+                        locations.push({ ...statement.elseBranch.location, start });
                         branchHits.push(elseCoverage.hits);
                     }
                 }

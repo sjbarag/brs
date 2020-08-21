@@ -65,12 +65,9 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     if (!interpreter) {
         throw new Error("Unable to build interpreter.");
     }
-    
+
     if (executionOptions.generateCoverage) {
-        coverageCollector = new CoverageCollector(
-            executionOptions.root,
-            lexerParserFn
-        );
+        coverageCollector = new CoverageCollector(executionOptions.root, lexerParserFn);
         await coverageCollector.crawlBrsFiles();
         interpreter.setCoverageCollector(coverageCollector);
     }

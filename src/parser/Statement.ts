@@ -26,8 +26,24 @@ export interface Visitor<T> {
     visitLibrary(statement: Library): BrsInvalid;
 }
 
-let statementTypes = new Set<string>(["Assignment", "Expression", "ExitFor", "ExitWhile", "Print", "If",
-    "Block", "For", "ForEach", "While", "Function", "Return", "DottedSet", "IndexedSet", "Increment", "Library"]);
+let statementTypes = new Set<string>([
+    "Assignment",
+    "Expression",
+    "ExitFor",
+    "ExitWhile",
+    "Print",
+    "If",
+    "Block",
+    "For",
+    "ForEach",
+    "While",
+    "Function",
+    "Return",
+    "DottedSet",
+    "IndexedSet",
+    "Increment",
+    "Library",
+]);
 
 export function isStatement(obj: Statement | Expr.Expression): obj is Statement {
     return obj.type in statementTypes;

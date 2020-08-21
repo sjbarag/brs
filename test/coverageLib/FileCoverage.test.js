@@ -37,5 +37,4 @@ describe.skip("integration tests", () => {
         fg.sync.mockRestore();
         fs.readFile.mockRestore();
     });
-
 });

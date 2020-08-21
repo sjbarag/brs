@@ -16,12 +16,7 @@ export class CoverageCollector {
     ) {}
 
     public async crawlBrsFiles() {
-        let filePattern = path.join(
-            this.projectRoot,
-            "(components|source)",
-            "**",
-            "*.brs"
-        );
+        let filePattern = path.join(this.projectRoot, "(components|source)", "**", "*.brs");
         let scripts = fg.sync(filePattern);
 
         scripts.forEach((script) => {

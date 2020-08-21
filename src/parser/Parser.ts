@@ -967,7 +967,7 @@ export class Parser {
                     then: thenToken,
                     elseIfs: elseIfTokens,
                     endIf: endIfToken,
-                    else: elseToken
+                    else: elseToken,
                 },
                 condition,
                 thenBranch,

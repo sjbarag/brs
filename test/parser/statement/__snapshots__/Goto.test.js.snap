@@ -192,7 +192,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

@@ -78,7 +78,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Library {
       "tokens": Object {
@@ -247,7 +247,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -432,7 +432,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -572,7 +572,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -737,7 +737,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -846,7 +846,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -970,7 +970,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -1136,7 +1136,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }

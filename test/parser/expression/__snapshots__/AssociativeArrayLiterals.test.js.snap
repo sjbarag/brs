@@ -340,7 +340,7 @@ Array [
       },
       "text": "main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

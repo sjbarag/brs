@@ -152,7 +152,7 @@ export class ExitWhile extends AstNode implements Statement {
 
 export class Function extends AstNode implements Statement {
     constructor(readonly name: Identifier, readonly func: Expr.Function) {
-        super("Function");
+        super("NamedFunction");
     }
 
     accept<R>(visitor: Visitor<R>): BrsType {

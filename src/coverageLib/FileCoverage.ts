@@ -1,7 +1,7 @@
 import { Stmt, Expr } from "../parser";
 import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
-import { StatementKind, Expression, isStatement } from "../parser/Statement";
+import { Expression, isStatement } from "../parser/Statement";
 
 interface StatementCoverage {
     /** Number of times the interpreter has executed/evaluated this statement. */
@@ -56,7 +56,7 @@ export class FileCoverage {
      */
     private getStatementKey(statement: Expr.Expression | Stmt.Statement) {
         let { start, end } = statement.location;
-        return `${statement.kind}:${start.line},${start.column}-${end.line},${end.column}`;
+        return `${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;
     }
 
     /**

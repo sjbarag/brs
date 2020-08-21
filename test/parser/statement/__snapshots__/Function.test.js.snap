@@ -122,7 +122,7 @@ Object {
         },
         "text": "StringFunc#",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -237,7 +237,7 @@ Object {
         },
         "text": "IntegerFunc%",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -352,7 +352,7 @@ Object {
         },
         "text": "FloatFunc!",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -467,7 +467,7 @@ Object {
         },
         "text": "DoubleFunc#",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -763,7 +763,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -928,7 +928,7 @@ Array [
       },
       "text": "add2",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -1091,7 +1091,7 @@ Array [
       },
       "text": "repeat",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -1324,7 +1324,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -1400,7 +1400,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -1517,7 +1517,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -1593,7 +1593,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -1719,7 +1719,7 @@ Object {
         },
         "text": "Main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -1793,7 +1793,7 @@ Object {
         },
         "text": "DoSomething",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -1880,7 +1880,7 @@ Object {
         },
         "text": "StringSub#",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -1954,7 +1954,7 @@ Object {
         },
         "text": "IntegerSub%",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -2028,7 +2028,7 @@ Object {
         },
         "text": "FloatSub!",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -2102,7 +2102,7 @@ Object {
         },
         "text": "DoubleSub#",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }
@@ -2179,7 +2179,7 @@ Array [
       },
       "text": "bar",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -2296,7 +2296,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -2591,7 +2591,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -2756,7 +2756,7 @@ Array [
       },
       "text": "add2",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -2919,7 +2919,7 @@ Array [
       },
       "text": "repeat",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -3152,7 +3152,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -3278,7 +3278,7 @@ Object {
         },
         "text": "Main",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
     Function {
       "func": Function {
@@ -3352,7 +3352,7 @@ Object {
         },
         "text": "DoSomething",
       },
-      "type": "Function",
+      "type": "NamedFunction",
     },
   ],
 }

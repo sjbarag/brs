@@ -1872,7 +1872,7 @@ Array [
       },
       "text": "a",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -2300,7 +2300,7 @@ Array [
       },
       "text": "missingendif",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -6426,7 +6426,7 @@ Array [
       },
       "text": "main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

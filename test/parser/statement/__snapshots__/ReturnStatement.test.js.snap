@@ -132,7 +132,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -238,7 +238,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -337,7 +337,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

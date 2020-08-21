@@ -110,7 +110,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

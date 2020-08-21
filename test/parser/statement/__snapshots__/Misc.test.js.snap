@@ -177,7 +177,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -279,7 +279,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -416,7 +416,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -3589,7 +3589,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -4125,7 +4125,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

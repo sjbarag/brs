@@ -261,7 +261,7 @@ Array [
       },
       "text": "DoThingOne",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
   Function {
     "func": Function {
@@ -335,7 +335,7 @@ Array [
       },
       "text": "DoThingTwo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;
@@ -414,7 +414,7 @@ Array [
       },
       "text": "DoThingOne",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
   Function {
     "func": Function {
@@ -488,7 +488,7 @@ Array [
       },
       "text": "DoThingTwo",
     },
-    "type": "Function",
+    "type": "NamedFunction",
   },
 ]
 `;

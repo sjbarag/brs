@@ -21,6 +21,7 @@ import { BrsInterface } from "./BrsInterface";
 import { RoSGNode } from "./components/RoSGNode";
 import { Font } from "./components/Font";
 import { Group } from "./components/Group";
+import { Scene } from "./components/Scene";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -46,6 +47,7 @@ export * from "./components/RoInvalid";
 export * from "./components/RoSGNodeEvent";
 export * from "./components/RoSGNode";
 export * from "./components/Group";
+export * from "./components/Scene";
 export * from "./components/LayoutGroup";
 export * from "./components/Rectangle";
 export * from "./components/Label";

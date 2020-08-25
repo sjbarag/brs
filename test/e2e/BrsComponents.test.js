@@ -761,4 +761,14 @@ describe("end to end brightscript functions", () => {
             "true",
         ]);
     });
+
+    test("components/Scene.brs", async () => {
+        await execute([resourceFile("components", "Scene.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "scene node type:",
+            "scene node subtype:",
+        ]);
+    });
+
 });

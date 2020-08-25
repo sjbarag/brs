@@ -767,7 +767,21 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "scene node type:",
+            "Node",
             "scene node subtype:",
+            "Scene",
+            "scene node background uri:",
+            "",
+            "scene node backs exit scene:",
+            "true",
+            "extended scene node type:",
+            "Node",
+            "extended scene node subtype:",
+            "ExtendedScene",
+            "extended scene node background uri:",
+            "",
+            "extended scene node backs exit scene:",
+            "true",
         ]);
     });
 

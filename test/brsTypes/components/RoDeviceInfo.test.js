@@ -328,7 +328,7 @@ describe("RoDeviceInfo", () => {
                 let method = deviceInfo.getMethod("isStoreDemoMode");
 
                 expect(method).toBeTruthy();
-                expect(method.call(interpreter)).toEqual(BrsBoolean.True);
+                expect(method.call(interpreter)).toEqual(BrsBoolean.False);
             });
         });
         describe("getLinkStatus", () => {

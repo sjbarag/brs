@@ -2,10 +2,8 @@ import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsTy
 import { BrsType, Int32 } from "..";
 import { BrsComponent } from "./BrsComponent";
 import { Callable, StdlibArgument } from "../Callable";
-import { Interpreter } from "../../interpreter";
 import { RoAssociativeArray, AAMember } from "./RoAssociativeArray";
 import { v4 as uuidv4 } from "uuid";
-import { RoArray } from "./RoArray";
 
 export class RoDeviceInfo extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
@@ -18,8 +16,6 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
     private enableLinkStatus = BrsBoolean.True;
     private enableAudioGuideChanged = BrsBoolean.True;
     private enableCodecCapChanged = BrsBoolean.True;
-    private videoFormat = ValueKind.Object;
-    private audioFormat = ValueKind.Object;
 
     constructor() {
         super("roDeviceInfo");
@@ -385,7 +381,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Boolean,
         },
         impl: (_interpreter) => {
-            return BrsBoolean.True;
+            return BrsBoolean.False;
         },
     });
 
@@ -526,8 +522,6 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter, videoFormat: ValueKind.Object) => {
-            this.videoFormat = videoFormat;
-
             let result = new Array<AAMember>();
 
             result.push({ name: new BrsString("result"), value: BrsBoolean.True });
@@ -594,7 +588,6 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (_interpreter, audioFormat: ValueKind.Object) => {
-            this.audioFormat = audioFormat;
             let result = new Array<AAMember>();
 
             result.push({ name: new BrsString("result"), value: BrsBoolean.True });

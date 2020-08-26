@@ -5,11 +5,16 @@ const lolex = require("lolex");
 describe("end to end brightscript functions", () => {
     let outputStreams;
     let clock;
+    const OLD_ENV = process.env;
 
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
         outputStreams.root = __dirname + "/resources";
+    });
+
+    beforeEach(() => {
+        process.env = { ...OLD_ENV };
     });
 
     afterEach(() => {
@@ -19,6 +24,7 @@ describe("end to end brightscript functions", () => {
     afterAll(() => {
         clock.uninstall();
         jest.restoreAllMocks();
+        process.env = OLD_ENV;
     });
 
     test("components/roArray.brs", async () => {
@@ -672,6 +678,87 @@ describe("end to end brightscript functions", () => {
             "invalid",
             "invalid",
             "Node",
+        ]);
+    });
+
+    test("components/scripts/MockFunctionsMain.brs", async () => {
+        await execute(
+            [resourceFile("components", "scripts", "MockFunctionsMain.brs")],
+            outputStreams
+        );
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "{fake:'json'}",
+            "GET status: 400",
+            "POST status: 500",
+            "true",
+            "mocked correctly!",
+            "{real: 'json'}",
+            "GET status: 200",
+            "POST status: 200",
+            "false",
+            "mocked correctly!",
+        ]);
+    });
+
+    test("components/roDeviceInfo.brs", async () => {
+        process.env.TZ = "PST";
+        process.env.LOCALE = "en_US";
+
+        await execute([resourceFile("components", "roDeviceInfo.brs")], outputStreams);
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "",
+            "",
+            "",
+            "0",
+            "",
+            "0",
+            "",
+            "",
+            "true",
+            "",
+            "en_US",
+            "36",
+            "PST",
+            "false",
+            "en_US",
+            "en_US",
+            "",
+            "0",
+            "0",
+            "0",
+            "true",
+            "on",
+            "default",
+            "",
+            "true",
+            "true",
+            "true",
+            "",
+            "false",
+            "true",
+            "true",
+            "",
+            "",
+            "0",
+            "0",
+            "",
+            "",
+            "",
+            "0",
+            "",
+            "0",
+            "0",
+            "true",
+            "mpeg4 avc",
+            "0",
+            "",
+            "true",
+            "",
+            "0",
+            "true",
+            "0",
+            "",
+            "true",
         ]);
     });
 });

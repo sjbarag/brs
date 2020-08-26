@@ -8,6 +8,7 @@ import {
     BrsValue,
 } from "./BrsType";
 import { RoArray } from "./components/RoArray";
+import { RoDeviceInfo } from "./components/RoDeviceInfo";
 import { RoAssociativeArray } from "./components/RoAssociativeArray";
 import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
@@ -28,6 +29,7 @@ export * from "./Float";
 export * from "./Double";
 export * from "./BrsInterface";
 export * from "./Callable";
+export * from "./components/RoDeviceInfo";
 export * from "./components/ComponentFactory";
 export * from "./components/RoArray";
 export * from "./components/RoDateTime";

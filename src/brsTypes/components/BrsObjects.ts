@@ -1,4 +1,5 @@
 import { RoAssociativeArray } from "./RoAssociativeArray";
+import { RoDeviceInfo } from "./RoDeviceInfo";
 import { RoArray } from "./RoArray";
 import { RoDateTime } from "./RoDateTime";
 import { Timespan } from "./Timespan";
@@ -22,6 +23,7 @@ export const BrsObjects = new Map<string, Function>([
     ["roarray", (_: Interpreter) => new RoArray([])],
     ["rodatetime", (_: Interpreter) => new RoDateTime()],
     ["rotimespan", (_: Interpreter) => new Timespan()],
+    ["rodeviceinfo", (_: Interpreter) => new RoDeviceInfo()],
     [
         "rosgnode",
         (interpreter: Interpreter, nodeType: BrsString) => createNodeByType(interpreter, nodeType),

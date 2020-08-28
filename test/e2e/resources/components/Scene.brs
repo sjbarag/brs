@@ -7,7 +7,7 @@ sub main()
     sceneNode.backgroundUri = "/images/arrow.png"
     print "scene node background uri:" sceneNode.backgroundUri
 
-    sceneNode.backgroundColor = "FFFFFF"
+    sceneNode.backgroundColor = "0xEB1010FF"
     print "scene node background color:" sceneNode.backgroundColor
 
     extendedSceneNode = createObject("roSGNode", "ExtendedScene")
@@ -18,7 +18,7 @@ sub main()
     extendedSceneNode.backgroundUri = "/images/arrow.png"
     print "extended scene node background uri:" extendedSceneNode.backgroundUri
 
-    extendedSceneNode.backgroundColor = "FFFFFF"
+    extendedSceneNode.backgroundColor = "0xEB1010FF"
     print "extended scene node background color:" extendedSceneNode.backgroundColor
 
 end sub

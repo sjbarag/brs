@@ -775,7 +775,7 @@ describe("end to end brightscript functions", () => {
             "scene node background uri:",
             "/images/arrow.png",
             "scene node background color:",
-            "FFFFFF",
+            "0xEB1010FF",
             "extended scene node type:",
             "Node",
             "extended scene node subtype:",
@@ -785,8 +785,7 @@ describe("end to end brightscript functions", () => {
             "extended scene node background uri:",
             "/images/arrow.png",
             "extended scene node background color:",
-            "FFFFFF",
+            "0xEB1010FF",
         ]);
     });
-
 });

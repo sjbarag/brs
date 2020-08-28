@@ -1,0 +1,7 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="ExtendedScene" extends="Scene">
+    <interface>
+        <field id="extendSceneStringField" type="string" value="this extends scene" />
+    </interface>
+</component>

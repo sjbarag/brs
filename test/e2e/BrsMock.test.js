@@ -1,6 +1,7 @@
 const { execute } = require("../../lib");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 const lolex = require("lolex");
+const path = require("path");
 
 describe("end to end brightscript functions", () => {
     let outputStreams;
@@ -9,7 +10,7 @@ describe("end to end brightscript functions", () => {
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
-        outputStreams.root = __dirname + "/resources";
+        outputStreams.root = path.join(__dirname, "resources");
     });
 
     afterEach(() => {
@@ -21,8 +22,8 @@ describe("end to end brightscript functions", () => {
         jest.restoreAllMocks();
     });
 
-    test("mockComponents.brs", async () => {
-        await execute([resourceFile("mockComponents.brs")], outputStreams);
+    test("mock-components-main.brs", async () => {
+        await execute([resourceFile("mock-components-main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "marking mock timespan",
@@ -50,9 +51,9 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("mockFunctions.brs", async () => {
+    test("mock-functions-main.brs", async () => {
         let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-        await execute([resourceFile("mockFunctions.brs")], outputStreams);
+        await execute([resourceFile("mock-functions-main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
@@ -75,11 +76,8 @@ describe("end to end brightscript functions", () => {
         consoleErrorSpy.mockRestore();
     });
 
-    test("MockFunctionsMain.brs", async () => {
-        await execute(
-            [resourceFile("components", "scripts", "MockFunctionsMain.brs")],
-            outputStreams
-        );
+    test("partial-mock-functions-main.brs", async () => {
+        await execute([resourceFile("partial-mock-functions-main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
@@ -95,8 +93,8 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("resetMocks.brs", async () => {
-        await execute([resourceFile("resetMocks.brs")], outputStreams);
+    test("reset-mocks.brs", async () => {
+        await execute([resourceFile("reset-mocks.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "fake",

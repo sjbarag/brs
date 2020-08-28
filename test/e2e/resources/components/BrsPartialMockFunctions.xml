@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="BrsPartialMockFunctions">
+    <script type="text/brightscript" uri="./scripts/BrsPartialMockFunctions.brs" />
+</component>

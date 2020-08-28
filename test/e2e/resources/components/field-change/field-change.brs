@@ -1,4 +1,4 @@
-sub Main()
+sub init()
     node = createObject("roSGNode", "FieldChangeComponent")
     print "runner: node childHandled text field value before modifying:" node.childHandledTextField
     node.childHandledTextField = "childHandled modified"

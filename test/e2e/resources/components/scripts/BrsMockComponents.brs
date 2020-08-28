@@ -1,4 +1,4 @@
-sub Main()
+sub init()
     ' testing mock objects with functions
     _brs_.mockComponent("roTimespan", {
         mark: (sub()
@@ -22,7 +22,6 @@ sub Main()
     print "mock object regex:" type(mockRegex)                                  ' => roSGNode
 
     ' testing observe field of mock object
-    ' TODO: once observe field is merged, add this test case to BrsMock.test.js
     mockTimespan.observeField("name", "onNameChanged")
     mockTimespan.name = "updated name"
 

@@ -1,4 +1,4 @@
-sub main()
+sub init()
     ' tests for ifAssociativeArray
     node1 = createObject("roSGNode", "Node")
     node1.foo = "foo"

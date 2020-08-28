@@ -2,12 +2,23 @@ sub main()
     sceneNode = createObject("roSGNode", "Scene")
     print "scene node type:" type(sceneNode) ' => Node
     print "scene node subtype:" sceneNode.subtype() ' => Scene
-    print "scene node background uri:" sceneNode.backgrounduri
-    print "scene node backs exit scene:" sceneNode.backExitsScene
+    print "scene node backs exit scene:" sceneNode.backExitsScene ' => true
+
+    sceneNode.backgroundUri = "/images/arrow.png"
+    print "scene node background uri:" sceneNode.backgroundUri
+
+    sceneNode.backgroundColor = "FFFFFF"
+    print "scene node background color:" sceneNode.backgroundColor
 
     extendedSceneNode = createObject("roSGNode", "ExtendedScene")
     print "extended scene node type:" type(extendedSceneNode) ' => Node
     print "extended scene node subtype:" extendedSceneNode.subtype() ' => ExtendedScene
-    print "extended scene node background uri:" extendedSceneNode.backgrounduri
-    print "extended scene node backs exit scene:" extendedSceneNode.backExitsScene
+    print "extended scene node backs exit scene:" extendedSceneNode.backExitsScene ' => true
+
+    extendedSceneNode.backgroundUri = "/images/arrow.png"
+    print "extended scene node background uri:" extendedSceneNode.backgroundUri
+
+    extendedSceneNode.backgroundColor = "FFFFFF"
+    print "extended scene node background color:" extendedSceneNode.backgroundColor
+
 end sub

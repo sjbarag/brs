@@ -28,6 +28,7 @@ describe("Scene", () => {
     enablerendertracking: false
     rendertracking: disabled
     backgrounduri: 
+    backgroundcolor: 0x000000FF
     backexitsscene: true
     dialog: invalid
     currentdesignresolution: <Component: roAssociativeArray>

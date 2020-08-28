@@ -79,7 +79,7 @@ export class ComponentScopeResolver {
                 // BRS hasn't implemented every node type in the reference implementation!  For now,
                 // let's warn when we detect unknown subtypes.
                 console.error(
-                    `Warning: XML component '${previousComponent.extends}' extends unknown component '${previousComponent.name}'. Ignoring extension.`
+                    `Warning: XML component '${previousComponent.name}' extends unknown component '${previousComponent.extends}'. Ignoring extension.`
                 );
                 return Promise.resolve();
             }

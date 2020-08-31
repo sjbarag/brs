@@ -25,6 +25,7 @@ import { ComponentFactory, BrsComponentName } from "./ComponentFactory";
 import { Environment } from "../../interpreter/Environment";
 import { roInvalid } from "./RoInvalid";
 import type * as MockNodeModule from "../../extensions/MockNode";
+import { BlockEnd } from "../../parser/Statement";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -215,10 +216,17 @@ export class Field {
 
         interpreter.inSubEnv((subInterpreter) => {
             // Check whether the callback is expecting an event parameter.
-            if (callable.getFirstSatisfiedSignature([event])) {
-                callable.call(subInterpreter, event);
-            } else {
-                callable.call(subInterpreter);
+            try {
+                if (callable.getFirstSatisfiedSignature([event])) {
+                    // m gets lost inside the subinterpreter block in callable.call ?
+                    callable.call(subInterpreter, event);
+                } else {
+                    callable.call(subInterpreter);
+                }
+            } catch (err) {
+                if (!(err instanceof BlockEnd)) {
+                    throw err;
+                }
             }
             return BrsInvalid.Instance;
         }, environment);

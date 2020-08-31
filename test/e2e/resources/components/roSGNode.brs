@@ -225,6 +225,7 @@ end sub
 
 sub onCB1Called()
     print "callback 1 called"
+    return
 end sub
 
 sub onCB2Called()

@@ -153,7 +153,7 @@ describe("FileCoverage", () => {
             );
         });
 
-        describe.only("If", () => {
+        describe("If", () => {
             let assignTo;
 
             beforeEach(() => {

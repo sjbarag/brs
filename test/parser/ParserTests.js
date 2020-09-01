@@ -3,6 +3,12 @@ const { Lexeme } = brs.lexer;
 
 /* A set of utilities to be used while writing tests for the BRS parser. */
 
+/** * A clearly malformed source location, used to satisfy existence requirements at runtime. */
+exports.fakeLocation = {
+    start: { line: -9, column: -9 },
+    end: { line: -9, column: -9 },
+};
+
 /**
  * Creates a token with the given `kind` and (optional) `literal` value.
  * @param {Lexeme} kind the lexeme the produced token should represent.
@@ -16,10 +22,7 @@ exports.token = function (kind, text, literal) {
         text: text,
         isReserved: brs.lexer.ReservedWords.has((text || "").toLowerCase()),
         literal: literal,
-        location: {
-            start: { line: -9, column: -9 },
-            end: { line: -9, column: -9 },
-        },
+        location: exports.fakeLocation,
     };
 };
 

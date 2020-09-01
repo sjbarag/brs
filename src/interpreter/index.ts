@@ -1534,16 +1534,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
-        try {
-            this.location = expression.location;
-        } catch {}
+        this.location = expression.location;
         return expression.accept<BrsType>(this);
     }
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
-        try {
-            this.location = statement.location;
-        } catch {}
+        this.location = statement.location;
         return statement.accept<BrsType>(this);
     }
 

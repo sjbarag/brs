@@ -1,5 +1,5 @@
 import { Stmt, Expr } from "../parser";
-import { Location, isToken } from "../lexer";
+import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 import { isStatement } from "../parser/Statement";
 
@@ -12,9 +12,9 @@ interface StatementCoverage {
 
 export interface CoverageSummary {
     path: string;
-    statements: { [key: string]: { hits: number; location: Location; }; };
+    statements: { [key: string]: { hits: number; location: Location } };
     functions: {
-        [key: string]: { hits: number; location: Location; name: string; };
+        [key: string]: { hits: number; location: Location; name: string };
     };
     branches: {
         [key: string]: {
@@ -29,7 +29,7 @@ export interface CoverageSummary {
 export class FileCoverage {
     private statements = new Map<string, StatementCoverage>();
 
-    constructor(readonly filePath: string) { }
+    constructor(readonly filePath: string) {}
 
     /**
      * Returns the StatementCoverage object for a given statement.
@@ -53,7 +53,7 @@ export class FileCoverage {
      * Generates a key for the statement using its location and type.
      * @param statement statement for which to generate a key.
      */
-    private getStatementKey(statement: Expr.Expression | Stmt.Statement) {
+    getStatementKey(statement: Expr.Expression | Stmt.Statement) {
         let { start, end } = statement.location;
         return `${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;
     }
@@ -90,7 +90,7 @@ export class FileCoverage {
                 branchHits.push(hits);
 
                 // Add the "else if" coverage
-                statement.elseIfs.forEach((branch, index) => {
+                statement.elseIfs?.forEach((branch, index) => {
                     let elseIfCoverage = this.get(branch.condition);
                     if (elseIfCoverage) {
                         // use the tokens as the start rather than the condition
@@ -126,7 +126,10 @@ export class FileCoverage {
                     location: statement.location,
                     name: statement.keyword.text,
                 };
-            } else if (statement instanceof Expr.Binary) {
+            } else if (
+                statement instanceof Expr.Binary &&
+                (statement.token.kind === Lexeme.And || statement.token.kind === Lexeme.Or)
+            ) {
                 let locations: Location[] = [];
                 let branchHits: number[] = [];
 
@@ -149,7 +152,7 @@ export class FileCoverage {
             } else if (isStatement(statement)) {
                 coverageSummary.statements[key] = {
                     hits,
-                    location: statement.location
+                    location: statement.location,
                 };
             }
         });
@@ -192,14 +195,12 @@ export class FileCoverage {
         this.evaluate(statement.condition);
         this.execute(statement.thenBranch);
 
-        statement.elseIfs.forEach((elseIf) => {
-            this.add(elseIf.thenBranch);
+        statement.elseIfs?.forEach((elseIf) => {
             this.evaluate(elseIf.condition);
             this.execute(elseIf.thenBranch);
         });
 
         if (statement.elseBranch) {
-            this.add(statement.elseBranch);
             this.execute(statement.elseBranch);
         }
 

@@ -24,12 +24,13 @@ import {
 import { Lexeme } from "../lexer";
 import { isToken } from "../lexer/Token";
 import { Expr, Stmt, ComponentScopeResolver } from "../parser";
-import { BrsError, TypeMismatch, getLoggerUsing } from "../Error";
+import { BrsError, getLoggerUsing } from "../Error";
 
 import * as StdLib from "../stdlib";
 import { _brs_ } from "../extensions";
 
 import { Scope, Environment, NotFound } from "./Environment";
+import { TypeMismatch } from "./TypeMismatch";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
 import { Runtime } from "../parser/Statement";

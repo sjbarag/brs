@@ -37,34 +37,14 @@ export interface Location {
     file: string;
 }
 
-export namespace Location {
-    export function equals(location1: Location, location2: Location) {
-        return (
-            location1.file === location2.file &&
-            LineAndColumn.equals(location1.start, location2.start) &&
-            LineAndColumn.equals(location1.end, location2.end)
-        );
-    }
-
-    export function toString(location: Location) {
-        let { file, start, end } = location;
-        return `${file}:${start.line},${start.column}-${end.line},${end.column}`;
-    }
-}
-
 /** A line-column pair. */
-export type LineAndColumn = {
+type LineAndColumn = {
     /** A *one-indexed* line number. */
     line: number;
     /** A *zero-indexed* column number. */
     column: number;
 };
 
-namespace LineAndColumn {
-    export function equals(lc1: LineAndColumn, lc2: LineAndColumn) {
-        return lc1.line === lc2.line && lc1.column === lc2.column;
-    }
-}
 
 /** Represents an identifier as scanned by the lexer. */
 export interface Identifier extends Token {

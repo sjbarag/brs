@@ -45,7 +45,6 @@ type LineAndColumn = {
     column: number;
 };
 
-
 /** Represents an identifier as scanned by the lexer. */
 export interface Identifier extends Token {
     kind: Lexeme.Identifier;

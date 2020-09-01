@@ -212,6 +212,10 @@ export class Field {
         this.observers.set(subscriber, [...maybeCallbacks, brsCallback]);
     }
 
+    removeAllObservers() {
+        this.observers.clear();
+    }
+
     private executeCallbacks(callback: BrsCallback) {
         let { interpreter, callable, hostNode, environment, eventParams } = callback;
 
@@ -280,6 +284,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.getfield,
                 this.hasfield,
                 this.observefield,
+                this.unobservefield,
                 this.removefield,
                 this.setfield,
                 this.setfields,
@@ -782,6 +787,32 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     return BrsBoolean.False;
                 }
             }
+            return BrsBoolean.True;
+        },
+    });
+
+    /**
+     * Removes all observers of a given field, regardless of whether or not the host node is the subscriber.
+     */
+    private unobservefield = new Callable("unobservefield", {
+        signature: {
+            args: [new StdlibArgument("fieldname", ValueKind.String)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
+            if (!interpreter.environment.hostNode) {
+                let location = `${interpreter.location.file}:(${interpreter.location.start.line})`;
+                interpreter.stderr.write(
+                    `BRIGHTSCRIPT: ERROR: roSGNode.unObserveField: no active host node: ${location}\n`
+                );
+                return BrsBoolean.False;
+            }
+
+            let field = this.fields.get(fieldname.value.toLowerCase());
+            if (field instanceof Field) {
+                field.removeAllObservers();
+            }
+            // returns true, even if the field doesn't exist
             return BrsBoolean.True;
         },
     });

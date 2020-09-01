@@ -21,7 +21,7 @@ import {
     Float,
 } from "../brsTypes";
 
-import { Lexeme } from "../lexer";
+import { Lexeme, Location } from "../lexer";
 import { isToken } from "../lexer/Token";
 import { Expr, Stmt, ComponentScopeResolver } from "../parser";
 import { BrsError, getLoggerUsing } from "../Error";
@@ -64,6 +64,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
     readonly temporaryVolume: MemoryFileSystem = new MemoryFileSystem();
+
+    location: Location;
 
     /** Allows consumers to observe errors as they're detected. */
     readonly events = new EventEmitter();
@@ -144,6 +146,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.stdout = new OutputProxy(options.stdout);
         this.stderr = new OutputProxy(options.stderr);
         this.options = options;
+        this.location = {
+            file: "(none)",
+            start: { line: -1, column: -1 },
+            end: { line: -1, column: -1 },
+        };
 
         Object.keys(StdLib)
             .map((name) => (StdLib as any)[name])
@@ -204,11 +211,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 },
             });
 
-            let maybeMain = this.visitVariable(mainVariable);
+            let maybeMain = this.evaluate(mainVariable);
 
             if (maybeMain.kind === ValueKind.Callable) {
                 results = [
-                    this.visitCall(
+                    this.evaluate(
                         new Expr.Call(
                             mainVariable,
                             mainVariable.name,
@@ -1527,10 +1534,12 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
+        this.location = expression.location;
         return expression.accept<BrsType>(this);
     }
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
+        this.location = statement.location;
         return statement.accept<BrsType>(this);
     }
 

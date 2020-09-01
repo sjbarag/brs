@@ -70,6 +70,9 @@ export class Environment {
     /** Map holding component definitions of all parsed xml component files */
     public nodeDefMap = new Map<string, ComponentDefinition>();
 
+    /** The node in which field-change observers are registered. */
+    public hostNode: RoSGNode | undefined;
+
     /**
      * Stores a `value` for the `name`d variable in the provided `scope`.
      * @param scope The logical region from a particular variable or function that defines where it may be accessed from
@@ -258,6 +261,7 @@ export class Environment {
         newEnvironment.unscopedMockFunctions = this.unscopedMockFunctions;
         newEnvironment.focusedNode = this.focusedNode;
         newEnvironment.nodeDefMap = this.nodeDefMap;
+        newEnvironment.hostNode = this.hostNode;
 
         if (includeModuleScope) {
             newEnvironment.module = new Map(this.module);

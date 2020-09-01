@@ -1,4 +1,4 @@
-sub Main()
+sub init()
     ' mock formatJSON
     _brs_.mockfunction("formatJson", (function(json as object, flags=0 as integer) as dynamic
         return "{fake:'json'}"

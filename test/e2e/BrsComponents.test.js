@@ -123,8 +123,8 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/roSGNode.brs", async () => {
-        await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
+    test("components/roSGNode/main.brs", async () => {
+        await execute([resourceFile("components", "roSGNode", "main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "node size: ",
@@ -582,11 +582,8 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/FieldChangeMain.brs", async () => {
-        await execute(
-            [resourceFile("components", "scripts", "FieldChangeMain.brs")],
-            outputStreams
-        );
+    test("components/field-change/main.brs", async () => {
+        await execute([resourceFile("components", "field-change", "main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             // inheritance/overrides
@@ -680,25 +677,6 @@ describe("end to end brightscript functions", () => {
             "invalid",
             "invalid",
             "Node",
-        ]);
-    });
-
-    test("components/scripts/MockFunctionsMain.brs", async () => {
-        await execute(
-            [resourceFile("components", "scripts", "MockFunctionsMain.brs")],
-            outputStreams
-        );
-        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
-            "{fake:'json'}",
-            "GET status: 400",
-            "POST status: 500",
-            "true",
-            "mocked correctly!",
-            "{real: 'json'}",
-            "GET status: 200",
-            "POST status: 200",
-            "false",
-            "mocked correctly!",
         ]);
     });
 

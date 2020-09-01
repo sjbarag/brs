@@ -234,6 +234,8 @@ describe("end to end brightscript functions", () => {
             "Cousin-2",
             "node finds its grandparent: ",
             "root-node",
+            "returns invalid on empty:",
+            "invalid",
             "is same node returns true:",
             "true",
             "is same node returns false:",

@@ -2073,6 +2073,7 @@ describe("RoSGNode", () => {
             child2 = new RoSGNode([{ name: idString, value: new BrsString("child2") }]);
             child3 = new RoSGNode([{ name: idString, value: new BrsString("child3") }]);
             child4 = new RoSGNode([{ name: idString, value: new BrsString("child4") }]);
+            child5 = new RoSGNode([{ name: idString, value: new BrsString("") }]);
         });
 
         describe("findnode", () => {
@@ -2081,6 +2082,13 @@ describe("RoSGNode", () => {
                 expect(findNode).toBeTruthy();
 
                 let invalidNode = findNode.call(interpreter, new BrsString("someRandomId"));
+                expect(invalidNode).toEqual(BrsInvalid.Instance);
+            });
+
+            it("returns invalid on empty id string", () => {
+                let findNode = parent.getMethod("findnode");
+
+                let invalidNode = findNode.call(interpreter, new BrsString(""));
                 expect(invalidNode).toEqual(BrsInvalid.Instance);
             });
 

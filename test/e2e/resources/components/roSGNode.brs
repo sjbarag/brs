@@ -154,6 +154,7 @@ sub main()
         child.name = "sibling-" + id
         children[id] = child
     end for
+    root.createChild("Node") ' create node with empty id
 
     result = children["c4"].findNode("c7")
     print "node finds its sibling: " result.name                    ' => name-c7
@@ -173,6 +174,10 @@ sub main()
     ' finds its grandparent
     result = cousin2.findNode("root")
     print "node finds its grandparent: " result.name                ' => root-node
+
+    ' returns invalid on empty string
+    result = root.findNode("")
+    print "returns invalid on empty:" result
 
     ' returns true if both nodes are the same
     n = createObject("roSGNode", "Node")

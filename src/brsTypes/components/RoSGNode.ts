@@ -1276,6 +1276,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter, name: BrsString) => {
+            // Roku's implementation returns invalid on empty string
+            if (name.value.length === 0) return BrsInvalid.Instance;
+
             // climb parent hierarchy to find node to start search at
             let root: RoSGNode = this;
             while (root.parent && root.parent instanceof RoSGNode) {

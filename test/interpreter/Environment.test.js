@@ -145,7 +145,7 @@ describe("Environment", () => {
         expect(env.getRootM()).toBe(env.createSubEnvironment().getRootM());
     });
 
-    it("maintains host node between sub-nvironments", () => {
+    it("maintains host node between sub-environments", () => {
         env = new Environment();
         env.hostNode = new RoSGNode([], "SomeNode");
         expect(env.createSubEnvironment().hostNode).toBe(env.hostNode);

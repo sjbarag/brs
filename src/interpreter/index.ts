@@ -1126,7 +1126,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitDottedGet(expression: Expr.DottedGet) {
-        debugger;
         let source = this.evaluate(expression.obj);
 
         if (isIterable(source)) {

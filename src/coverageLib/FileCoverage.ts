@@ -1,36 +1,35 @@
 import { Stmt, Expr } from "../parser";
-import { Location, isToken, Lexeme } from "../lexer";
+import { Location, isToken } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
-import { Expression, isStatement } from "../parser/Statement";
+import { isStatement } from "../parser/Statement";
 
 interface StatementCoverage {
     /** Number of times the interpreter has executed/evaluated this statement. */
     hits: number;
     /** Combine expressions and statements because we need to log some expressions to get the coverage report. */
     statement: Expr.Expression | Stmt.Statement;
-    /** Keep track of whether we've already used this statement in the coverage report. */
-    used: boolean;
 }
 
 export interface CoverageSummary {
     path: string;
-    statementMap: { [key: string]: Location };
-    fnMap: { [key: string]: { name: string; decl: Location; loc: Location; line: number } };
-    branchMap: {
-        [key: string]: { loc: Location; type: string; locations: Location[]; line: number };
+    statements: { [key: string]: { hits: number; location: Location; }; };
+    functions: {
+        [key: string]: { hits: number; location: Location; name: string; };
     };
-    // hit count map for statements
-    s: { [key: string]: number };
-    // hit count map for functions
-    f: { [key: string]: number };
-    // hit count map for branches
-    b: { [key: string]: number[] };
+    branches: {
+        [key: string]: {
+            hits: number[];
+            locations: Location[];
+            /** Branch type, i.e. "if", "or", "and", etc. */
+            type: string;
+        };
+    };
 }
 
 export class FileCoverage {
     private statements = new Map<string, StatementCoverage>();
 
-    constructor(readonly filePath: string) {}
+    constructor(readonly filePath: string) { }
 
     /**
      * Returns the StatementCoverage object for a given statement.
@@ -47,7 +46,7 @@ export class FileCoverage {
      */
     private add(statement: Expr.Expression | Stmt.Statement) {
         let key = this.getStatementKey(statement);
-        this.statements.set(key, { hits: 0, statement, used: false });
+        this.statements.set(key, { hits: 0, statement });
     }
 
     /**
@@ -71,20 +70,17 @@ export class FileCoverage {
     }
 
     /**
-     * Converts the coverage data to a POJO that is more friendly for consumers like istanbul.
+     * Converts the coverage data to a POJO that's more friendly for consumers.
      */
     getCoverage(): CoverageSummary {
         let coverageSummary: CoverageSummary = {
             path: this.filePath,
-            statementMap: {},
-            fnMap: {},
-            branchMap: {},
-            s: {},
-            f: {},
-            b: {},
+            statements: {},
+            functions: {},
+            branches: {},
         };
 
-        this.statements.forEach(({ statement, hits, used }, key) => {
+        this.statements.forEach(({ statement, hits }, key) => {
             if (statement instanceof Stmt.If) {
                 let locations: Location[] = [];
                 let branchHits: number[] = [];
@@ -119,21 +115,17 @@ export class FileCoverage {
                     }
                 }
 
-                coverageSummary.branchMap[key] = {
-                    loc: statement.location,
-                    type: "if",
+                coverageSummary.branches[key] = {
+                    hits: branchHits,
                     locations,
-                    line: statement.location.start.line,
+                    type: "if",
                 };
-                coverageSummary.b[key] = branchHits;
             } else if (statement instanceof Expr.Function) {
-                coverageSummary.fnMap[key] = {
+                coverageSummary.functions[key] = {
+                    hits,
+                    location: statement.location,
                     name: statement.keyword.text,
-                    decl: statement.location,
-                    loc: statement.location,
-                    line: statement.location.start.line,
                 };
-                coverageSummary.f[key] = hits;
             } else if (statement instanceof Expr.Binary) {
                 let locations: Location[] = [];
                 let branchHits: number[] = [];
@@ -149,16 +141,16 @@ export class FileCoverage {
                     branchHits.push(rightCoverage.hits);
                 }
 
-                coverageSummary.branchMap[key] = {
-                    loc: statement.location,
-                    type: statement.token.kind,
+                coverageSummary.branches[key] = {
+                    hits: branchHits,
                     locations,
-                    line: statement.location.start.line,
+                    type: statement.token.kind,
                 };
-                coverageSummary.b[key] = branchHits;
             } else if (isStatement(statement)) {
-                coverageSummary.statementMap[key] = statement.location;
-                coverageSummary.s[key] = hits;
+                coverageSummary.statements[key] = {
+                    hits,
+                    location: statement.location
+                };
             }
         });
 

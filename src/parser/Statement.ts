@@ -46,7 +46,7 @@ let statementTypes = new Set<string>([
 ]);
 
 export function isStatement(obj: Statement | Expr.Expression): obj is Statement {
-    return obj.type in statementTypes;
+    return statementTypes.has(obj.type);
 }
 
 /** A BrightScript statement */

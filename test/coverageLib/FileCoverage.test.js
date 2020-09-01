@@ -18,8 +18,8 @@ function generateLocation(num) {
     return {
         start: { line: num, column: num },
         end: { line: num, column: num },
-        file: "some/file"
-    }
+        file: "some/file",
+    };
 }
 
 function token(kind, text, locationNum, literal) {
@@ -214,7 +214,7 @@ describe("FileCoverage", () => {
                 let ifBlock = new Stmt.Block([], generateLocation(1));
                 let elseIfBlocks = [
                     new Stmt.Block([], generateLocation(2)),
-                    new Stmt.Block([], generateLocation(3))
+                    new Stmt.Block([], generateLocation(3)),
                 ];
                 let statement = new Stmt.If(
                     {
@@ -232,20 +232,20 @@ describe("FileCoverage", () => {
                         {
                             condition: new Expr.Literal(BrsBoolean.True),
                             thenBranch: elseIfBlocks[0],
-                            type: "else if"
+                            type: "else if",
                         },
                         {
                             condition: new Expr.Literal(BrsBoolean.True),
                             thenBranch: elseIfBlocks[1],
-                            type: "else if"
-                        }
+                            type: "else if",
+                        },
                     ]
                 );
 
                 let fileCoverage = new FileCoverage("path/to/file");
                 fileCoverage.execute(statement);
                 fileCoverage.logHit(statement);
-                elseIfBlocks.forEach(block => {
+                elseIfBlocks.forEach((block) => {
                     fileCoverage.logHit(block);
                 });
 
@@ -253,7 +253,7 @@ describe("FileCoverage", () => {
                 expect(Object.keys(coverageResults.functions).length).toEqual(0);
                 expect(Object.keys(coverageResults.statements).length).toEqual(3);
 
-                elseIfBlocks.forEach(block => {
+                elseIfBlocks.forEach((block) => {
                     let blockKey = fileCoverage.getStatementKey(block);
                     let blockCoverage = coverageResults.statements[blockKey];
                     expect(blockCoverage.hits).toEqual(1);

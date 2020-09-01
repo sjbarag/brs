@@ -3,6 +3,8 @@ const path = require("path");
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Expr, Stmt } = brs.parser;
+const { Int32, BrsString } = brs.types;
+
 const { getComponentDefinitionMap } = require("../../lib/componentprocessor");
 const { Interpreter, defaultExecutionOptions } = require("../../lib/interpreter");
 const LexerParser = require("../../lib/LexerParser");
@@ -13,8 +15,6 @@ jest.mock("fast-glob");
 jest.mock("fs");
 const fg = require("fast-glob");
 const fs = require("fs");
-const { Int32 } = require("../../lib/brsTypes/Int32");
-
 const realFs = jest.requireActual("fs");
 
 let defaultLocation = {
@@ -79,10 +79,12 @@ describe("FileCoverage", () => {
             return fileCoverage.getCoverage();
         }
 
-        function checkStatement(statement, numHits = 1) {
+        function checkSimpleStatement(statement, numHits = 1) {
             let coverageResults = createCoverage(statement, numHits);
-            let statementKeys = Object.keys(coverageResults.statements);
+            expect(Object.keys(coverageResults.branches).length).toEqual(0);
+            expect(Object.keys(coverageResults.functions).length).toEqual(0);
 
+            let statementKeys = Object.keys(coverageResults.statements);
             expect(statementKeys.length).toEqual(1);
 
             let statementCoverage = coverageResults.statements[statementKeys[0]];
@@ -92,20 +94,20 @@ describe("FileCoverage", () => {
 
         describe("Correct number of hits", () => {
             it("0 hits", () => {
-                checkStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 0);
+                checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 0);
             });
 
             it("1 hit", () => {
-                checkStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 10);
+                checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 10);
             });
 
             it("10 hits", () => {
-                checkStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 10);
+                checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 10);
             });
         });
 
         it("Assignment", () => {
-            checkStatement(
+            checkSimpleStatement(
                 new Stmt.Assignment(
                     { equals: token(Lexeme.Equal, "=") },
                     identifier("foo"),
@@ -115,15 +117,39 @@ describe("FileCoverage", () => {
         });
 
         it("Expression", () => {
-            checkStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))));
+            checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))));
         });
 
         it("ExitFor", () => {
-            checkStatement(new Stmt.ExitFor({ exitFor: token(Lexeme.ExitFor, "exit for") }));
+            checkSimpleStatement(new Stmt.ExitFor({ exitFor: token(Lexeme.ExitFor, "exit for") }));
         });
 
         it("ExitWhile", () => {
-            checkStatement(new Stmt.ExitFor({ exitFor: token(Lexeme.ExitFor, "exit for") }));
+            checkSimpleStatement(
+                new Stmt.ExitWhile({ exitWhile: token(Lexeme.ExitWhile, "exit while") })
+            );
+        });
+
+        it("Print", () => {
+            checkSimpleStatement(
+                new Stmt.Print(
+                    {
+                        print: token(Lexeme.Print, "print"),
+                    },
+                    [new Expr.Literal(new BrsString("foo")), new Expr.Literal(new Int32(1))]
+                )
+            );
+        });
+
+        it("Print", () => {
+            checkSimpleStatement(
+                new Stmt.Print(
+                    {
+                        print: token(Lexeme.Print, "print"),
+                    },
+                    [new Expr.Literal(new BrsString("foo")), new Expr.Literal(new Int32(1))]
+                )
+            );
         });
     });
 

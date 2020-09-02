@@ -38,4 +38,29 @@ describe("end to end brightscript functions", () => {
 `
         );
     });
+
+    test("observers/scoped-main.brs", async () => {
+        await execute([resourceFile("observers", "scoped-main.brs")], outputStreams);
+        expect(allArgs(outputStreams.stdout.write).join("")).toBe(
+            `[ScopedObserver::init]
+[ScopedObserver::init]
+[ScopedObserver2::init]
+[ScopedObserver#a :: onTargetChanged] observing
+[ScopedObserver#b :: onTargetChanged] observing
+[ScopedObserver2#c :: onTargetChanged] observing
+[ScopedObserver#a :: onTriggerChanged] trigger = 1
+[ScopedObserver#b :: onTriggerChanged] trigger = 1
+[ScopedObserver2#c :: onTriggerChanged] trigger = 1
+[ScopedObserver#a :: onTriggerChanged] trigger = 2
+[ScopedObserver#b :: onTriggerChanged] trigger = 2
+[ScopedObserver2#c :: onTriggerChanged] trigger = 2
+[ScopedObserver#a :: onTriggerChanged] trigger = unobserve-a
+[ScopedObserver#a :: onTriggerChanged] unobserveFieldScoped result = true
+[ScopedObserver#b :: onTriggerChanged] trigger = unobserve-a
+[ScopedObserver2#c :: onTriggerChanged] trigger = unobserve-a
+[ScopedObserver#b :: onTriggerChanged] trigger = 3
+[ScopedObserver2#c :: onTriggerChanged] trigger = 3
+`
+        );
+    });
 });

@@ -2,9 +2,9 @@ sub init()
     target = createObject("roSGNode", "Node")
     target.update({ trigger: "none" }, true)
 
-    a = createObject("roSGNode", "Observer")
-    b = createObject("roSGNode", "Observer")
-    c = createObject("roSGNode", "Observer2")
+    a = createObject("roSGNode", "UnscopedObserver")
+    b = createObject("roSGNode", "UnscopedObserver")
+    c = createObject("roSGNode", "UnscopedObserver2")
 
     a.id = "a"
     a.target = target

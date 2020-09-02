@@ -113,7 +113,9 @@ namespace FieldKind {
 export type FieldModel = { name: string; type: string; value?: string; hidden?: boolean };
 
 export class Field {
-    private observers: Map<RoSGNode, BrsCallback[]> = new Map();
+    private permanentObservers: BrsCallback[] = [];
+    private unscopedObservers: BrsCallback[] = [];
+    private scopedObservers: Map<RoSGNode, BrsCallback[]> = new Map();
 
     constructor(
         private value: BrsType,
@@ -171,7 +173,11 @@ export class Field {
         let oldValue = this.value;
         this.value = value;
         if (this.alwaysNotify || oldValue !== value) {
-            this.observers.forEach((callbacks) => callbacks.map(this.executeCallbacks.bind(this)));
+            this.permanentObservers.map(this.executeCallbacks.bind(this));
+            this.unscopedObservers.map(this.executeCallbacks.bind(this));
+            this.scopedObservers.forEach((callbacks) =>
+                callbacks.map(this.executeCallbacks.bind(this))
+            );
         }
     }
 
@@ -189,6 +195,7 @@ export class Field {
     }
 
     addObserver(
+        mode: "permanent" | "unscoped" | "scoped",
         interpreter: Interpreter,
         callable: Callable,
         subscriber: RoSGNode,
@@ -208,12 +215,23 @@ export class Field {
                 fieldName,
             },
         };
-        let maybeCallbacks = this.observers.get(subscriber) || [];
-        this.observers.set(subscriber, [...maybeCallbacks, brsCallback]);
+        if (mode === "scoped") {
+            let maybeCallbacks = this.scopedObservers.get(subscriber) || [];
+            this.scopedObservers.set(subscriber, [...maybeCallbacks, brsCallback]);
+        } else if (mode === "unscoped") {
+            this.unscopedObservers.push(brsCallback);
+        } else {
+            this.permanentObservers.push(brsCallback);
+        }
     }
 
-    removeAllObservers() {
-        this.observers.clear();
+    removeUnscopedObservers() {
+        this.unscopedObservers.splice(0);
+    }
+
+    removeScopedObservers(hostNode: RoSGNode) {
+        this.scopedObservers.get(hostNode)?.splice(0);
+        this.scopedObservers.delete(hostNode);
     }
 
     private executeCallbacks(callback: BrsCallback) {
@@ -285,6 +303,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.hasfield,
                 this.observefield,
                 this.unobservefield,
+                this.observeFieldScoped,
+                this.unobserveFieldScoped,
                 this.removefield,
                 this.setfield,
                 this.setfields,
@@ -782,7 +802,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 }
 
                 if (callableFunction && subscriber) {
-                    field.addObserver(interpreter, callableFunction, subscriber, this, fieldname);
+                    field.addObserver(
+                        "unscoped",
+                        interpreter,
+                        callableFunction,
+                        subscriber,
+                        this,
+                        fieldname
+                    );
                 } else {
                     return BrsBoolean.False;
                 }
@@ -810,7 +837,68 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
             let field = this.fields.get(fieldname.value.toLowerCase());
             if (field instanceof Field) {
-                field.removeAllObservers();
+                field.removeUnscopedObservers();
+            }
+            // returns true, even if the field doesn't exist
+            return BrsBoolean.True;
+        },
+    });
+
+    private observeFieldScoped = new Callable("observeFieldSCoped", {
+        signature: {
+            args: [
+                new StdlibArgument("fieldname", ValueKind.String),
+                new StdlibArgument("functionname", ValueKind.String),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
+            let field = this.fields.get(fieldname.value.toLowerCase());
+            if (field instanceof Field) {
+                let callableFunction = interpreter.getCallableFunction(functionname.value);
+                let subscriber = interpreter.environment.hostNode;
+                if (!subscriber) {
+                    let location = `${interpreter.location.file}:(${interpreter.location.start.line})`;
+                    interpreter.stderr.write(
+                        `BRIGHTSCRIPT: ERROR: roSGNode.ObserveField: no active host node: ${location}\n`
+                    );
+                    return BrsBoolean.False;
+                }
+
+                if (callableFunction && subscriber) {
+                    field.addObserver(
+                        "scoped",
+                        interpreter,
+                        callableFunction,
+                        subscriber,
+                        this,
+                        fieldname
+                    );
+                } else {
+                    return BrsBoolean.False;
+                }
+            }
+            return BrsBoolean.True;
+        },
+    });
+
+    private unobserveFieldScoped = new Callable("unobserveFieldScoped", {
+        signature: {
+            args: [new StdlibArgument("fieldname", ValueKind.String)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, fieldname: BrsString, functionname: BrsString) => {
+            if (!interpreter.environment.hostNode) {
+                let location = `${interpreter.location.file}:(${interpreter.location.start.line})`;
+                interpreter.stderr.write(
+                    `BRIGHTSCRIPT: ERROR: roSGNode.unObserveField: no active host node: ${location}\n`
+                );
+                return BrsBoolean.False;
+            }
+
+            let field = this.fields.get(fieldname.value.toLowerCase());
+            if (field instanceof Field) {
+                field.removeScopedObservers(interpreter.environment.hostNode);
             }
             // returns true, even if the field doesn't exist
             return BrsBoolean.True;
@@ -1514,7 +1602,16 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
                 let field = node.getFields().get(fieldName.value.toLowerCase());
                 let callableFunction = interpreter.getCallableFunction(value.onChange);
                 if (callableFunction && field) {
-                    field.addObserver(interpreter, callableFunction, node, node, fieldName);
+                    // observers set via `onChange` can never be removed, despite RBI's documentation claiming
+                    // that "[i]t is equivalent to calling the ifSGNodeField observeField() method".
+                    field.addObserver(
+                        "permanent",
+                        interpreter,
+                        callableFunction,
+                        node,
+                        node,
+                        fieldName
+                    );
                 }
             }
         }

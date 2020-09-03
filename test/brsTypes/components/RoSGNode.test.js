@@ -551,7 +551,7 @@ describe("RoSGNode", () => {
         });
 
         describe("unobserveField", () => {
-            it("removes all observers", () => {
+            it("removes all non-permanent observers", () => {
                 let cbImpl = jest.fn();
                 let target = new RoSGNode([
                     { name: new BrsString("foo"), value: new Int32(-99) },
@@ -591,8 +591,95 @@ describe("RoSGNode", () => {
                 unobserveField.call(interpreter, new BrsString("foo"));
 
                 // and make sure neither subscriber is called
-                target.set(new BrsString("foo"), new Int32(1));
+                target.set(new BrsString("foo"), new Int32(-99));
                 expect(cbImpl).toHaveBeenCalledTimes(2);
+            });
+        });
+
+        describe("observeFieldScoped", () => {
+            it("adds an observer", () => {
+                let cbImpl = jest.fn();
+                let node = new RoSGNode([
+                    { name: new BrsString("foo"), value: new Int32(-99) },
+                    { name: new BrsString("bar"), value: new BrsString("hello") },
+                ]);
+
+                interpreter.environment.hostNode = node;
+                interpreter.environment.define(
+                    Scope.Module,
+                    "callback",
+                    new Callable("callback", {
+                        signature: {
+                            args: [],
+                            returns: ValueKind.Void,
+                        },
+                        impl: cbImpl,
+                    })
+                );
+
+                let observeFieldScoped = node.getMethod("observefieldscoped");
+                expect(observeFieldScoped).toBeTruthy();
+
+                observeFieldScoped.call(
+                    interpreter,
+                    new BrsString("foo"),
+                    new BrsString("callback")
+                );
+
+                node.set(new BrsString("foo"), new Int32(1));
+                expect(cbImpl).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        describe("unobserveFieldScoped", () => {
+            it("removes all subscribers of calling node", () => {
+                let target = new RoSGNode([
+                    { name: new BrsString("foo"), value: new Int32(-99) },
+                    { name: new BrsString("bar"), value: new BrsString("hello") },
+                ]);
+
+                let subscriberA = new RoSGNode([]);
+                let callbackA = jest.fn();
+                let subscriberB = new RoSGNode([]);
+                let callbackB = jest.fn();
+
+                [
+                    [subscriberA, callbackA],
+                    [subscriberB, callbackB],
+                ].forEach(([subscriber, cbImpl]) => {
+                    interpreter.environment.hostNode = subscriber;
+                    interpreter.environment.define(
+                        Scope.Module,
+                        "callback",
+                        new Callable("callback", {
+                            signature: {
+                                args: [],
+                                returns: ValueKind.Void,
+                            },
+                            impl: cbImpl,
+                        })
+                    );
+
+                    // observe the field from each subscriber
+                    let observeField = target.getMethod("observefieldScoped");
+                    expect(observeField).toBeTruthy();
+                    observeField.call(interpreter, new BrsString("foo"), new BrsString("callback"));
+                });
+
+                // update the field to trigger both subscribers
+                target.set(new BrsString("foo"), new Int32(1));
+                expect(callbackA).toHaveBeenCalledTimes(1);
+                expect(callbackB).toHaveBeenCalledTimes(1);
+
+                // now remove observer B (since subscriberB is still the host node)
+                let unobserveFieldScoped = target.getMethod("unobserveFieldScoped");
+                expect(unobserveFieldScoped).toBeTruthy();
+                unobserveFieldScoped.call(interpreter, new BrsString("foo"));
+
+                // and make sure B is only called once
+                target.set(new BrsString("foo"), new Int32(-99));
+                expect(callbackA).toHaveBeenCalledTimes(2);
+                expect(callbackB).toHaveBeenCalledTimes(1);
             });
         });
 

@@ -152,6 +152,8 @@ describe("end to end brightscript functions", () => {
             "false",
             "field3 in node now is: ",
             "true",
+            "number of fields, via getFields().count(): ",
+            "2",
             "field1 in node now is: ",
             "hello",
             "field3 in node now is: ",

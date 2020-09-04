@@ -300,6 +300,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.addfield,
                 this.addfields,
                 this.getfield,
+                this.getfields,
                 this.hasfield,
                 this.observefield,
                 this.unobservefield,
@@ -763,6 +764,30 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, fieldname: BrsString) => {
             return this.get(fieldname);
+        },
+    });
+
+    /** Returns the names and values of all the fields in the node. */
+    private getfields = new Callable("getfields", {
+        signature: {
+            args: [],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter) => {
+            let packagedFields: AAMember[] = [];
+
+            this.fields.forEach((field, name) => {
+                if (field.isHidden()) {
+                    return;
+                }
+
+                packagedFields.push({
+                    name: new BrsString(name),
+                    value: field.getValue(),
+                });
+            });
+
+            return new RoAssociativeArray(packagedFields);
         },
     });
 

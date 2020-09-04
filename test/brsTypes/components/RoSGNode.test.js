@@ -506,6 +506,31 @@ describe("RoSGNode", () => {
             });
         });
 
+        describe("getFields", () => {
+            it("returns all visible fields", () => {
+                let node = new RoSGNode([]);
+
+                let getFields = node.getMethod("getfields");
+                expect(getFields).toBeTruthy();
+
+                let result = getFields.call(interpreter);
+                let expected = new RoAssociativeArray([
+                    { name: new BrsString("change"), value: new RoAssociativeArray([]) },
+                    { name: new BrsString("focusable"), value: BrsBoolean.False },
+                    { name: new BrsString("focusedChild"), value: BrsInvalid.Instance },
+                    { name: new BrsString("id"), value: new BrsString("") },
+                ]);
+                result.elements.forEach((value, name) => {
+                    if (value instanceof RoAssociativeArray) {
+                        expect(value.elements).toBeInstanceOf(Map);
+                        expect(value.elements).toEqual(expected.elements.get(name).elements);
+                    } else {
+                        expect(value).toEqual(expected.elements.get(name));
+                    }
+                });
+            });
+        });
+
         describe("hasfield", () => {
             it("returns presence of a field", () => {
                 let node = new RoSGNode([{ name: new BrsString("foo"), value: new Int32(17) }]);

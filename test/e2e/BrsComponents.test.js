@@ -296,6 +296,7 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stderr.write)).toEqual([]);
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "hello",
             "bar",
             "bar",
             "true", // comparison

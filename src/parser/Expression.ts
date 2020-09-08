@@ -28,6 +28,9 @@ export interface Expression {
 
     /** The starting and ending location of the expression. */
     location: Location;
+
+    /** The type of expression. */
+    type: string;
 }
 
 export class Binary extends AstNode implements Expression {

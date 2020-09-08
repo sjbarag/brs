@@ -27,6 +27,32 @@ export interface Visitor<T> {
     visitLibrary(statement: Library): BrsInvalid;
 }
 
+let statementTypes = new Set<string>([
+    "Assignment",
+    "Expression",
+    "ExitFor",
+    "ExitWhile",
+    "Print",
+    "If",
+    "Block",
+    "For",
+    "ForEach",
+    "While",
+    "Function",
+    "Return",
+    "DottedSet",
+    "IndexedSet",
+    "Increment",
+    "Library",
+]);
+
+export function isStatement(obj: Statement | Expr.Expression): obj is Statement {
+    if (obj.type === "Function") {
+        return obj instanceof Function;
+    }
+    return statementTypes.has(obj.type);
+}
+
 /** A BrightScript statement */
 export interface Statement {
     /**
@@ -39,6 +65,9 @@ export interface Statement {
 
     /** The starting and ending location of the expression. */
     location: Location;
+
+    /** The type of statement. */
+    type: string;
 }
 
 export class Assignment extends AstNode implements Statement {

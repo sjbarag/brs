@@ -41,6 +41,7 @@ import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 
 import { ComponentDefinition } from "../componentprocessor";
 import pSettle from "p-settle";
+import { CoverageCollector } from "../coverageLib";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -48,6 +49,7 @@ export interface ExecutionOptions {
     root: string;
     stdout: NodeJS.WriteStream;
     stderr: NodeJS.WriteStream;
+    generateCoverage: boolean;
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
@@ -55,10 +57,12 @@ export const defaultExecutionOptions: ExecutionOptions = {
     root: process.cwd(),
     stdout: process.stdout,
     stderr: process.stderr,
+    generateCoverage: false,
 };
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
+    private coverageCollector: CoverageCollector | null = null;
 
     readonly options: ExecutionOptions;
     readonly stdout: OutputProxy;
@@ -75,6 +79,16 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     get environment() {
         return this._environment;
+    }
+
+    public setCoverageCollector(collector: CoverageCollector) {
+        this.coverageCollector = collector;
+    }
+
+    public reportCoverageHit(statement: Expr.Expression | Stmt.Statement) {
+        if (this.options.generateCoverage && this.coverageCollector) {
+            this.coverageCollector.logHit(statement);
+        }
     }
 
     /**
@@ -1585,11 +1599,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
         this.location = expression.location;
+        this.reportCoverageHit(expression);
         return expression.accept<BrsType>(this);
     }
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
         this.location = statement.location;
+        this.reportCoverageHit(statement);
         return statement.accept<BrsType>(this);
     }
 

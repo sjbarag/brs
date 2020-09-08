@@ -6,7 +6,10 @@ sub main()
     print s.getString() ' => "bar"
     print s.toStr() ' => "bar" (again)
 
-    r.setString("boo!", 1)
+    r.setString("foo") ' setString in the ifString interface
+    print r.getString() ' => "foo"
+
+    r.setString("boo!", 1) ' setString in the ifStringOps interface, replaces old value
     r.appendString("ar", 10)
 
     ' comparisons

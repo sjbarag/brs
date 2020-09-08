@@ -54,8 +54,10 @@ export class FileCoverage {
      * @param statement statement for which to generate a key.
      */
     getStatementKey(statement: Expr.Expression | Stmt.Statement) {
+        debugger;
         let { start, end } = statement.location;
-        return `${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;
+        let kind = isStatement(statement) ? "stmt" : "expr";
+        return `${kind}:${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;
     }
 
     /**
@@ -120,12 +122,15 @@ export class FileCoverage {
                     locations,
                     type: "if",
                 };
-            } else if (statement instanceof Expr.Function) {
-                coverageSummary.functions[key] = {
-                    hits,
-                    location: statement.location,
-                    name: statement.keyword.text,
-                };
+            } else if (statement instanceof Stmt.Function) {
+                let functionCoverage = this.get(statement.func);
+                if (functionCoverage) {
+                    coverageSummary.functions[key] = {
+                        hits: functionCoverage.hits,
+                        location: statement.location,
+                        name: statement.name.text
+                    };
+                }
             } else if (
                 statement instanceof Expr.Binary &&
                 (statement.token.kind === Lexeme.And || statement.token.kind === Lexeme.Or)
@@ -291,7 +296,7 @@ export class FileCoverage {
     }
 
     visitAnonymousFunction(func: Expr.Function) {
-        func.body.statements.forEach((stmt) => this.execute(stmt));
+        this.execute(func.body);
         return BrsInvalid.Instance;
     }
 
@@ -340,10 +345,7 @@ export class FileCoverage {
     }
 
     execute(this: FileCoverage, statement: Stmt.Statement): BrsType {
-        // don't double-count functions -- we'll count them when we get Expr.Function
-        if (!(statement.type === "NamedFunction")) {
-            this.add(statement);
-        }
+        this.add(statement);
 
         try {
             return statement.accept<BrsType>(this);

@@ -797,6 +797,7 @@ export class Parser {
             let thenToken: Token | undefined;
             let elseIfTokens: Token[] = [];
             let endIfToken: Token | undefined;
+            let elseToken: Token | undefined;
 
             /**
              * A simple wrapper around `check`, to make tests for a `then` identifier.
@@ -873,6 +874,7 @@ export class Parser {
                 }
 
                 if (blockEnd.kind === Lexeme.Else) {
+                    elseToken = blockEnd;
                     let maybeElseBranch = block(Lexeme.EndIf);
                     if (!maybeElseBranch) {
                         throw addError(peek(), "Expected 'end if' to terminate 'else' block");
@@ -952,6 +954,7 @@ export class Parser {
                     closingToken.kind !== Lexeme.Newline &&
                     (closingToken.kind === Lexeme.Else || match(Lexeme.Else))
                 ) {
+                    elseToken = closingToken;
                     let maybeElseBranch = block(Lexeme.Newline, Lexeme.Eof);
                     if (!maybeElseBranch) {
                         throw addError(peek(), `Expected a statement to follow 'else'`);
@@ -966,6 +969,7 @@ export class Parser {
                     then: thenToken,
                     elseIfs: elseIfTokens,
                     endIf: endIfToken,
+                    else: elseToken,
                 },
                 condition,
                 thenBranch,

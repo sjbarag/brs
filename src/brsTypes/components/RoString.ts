@@ -19,7 +19,9 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
     constructor(initialValue?: BrsString) {
         super("roString");
 
-        if (initialValue instanceof BrsString) {
+        if (initialValue) {
+        // or if you want to be explicit:
+        // if (initialValue != null) {
             this.intrinsic = initialValue;
         }
 

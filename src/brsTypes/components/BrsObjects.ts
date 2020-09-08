@@ -32,7 +32,7 @@ export const BrsObjects = new Map<string, Function>([
         "roregex",
         (_: Interpreter, expression: BrsString, flags: BrsString) => new RoRegex(expression, flags),
     ],
-    ["rostring", (_: Interpreter, literal: BrsString) => new RoString(literal)],
+    ["rostring", (_: Interpreter) => new RoString()],
     ["roboolean", (_: Interpreter, literal: BrsBoolean) => new roBoolean(literal)],
     ["rodouble", (_: Interpreter, literal: Double) => new roDouble(literal)],
     ["rofloat", (_: Interpreter, literal: Float) => new roFloat(literal)],

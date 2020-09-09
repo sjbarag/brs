@@ -427,5 +427,17 @@ describe("FileCoverage", () => {
                 /* expected number of statements */ 1
             );
         });
+
+        it("DottedSet", () => {
+            checkSimpleStatement(
+                new Stmt.DottedSet(
+                    new Expr.Variable(identifier("aa")),
+                    identifier("foo"),
+                    new Expr.Literal(new BrsString("new foo"), generateLocation(1))
+                ),
+                /* number of hits */ 1,
+                /* expected number of statements */ 1
+            );
+        });
     });
 });

@@ -15,7 +15,7 @@ export class CoverageCollector {
         readonly parseFn: (filenames: string[]) => Promise<Stmt.Statement[]>
     ) {}
 
-    public async crawlBrsFiles() {
+    async crawlBrsFiles() {
         let filePattern = path.join(this.projectRoot, "(components|source)", "**", "*.brs");
         let scripts = fg.sync(filePattern);
 
@@ -33,14 +33,14 @@ export class CoverageCollector {
         });
     }
 
-    public logHit(statement: Expr.Expression | Stmt.Statement) {
+    logHit(statement: Expr.Expression | Stmt.Statement) {
         let file = this.files.get(statement.location.file);
         if (file) {
             file.logHit(statement);
         }
     }
 
-    public getCoverage() {
+    getCoverage() {
         let coverageMapData: { [fileName: string]: CoverageSummary } = {};
         this.files.forEach((file, key) => {
             coverageMapData[key] = file.getCoverage();

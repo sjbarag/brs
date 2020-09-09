@@ -3,6 +3,7 @@ import { Token, Identifier, Location, Lexeme } from "../lexer";
 import { BrsType, BrsInvalid } from "../brsTypes";
 import { InvalidZone } from "luxon";
 import { AstNode } from "./AstNode";
+import { Stmt } from ".";
 
 /** A set of reasons why a `Block` stopped executing. */
 export * from "./BlockEndReason";
@@ -46,11 +47,20 @@ let statementTypes = new Set<string>([
     "Library",
 ]);
 
-export function isStatement(obj: Statement | Expr.Expression): obj is Statement {
-    if (obj.type === "Function") {
+/**
+ * Returns a boolean of whether or not the given object is a Statement.
+ * @param obj object to check
+ */
+export function isStatement(obj: Expr.Expression | Stmt.Statement)  {
+    // This is to play nice with Typescript. We know that implementations of Statements
+    // and Expressions will extend AstNode and therefore have a .type property,
+    // but Typescript doesn't know that.
+    let astObj = obj as unknown as AstNode;
+
+    if (astObj.type === "Function") {
         return obj instanceof Function;
     }
-    return statementTypes.has(obj.type);
+    return statementTypes.has(astObj.type);
 }
 
 /** A BrightScript statement */
@@ -65,9 +75,6 @@ export interface Statement {
 
     /** The starting and ending location of the expression. */
     location: Location;
-
-    /** The type of statement. */
-    type: string;
 }
 
 export class Assignment extends AstNode implements Statement {

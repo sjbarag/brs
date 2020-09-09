@@ -85,7 +85,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.coverageCollector = collector;
     }
 
-    public reportCoverageHit(statement: Expr.Expression | Stmt.Statement) {
+    reportCoverageHit(statement: Expr.Expression | Stmt.Statement) {
         if (this.options.generateCoverage && this.coverageCollector) {
             this.coverageCollector.logHit(statement);
         }

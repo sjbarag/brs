@@ -26,7 +26,7 @@ export interface CoverageSummary {
     };
 }
 
-export class FileCoverage {
+export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private statements = new Map<string, StatementCoverage>();
 
     constructor(readonly filePath: string) {}
@@ -122,7 +122,7 @@ export class FileCoverage {
                     type: "if",
                 };
             } else if (statement instanceof Stmt.Function) {
-                let functionCoverage = this.get(statement.func);
+                let functionCoverage = this.get(statement.func.body);
                 if (functionCoverage) {
                     coverageSummary.functions[key] = {
                         hits: functionCoverage.hits,

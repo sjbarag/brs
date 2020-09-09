@@ -8,7 +8,7 @@ const { generateLocation, token, identifier, locationEqual} = require("./utils")
 
 describe("FileCoverage expressions", () => {
     describe("Binary", () => {
-        it("less than", () => {
+        test("less than", () => {
             let expression = new Expr.Binary(
                 new Expr.Literal(new Int32(1)),
                 token(Lexeme.Less),
@@ -25,7 +25,7 @@ describe("FileCoverage expressions", () => {
         });
 
         describe("and", () => {
-            it("left side is evaluated", () => {
+            test("left side is evaluated", () => {
                 let expression = new Expr.Binary(
                     new Expr.Literal(BrsBoolean.True, generateLocation(1)),
                     token(Lexeme.And),
@@ -50,7 +50,7 @@ describe("FileCoverage expressions", () => {
                 expect(locationEqual(branch.locations[1], generateLocation(2))).toBeTruthy();
             });
 
-            it("both sides are evaluated", () => {
+            test("both sides are evaluated", () => {
                 let expression = new Expr.Binary(
                     new Expr.Literal(BrsBoolean.True, generateLocation(1)),
                     token(Lexeme.And),
@@ -78,7 +78,7 @@ describe("FileCoverage expressions", () => {
             });
         });
 
-        it("or", () => {
+        test("or", () => {
             let expression = new Expr.Binary(
                 new Expr.Literal(BrsBoolean.True, generateLocation(1)),
                 token(Lexeme.Or),

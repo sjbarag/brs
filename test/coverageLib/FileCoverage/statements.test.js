@@ -28,20 +28,20 @@ describe("FileCoverage statements", () => {
     }
 
     describe("Correct number of hits", () => {
-        it("0 hits", () => {
+        test("0 hits", () => {
             checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 0);
         });
 
-        it("1 hit", () => {
+        test("1 hit", () => {
             checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 10);
         });
 
-        it("10 hits", () => {
+        test("10 hits", () => {
             checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))), 10);
         });
     });
 
-    it("Assignment", () => {
+    test("Assignment", () => {
         checkSimpleStatement(
             new Stmt.Assignment(
                 { equals: token(Lexeme.Equal, "=") },
@@ -51,21 +51,21 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("Expression", () => {
+    test("Expression", () => {
         checkSimpleStatement(new Stmt.Expression(new Expr.Literal(new Int32(1))));
     });
 
-    it("ExitFor", () => {
+    test("ExitFor", () => {
         checkSimpleStatement(new Stmt.ExitFor({ exitFor: token(Lexeme.ExitFor, "exit for") }));
     });
 
-    it("ExitWhile", () => {
+    test("ExitWhile", () => {
         checkSimpleStatement(
             new Stmt.ExitWhile({ exitWhile: token(Lexeme.ExitWhile, "exit while") })
         );
     });
 
-    it("Print", () => {
+    test("Print", () => {
         checkSimpleStatement(
             new Stmt.Print(
                 {
@@ -76,7 +76,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("Print", () => {
+    test("Print", () => {
         checkSimpleStatement(
             new Stmt.Print(
                 {
@@ -106,7 +106,7 @@ describe("FileCoverage statements", () => {
             };
         });
 
-        it("no else-if or else branches", () => {
+        test("no else-if or else branches", () => {
             let block = new Stmt.Block([assignTo.foo, assignTo.bar], generateLocation(1));
             let statement = new Stmt.If(
                 {
@@ -144,7 +144,7 @@ describe("FileCoverage statements", () => {
             expect(blockCoverage.hits).toEqual(0);
         });
 
-        it("else-if branches", () => {
+        test("else-if branches", () => {
             let ifBlock = new Stmt.Block([], generateLocation(1));
             let elseIfBlocks = [
                 new Stmt.Block([], generateLocation(2)),
@@ -194,7 +194,7 @@ describe("FileCoverage statements", () => {
             });
         });
 
-        it("else branch", () => {
+        test("else branch", () => {
             let ifBlock = new Stmt.Block([], generateLocation(1));
             let elseBlock = new Stmt.Block([assignTo.foo], generateLocation(2));
             let statement = new Stmt.If(
@@ -227,7 +227,7 @@ describe("FileCoverage statements", () => {
         });
     });
 
-    it("Block", () => {
+    test("Block", () => {
         let equals = { equals: token(Lexeme.Equals, "=") };
         let statement = new Stmt.Block(
             [
@@ -257,7 +257,7 @@ describe("FileCoverage statements", () => {
         expect(coverageResults.statements[key].hits).toEqual(1);
     });
 
-    it("For", () => {
+    test("For", () => {
         checkSimpleStatement(
             new Stmt.For(
                 {
@@ -279,7 +279,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("ForEach", () => {
+    test("ForEach", () => {
         checkSimpleStatement(
             new Stmt.ForEach(
                 {
@@ -296,7 +296,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("While", () => {
+    test("While", () => {
         checkSimpleStatement(
             new Stmt.While(
                 {
@@ -315,7 +315,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("Function", () => {
+    test("Function", () => {
         let statement = new Stmt.Function(
             identifier("foo"),
             new Expr.Function(
@@ -329,7 +329,7 @@ describe("FileCoverage statements", () => {
 
         let fileCoverage = new FileCoverage("path/to/file");
         fileCoverage.execute(statement);
-        fileCoverage.logHit(statement.func);
+        fileCoverage.logHit(statement.func.body);
 
         let coverageResults = fileCoverage.getCoverage();
         expect(Object.keys(coverageResults.statements).length).toEqual(1); // Block
@@ -342,7 +342,7 @@ describe("FileCoverage statements", () => {
         expect(statementCoverage.hits).toEqual(1);
     });
 
-    it("Return", () => {
+    test("Return", () => {
         checkSimpleStatement(
             new Stmt.Return(
                 { return: token(Lexeme.Return, "return") },
@@ -351,7 +351,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("DottedSet", () => {
+    test("DottedSet", () => {
         checkSimpleStatement(
             new Stmt.DottedSet(
                 new Expr.Variable(identifier("aa")),
@@ -361,7 +361,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("IndexedSet", () => {
+    test("IndexedSet", () => {
         checkSimpleStatement(
             new Stmt.IndexedSet(
                 new Expr.Variable(identifier("aa")),
@@ -372,7 +372,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("Increment", () => {
+    test("Increment", () => {
         checkSimpleStatement(
             new Stmt.Increment(
                 new Expr.Variable(identifier("foo")),
@@ -381,7 +381,7 @@ describe("FileCoverage statements", () => {
         );
     });
 
-    it("Increment", () => {
+    test("Increment", () => {
         checkSimpleStatement(
             new Stmt.Increment(
                 new Expr.Variable(identifier("foo")),

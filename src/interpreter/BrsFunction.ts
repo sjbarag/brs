@@ -21,8 +21,6 @@ export function toCallable(func: Expr.Function, name: string = "[Function]") {
             returns: func.returns,
         },
         impl: (interpreter: Interpreter, ...args: BrsType[]) => {
-            interpreter.reportCoverageHit(func);
-
             // just return whatever BrightScript returned
             return func.body.accept(interpreter);
         },

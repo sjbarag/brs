@@ -422,9 +422,7 @@ describe("FileCoverage", () => {
                 new Stmt.Return(
                     { return: token(Lexeme.Return, "return") },
                     new Expr.Literal(new BrsString("hello, world"))
-                ),
-                /* number of hits */ 1,
-                /* expected number of statements */ 1
+                )
             );
         });
 
@@ -434,9 +432,36 @@ describe("FileCoverage", () => {
                     new Expr.Variable(identifier("aa")),
                     identifier("foo"),
                     new Expr.Literal(new BrsString("new foo"), generateLocation(1))
-                ),
-                /* number of hits */ 1,
-                /* expected number of statements */ 1
+                )
+            );
+        });
+
+        it("IndexedSet", () => {
+            checkSimpleStatement(
+                new Stmt.IndexedSet(
+                    new Expr.Variable(identifier("aa")),
+                    new Expr.Literal(new BrsString("bar"), generateLocation(1)),
+                    new Expr.Literal(new BrsString("added bar"), generateLocation(2)),
+                    token(Lexeme.RightBrace, "}")
+                )
+            );
+        });
+
+        it("Increment", () => {
+            checkSimpleStatement(
+                new Stmt.Increment(
+                    new Expr.Variable(identifier("foo")),
+                    token(Lexeme.MinusMinus, "--")
+                )
+            );
+        });
+
+        it("Increment", () => {
+            checkSimpleStatement(
+                new Stmt.Increment(
+                    new Expr.Variable(identifier("foo")),
+                    token(Lexeme.MinusMinus, "--")
+                )
             );
         });
     });

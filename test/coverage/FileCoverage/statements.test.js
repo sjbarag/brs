@@ -380,13 +380,4 @@ describe("FileCoverage statements", () => {
             )
         );
     });
-
-    test("Increment", () => {
-        checkSimpleStatement(
-            new Stmt.Increment(
-                new Expr.Variable(identifier("foo")),
-                token(Lexeme.MinusMinus, "--")
-            )
-        );
-    });
 });

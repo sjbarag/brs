@@ -85,7 +85,7 @@ export class Dim extends AstNode implements Statement {
         return {
             file: this.tokens.dim.location.file,
             start: this.tokens.dim.location.start,
-            end: this.tokens.dim.location.end,
+            end: this.tokens.closingBrace.location.end,
         };
     }
 }

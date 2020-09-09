@@ -1,15 +1,15 @@
 const { defaultExecutionOptions } = require("../../lib/interpreter");
 const path = require("path");
 const LexerParser = require("../../lib/LexerParser");
-const { CoverageCollector } = require("../../lib/coverageLib/CoverageCollector");
+const { CoverageCollector } = require("../../lib/coverage/CoverageCollector");
 
-jest.mock("../../lib/coverageLib/FileCoverage");
+jest.mock("../../lib/coverage/FileCoverage");
 jest.mock("fast-glob");
 jest.mock("fs");
 const fg = require("fast-glob");
 const fs = require("fs");
 const { Test } = require("tslint");
-const { FileCoverage } = require("../../lib/coverageLib/FileCoverage");
+const { FileCoverage } = require("../../lib/coverage/FileCoverage");
 
 const realFs = jest.requireActual("fs");
 

@@ -12,7 +12,7 @@ import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
-import { CoverageCollector } from "./coverageLib";
+import { CoverageCollector } from "./coverage";
 
 import * as _lexer from "./lexer";
 export { _lexer as lexer };

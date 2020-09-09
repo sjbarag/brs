@@ -3,7 +3,7 @@ const { Lexeme } = brs.lexer;
 const { Expr } = brs.parser;
 const { Int32, BrsBoolean } = brs.types;
 
-const { FileCoverage } = require("../../../lib/coverageLib/FileCoverage");
+const { FileCoverage } = require("../../../lib/coverage/FileCoverage");
 const { generateLocation, token, identifier, locationEqual} = require("./utils");
 
 describe("FileCoverage expressions", () => {

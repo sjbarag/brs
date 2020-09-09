@@ -51,16 +51,15 @@ let statementTypes = new Set<string>([
  * Returns a boolean of whether or not the given object is a Statement.
  * @param obj object to check
  */
-export function isStatement(obj: Expr.Expression | Stmt.Statement)  {
+export function isStatement(obj: Expr.Expression | Stmt.Statement) {
     // This is to play nice with Typescript. We know that implementations of Statements
-    // and Expressions will extend AstNode and therefore have a .type property,
-    // but Typescript doesn't know that.
-    let astObj = obj as unknown as AstNode;
+    // and Expressions also extend AstNode, but Typescript doesn't know that.
+    let ast = obj as unknown as AstNode;
 
-    if (astObj.type === "Function") {
-        return obj instanceof Function;
+    if (ast.type === "Function") {
+        return ast instanceof Function;
     }
-    return statementTypes.has(astObj.type);
+    return statementTypes.has(ast.type);
 }
 
 /** A BrightScript statement */

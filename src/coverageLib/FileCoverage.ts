@@ -2,6 +2,7 @@ import { Stmt, Expr } from "../parser";
 import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 import { isStatement } from "../parser/Statement";
+import { AstNode } from "../parser/AstNode";
 
 interface StatementCoverage {
     /** Number of times the interpreter has executed/evaluated this statement. */
@@ -56,7 +57,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     getStatementKey(statement: Expr.Expression | Stmt.Statement) {
         let { start, end } = statement.location;
         let kind = isStatement(statement) ? "stmt" : "expr";
-        return `${kind}:${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;
+        return `${kind}:${(statement as any).type}:${start.line},${start.column}-${end.line},${end.column}`;
     }
 
     /**

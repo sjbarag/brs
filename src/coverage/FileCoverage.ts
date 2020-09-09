@@ -280,6 +280,11 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
         return BrsInvalid.Instance;
     }
 
+    visitDim(statement: Stmt.Dim) {
+        statement.dimensions.forEach(expr => this.evaluate(expr));
+        return BrsInvalid.Instance;
+    }
+
     /**
      * EXPRESSIONS
      */

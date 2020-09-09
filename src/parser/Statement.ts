@@ -45,6 +45,7 @@ let statementTypes = new Set<string>([
     "IndexedSet",
     "Increment",
     "Library",
+    "Dim"
 ]);
 
 /**

@@ -380,4 +380,17 @@ describe("FileCoverage statements", () => {
             )
         );
     });
+
+    test("Dim", () => {
+        checkSimpleStatement(
+            new Stmt.Dim(
+                {
+                    dim: token(Lexeme.Dim, "dim"),
+                    closingBrace: token(Lexeme.RightBrace, "}")
+                },
+                identifier("foo"),
+                []
+            )
+        );
+    });
 });

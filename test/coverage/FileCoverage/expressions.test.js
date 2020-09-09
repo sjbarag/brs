@@ -1,7 +1,7 @@
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
-const { Expr } = brs.parser;
-const { Int32, BrsBoolean, BrsString } = brs.types;
+const { Expr, Stmt } = brs.parser;
+const { Int32, BrsBoolean, BrsString, ValueKind } = brs.types;
 
 const { FileCoverage } = require("../../../lib/coverage/FileCoverage");
 const {
@@ -13,7 +13,7 @@ const {
 } = require("../../parser/ParserTests");
 
 describe("FileCoverage expressions", () => {
-    function checkSimpleExpression(expression, numHits = 1, expectedNumStatements = 1) {
+    function checkSimpleExpression(expression, numHits = 1, expectedNumStatements = 0) {
         let fileCoverage = new FileCoverage("path/to/file");
         fileCoverage.execute(expression);
 
@@ -27,7 +27,7 @@ describe("FileCoverage expressions", () => {
         let coverageResults = fileCoverage.getCoverage();
         expect(Object.keys(coverageResults.branches).length).toEqual(0);
         expect(Object.keys(coverageResults.functions).length).toEqual(0);
-        expect(Object.keys(coverageResults.statements).length).toEqual(0);
+        expect(Object.keys(coverageResults.statements).length).toEqual(expectedNumStatements);
     }
 
     describe("Binary", () => {
@@ -127,11 +127,25 @@ describe("FileCoverage expressions", () => {
         });
     });
 
-    it("Call", () => {
+    test("Call", () => {
         checkSimpleExpression(
             new Expr.Call(new Expr.Variable(identifier("UCase")), token(Lexeme.RightParen, ")"), [
                 new Expr.Literal(new BrsString("h@lL0"), fakeLocation),
             ])
+        );
+    });
+
+    test("Function", () => {
+        checkSimpleExpression(
+            new Expr.Function(
+                [],
+                ValueKind.Void,
+                new Stmt.Block([], generateLocation(1)),
+                token(Lexeme.Function, "function"),
+                token(Lexeme.EndFunction, "end function")
+            ),
+            /* number of hits */ 1,
+            /* expected number of statements (Block) */ 1
         );
     });
 });

@@ -1158,23 +1158,23 @@ export class Parser {
          * @returns an AST representation of an `goto` statement.
          */
         function dimStatement() {
-            let tokens = {
-                dim: advance(),
-            };
+            let dimToken = advance();
 
-            let name = advance();
+            let name = consume("Expected variable name after 'dim'", Lexeme.Identifier);
 
             match(Lexeme.LeftSquare);
 
-            let dimensions: Expression[] = [];
+            let dimensions: Expression[] = [expression()];
             while (!match(Lexeme.RightSquare)) {
+                consume("Expected ',' after expression in 'dim' statement", Lexeme.Comma);
                 dimensions.push(expression());
-                if (check(Lexeme.Comma)) advance();
             }
+            let rightSquare = previous();
 
-            if (dimensions.length === 0) {
-                throw addError(tokens.dim, `Dim must have at least one dimension`);
-            }
+            let tokens = {
+                dim: dimToken,
+                closingBrace: rightSquare,
+            };
 
             return new Stmt.Dim(tokens, name as Identifier, dimensions);
         }

@@ -69,6 +69,7 @@ export class Dim extends AstNode implements Statement {
     constructor(
         readonly tokens: {
             dim: Token;
+            closingBrace: Token;
         },
         readonly name: Identifier,
         readonly dimensions: Expr.Expression[]
@@ -76,8 +77,8 @@ export class Dim extends AstNode implements Statement {
         super("Dim");
     }
 
-    accept<R>(_visitor: Visitor<R>): BrsType {
-        return _visitor.visitDim(this);
+    accept<R>(visitor: Visitor<R>): BrsType {
+        return visitor.visitDim(this);
     }
 
     get location() {

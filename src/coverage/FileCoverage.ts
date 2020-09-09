@@ -57,7 +57,9 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     getStatementKey(statement: Expr.Expression | Stmt.Statement) {
         let { start, end } = statement.location;
         let kind = isStatement(statement) ? "stmt" : "expr";
-        return `${kind}:${(statement as any).type}:${start.line},${start.column}-${end.line},${end.column}`;
+        return `${kind}:${(statement as any).type}:${start.line},${start.column}-${end.line},${
+            end.column
+        }`;
     }
 
     /**
@@ -128,7 +130,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     coverageSummary.functions[key] = {
                         hits: functionCoverage.hits,
                         location: statement.location,
-                        name: statement.name.text
+                        name: statement.name.text,
                     };
                 }
             } else if (
@@ -281,7 +283,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     }
 
     visitDim(statement: Stmt.Dim) {
-        statement.dimensions.forEach(expr => this.evaluate(expr));
+        statement.dimensions.forEach((expr) => this.evaluate(expr));
         return BrsInvalid.Instance;
     }
 

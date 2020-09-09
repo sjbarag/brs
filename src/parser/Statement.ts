@@ -45,7 +45,7 @@ let statementTypes = new Set<string>([
     "IndexedSet",
     "Increment",
     "Library",
-    "Dim"
+    "Dim",
 ]);
 
 /**
@@ -55,7 +55,7 @@ let statementTypes = new Set<string>([
 export function isStatement(obj: Expr.Expression | Stmt.Statement) {
     // This is to play nice with Typescript. We know that implementations of Statements
     // and Expressions also extend AstNode, but Typescript doesn't know that.
-    let ast = obj as unknown as AstNode;
+    let ast = (obj as unknown) as AstNode;
 
     if (ast.type === "Function") {
         return ast instanceof Function;

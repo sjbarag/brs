@@ -8,12 +8,12 @@ const { Lexeme } = brs.lexer;
  * Generates a fake location. Uses the given number for all lines and columns.
  * @param {number} number to seed the fake location
  */
-exports.generateLocation = function(num) {
+exports.generateLocation = function (num) {
     return {
         start: { line: num, column: num },
         end: { line: num, column: num },
     };
-}
+};
 
 /** * A clearly malformed source location, used to satisfy existence requirements at runtime. */
 exports.fakeLocation = {
@@ -35,7 +35,7 @@ exports.token = function (kind, text, literal, locationNum = -9) {
         text: text,
         isReserved: brs.lexer.ReservedWords.has((text || "").toLowerCase()),
         literal: literal,
-        location: exports.generateLocation(locationNum)
+        location: exports.generateLocation(locationNum),
     };
 };
 
@@ -57,11 +57,11 @@ exports.EOF = exports.token(Lexeme.Eof, "\0");
  * @param {object} location 1
  * @param {object} location 2
  */
-exports.locationEqual = function(loc1, loc2) {
+exports.locationEqual = function (loc1, loc2) {
     return (
         loc1.start.line === loc2.start.line &&
         loc1.start.column === loc2.start.column &&
         loc1.end.line === loc2.end.line &&
         loc1.end.column === loc2.end.column
     );
-}
+};

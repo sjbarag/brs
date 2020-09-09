@@ -4,7 +4,7 @@ const { Expr, Stmt } = brs.parser;
 const { Int32, BrsString, BrsBoolean, ValueKind } = brs.types;
 
 const { FileCoverage } = require("../../../lib/coverage/FileCoverage");
-const { generateLocation, token, identifier, locationEqual} = require("../../parser/ParserTests");
+const { generateLocation, token, identifier, locationEqual } = require("../../parser/ParserTests");
 
 describe("FileCoverage statements", () => {
     function checkSimpleStatement(statement, numHits = 1, expectedNumStatements = 1) {
@@ -374,10 +374,7 @@ describe("FileCoverage statements", () => {
 
     test("Increment", () => {
         checkSimpleStatement(
-            new Stmt.Increment(
-                new Expr.Variable(identifier("foo")),
-                token(Lexeme.MinusMinus, "--")
-            )
+            new Stmt.Increment(new Expr.Variable(identifier("foo")), token(Lexeme.MinusMinus, "--"))
         );
     });
 
@@ -386,7 +383,7 @@ describe("FileCoverage statements", () => {
             new Stmt.Dim(
                 {
                     dim: token(Lexeme.Dim, "dim"),
-                    closingBrace: token(Lexeme.RightBrace, "}")
+                    closingBrace: token(Lexeme.RightBrace, "}"),
                 },
                 identifier("foo"),
                 []

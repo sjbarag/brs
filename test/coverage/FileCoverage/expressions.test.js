@@ -1,12 +1,35 @@
 const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { Expr } = brs.parser;
-const { Int32, BrsBoolean } = brs.types;
+const { Int32, BrsBoolean, BrsString } = brs.types;
 
 const { FileCoverage } = require("../../../lib/coverage/FileCoverage");
-const { generateLocation, token, identifier, locationEqual} = require("../../parser/ParserTests");
+const {
+    generateLocation,
+    token,
+    identifier,
+    locationEqual,
+    fakeLocation,
+} = require("../../parser/ParserTests");
 
 describe("FileCoverage expressions", () => {
+    function checkSimpleExpression(expression, numHits = 1, expectedNumStatements = 1) {
+        let fileCoverage = new FileCoverage("path/to/file");
+        fileCoverage.execute(expression);
+
+        for (let i = 0; i < numHits; i++) {
+            fileCoverage.logHit(expression);
+        }
+
+        let key = fileCoverage.getStatementKey(expression);
+        expect(fileCoverage.statements.get(key).hits).toEqual(numHits);
+
+        let coverageResults = fileCoverage.getCoverage();
+        expect(Object.keys(coverageResults.branches).length).toEqual(0);
+        expect(Object.keys(coverageResults.functions).length).toEqual(0);
+        expect(Object.keys(coverageResults.statements).length).toEqual(0);
+    }
+
     describe("Binary", () => {
         test("less than", () => {
             let expression = new Expr.Binary(
@@ -74,7 +97,6 @@ describe("FileCoverage expressions", () => {
                 expect(locationEqual(branch.locations[0], generateLocation(1))).toBeTruthy();
                 expect(branch.hits[1]).toEqual(1);
                 expect(locationEqual(branch.locations[1], generateLocation(2))).toBeTruthy();
-
             });
         });
 
@@ -106,6 +128,10 @@ describe("FileCoverage expressions", () => {
     });
 
     it("Call", () => {
-
+        checkSimpleExpression(
+            new Expr.Call(new Expr.Variable(identifier("UCase")), token(Lexeme.RightParen, ")"), [
+                new Expr.Literal(new BrsString("h@lL0"), fakeLocation),
+            ])
+        );
     });
 });

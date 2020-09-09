@@ -4,7 +4,7 @@ const { Expr, Stmt } = brs.parser;
 const { Int32, BrsString, BrsBoolean, ValueKind } = brs.types;
 
 const { FileCoverage } = require("../../../lib/coverage/FileCoverage");
-const { generateLocation, token, identifier, locationEqual } = require("./utils");
+const { generateLocation, token, identifier, locationEqual} = require("../../parser/ParserTests");
 
 describe("FileCoverage statements", () => {
     function checkSimpleStatement(statement, numHits = 1, expectedNumStatements = 1) {
@@ -110,9 +110,9 @@ describe("FileCoverage statements", () => {
             let block = new Stmt.Block([assignTo.foo, assignTo.bar], generateLocation(1));
             let statement = new Stmt.If(
                 {
-                    if: token(Lexeme.If, "if", 2),
-                    then: identifier("then", 3),
-                    endIf: token(Lexeme.EndIf, "end if", 4),
+                    if: token(Lexeme.If, "if"),
+                    then: identifier("then"),
+                    endIf: token(Lexeme.EndIf, "end if"),
                 },
                 new Expr.Binary(
                     new Expr.Literal(new Int32(1)),
@@ -152,13 +152,13 @@ describe("FileCoverage statements", () => {
             ];
             let statement = new Stmt.If(
                 {
-                    if: token(Lexeme.If, "if", 2),
-                    then: identifier("then", 3),
-                    endIf: token(Lexeme.EndIf, "end if", 4),
+                    if: token(Lexeme.If, "if"),
+                    then: identifier("then"),
+                    endIf: token(Lexeme.EndIf, "end if"),
                 },
                 new Expr.Binary(
                     new Expr.Literal(new Int32(1)),
-                    token(Lexeme.Less, "", 5),
+                    token(Lexeme.Less, "<"),
                     new Expr.Literal(new Int32(2))
                 ),
                 ifBlock,
@@ -199,9 +199,9 @@ describe("FileCoverage statements", () => {
             let elseBlock = new Stmt.Block([assignTo.foo], generateLocation(2));
             let statement = new Stmt.If(
                 {
-                    if: token(Lexeme.If, "if", 2),
-                    then: identifier("then", 3),
-                    endIf: token(Lexeme.EndIf, "end if", 4),
+                    if: token(Lexeme.If, "if"),
+                    then: identifier("then"),
+                    endIf: token(Lexeme.EndIf, "end if"),
                 },
                 new Expr.Binary(
                     new Expr.Literal(new Int32(1)),

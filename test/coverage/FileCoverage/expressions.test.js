@@ -4,7 +4,7 @@ const { Expr } = brs.parser;
 const { Int32, BrsBoolean } = brs.types;
 
 const { FileCoverage } = require("../../../lib/coverage/FileCoverage");
-const { generateLocation, token, identifier, locationEqual} = require("./utils");
+const { generateLocation, token, identifier, locationEqual} = require("../../parser/ParserTests");
 
 describe("FileCoverage expressions", () => {
     describe("Binary", () => {
@@ -103,5 +103,9 @@ describe("FileCoverage expressions", () => {
             expect(branch.hits[1]).toEqual(0);
             expect(locationEqual(branch.locations[1], generateLocation(2))).toBeTruthy();
         });
+    });
+
+    it("Call", () => {
+
     });
 });

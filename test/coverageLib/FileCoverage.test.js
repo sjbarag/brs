@@ -393,7 +393,13 @@ describe("FileCoverage", () => {
         it("Function", () => {
             let statement = new Stmt.Function(
                 identifier("foo"),
-                new Expr.Function([], ValueKind.Void, new Stmt.Block([], generateLocation(1)), token(Lexeme.Function, "function"), token(Lexeme.EndFunction, "end function"))
+                new Expr.Function(
+                    [],
+                    ValueKind.Void,
+                    new Stmt.Block([], generateLocation(1)),
+                    token(Lexeme.Function, "function"),
+                    token(Lexeme.EndFunction, "end function")
+                )
             );
 
             let fileCoverage = new FileCoverage("path/to/file");
@@ -409,6 +415,17 @@ describe("FileCoverage", () => {
             let statementCoverage = coverageResults.functions[statementKeys[0]];
             expect(locationEqual(statementCoverage.location, statement.location)).toBeTruthy();
             expect(statementCoverage.hits).toEqual(1);
+        });
+
+        it("Return", () => {
+            checkSimpleStatement(
+                new Stmt.Return(
+                    { return: token(Lexeme.Return, "return") },
+                    new Expr.Literal(new BrsString("hello, world"))
+                ),
+                /* number of hits */ 1,
+                /* expected number of statements */ 1
+            );
         });
     });
 });

@@ -54,7 +54,6 @@ export class FileCoverage {
      * @param statement statement for which to generate a key.
      */
     getStatementKey(statement: Expr.Expression | Stmt.Statement) {
-        debugger;
         let { start, end } = statement.location;
         let kind = isStatement(statement) ? "stmt" : "expr";
         return `${kind}:${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;

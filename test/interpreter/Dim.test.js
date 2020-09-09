@@ -25,6 +25,7 @@ describe("creating arrays using dim", () => {
             new Stmt.Dim(
                 {
                     dim: token(Lexeme.Dim, "dim"),
+                    closingBrace: token(Lexeme.RightSquare, "closingSquare"),
                 },
                 identifier("array"),
                 [new Expr.Literal(new Int32(maxIndex))]
@@ -67,6 +68,7 @@ describe("creating arrays using dim", () => {
             new Stmt.Dim(
                 {
                     dim: token(Lexeme.Dim, "dim"),
+                    closingBrace: token(Lexeme.RightSquare, "closingSquare"),
                 },
                 identifier("baseArray"),
                 [new Expr.Literal(new Int32(maxIndex1)), new Expr.Literal(new Int32(maxIndex2))]

@@ -148,4 +148,14 @@ describe("FileCoverage expressions", () => {
             /* expected number of statements (Block) */ 1
         );
     });
+
+    test("DottedGet", () => {
+        checkSimpleExpression(
+            new Expr.Call(
+                new Expr.DottedGet(new Expr.Variable(identifier("foo")), identifier("setMId")),
+                token(Lexeme.RightParen, ")"),
+                []
+            ),
+        );
+    });
 });

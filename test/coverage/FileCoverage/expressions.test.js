@@ -23,7 +23,7 @@ describe("FileCoverage expressions", () => {
     function checkSimpleExpression(
         expression,
         expectedNumInternalStatements = 1, // number of private "statements" in FileCoverage class
-        expectedNumCoverageStatements = 0  // number of "statements" in public coverage report
+        expectedNumCoverageStatements = 0 // number of "statements" in public coverage report
     ) {
         let fileCoverage = new FileCoverage("path/to/file");
         fileCoverage.execute(expression);
@@ -144,7 +144,7 @@ describe("FileCoverage expressions", () => {
             new Expr.Call(new Expr.Variable(identifier("UCase")), RIGHT_PAREN, [
                 new Expr.Literal(new BrsString("h@lL0"), fakeLocation),
             ]),
-            /* expected number of internal statements (Call, Variable, Literal) */ 3,
+            /* expected number of internal statements (Call, Variable, Literal) */ 3
         );
     });
 
@@ -198,9 +198,7 @@ describe("FileCoverage expressions", () => {
     });
 
     test("Literal", () => {
-        checkSimpleExpression(
-            new Expr.Literal(new Int32(5))
-        );
+        checkSimpleExpression(new Expr.Literal(new Int32(5)));
     });
 
     test("ArrayLiteral", () => {
@@ -226,6 +224,20 @@ describe("FileCoverage expressions", () => {
                 RIGHT_BRACE
             ),
             /* expected number of internal statements (AALiteral, Literal) */ 2
+        );
+    });
+
+    test("Unary", () => {
+        checkSimpleExpression(
+            new Expr.Unary(token(Lexeme.Minus), new Expr.Literal(new BrsString("four"))),
+            /* expected number of internal statements (Unary, Literal) */ 2
+        );
+    });
+
+    test("Variable", () => {
+        checkSimpleExpression(
+            new Expr.Variable(identifier("array")),
+            /* expected number of internal statements (Unary, Literal) */ 1
         );
     });
 });

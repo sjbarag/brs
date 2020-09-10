@@ -12,9 +12,9 @@ interface StatementCoverage {
 
 export interface CoverageSummary {
     path: string;
-    statements: { [key: string]: { hits: number; location: Location; }; };
+    statements: { [key: string]: { hits: number; location: Location } };
     functions: {
-        [key: string]: { hits: number; location: Location; name: string; };
+        [key: string]: { hits: number; location: Location; name: string };
     };
     branches: {
         [key: string]: {
@@ -29,7 +29,7 @@ export interface CoverageSummary {
 export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private statements = new Map<string, StatementCoverage>();
 
-    constructor(readonly filePath: string) { }
+    constructor(readonly filePath: string) {}
 
     /**
      * Returns the StatementCoverage object for a given statement.
@@ -58,7 +58,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
         let kind = isStatement(statement) ? "stmt" : "expr";
         return `${kind}:${(statement as any).type}:${start.line},${start.column}-${end.line},${
             end.column
-            }`;
+        }`;
     }
 
     /**
@@ -123,7 +123,8 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     locations,
                     type: "if",
                 };
-            } else if (statement instanceof Stmt.Function) { // Named functions
+            } else if (statement instanceof Stmt.Function) {
+                // Named functions
                 let functionCoverage = this.get(statement.func.body);
                 if (functionCoverage) {
                     coverageSummary.functions[key] = {
@@ -132,7 +133,8 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                         name: statement.name.text,
                     };
                 }
-            } else if (statement instanceof Expr.Function) { // Anonymous functions
+            } else if (statement instanceof Expr.Function) {
+                // Anonymous functions
                 let functionCoverage = this.get(statement.body);
                 if (functionCoverage) {
                     coverageSummary.functions[key] = {
@@ -164,8 +166,9 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     locations,
                     type: statement.token.kind,
                 };
-            } else if (isStatement(statement)
-            && !(statement instanceof Stmt.Block) // blocks are part of other statements, so don't include them
+            } else if (
+                isStatement(statement) &&
+                !(statement instanceof Stmt.Block) // blocks are part of other statements, so don't include them
             ) {
                 coverageSummary.statements[key] = {
                     hits,

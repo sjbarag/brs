@@ -12,22 +12,32 @@ const {
     fakeLocation,
 } = require("../../parser/ParserTests");
 
+const LEFT_SQUARE = token(Lexeme.LeftSquare, "[");
+const RIGHT_SQUARE = token(Lexeme.RightSquare, "]");
+const LEFT_BRACE = token(Lexeme.LeftBrace, "{");
+const RIGHT_BRACE = token(Lexeme.RightBrace, "}");
+
 describe("FileCoverage expressions", () => {
-    function checkSimpleExpression(expression, numHits = 1, expectedNumStatements = 0) {
+    function checkSimpleExpression(
+        expression,
+        expectedNumInternalStatements = 1, // number of private "statements" in FileCoverage class
+        expectedNumCoverageStatements = 0  // number of "statements" in public coverage report
+    ) {
         let fileCoverage = new FileCoverage("path/to/file");
         fileCoverage.execute(expression);
+        expect(fileCoverage.statements.size).toEqual(expectedNumInternalStatements);
 
-        for (let i = 0; i < numHits; i++) {
-            fileCoverage.logHit(expression);
-        }
+        fileCoverage.logHit(expression);
 
         let key = fileCoverage.getStatementKey(expression);
-        expect(fileCoverage.statements.get(key).hits).toEqual(numHits);
+        expect(fileCoverage.statements.get(key).hits).toEqual(1);
 
         let coverageResults = fileCoverage.getCoverage();
         expect(Object.keys(coverageResults.branches).length).toEqual(0);
         expect(Object.keys(coverageResults.functions).length).toEqual(0);
-        expect(Object.keys(coverageResults.statements).length).toEqual(expectedNumStatements);
+        expect(Object.keys(coverageResults.statements).length).toEqual(
+            expectedNumCoverageStatements
+        );
     }
 
     describe("Binary", () => {
@@ -131,7 +141,8 @@ describe("FileCoverage expressions", () => {
         checkSimpleExpression(
             new Expr.Call(new Expr.Variable(identifier("UCase")), token(Lexeme.RightParen, ")"), [
                 new Expr.Literal(new BrsString("h@lL0"), fakeLocation),
-            ])
+            ]),
+            /* expected number of internal statements (Call, Variable, Literal) */ 3,
         );
     });
 
@@ -144,18 +155,57 @@ describe("FileCoverage expressions", () => {
                 token(Lexeme.Function, "function"),
                 token(Lexeme.EndFunction, "end function")
             ),
-            /* number of hits */ 1,
-            /* expected number of statements (Block) */ 1
+            /* expected number of internal statements (Function, Block) */ 2,
+            /* expected number of public coverage statements (Block) */ 1
         );
     });
 
     test("DottedGet", () => {
         checkSimpleExpression(
-            new Expr.Call(
-                new Expr.DottedGet(new Expr.Variable(identifier("foo")), identifier("setMId")),
-                token(Lexeme.RightParen, ")"),
-                []
+            new Expr.DottedGet(new Expr.Variable(identifier("foo")), identifier("setMId")),
+            /* expected number of internal statements (DottedGet, Variable) */ 2
+        );
+    });
+
+    test("IndexedGet", () => {
+        checkSimpleExpression(
+            new Expr.IndexedGet(
+                new Expr.Variable(identifier("array")),
+                new Expr.Literal(new Int32(4), fakeLocation),
+                RIGHT_SQUARE
             ),
+            /* expected number of internal statements (IndexedGet, Variable, Literal) */ 3
+        );
+    });
+
+    test("Grouping", () => {
+        checkSimpleExpression(
+            new Expr.Grouping(
+                {
+                    left: token(Lexeme.LeftParen),
+                    right: token(Lexeme.RightParen),
+                },
+                new Expr.Binary(
+                    new Expr.Literal(new Int32(6), generateLocation(1)),
+                    token(Lexeme.Plus),
+                    new Expr.Literal(new Int32(5), generateLocation(2))
+                )
+            ),
+            /* expected number of internal statements (Grouping, Binary, 2 Literals) */ 4
+        );
+    });
+
+    test.skip("Literal", () => {
+        checkSimpleExpression(
+            new Expr.ArrayLiteral(
+                [
+                    new Expr.Literal(new BrsString("index0"), fakeLocation),
+                    new Expr.Literal(new BrsString("index1"), fakeLocation),
+                    new Expr.Literal(new BrsString("index2"), fakeLocation),
+                ],
+                LEFT_SQUARE,
+                RIGHT_SQUARE
+            )
         );
     });
 });

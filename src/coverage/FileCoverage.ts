@@ -298,6 +298,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     }
 
     visitCall(expression: Expr.Call) {
+        this.evaluate(expression.callee);
         expression.args.map(this.evaluate, this);
         return BrsInvalid.Instance;
     }

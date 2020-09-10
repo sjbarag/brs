@@ -129,7 +129,7 @@ describe("FileCoverage statements", () => {
 
             let coverageResults = fileCoverage.getCoverage();
             expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(3);
+            expect(Object.keys(coverageResults.statements).length).toEqual(2); // If, Binary
 
             let ifKey = fileCoverage.getStatementKey(statement);
             let ifCoverage = coverageResults.branches[ifKey];
@@ -138,13 +138,11 @@ describe("FileCoverage statements", () => {
             expect(ifCoverage.locations.length).toEqual(1);
             expect(ifCoverage.hits.length).toEqual(1);
             expect(ifCoverage.hits[0]).toEqual(1);
-
-            let blockKey = fileCoverage.getStatementKey(block);
-            let blockCoverage = coverageResults.statements[blockKey];
-            expect(blockCoverage.hits).toEqual(0);
         });
 
         test("else-if branches", () => {
+            let elseIfCondition1 = new Expr.Literal(BrsBoolean.True, generateLocation(1));
+            let elseIfCondition2 = new Expr.Literal(BrsBoolean.True, generateLocation(2));
             let ifBlock = new Stmt.Block([], generateLocation(1));
             let elseIfBlocks = [
                 new Stmt.Block([], generateLocation(2)),
@@ -164,12 +162,12 @@ describe("FileCoverage statements", () => {
                 ifBlock,
                 [
                     {
-                        condition: new Expr.Literal(BrsBoolean.True),
+                        condition: elseIfCondition1,
                         thenBranch: elseIfBlocks[0],
                         type: "else if",
                     },
                     {
-                        condition: new Expr.Literal(BrsBoolean.True),
+                        condition: elseIfCondition2,
                         thenBranch: elseIfBlocks[1],
                         type: "else if",
                     },
@@ -178,25 +176,28 @@ describe("FileCoverage statements", () => {
 
             let fileCoverage = new FileCoverage("path/to/file");
             fileCoverage.execute(statement);
+
+            // hits
             fileCoverage.logHit(statement);
-            elseIfBlocks.forEach((block) => {
-                fileCoverage.logHit(block);
-            });
+            fileCoverage.logHit(elseIfCondition1);
+            fileCoverage.logHit(elseIfCondition1);
 
             let coverageResults = fileCoverage.getCoverage();
             expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(3);
+            expect(Object.keys(coverageResults.statements).length).toEqual(0);
 
-            elseIfBlocks.forEach((block) => {
-                let blockKey = fileCoverage.getStatementKey(block);
-                let blockCoverage = coverageResults.statements[blockKey];
-                expect(blockCoverage.hits).toEqual(1);
-            });
+            let ifKey = fileCoverage.getStatementKey(statement);
+            let ifCoverage = coverageResults.branches[ifKey];
+            expect(ifCoverage.locations.length).toEqual(3);
+            expect(ifCoverage.hits.length).toEqual(3);
+            expect(ifCoverage.hits[0]).toEqual(1);
+            expect(ifCoverage.hits[1]).toEqual(2);
+            expect(ifCoverage.hits[2]).toEqual(0);
         });
 
         test("else branch", () => {
             let ifBlock = new Stmt.Block([], generateLocation(1));
-            let elseBlock = new Stmt.Block([assignTo.foo], generateLocation(2));
+            let elseBlock = new Stmt.Block([], generateLocation(2));
             let statement = new Stmt.If(
                 {
                     if: token(Lexeme.If, "if"),
@@ -219,11 +220,13 @@ describe("FileCoverage statements", () => {
 
             let coverageResults = fileCoverage.getCoverage();
             expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(3);
+            expect(Object.keys(coverageResults.statements).length).toEqual(0);
 
-            let elseKey = fileCoverage.getStatementKey(elseBlock);
-            let elseCoverage = coverageResults.statements[elseKey];
-            expect(elseCoverage.hits).toEqual(1);
+            let statementKey = fileCoverage.getStatementKey(statement);
+            let statementCoverage = coverageResults.branches[statementKey];
+
+            expect(statementCoverage.hits.length).toEqual(2);
+            expect(statementCoverage.hits[1]).toEqual(1);
         });
     });
 
@@ -247,14 +250,10 @@ describe("FileCoverage statements", () => {
 
         let fileCoverage = new FileCoverage("path/to/file");
         fileCoverage.execute(statement);
-        fileCoverage.logHit(statement);
 
         let coverageResults = fileCoverage.getCoverage();
         expect(Object.keys(coverageResults.functions).length).toEqual(0);
-        expect(Object.keys(coverageResults.statements).length).toEqual(3);
-
-        let key = fileCoverage.getStatementKey(statement);
-        expect(coverageResults.statements[key].hits).toEqual(1);
+        expect(Object.keys(coverageResults.statements).length).toEqual(2);
     });
 
     test("For", () => {
@@ -275,7 +274,7 @@ describe("FileCoverage statements", () => {
                 /* body */ new Stmt.Block([], generateLocation(1))
             ),
             /* number of hits */ 1,
-            /* expected number of statements (For, Assignment, Block) */ 3
+            /* expected number of statements (For, Assignment) */ 2
         );
     });
 
@@ -290,9 +289,7 @@ describe("FileCoverage statements", () => {
                 identifier("element"),
                 /* target */ new Expr.Variable(identifier("array")),
                 /* body */ new Stmt.Block([], generateLocation(1))
-            ),
-            /* number of hits */ 1,
-            /* expected number of statements (ForEach, Block) */ 2
+            )
         );
     });
 
@@ -309,9 +306,7 @@ describe("FileCoverage statements", () => {
                     new Expr.Literal(new Int32(0))
                 ),
                 new Stmt.Block([], generateLocation(1))
-            ),
-            /* number of hits */ 1,
-            /* expected number of statements (While, Block) */ 2
+            )
         );
     });
 
@@ -332,7 +327,7 @@ describe("FileCoverage statements", () => {
         fileCoverage.logHit(statement.func.body);
 
         let coverageResults = fileCoverage.getCoverage();
-        expect(Object.keys(coverageResults.statements).length).toEqual(1); // Block
+        expect(Object.keys(coverageResults.statements).length).toEqual(0); // Block
 
         let statementKeys = Object.keys(coverageResults.functions);
         expect(statementKeys.length).toEqual(1);

@@ -2,7 +2,6 @@ import { Stmt, Expr } from "../parser";
 import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 import { isStatement } from "../parser/Statement";
-import { AstNode } from "../parser/AstNode";
 
 interface StatementCoverage {
     /** Number of times the interpreter has executed/evaluated this statement. */
@@ -13,9 +12,9 @@ interface StatementCoverage {
 
 export interface CoverageSummary {
     path: string;
-    statements: { [key: string]: { hits: number; location: Location } };
+    statements: { [key: string]: { hits: number; location: Location; }; };
     functions: {
-        [key: string]: { hits: number; location: Location; name: string };
+        [key: string]: { hits: number; location: Location; name: string; };
     };
     branches: {
         [key: string]: {
@@ -30,7 +29,7 @@ export interface CoverageSummary {
 export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private statements = new Map<string, StatementCoverage>();
 
-    constructor(readonly filePath: string) {}
+    constructor(readonly filePath: string) { }
 
     /**
      * Returns the StatementCoverage object for a given statement.
@@ -59,7 +58,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
         let kind = isStatement(statement) ? "stmt" : "expr";
         return `${kind}:${(statement as any).type}:${start.line},${start.column}-${end.line},${
             end.column
-        }`;
+            }`;
     }
 
     /**
@@ -90,7 +89,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                 let branchHits: number[] = [];
 
                 // Add the "if" coverage
-                locations.push(statement.location);
+                locations.push({ ...statement.location, end: statement.condition.location.end });
                 branchHits.push(hits);
 
                 // Add the "else if" coverage
@@ -124,13 +123,22 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     locations,
                     type: "if",
                 };
-            } else if (statement instanceof Stmt.Function) {
+            } else if (statement instanceof Stmt.Function) { // Named functions
                 let functionCoverage = this.get(statement.func.body);
                 if (functionCoverage) {
                     coverageSummary.functions[key] = {
                         hits: functionCoverage.hits,
                         location: statement.location,
                         name: statement.name.text,
+                    };
+                }
+            } else if (statement instanceof Expr.Function) { // Anonymous functions
+                let functionCoverage = this.get(statement.body);
+                if (functionCoverage) {
+                    coverageSummary.functions[key] = {
+                        hits: functionCoverage.hits,
+                        location: statement.location,
+                        name: "[Function]",
                     };
                 }
             } else if (
@@ -156,7 +164,9 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     locations,
                     type: statement.token.kind,
                 };
-            } else if (isStatement(statement)) {
+            } else if (isStatement(statement)
+            && !(statement instanceof Stmt.Block) // blocks are part of other statements, so don't include them
+            ) {
                 coverageSummary.statements[key] = {
                     hits,
                     location: statement.location,
@@ -244,7 +254,8 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     }
 
     visitNamedFunction(statement: Stmt.Function) {
-        this.evaluate(statement.func);
+        // don't record the Expr.Function so that we don't double-count named functions.
+        this.execute(statement.func.body);
         return BrsInvalid.Instance;
     }
 

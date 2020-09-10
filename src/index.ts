@@ -77,7 +77,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 }
 
 /**
- * Returns a friendly (`instabul`-compliant) summary of the code coverage.
+ * Returns a summary of the code coverage.
  */
 export function getCoverageResults() {
     if (!coverageCollector) return;

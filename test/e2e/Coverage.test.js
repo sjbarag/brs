@@ -1,7 +1,8 @@
-const { execute } = require("../../lib");
-const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
+const path = require("path");
+const { execute, getCoverageResults } = require("../../lib");
+const { createMockStreams, resourceFile } = require("./E2ETests");
 
-describe("checking coverage output", () => {
+describe("coverage", () => {
     let outputStreams;
 
     beforeAll(() => {
@@ -17,13 +18,14 @@ describe("checking coverage output", () => {
         jest.restoreAllMocks();
     });
 
-    test("running test", async () => {
-        await execute([resourceFile("components", "scripts", "Coverage.brs")], {
+    test("matches snapshot", async () => {
+        await execute([resourceFile("components", "coverage", "main.brs")], {
             generateCoverage: true,
             ...outputStreams,
         });
+        let filePath = path.join(__dirname, "resources", "components", "coverage", "main.brs");
+        let coverage = getCoverageResults()[filePath];
 
-        // expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([]);
-        // expect(true).toEqual(true);
+        expect(coverage).toMatchSnapshot();
     });
 });

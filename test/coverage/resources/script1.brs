@@ -1,3 +1,2 @@
-sub unusedFunc()
-    print "i am unused"
+sub init()
 end sub

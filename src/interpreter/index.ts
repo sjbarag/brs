@@ -81,7 +81,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         return this._environment;
     }
 
-    public setCoverageCollector(collector: CoverageCollector) {
+    setCoverageCollector(collector: CoverageCollector) {
         this.coverageCollector = collector;
     }
 

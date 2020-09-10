@@ -19,6 +19,7 @@ export class CoverageCollector {
         let filePattern = path.join(this.projectRoot, "(components|source)", "**", "*.brs");
         let scripts = fg.sync(filePattern);
 
+        this.files.clear();
         scripts.forEach((script) => {
             this.files.set(script, new FileCoverage(script));
         });

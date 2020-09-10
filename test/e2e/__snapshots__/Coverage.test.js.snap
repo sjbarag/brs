@@ -1,0 +1,400 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checking coverage output running test 1`] = `
+Object {
+  "branches": Object {
+    "stmt:If:23,4-29,10": Object {
+      "hits": Array [
+        1,
+        0,
+        0,
+      ],
+      "locations": Array [
+        Object {
+          "end": Object {
+            "column": 11,
+            "line": 23,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 23,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 17,
+            "line": 25,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 25,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 4,
+            "line": 29,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 27,
+          },
+        },
+      ],
+      "type": "if",
+    },
+    "stmt:If:31,4-37,10": Object {
+      "hits": Array [
+        1,
+        1,
+        0,
+      ],
+      "locations": Array [
+        Object {
+          "end": Object {
+            "column": 12,
+            "line": 31,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 31,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 16,
+            "line": 33,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 33,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 4,
+            "line": 37,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 35,
+          },
+        },
+      ],
+      "type": "if",
+    },
+    "stmt:If:39,4-43,10": Object {
+      "hits": Array [
+        1,
+        1,
+      ],
+      "locations": Array [
+        Object {
+          "end": Object {
+            "column": 12,
+            "line": 39,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 39,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 4,
+            "line": 43,
+          },
+          "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 41,
+          },
+        },
+      ],
+      "type": "if",
+    },
+  },
+  "functions": Object {
+    "expr:Function:9,13-11,15": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 15,
+          "line": 11,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 13,
+          "line": 9,
+        },
+      },
+      "name": "[Function]",
+    },
+    "stmt:Function:17,0-19,7": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 7,
+          "line": 19,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 17,
+        },
+      },
+      "name": "unusedFunc",
+    },
+    "stmt:Function:2,0-14,7": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 7,
+          "line": 14,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "name": "main",
+    },
+    "stmt:Function:22,0-44,7": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 7,
+          "line": 44,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 22,
+        },
+      },
+      "name": "branches",
+    },
+  },
+  "path": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+  "statements": Object {
+    "stmt:Assignment:24,8-24,21": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 24,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 24,
+        },
+      },
+    },
+    "stmt:Assignment:26,8-26,21": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 26,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 26,
+        },
+      },
+    },
+    "stmt:Assignment:28,8-28,21": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 28,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 28,
+        },
+      },
+    },
+    "stmt:Assignment:32,8-32,21": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 32,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 32,
+        },
+      },
+    },
+    "stmt:Assignment:34,8-34,21": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 34,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 34,
+        },
+      },
+    },
+    "stmt:Assignment:36,8-36,21": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 36,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 36,
+        },
+      },
+    },
+    "stmt:Assignment:40,8-40,21": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 40,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 40,
+        },
+      },
+    },
+    "stmt:Assignment:42,8-42,21": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 21,
+          "line": 42,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 8,
+          "line": 42,
+        },
+      },
+    },
+    "stmt:Assignment:5,4-5,19": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 19,
+          "line": 5,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 5,
+        },
+      },
+    },
+    "stmt:Assignment:8,4-12,5": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 5,
+          "line": 12,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 8,
+        },
+      },
+    },
+    "stmt:Expression:13,4-13,13": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 13,
+          "line": 13,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 13,
+        },
+      },
+    },
+    "stmt:Expression:3,4-3,14": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 14,
+          "line": 3,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 3,
+        },
+      },
+    },
+    "stmt:IndexedSet:6,4-6,14": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 14,
+          "line": 6,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 6,
+        },
+      },
+    },
+    "stmt:Print:10,12-10,24": Object {
+      "hits": 1,
+      "location": Object {
+        "end": Object {
+          "column": 24,
+          "line": 10,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 12,
+          "line": 10,
+        },
+      },
+    },
+    "stmt:Print:18,4-18,23": Object {
+      "hits": 0,
+      "location": Object {
+        "end": Object {
+          "column": 23,
+          "line": 18,
+        },
+        "file": "/Users/levi.kipke/Projects/brs/test/e2e/resources/components/coverage/main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 18,
+        },
+      },
+    },
+  },
+}
+`;

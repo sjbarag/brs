@@ -149,17 +149,27 @@ describe("FileCoverage expressions", () => {
     });
 
     test("Function", () => {
-        checkSimpleExpression(
-            new Expr.Function(
-                [],
-                ValueKind.Void,
-                new Stmt.Block([], generateLocation(1)),
-                token(Lexeme.Function, "function"),
-                token(Lexeme.EndFunction, "end function")
-            ),
-            /* expected number of internal statements (Function, Block) */ 2,
-            /* expected number of public coverage statements (Block) */ 1
+        let expression = new Expr.Function(
+            [],
+            ValueKind.Void,
+            new Stmt.Block([], generateLocation(1)),
+            token(Lexeme.Function, "function"),
+            token(Lexeme.EndFunction, "end function")
         );
+
+        let fileCoverage = new FileCoverage("path/to/file");
+        fileCoverage.execute(expression);
+        expect(fileCoverage.statements.size).toEqual(2); // Function, Block
+
+        fileCoverage.logHit(expression);
+
+        let key = fileCoverage.getStatementKey(expression);
+        expect(fileCoverage.statements.get(key).hits).toEqual(1);
+
+        let coverageResults = fileCoverage.getCoverage();
+        expect(Object.keys(coverageResults.branches).length).toEqual(0);
+        expect(Object.keys(coverageResults.functions).length).toEqual(1);
+        expect(Object.keys(coverageResults.statements).length).toEqual(0);
     });
 
     test("DottedGet", () => {

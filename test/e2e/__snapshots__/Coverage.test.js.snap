@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`checking coverage output running test 1`] = `
+exports[`coverage matches snapshot 1`] = `
 Object {
   "branches": Object {
     "stmt:If:23,4-29,10": Object {

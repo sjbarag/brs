@@ -195,17 +195,24 @@ describe("FileCoverage expressions", () => {
         );
     });
 
-    test.skip("Literal", () => {
+    test("Literal", () => {
+        checkSimpleExpression(
+            new Expr.Literal(new Int32(5))
+        );
+    });
+
+    test("ArrayLiteral", () => {
         checkSimpleExpression(
             new Expr.ArrayLiteral(
                 [
-                    new Expr.Literal(new BrsString("index0"), fakeLocation),
-                    new Expr.Literal(new BrsString("index1"), fakeLocation),
-                    new Expr.Literal(new BrsString("index2"), fakeLocation),
+                    new Expr.Literal(new BrsString("index0"), generateLocation(1)),
+                    new Expr.Literal(new BrsString("index1"), generateLocation(2)),
+                    new Expr.Literal(new BrsString("index2"), generateLocation(3)),
                 ],
                 LEFT_SQUARE,
                 RIGHT_SQUARE
-            )
+            ),
+            /* expected number of internal statements (ArrayLiteral, 3 Literals) */ 4
         );
     });
 });

@@ -16,6 +16,8 @@ const LEFT_SQUARE = token(Lexeme.LeftSquare, "[");
 const RIGHT_SQUARE = token(Lexeme.RightSquare, "]");
 const LEFT_BRACE = token(Lexeme.LeftBrace, "{");
 const RIGHT_BRACE = token(Lexeme.RightBrace, "}");
+const LEFT_PAREN = token(Lexeme.LeftParen, "(");
+const RIGHT_PAREN = token(Lexeme.RightParen, ")");
 
 describe("FileCoverage expressions", () => {
     function checkSimpleExpression(
@@ -139,7 +141,7 @@ describe("FileCoverage expressions", () => {
 
     test("Call", () => {
         checkSimpleExpression(
-            new Expr.Call(new Expr.Variable(identifier("UCase")), token(Lexeme.RightParen, ")"), [
+            new Expr.Call(new Expr.Variable(identifier("UCase")), RIGHT_PAREN, [
                 new Expr.Literal(new BrsString("h@lL0"), fakeLocation),
             ]),
             /* expected number of internal statements (Call, Variable, Literal) */ 3,
@@ -182,8 +184,8 @@ describe("FileCoverage expressions", () => {
         checkSimpleExpression(
             new Expr.Grouping(
                 {
-                    left: token(Lexeme.LeftParen),
-                    right: token(Lexeme.RightParen),
+                    left: LEFT_PAREN,
+                    right: RIGHT_PAREN,
                 },
                 new Expr.Binary(
                     new Expr.Literal(new Int32(6), generateLocation(1)),
@@ -213,6 +215,17 @@ describe("FileCoverage expressions", () => {
                 RIGHT_SQUARE
             ),
             /* expected number of internal statements (ArrayLiteral, 3 Literals) */ 4
+        );
+    });
+
+    test("AALiteral", () => {
+        checkSimpleExpression(
+            new Expr.AALiteral(
+                [{ name: new BrsString("foo"), value: new Expr.Literal(new Int32(7)) }],
+                LEFT_BRACE,
+                RIGHT_BRACE
+            ),
+            /* expected number of internal statements (AALiteral, Literal) */ 2
         );
     });
 });

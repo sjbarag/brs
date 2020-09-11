@@ -1,4 +1,4 @@
-import { FileCoverageData } from "istanbul-lib-coverage";
+import type * as IstanbulTypes from "istanbul-lib-coverage";
 import { Stmt, Expr } from "../parser";
 import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
@@ -61,8 +61,8 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     /**
      * Converts the coverage data to a POJO that's more friendly for consumers.
      */
-    getCoverage(): FileCoverageData {
-        let coverageSummary: FileCoverageData = {
+    getCoverage(): IstanbulTypes.FileCoverageData {
+        let coverageSummary: IstanbulTypes.FileCoverageData = {
             path: this.filePath,
             statementMap: {},
             fnMap: {},

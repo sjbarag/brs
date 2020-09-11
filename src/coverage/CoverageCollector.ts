@@ -1,5 +1,5 @@
 import * as fg from "fast-glob";
-import { CoverageMapData } from "istanbul-lib-coverage";
+import type * as IstanbulTypes from "istanbul-lib-coverage";
 import path from "path";
 
 import { Stmt, Expr } from "../parser";
@@ -43,7 +43,7 @@ export class CoverageCollector {
     }
 
     getCoverage() {
-        let coverageMapData: CoverageMapData = {};
+        let coverageMapData: IstanbulTypes.CoverageMapData = {};
         this.files.forEach((file, key) => {
             coverageMapData[key] = file.getCoverage();
         });

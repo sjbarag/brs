@@ -79,19 +79,41 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                 let branchHits: number[] = [];
 
                 // Add the "if" coverage
-                locations.push({ ...statement.location, end: statement.condition.location.end });
-                branchHits.push(hits);
+                let thenBranchCoverage = this.get(statement.thenBranch);
+                if (thenBranchCoverage) {
+                    locations.push({
+                        ...statement.location,
+                        end: statement.condition.location.end,
+                    });
+                    branchHits.push(thenBranchCoverage.hits);
+                }
+
+                // the condition is a statement as well as a branch, so put it in the statement map
+                let ifCondition = this.get(statement.condition);
+                if (ifCondition) {
+                    coverageSummary.statementMap[`${key}.if`] = statement.condition.location;
+                    coverageSummary.s[`${key}.if`] = ifCondition.hits;
+                }
 
                 // Add the "else if" coverage
                 statement.elseIfs?.forEach((branch, index) => {
                     let elseIfCoverage = this.get(branch.condition);
                     if (elseIfCoverage) {
-                        // use the tokens as the start rather than the condition
-                        let start =
-                            statement.tokens.elseIfs?.[index].location.start ||
-                            branch.condition.location.start;
-                        locations.push({ ...branch.condition.location, start });
-                        branchHits.push(elseIfCoverage.hits);
+                        // the condition is a statement as well as a branch, so put it in the statement map
+                        coverageSummary.statementMap[`${key}.elseif-${index}`] =
+                            branch.condition.location;
+                        coverageSummary.s[`${key}.elseif-${index}`] = elseIfCoverage.hits;
+
+                        // add to the list of branches
+                        let elseIfBlock = this.get(branch.thenBranch);
+                        if (elseIfBlock) {
+                            // use the tokens as the start for the branch rather than the condition
+                            let start =
+                                statement.tokens.elseIfs?.[index].location.start ||
+                                branch.condition.location.start;
+                            locations.push({ ...branch.condition.location, start });
+                            branchHits.push(elseIfBlock.hits);
+                        }
                     }
                 });
 
@@ -115,10 +137,6 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     line: statement.location.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
-
-                // this is a statement as well as a branch, so put it in the statement map
-                coverageSummary.statementMap[key] = statement.location;
-                coverageSummary.s[key] = hits;
             } else if (statement instanceof Stmt.Function) {
                 // Named functions
                 let functionCoverage = this.get(statement.func.body);

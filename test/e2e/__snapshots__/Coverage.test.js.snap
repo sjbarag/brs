@@ -9,12 +9,12 @@ Object {
       0,
     ],
     "stmt:If:31,4-37,10": Array [
-      1,
+      0,
       1,
       0,
     ],
     "stmt:If:39,4-43,10": Array [
-      1,
+      0,
       1,
     ],
   },
@@ -285,9 +285,11 @@ Object {
     "stmt:Assignment:8,4-12,5": 1,
     "stmt:Expression:13,4-13,13": 1,
     "stmt:Expression:3,4-3,14": 1,
-    "stmt:If:23,4-29,10": 1,
-    "stmt:If:31,4-37,10": 1,
-    "stmt:If:39,4-43,10": 1,
+    "stmt:If:23,4-29,10.elseif-0": 0,
+    "stmt:If:23,4-29,10.if": 1,
+    "stmt:If:31,4-37,10.elseif-0": 1,
+    "stmt:If:31,4-37,10.if": 1,
+    "stmt:If:39,4-43,10.if": 1,
     "stmt:IndexedSet:6,4-6,14": 1,
     "stmt:Print:10,12-10,24": 1,
     "stmt:Print:18,4-18,23": 0,
@@ -425,36 +427,58 @@ Object {
         "line": 3,
       },
     },
-    "stmt:If:23,4-29,10": Object {
+    "stmt:If:23,4-29,10.elseif-0": Object {
       "end": Object {
-        "column": 10,
-        "line": 29,
+        "column": 17,
+        "line": 25,
       },
       "file": "main.brs",
       "start": Object {
-        "column": 4,
+        "column": 12,
+        "line": 25,
+      },
+    },
+    "stmt:If:23,4-29,10.if": Object {
+      "end": Object {
+        "column": 11,
+        "line": 23,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 7,
         "line": 23,
       },
     },
-    "stmt:If:31,4-37,10": Object {
+    "stmt:If:31,4-37,10.elseif-0": Object {
       "end": Object {
-        "column": 10,
-        "line": 37,
+        "column": 16,
+        "line": 33,
       },
       "file": "main.brs",
       "start": Object {
-        "column": 4,
+        "column": 12,
+        "line": 33,
+      },
+    },
+    "stmt:If:31,4-37,10.if": Object {
+      "end": Object {
+        "column": 12,
+        "line": 31,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 7,
         "line": 31,
       },
     },
-    "stmt:If:39,4-43,10": Object {
+    "stmt:If:39,4-43,10.if": Object {
       "end": Object {
-        "column": 10,
-        "line": 43,
+        "column": 12,
+        "line": 39,
       },
       "file": "main.brs",
       "start": Object {
-        "column": 4,
+        "column": 7,
         "line": 39,
       },
     },

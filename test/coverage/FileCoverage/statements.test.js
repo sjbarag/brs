@@ -132,7 +132,7 @@ describe("FileCoverage statements", () => {
 
             let fileCoverage = new FileCoverage("path/to/file");
             fileCoverage.execute(statement);
-            fileCoverage.logHit(statement);
+            fileCoverage.logHit(statement.thenBranch);
 
             let coverageResults = fileCoverage.getCoverage();
             // no functions
@@ -191,9 +191,9 @@ describe("FileCoverage statements", () => {
             fileCoverage.execute(statement);
 
             // hits
-            fileCoverage.logHit(statement);
-            fileCoverage.logHit(elseIfCondition1);
-            fileCoverage.logHit(elseIfCondition1);
+            fileCoverage.logHit(statement.thenBranch);
+            fileCoverage.logHit(elseIfBlocks[0]);
+            fileCoverage.logHit(elseIfBlocks[0]);
 
             let coverageResults = fileCoverage.getCoverage();
 
@@ -201,9 +201,9 @@ describe("FileCoverage statements", () => {
             expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
             expect(Object.keys(coverageResults.f).length).toEqual(0);
 
-            // the If statement is still a statement
-            expect(Object.keys(coverageResults.statementMap).length).toEqual(1);
-            expect(Object.keys(coverageResults.s).length).toEqual(1);
+            // If, 2 ElseIfs
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(3);
+            expect(Object.keys(coverageResults.s).length).toEqual(3);
 
             let ifKey = fileCoverage.getStatementKey(statement);
             let ifCoverage = coverageResults.branchMap[ifKey];

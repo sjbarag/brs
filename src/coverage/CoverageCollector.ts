@@ -1,3 +1,4 @@
+// tslint:disable-next-line
 import type { CoverageMapData } from "istanbul-lib-coverage";
 import * as fg from "fast-glob";
 import path from "path";

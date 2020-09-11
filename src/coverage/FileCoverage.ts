@@ -1,3 +1,4 @@
+// tslint:disable-next-line
 import type { FileCoverageData } from "istanbul-lib-coverage";
 import { Stmt, Expr } from "../parser";
 import { Location, isToken, Lexeme } from "../lexer";
@@ -114,6 +115,10 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     line: statement.location.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
+
+                // this is a statement as well as a branch, so put it in the statement map
+                coverageSummary.statementMap[key] = statement.location;
+                coverageSummary.s[key] = hits;
             } else if (statement instanceof Stmt.Function) {
                 // Named functions
                 let functionCoverage = this.get(statement.func.body);
@@ -121,7 +126,10 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     coverageSummary.fnMap[key] = {
                         name: statement.name.text,
                         loc: statement.location,
-                        decl: statement.func.keyword.location,
+                        decl: {
+                            ...statement.func.keyword.location,
+                            end: statement.name.location.end,
+                        },
                         line: statement.location.start.line,
                     };
                     coverageSummary.f[key] = functionCoverage.hits;
@@ -163,6 +171,10 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     line: statement.location.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
+
+                // this is a statement as well as a branch, so put it in the statement map
+                coverageSummary.statementMap[key] = statement.location;
+                coverageSummary.s[key] = hits;
             } else if (
                 isStatement(statement) &&
                 !(statement instanceof Stmt.Block) // blocks are part of other statements, so don't include them

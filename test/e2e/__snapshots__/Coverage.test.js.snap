@@ -195,7 +195,7 @@ Object {
     "stmt:Function:17,0-19,7": Object {
       "decl": Object {
         "end": Object {
-          "column": 3,
+          "column": 14,
           "line": 17,
         },
         "file": "main.brs",
@@ -221,7 +221,7 @@ Object {
     "stmt:Function:2,0-14,7": Object {
       "decl": Object {
         "end": Object {
-          "column": 3,
+          "column": 8,
           "line": 2,
         },
         "file": "main.brs",
@@ -247,7 +247,7 @@ Object {
     "stmt:Function:22,0-44,7": Object {
       "decl": Object {
         "end": Object {
-          "column": 3,
+          "column": 12,
           "line": 22,
         },
         "file": "main.brs",
@@ -285,6 +285,9 @@ Object {
     "stmt:Assignment:8,4-12,5": 1,
     "stmt:Expression:13,4-13,13": 1,
     "stmt:Expression:3,4-3,14": 1,
+    "stmt:If:23,4-29,10": 1,
+    "stmt:If:31,4-37,10": 1,
+    "stmt:If:39,4-43,10": 1,
     "stmt:IndexedSet:6,4-6,14": 1,
     "stmt:Print:10,12-10,24": 1,
     "stmt:Print:18,4-18,23": 0,
@@ -420,6 +423,39 @@ Object {
       "start": Object {
         "column": 4,
         "line": 3,
+      },
+    },
+    "stmt:If:23,4-29,10": Object {
+      "end": Object {
+        "column": 10,
+        "line": 29,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 23,
+      },
+    },
+    "stmt:If:31,4-37,10": Object {
+      "end": Object {
+        "column": 10,
+        "line": 37,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 31,
+      },
+    },
+    "stmt:If:39,4-43,10": Object {
+      "end": Object {
+        "column": 10,
+        "line": 43,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 39,
       },
     },
     "stmt:IndexedSet:6,4-6,14": Object {

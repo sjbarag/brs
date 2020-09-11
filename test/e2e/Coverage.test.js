@@ -27,16 +27,18 @@ describe("coverage", () => {
         let coverage = getCoverageResults()[filePath];
 
         // zero out the filenames in the locations so that it passes on any machine
-        ["statements", "functions"].forEach(key => {
-            Object.keys(coverage[key]).forEach(stmtKey => {
+        ["statements", "functions"].forEach((key) => {
+            Object.keys(coverage[key]).forEach((stmtKey) => {
                 coverage[key][stmtKey].location.file = "";
             });
         });
-        Object.keys(coverage.branches).forEach(stmtKey => {
-            coverage.branches[stmtKey].locations = coverage.branches[stmtKey].locations.map(loc => {
-                loc.file = "";
-                return loc;
-            });
+        Object.keys(coverage.branches).forEach((stmtKey) => {
+            coverage.branches[stmtKey].locations = coverage.branches[stmtKey].locations.map(
+                (loc) => {
+                    loc.file = "";
+                    return loc;
+                }
+            );
         });
 
         expect(coverage).toMatchSnapshot();

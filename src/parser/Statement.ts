@@ -52,8 +52,6 @@ let statementTypes = new Set<string>([
  * @param obj object to check
  */
 export function isStatement(obj: Expr.Expression | Statement): obj is Statement {
-    // This is to play nice with Typescript. We know that implementations of Statements
-    // and Expressions also extend AstNode, but Typescript doesn't know that.
     if (obj.type === "Function") {
         return obj instanceof Function;
     }

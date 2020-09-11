@@ -139,9 +139,9 @@ describe("FileCoverage statements", () => {
             expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
             expect(Object.keys(coverageResults.f).length).toEqual(0);
 
-            // 2 statements: If, Binary
-            expect(Object.keys(coverageResults.statementMap).length).toEqual(2);
-            expect(Object.keys(coverageResults.s).length).toEqual(2);
+            // 3 statements: If, 2 Assignments
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(3);
+            expect(Object.keys(coverageResults.s).length).toEqual(3);
 
             let ifKey = fileCoverage.getStatementKey(statement);
             let ifCoverage = coverageResults.branchMap[ifKey];
@@ -200,8 +200,10 @@ describe("FileCoverage statements", () => {
             // no functions or statements
             expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
             expect(Object.keys(coverageResults.f).length).toEqual(0);
-            expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
-            expect(Object.keys(coverageResults.s).length).toEqual(0);
+
+            // the If statement is still a statement
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(1);
+            expect(Object.keys(coverageResults.s).length).toEqual(1);
 
             let ifKey = fileCoverage.getStatementKey(statement);
             let ifCoverage = coverageResults.branchMap[ifKey];
@@ -240,8 +242,10 @@ describe("FileCoverage statements", () => {
             // no functions or statements
             expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
             expect(Object.keys(coverageResults.f).length).toEqual(0);
-            expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
-            expect(Object.keys(coverageResults.s).length).toEqual(0);
+
+            // the If statement is still a statement
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(1);
+            expect(Object.keys(coverageResults.s).length).toEqual(1);
 
             let statementKey = fileCoverage.getStatementKey(statement);
             let statementHits = coverageResults.b[statementKey];

@@ -4,6 +4,7 @@ import { Location, isToken, Lexeme } from "../lexer";
 import { BrsInvalid, BrsType } from "../brsTypes";
 import { isStatement } from "../parser/Statement";
 
+/** Keeps track of the number of hits on a given statement or expression. */
 interface StatementCoverage {
     /** Number of times the interpreter has executed/evaluated this statement. */
     hits: number;

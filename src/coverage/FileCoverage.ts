@@ -69,7 +69,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
             branchMap: {},
             s: {},
             f: {},
-            b: {}
+            b: {},
         };
 
         this.statements.forEach(({ statement, hits }, key) => {
@@ -111,7 +111,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     loc: statement.location,
                     type: "if",
                     locations,
-                    line: statement.location.start.line
+                    line: statement.location.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
             } else if (statement instanceof Stmt.Function) {
@@ -122,7 +122,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                         name: statement.name.text,
                         loc: statement.location,
                         decl: statement.func.keyword.location,
-                        line: statement.location.start.line
+                        line: statement.location.start.line,
                     };
                     coverageSummary.f[key] = functionCoverage.hits;
                 }
@@ -134,7 +134,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                         name: "[Function]",
                         loc: statement.location,
                         decl: statement.keyword.location,
-                        line: statement.location.start.line
+                        line: statement.location.start.line,
                     };
                     coverageSummary.f[key] = functionCoverage.hits;
                 }
@@ -160,7 +160,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     loc: statement.location,
                     type: statement.token.kind,
                     locations,
-                    line: statement.location.start.line
+                    line: statement.location.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
             } else if (

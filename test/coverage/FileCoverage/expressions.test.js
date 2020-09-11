@@ -42,9 +42,7 @@ describe("FileCoverage expressions", () => {
         expect(Object.keys(coverageResults.statementMap).length).toEqual(
             expectedNumCoverageStatements
         );
-        expect(Object.keys(coverageResults.s).length).toEqual(
-            expectedNumCoverageStatements
-        );
+        expect(Object.keys(coverageResults.s).length).toEqual(expectedNumCoverageStatements);
     }
 
     describe("Binary", () => {

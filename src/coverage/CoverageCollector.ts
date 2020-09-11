@@ -1,8 +1,9 @@
 import * as fg from "fast-glob";
+import { CoverageMapData } from "istanbul-lib-coverage";
 import path from "path";
 
 import { Stmt, Expr } from "../parser";
-import { FileCoverage, CoverageSummary } from "./FileCoverage";
+import { FileCoverage } from "./FileCoverage";
 
 export class CoverageCollector {
     /**
@@ -42,7 +43,7 @@ export class CoverageCollector {
     }
 
     getCoverage() {
-        let coverageMapData: { [fileName: string]: CoverageSummary } = {};
+        let coverageMapData: CoverageMapData = {};
         this.files.forEach((file, key) => {
             coverageMapData[key] = file.getCoverage();
         });

@@ -16,15 +16,22 @@ describe("FileCoverage statements", () => {
         }
 
         let coverageResults = fileCoverage.getCoverage();
-        expect(Object.keys(coverageResults.branches).length).toEqual(0);
-        expect(Object.keys(coverageResults.functions).length).toEqual(0);
 
-        let statementKeys = Object.keys(coverageResults.statements);
+        // should be no branches
+        expect(Object.keys(coverageResults.branchMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.b).length).toEqual(0);
+
+        // should be no functions
+        expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.f).length).toEqual(0);
+
+        let statementKeys = Object.keys(coverageResults.statementMap);
         expect(statementKeys.length).toEqual(expectedNumStatements);
 
-        let statementCoverage = coverageResults.statements[statementKeys[0]];
-        expect(locationEqual(statementCoverage.location, statement.location)).toBeTruthy();
-        expect(statementCoverage.hits).toEqual(numHits);
+        let statementLocation = coverageResults.statementMap[statementKeys[0]];
+        let statementHits = coverageResults.s[statementKeys[0]];
+        expect(locationEqual(statementLocation, statement.location)).toBeTruthy();
+        expect(statementHits).toEqual(numHits);
     }
 
     describe("Correct number of hits", () => {
@@ -128,16 +135,22 @@ describe("FileCoverage statements", () => {
             fileCoverage.logHit(statement);
 
             let coverageResults = fileCoverage.getCoverage();
-            expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(2); // If, Binary
+            // no functions
+            expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.f).length).toEqual(0);
+
+            // 2 statements: If, Binary
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(2);
+            expect(Object.keys(coverageResults.s).length).toEqual(2);
 
             let ifKey = fileCoverage.getStatementKey(statement);
-            let ifCoverage = coverageResults.branches[ifKey];
+            let ifCoverage = coverageResults.branchMap[ifKey];
+            let ifHits = coverageResults.b[ifKey];
 
             // we only have one branch, so the array should only have one item
             expect(ifCoverage.locations.length).toEqual(1);
-            expect(ifCoverage.hits.length).toEqual(1);
-            expect(ifCoverage.hits[0]).toEqual(1);
+            expect(ifHits.length).toEqual(1);
+            expect(ifHits[0]).toEqual(1);
         });
 
         test("else-if branches", () => {
@@ -183,16 +196,21 @@ describe("FileCoverage statements", () => {
             fileCoverage.logHit(elseIfCondition1);
 
             let coverageResults = fileCoverage.getCoverage();
-            expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(0);
+
+            // no functions or statements
+            expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.f).length).toEqual(0);
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.s).length).toEqual(0);
 
             let ifKey = fileCoverage.getStatementKey(statement);
-            let ifCoverage = coverageResults.branches[ifKey];
+            let ifCoverage = coverageResults.branchMap[ifKey];
+            let ifHits = coverageResults.b[ifKey];
             expect(ifCoverage.locations.length).toEqual(3);
-            expect(ifCoverage.hits.length).toEqual(3);
-            expect(ifCoverage.hits[0]).toEqual(1);
-            expect(ifCoverage.hits[1]).toEqual(2);
-            expect(ifCoverage.hits[2]).toEqual(0);
+            expect(ifHits.length).toEqual(3);
+            expect(ifHits[0]).toEqual(1);
+            expect(ifHits[1]).toEqual(2);
+            expect(ifHits[2]).toEqual(0);
         });
 
         test("else branch", () => {
@@ -219,14 +237,17 @@ describe("FileCoverage statements", () => {
             fileCoverage.logHit(elseBlock);
 
             let coverageResults = fileCoverage.getCoverage();
-            expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(0);
+            // no functions or statements
+            expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.f).length).toEqual(0);
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.s).length).toEqual(0);
 
             let statementKey = fileCoverage.getStatementKey(statement);
-            let statementCoverage = coverageResults.branches[statementKey];
+            let statementHits = coverageResults.b[statementKey];
 
-            expect(statementCoverage.hits.length).toEqual(2);
-            expect(statementCoverage.hits[1]).toEqual(1);
+            expect(statementHits.length).toEqual(2);
+            expect(statementHits[1]).toEqual(1);
         });
     });
 
@@ -252,8 +273,10 @@ describe("FileCoverage statements", () => {
         fileCoverage.execute(statement);
 
         let coverageResults = fileCoverage.getCoverage();
-        expect(Object.keys(coverageResults.functions).length).toEqual(0);
-        expect(Object.keys(coverageResults.statements).length).toEqual(2);
+        expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.f).length).toEqual(0);
+        expect(Object.keys(coverageResults.statementMap).length).toEqual(2);
+        expect(Object.keys(coverageResults.s).length).toEqual(2);
     });
 
     test("For", () => {
@@ -327,14 +350,16 @@ describe("FileCoverage statements", () => {
         fileCoverage.logHit(statement.func.body);
 
         let coverageResults = fileCoverage.getCoverage();
-        expect(Object.keys(coverageResults.statements).length).toEqual(0); // Block
+        expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.s).length).toEqual(0);
 
-        let statementKeys = Object.keys(coverageResults.functions);
+        let statementKeys = Object.keys(coverageResults.fnMap);
         expect(statementKeys.length).toEqual(1);
 
-        let statementCoverage = coverageResults.functions[statementKeys[0]];
-        expect(locationEqual(statementCoverage.location, statement.location)).toBeTruthy();
-        expect(statementCoverage.hits).toEqual(1);
+        let statementCoverage = coverageResults.fnMap[statementKeys[0]];
+        let statementHits = coverageResults.f[statementKeys[0]];
+        expect(locationEqual(statementCoverage.loc, statement.location)).toBeTruthy();
+        expect(statementHits).toEqual(1);
     });
 
     test("Return", () => {

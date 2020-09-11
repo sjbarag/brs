@@ -35,9 +35,14 @@ describe("FileCoverage expressions", () => {
         expect(fileCoverage.statements.get(key).hits).toEqual(1);
 
         let coverageResults = fileCoverage.getCoverage();
-        expect(Object.keys(coverageResults.branches).length).toEqual(0);
-        expect(Object.keys(coverageResults.functions).length).toEqual(0);
-        expect(Object.keys(coverageResults.statements).length).toEqual(
+        expect(Object.keys(coverageResults.branchMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.b).length).toEqual(0);
+        expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.f).length).toEqual(0);
+        expect(Object.keys(coverageResults.statementMap).length).toEqual(
+            expectedNumCoverageStatements
+        );
+        expect(Object.keys(coverageResults.s).length).toEqual(
             expectedNumCoverageStatements
         );
     }
@@ -54,9 +59,13 @@ describe("FileCoverage expressions", () => {
             fileCoverage.evaluate(expression);
 
             let coverageResults = fileCoverage.getCoverage();
-            expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(0);
-            expect(Object.keys(coverageResults.branches).length).toEqual(0); // less than is not a branch, so don't count it
+            expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.f).length).toEqual(0);
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.s).length).toEqual(0);
+            // less than is not a branch, so don't count it
+            expect(Object.keys(coverageResults.branchMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.b).length).toEqual(0);
         });
 
         describe("and", () => {
@@ -72,16 +81,19 @@ describe("FileCoverage expressions", () => {
                 fileCoverage.logHit(expression.left);
 
                 let coverageResults = fileCoverage.getCoverage();
-                expect(Object.keys(coverageResults.functions).length).toEqual(0);
-                expect(Object.keys(coverageResults.statements).length).toEqual(0);
+                expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+                expect(Object.keys(coverageResults.f).length).toEqual(0);
+                expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+                expect(Object.keys(coverageResults.s).length).toEqual(0);
 
                 let key = fileCoverage.getStatementKey(expression);
-                let branch = coverageResults.branches[key];
+                let branch = coverageResults.branchMap[key];
+                let branchHits = coverageResults.b[key];
 
                 expect(branch.type).toEqual("And");
-                expect(branch.hits[0]).toEqual(1);
+                expect(branchHits[0]).toEqual(1);
                 expect(locationEqual(branch.locations[0], generateLocation(1))).toBeTruthy();
-                expect(branch.hits[1]).toEqual(0);
+                expect(branchHits[1]).toEqual(0);
                 expect(locationEqual(branch.locations[1], generateLocation(2))).toBeTruthy();
             });
 
@@ -98,16 +110,19 @@ describe("FileCoverage expressions", () => {
                 fileCoverage.logHit(expression.right);
 
                 let coverageResults = fileCoverage.getCoverage();
-                expect(Object.keys(coverageResults.functions).length).toEqual(0);
-                expect(Object.keys(coverageResults.statements).length).toEqual(0);
+                expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+                expect(Object.keys(coverageResults.f).length).toEqual(0);
+                expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+                expect(Object.keys(coverageResults.s).length).toEqual(0);
 
                 let key = fileCoverage.getStatementKey(expression);
-                let branch = coverageResults.branches[key];
+                let branch = coverageResults.branchMap[key];
+                let branchHits = coverageResults.b[key];
 
                 expect(branch.type).toEqual("And");
-                expect(branch.hits[0]).toEqual(1);
+                expect(branchHits[0]).toEqual(1);
                 expect(locationEqual(branch.locations[0], generateLocation(1))).toBeTruthy();
-                expect(branch.hits[1]).toEqual(1);
+                expect(branchHits[1]).toEqual(1);
                 expect(locationEqual(branch.locations[1], generateLocation(2))).toBeTruthy();
             });
         });
@@ -125,16 +140,19 @@ describe("FileCoverage expressions", () => {
             fileCoverage.logHit(expression.left);
 
             let coverageResults = fileCoverage.getCoverage();
-            expect(Object.keys(coverageResults.functions).length).toEqual(0);
-            expect(Object.keys(coverageResults.statements).length).toEqual(0);
+            expect(Object.keys(coverageResults.fnMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.f).length).toEqual(0);
+            expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+            expect(Object.keys(coverageResults.s).length).toEqual(0);
 
             let key = fileCoverage.getStatementKey(expression);
-            let branch = coverageResults.branches[key];
+            let branch = coverageResults.branchMap[key];
+            let branchHits = coverageResults.b[key];
 
             expect(branch.type).toEqual("Or");
-            expect(branch.hits[0]).toEqual(2);
+            expect(branchHits[0]).toEqual(2);
             expect(locationEqual(branch.locations[0], generateLocation(1))).toBeTruthy();
-            expect(branch.hits[1]).toEqual(0);
+            expect(branchHits[1]).toEqual(0);
             expect(locationEqual(branch.locations[1], generateLocation(2))).toBeTruthy();
         });
     });
@@ -167,9 +185,12 @@ describe("FileCoverage expressions", () => {
         expect(fileCoverage.statements.get(key).hits).toEqual(1);
 
         let coverageResults = fileCoverage.getCoverage();
-        expect(Object.keys(coverageResults.branches).length).toEqual(0);
-        expect(Object.keys(coverageResults.functions).length).toEqual(1);
-        expect(Object.keys(coverageResults.statements).length).toEqual(0);
+        expect(Object.keys(coverageResults.branchMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.b).length).toEqual(0);
+        expect(Object.keys(coverageResults.fnMap).length).toEqual(1);
+        expect(Object.keys(coverageResults.f).length).toEqual(1);
+        expect(Object.keys(coverageResults.statementMap).length).toEqual(0);
+        expect(Object.keys(coverageResults.s).length).toEqual(0);
     });
 
     test("DottedGet", () => {

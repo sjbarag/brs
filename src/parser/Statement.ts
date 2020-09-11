@@ -3,7 +3,6 @@ import { Token, Identifier, Location, Lexeme } from "../lexer";
 import { BrsType, BrsInvalid } from "../brsTypes";
 import { InvalidZone } from "luxon";
 import { AstNode } from "./AstNode";
-import { Stmt } from ".";
 
 /** A set of reasons why a `Block` stopped executing. */
 export * from "./BlockEndReason";
@@ -52,7 +51,7 @@ let statementTypes = new Set<string>([
  * Returns a boolean of whether or not the given object is a Statement.
  * @param obj object to check
  */
-export function isStatement(obj: Expr.Expression | Stmt.Statement) {
+export function isStatement(obj: Expr.Expression | Statement) {
     // This is to play nice with Typescript. We know that implementations of Statements
     // and Expressions also extend AstNode, but Typescript doesn't know that.
     let ast = (obj as unknown) as AstNode;

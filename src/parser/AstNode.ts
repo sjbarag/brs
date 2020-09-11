@@ -19,5 +19,5 @@ export abstract class AstNode {
     public get loc() {
         return this.location;
     }
-    public location!: Location;
+    public abstract location: Location;
 }

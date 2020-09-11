@@ -43,7 +43,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     getStatementKey(statement: Expr.Expression | Stmt.Statement) {
         let { start, end } = statement.location;
         let kind = isStatement(statement) ? "stmt" : "expr";
-        return `${kind}:${(statement as any).type}:${start.line},${start.column}-${end.line},${
+        return `${kind}:${statement.type}:${start.line},${start.column}-${end.line},${
             end.column
         }`;
     }

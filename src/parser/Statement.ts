@@ -51,19 +51,17 @@ let statementTypes = new Set<string>([
  * Returns a boolean of whether or not the given object is a Statement.
  * @param obj object to check
  */
-export function isStatement(obj: Expr.Expression | Statement) {
+export function isStatement(obj: Expr.Expression | Statement): obj is Statement {
     // This is to play nice with Typescript. We know that implementations of Statements
     // and Expressions also extend AstNode, but Typescript doesn't know that.
-    let ast = (obj as unknown) as AstNode;
-
-    if (ast.type === "Function") {
-        return ast instanceof Function;
+    if (obj.type === "Function") {
+        return obj instanceof Function;
     }
-    return statementTypes.has(ast.type);
+    return statementTypes.has(obj.type);
 }
 
 /** A BrightScript statement */
-export interface Statement {
+export interface Statement extends AstNode {
     /**
      * Handles the enclosing `Statement` with `visitor`.
      * @param visitor the `Visitor` that will handle the enclosing `Statement`
@@ -71,9 +69,6 @@ export interface Statement {
      *          the statement exited (typically `StopReason.End`)
      */
     accept<R>(visitor: Visitor<R>): BrsType;
-
-    /** The starting and ending location of the expression. */
-    location: Location;
 }
 
 export class Assignment extends AstNode implements Statement {

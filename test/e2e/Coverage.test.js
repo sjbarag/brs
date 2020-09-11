@@ -2,6 +2,13 @@ const path = require("path");
 const { execute, getCoverageResults } = require("../../lib");
 const { createMockStreams, resourceFile } = require("./E2ETests");
 
+jest.mock("fast-glob");
+jest.mock("fs");
+const fg = require("fast-glob");
+const fs = require("fs");
+
+const realFs = jest.requireActual("fs");
+
 describe("coverage", () => {
     let outputStreams;
 
@@ -10,7 +17,22 @@ describe("coverage", () => {
         outputStreams.root = __dirname + "/resources";
     });
 
+    beforeEach(() => {
+        fg.sync.mockImplementation(() => {
+            return ["main.brs"];
+        });
+
+        fs.readFile.mockImplementation((filename, _, cb) => {
+            resourcePath = path.join(__dirname, "resources", "components", "coverage", filename);
+            realFs.readFile(resourcePath, "utf8", (err, contents) => {
+                cb(/* no error */ null, contents || "");
+            });
+        });
+    });
+
     afterEach(() => {
+        fg.sync.mockRestore();
+        fs.readFile.mockRestore();
         jest.resetAllMocks();
     });
 
@@ -19,27 +41,11 @@ describe("coverage", () => {
     });
 
     test("matches snapshot", async () => {
-        await execute([resourceFile("components", "coverage", "main.brs")], {
+        await execute(["main.brs"], {
             generateCoverage: true,
             ...outputStreams,
         });
-        let filePath = path.join(__dirname, "resources", "components", "coverage", "main.brs");
-        let coverage = getCoverageResults()[filePath];
-
-        // zero out the filenames in the locations so that it passes on any machine
-        ["statements", "functions"].forEach((key) => {
-            Object.keys(coverage[key]).forEach((stmtKey) => {
-                coverage[key][stmtKey].location.file = "";
-            });
-        });
-        Object.keys(coverage.branches).forEach((stmtKey) => {
-            coverage.branches[stmtKey].locations = coverage.branches[stmtKey].locations.map(
-                (loc) => {
-                    loc.file = "";
-                    return loc;
-                }
-            );
-        });
+        let coverage = getCoverageResults()["main.brs"];
 
         expect(coverage).toMatchSnapshot();
     });

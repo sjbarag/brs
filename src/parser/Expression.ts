@@ -18,16 +18,13 @@ export interface Visitor<T> {
 }
 
 /** A BrightScript expression */
-export interface Expression {
+export interface Expression extends AstNode {
     /**
      * Handles the enclosing `Expression` with `visitor`.
      * @param visitor the `Visitor` that will handle the enclosing `Expression`
      * @returns the BrightScript value resulting from evaluating the expression
      */
     accept<R>(visitor: Visitor<R>): R;
-
-    /** The starting and ending location of the expression. */
-    location: Location;
 }
 
 export class Binary extends AstNode implements Expression {

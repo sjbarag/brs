@@ -12,6 +12,7 @@ import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
+import { CoverageCollector } from "./coverage";
 
 import * as _lexer from "./lexer";
 export { _lexer as lexer };
@@ -22,6 +23,8 @@ import * as _parser from "./parser";
 export { _parser as parser };
 import { URL } from "url";
 import * as path from "path";
+
+let coverageCollector: CoverageCollector | null = null;
 
 /**
  * Executes a BrightScript file by path and writes its output to the streams
@@ -63,8 +66,22 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         throw new Error("Unable to build interpreter.");
     }
 
+    if (executionOptions.generateCoverage) {
+        coverageCollector = new CoverageCollector(executionOptions.root, lexerParserFn);
+        await coverageCollector.crawlBrsFiles();
+        interpreter.setCoverageCollector(coverageCollector);
+    }
+
     let mainStatements = await lexerParserFn(filenames);
     return interpreter.exec(mainStatements);
+}
+
+/**
+ * Returns a summary of the code coverage.
+ */
+export function getCoverageResults() {
+    if (!coverageCollector) return;
+    return coverageCollector.getCoverage();
 }
 
 /**

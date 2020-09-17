@@ -229,7 +229,7 @@ print mock.results ' => [ "foo", "bar" ]
 
 Returns the name of the mock.
 
-```
+```brightscript
 mock = _brs_.mockFunction("fooBar", function()
     return "hello, world"
 end function)

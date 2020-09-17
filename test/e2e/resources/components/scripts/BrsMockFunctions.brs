@@ -35,6 +35,26 @@ sub init()
 
     ' Will trigger a console.error warning that it doesn't exist in source.
     print thisFuncDoesNotExist() ' => "doesn't exist in source yet here i am"
+
+    spy = _brs_.mockFunction("spyOnMe", function(arg1 as string, arg2 as integer) as string
+        return "mocked implementation!"
+    end function)
+
+    spyOnMe("first string", 123)
+    print spy.calls.count() ' => 1
+    print spy.calls[0].count() ' => 2
+    print spy.calls[0][0] ' => "first string"
+    print spy.calls[0][1] ' => 123
+    print spy.results.count() ' => 1
+    print spy.results[0] ' => "mocked implementation!"
+
+    spyOnMe("second string", 456)
+    print spy.calls.count() ' => 2
+    print spy.calls[1].count() ' => 2
+    print spy.calls[1][0] ' => "second string"
+    print spy.calls[1][1] ' => 456
+    print spy.results.count() ' => 2
+    print spy.results[1] ' => "mocked implementation!"
 end sub
 
 function mockMe()
@@ -43,4 +63,8 @@ end function
 
 function foo()
     return "Named foo"
+end function
+
+function spyOnMe(arg1 as string, arg2 as integer)
+    return "original return value!"
 end function

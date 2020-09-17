@@ -62,6 +62,18 @@ describe("end to end brightscript functions", () => {
             "--inline foo--",
             "--inline foo--",
             "doesn't exist in source yet here i am",
+            "1",
+            "2",
+            "first string",
+            "123",
+            "1",
+            "mocked implementation!",
+            "2",
+            "2",
+            "second string",
+            "456",
+            "2",
+            "mocked implementation!",
         ]);
 
         // split the warning because the line number output is user-specific.

@@ -62,6 +62,7 @@ describe("end to end brightscript functions", () => {
             "--inline foo--",
             "--inline foo--",
             "doesn't exist in source yet here i am",
+            "spyOnMe",
             "1",
             "2",
             "first string",

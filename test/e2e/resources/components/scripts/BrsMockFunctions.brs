@@ -40,6 +40,8 @@ sub init()
         return "mocked implementation!"
     end function)
 
+    print spy.getMockName() ' => "spyOnMe"
+
     spyOnMe("first string", 123)
     print spy.calls.count() ' => 1
     print spy.calls[0].count() ' => 2

@@ -174,12 +174,67 @@ _brs_.mockComponent("ComponentName", {
 
 ### `_brs_.mockFunction`
 
-Allows you to mock a function. Usage:
+Allows you to mock a function. It also returns a Mock Function Node (also known as a "spy") that keeps track of calls and return values. Usage:
 
 ```brightscript
-_brs_.mockFunction("FunctionName", sub()
+mock = _brs_.mockFunction("FunctionName", sub()
     print "foobar"
 end sub)
+```
+
+#### Mock Function Node API
+
+The Mock Function Node API is modeled after [Jest's `mockFn` API](https://jestjs.io/docs/en/mock-function-api). Methods:
+
+##### `mock.calls`
+
+An array containing the arguments of each call to this function. Each item in the array is an array of the arguments for that call.
+
+For example:
+```brightscript
+mock = _brs_.mockFunction("fooBar", function(arg1 as string, arg2 as integer)
+    print "fooBar"
+end function)
+
+fooBar("baz", 123)
+print mock.calls
+' [
+'     ["baz", 123]
+' ]
+
+fooBar("lorem", 456)
+print mock.calls
+' [
+'     ["baz", 123]
+'     ["lorem", 456]
+' ]
+```
+
+##### `mock.results`
+
+An array containing the return value for each call to this function. For example:
+```brightscript
+mock = _brs_.mockFunction("fooBar", function(arg as boolean)
+    if arg then return "foo" : else return "bar" : end if
+end function)
+
+fooBar(true)
+print mock.results ' => [ "foo" ]
+
+fooBar(false)
+print mock.results ' => [ "foo", "bar" ]
+```
+
+##### `mock.getMockName()`
+
+Returns the name of the mock.
+
+```
+mock = _brs_.mockFunction("fooBar", function()
+    return "hello, world"
+end function)
+
+print mock.getMockName() ' => "fooBar"
 ```
 
 ### `_brs_.resetMocks`

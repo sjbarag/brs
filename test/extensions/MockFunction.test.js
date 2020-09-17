@@ -2,6 +2,7 @@ const brs = require("brs");
 const { ValueKind, Callable, BrsString, RoSGNode, StdlibArgument } = brs.types;
 const { Interpreter } = require("../../lib/interpreter");
 const { mockFunction } = require("../../lib/extensions/mockFunction");
+const { RoAssociativeArray } = require("../../lib/brsTypes/components/RoAssociativeArray");
 
 describe("MockFunction", () => {
     describe("methods", () => {
@@ -54,8 +55,8 @@ describe("MockFunction", () => {
                 mockSpy = mockFunction.call(interpreter, ...mockArgs);
             });
 
-            it("should return a MockFunction node", () => {
-                expect(mockSpy).toBeInstanceOf(RoSGNode);
+            it("should return an associative array", () => {
+                expect(mockSpy).toBeInstanceOf(RoAssociativeArray);
             });
 
             it("getMockName", () => {
@@ -86,14 +87,14 @@ describe("MockFunction", () => {
                 expect(results[0].value).toEqual("foo");
             });
 
-            it("mockReset", () => {
+            it("clearMock", () => {
                 let mockFromInterpreter = interpreter.environment.getMockFunction("testfunction");
                 mockFromInterpreter.getAllSignatureMismatches(mockArgs);
                 mockFromInterpreter.call(interpreter, new BrsString("bar"));
 
-                let mockReset = mockSpy.get(new BrsString("mockReset"));
-                mockReset.getAllSignatureMismatches([new BrsString("mockReset")]);
-                mockReset.call(interpreter);
+                let clearMock = mockSpy.get(new BrsString("clearMock"));
+                clearMock.getAllSignatureMismatches([new BrsString("clearMock")]);
+                clearMock.call(interpreter);
 
                 let results = mockSpy.get(new BrsString("results")).getElements();
                 let calls = mockSpy.get(new BrsString("calls")).getElements();

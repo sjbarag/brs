@@ -4,46 +4,30 @@ import {
     Callable,
     StdlibArgument,
     ValueKind,
-    RoSGNode,
-    FieldModel,
     SignatureAndImplementation,
     BrsString,
     RoArray,
+    RoAssociativeArray,
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 import { Stmt } from "../parser";
 
-export class MockFunction extends RoSGNode {
-    readonly defaultFields: FieldModel[] = [
-        { name: "calls", type: "array" },
-        { name: "results", type: "array" },
-    ];
+export class MockFunction extends RoAssociativeArray {
+    private calls = new RoArray([]);
+    private results = new RoArray([]);
     private func: Callable;
     private name: BrsString;
 
     constructor(name: BrsString, func: Callable) {
-        super([], "MockFunction");
+        super([]);
+
         this.name = name;
         this.func = func;
 
-        this.registerDefaultFields(this.defaultFields);
-        this.appendMethods([this.mockReset, this.getMockName]);
-    }
-
-    private addCall(interpreter: Interpreter, args: any[]) {
-        let calls = this.get(new BrsString("calls"));
-        if (calls instanceof RoArray) {
-            let push = calls.getMethod("push");
-            push?.call(interpreter, new RoArray(args));
-        }
-    }
-
-    private addResult(interpreter: Interpreter, value: BrsType) {
-        let results = this.get(new BrsString("results"));
-        if (results instanceof RoArray) {
-            let push = results.getMethod("push");
-            push?.call(interpreter, value);
-        }
+        this.set(new BrsString("calls"), this.calls);
+        this.set(new BrsString("results"), this.results);
+        this.set(new BrsString("clearMock"), this.clearMock);
+        this.set(new BrsString("getMockName"), this.getMockName);
     }
 
     /**
@@ -54,19 +38,24 @@ export class MockFunction extends RoSGNode {
             return {
                 signature: sigAndImpl.signature,
                 impl: (interpreter: Interpreter, ...args: any[]) => {
-                    this.addCall(interpreter, args);
+                    // add the arguments to our calls array
+                    this.calls.getValue().push(new RoArray(args));
+
                     let result: BrsType = BrsInvalid.Instance;
                     try {
                         result = this.func.call(interpreter, ...args);
                     } catch (err) {
                         if (err instanceof Stmt.ReturnValue && err.value) {
-                            this.addResult(interpreter, err.value);
+                            // add the result to our results array
+                            this.results.getValue().push(err.value);
                         }
                         // re-throw error to continue normal execution
                         throw err;
                     }
 
-                    this.addResult(interpreter, result);
+                    // add the result to our results array
+                    this.results.getValue().push(result);
+
                     return result;
                 },
             };
@@ -75,20 +64,14 @@ export class MockFunction extends RoSGNode {
     }
 
     /** Clears the calls array and results array. */
-    private mockReset = new Callable("mockReset", {
+    private clearMock = new Callable("clearMock", {
         signature: {
             args: [],
             returns: ValueKind.Invalid,
         },
         impl: (interpreter: Interpreter) => {
-            ["calls", "results"].forEach((fieldName) => {
-                let field = this.get(new BrsString(fieldName));
-                if (field instanceof RoArray) {
-                    let clear = field.getMethod("clear");
-                    clear?.call(interpreter);
-                }
-            });
-
+            this.calls.getMethod("clear")?.call(interpreter);
+            this.results.getMethod("clear")?.call(interpreter);
             return BrsInvalid.Instance;
         },
     });

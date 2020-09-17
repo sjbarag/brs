@@ -51,7 +51,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("mock-functions-main.brs", async () => {
+    test.only("mock-functions-main.brs", async () => {
         let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         await execute([resourceFile("mock-functions-main.brs")], outputStreams);
 
@@ -75,6 +75,8 @@ describe("end to end brightscript functions", () => {
             "456",
             "2",
             "mocked implementation!",
+            "0",
+            "0",
         ]);
 
         // split the warning because the line number output is user-specific.

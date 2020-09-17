@@ -174,67 +174,86 @@ _brs_.mockComponent("ComponentName", {
 
 ### `_brs_.mockFunction`
 
-Allows you to mock a function. It also returns a Mock Function Node (also known as a "spy") that keeps track of calls and return values. Usage:
+Allows you to mock a function. It also returns an associative array "spy" that keeps track of calls and return values. Usage:
 
 ```brightscript
-mock = _brs_.mockFunction("FunctionName", sub()
+spy = _brs_.mockFunction("FunctionName", sub()
     print "foobar"
 end sub)
 ```
 
-#### Mock Function Node API
+#### Spy API
 
-The Mock Function Node API is modeled after [Jest's `mockFn` API](https://jestjs.io/docs/en/mock-function-api). Methods:
+The Spy API is modeled after [Jest's `mockFn` API](https://jestjs.io/docs/en/mock-function-api). Methods:
 
-##### `mock.calls`
+##### `spy.calls`
 
 An array containing the arguments of each call to this function. Each item in the array is an array of the arguments for that call.
 
 For example:
 ```brightscript
-mock = _brs_.mockFunction("fooBar", function(arg1 as string, arg2 as integer)
+spy = _brs_.mockFunction("fooBar", function(arg1 as string, arg2 as integer)
     print "fooBar"
 end function)
 
 fooBar("baz", 123)
-print mock.calls
+print spy.calls
 ' [
 '     ["baz", 123]
 ' ]
 
 fooBar("lorem", 456)
-print mock.calls
+print spy.calls
 ' [
 '     ["baz", 123]
 '     ["lorem", 456]
 ' ]
 ```
 
-##### `mock.results`
+##### `spy.results`
 
 An array containing the return value for each call to this function. For example:
+
 ```brightscript
-mock = _brs_.mockFunction("fooBar", function(arg as boolean)
+spy = _brs_.mockFunction("fooBar", function(arg as boolean)
     if arg then return "foo" : else return "bar" : end if
 end function)
 
 fooBar(true)
-print mock.results ' => [ "foo" ]
+print spy.results ' => [ "foo" ]
 
 fooBar(false)
-print mock.results ' => [ "foo", "bar" ]
+print spy.results ' => [ "foo", "bar" ]
 ```
 
-##### `mock.getMockName()`
+##### `spy.clearMock()`
+
+Clears the `calls` and `results` arrays. Does not affect the mock implementation.
+
+```brightscript
+spy = _brs_.mockFunction("fooBar", function()
+    return "hello, world"
+end function)
+
+fooBar()
+print spy.calls.count()   ' => 1
+print spy.results.count() ' => 1
+
+spy.clearMock()
+print spy.calls.count()   ' => 0
+print spy.results.count() ' => 0
+```
+
+##### `spy.getMockName()`
 
 Returns the name of the mocked function.
 
 ```brightscript
-mock = _brs_.mockFunction("fooBar", function()
+spy = _brs_.mockFunction("fooBar", function()
     return "hello, world"
 end function)
 
-print mock.getMockName() ' => "fooBar"
+print spy.getMockName() ' => "fooBar"
 ```
 
 ### `_brs_.resetMocks`

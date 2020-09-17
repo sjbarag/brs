@@ -57,6 +57,10 @@ sub init()
     print spy.calls[1][1] ' => 456
     print spy.results.count() ' => 2
     print spy.results[1] ' => "mocked implementation!"
+
+    spy.clearMock()
+    print spy.calls.count() ' => 0
+    print spy.results.count() ' => 0
 end sub
 
 function mockMe()

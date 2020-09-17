@@ -227,7 +227,7 @@ print mock.results ' => [ "foo", "bar" ]
 
 ##### `mock.getMockName()`
 
-Returns the name of the mock.
+Returns the name of the mocked function.
 
 ```brightscript
 mock = _brs_.mockFunction("fooBar", function()

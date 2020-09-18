@@ -51,7 +51,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test.only("mock-functions-main.brs", async () => {
+    test("mock-functions-main.brs", async () => {
         let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         await execute([resourceFile("mock-functions-main.brs")], outputStreams);
 

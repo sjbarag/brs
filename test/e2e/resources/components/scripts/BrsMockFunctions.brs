@@ -36,31 +36,31 @@ sub init()
     ' Will trigger a console.error warning that it doesn't exist in source.
     print thisFuncDoesNotExist() ' => "doesn't exist in source yet here i am"
 
-    spy = _brs_.mockFunction("spyOnMe", function(arg1 as string, arg2 as integer) as string
+    mock = _brs_.mockFunction("spyOnMe", function(arg1 as string, arg2 as integer) as string
         return "mocked implementation!"
     end function)
 
-    print spy.getMockName() ' => "spyOnMe"
+    print mock.getMockName() ' => "spyOnMe"
 
     spyOnMe("first string", 123)
-    print spy.calls.count() ' => 1
-    print spy.calls[0].count() ' => 2
-    print spy.calls[0][0] ' => "first string"
-    print spy.calls[0][1] ' => 123
-    print spy.results.count() ' => 1
-    print spy.results[0] ' => "mocked implementation!"
+    print mock.calls.count() ' => 1
+    print mock.calls[0].count() ' => 2
+    print mock.calls[0][0] ' => "first string"
+    print mock.calls[0][1] ' => 123
+    print mock.results.count() ' => 1
+    print mock.results[0] ' => "mocked implementation!"
 
     spyOnMe("second string", 456)
-    print spy.calls.count() ' => 2
-    print spy.calls[1].count() ' => 2
-    print spy.calls[1][0] ' => "second string"
-    print spy.calls[1][1] ' => 456
-    print spy.results.count() ' => 2
-    print spy.results[1] ' => "mocked implementation!"
+    print mock.calls.count() ' => 2
+    print mock.calls[1].count() ' => 2
+    print mock.calls[1][0] ' => "second string"
+    print mock.calls[1][1] ' => 456
+    print mock.results.count() ' => 2
+    print mock.results[1] ' => "mocked implementation!"
 
-    spy.clearMock()
-    print spy.calls.count() ' => 0
-    print spy.results.count() ' => 0
+    mock.clearMock()
+    print mock.calls.count() ' => 0
+    print mock.results.count() ' => 0
 end sub
 
 function mockMe()

@@ -34,4 +34,13 @@ describe("Runtime errors", () => {
             errOutput[0].includes("Attempting to retrieve property from non-iterable value")
         ).toBeTruthy();
     });
+
+    test("components/errors/illegal-index.brs", async () => {
+        await execute([resourceFile("components", "errors", "illegal-index.brs")], outputStreams);
+
+        let errOutput = allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n");
+        expect(
+            errOutput[0].includes("Attempting to retrieve property from iterable with illegal index type")
+        ).toBeTruthy();
+    });
 });

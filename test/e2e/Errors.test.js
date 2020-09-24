@@ -40,7 +40,9 @@ describe("Runtime errors", () => {
 
         let errOutput = allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n");
         expect(
-            errOutput[0].includes("Attempting to retrieve property from iterable with illegal index type")
+            errOutput[0].includes(
+                "Attempting to retrieve property from iterable with illegal index type"
+            )
         ).toBeTruthy();
     });
 });

@@ -1,7 +1,7 @@
 const { execute } = require("../../lib");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 
-describe("_brs_.runInScope", () => {
+describe("Runtime errors", () => {
     let outputStreams;
 
     beforeAll(() => {
@@ -17,15 +17,21 @@ describe("_brs_.runInScope", () => {
         jest.restoreAllMocks();
     });
 
-    test("components/runInScope/main.brs", async () => {
-        await execute([resourceFile("components", "runInScope", "main.brs")], outputStreams);
+    test("components/errors/dotted-get.brs", async () => {
+        await execute([resourceFile("components", "errors", "dotted-get.brs")], outputStreams);
 
         let errOutput = allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n");
         expect(
             errOutput[0].includes("Attempting to retrieve property from non-iterable value")
         ).toBeTruthy();
+    });
+
+    test("components/errors/indexed-get.brs", async () => {
+        await execute([resourceFile("components", "errors", "indexed-get.brs")], outputStreams);
+
+        let errOutput = allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n");
         expect(
-            errOutput[1].includes("Attempting to retrieve property from non-iterable value")
+            errOutput[0].includes("Attempting to retrieve property from non-iterable value")
         ).toBeTruthy();
     });
 });

@@ -80,7 +80,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -186,7 +186,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -285,7 +285,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,

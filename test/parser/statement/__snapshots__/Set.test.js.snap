@@ -223,7 +223,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -548,7 +548,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,

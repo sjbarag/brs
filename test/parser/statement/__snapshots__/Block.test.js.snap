@@ -246,7 +246,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -383,7 +383,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -770,7 +770,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,

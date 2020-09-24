@@ -206,7 +206,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -280,7 +280,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -359,7 +359,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -433,7 +433,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,

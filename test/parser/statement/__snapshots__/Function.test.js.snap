@@ -67,7 +67,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -182,7 +182,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -297,7 +297,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -412,7 +412,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -492,7 +492,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -787,7 +787,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -952,7 +952,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1115,7 +1115,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1348,7 +1348,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1465,7 +1465,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1541,7 +1541,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1664,7 +1664,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1738,7 +1738,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1825,7 +1825,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1899,7 +1899,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1973,7 +1973,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -2047,7 +2047,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -2127,7 +2127,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -2244,7 +2244,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -2320,7 +2320,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -2615,7 +2615,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -2780,7 +2780,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -2943,7 +2943,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -3223,7 +3223,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -3297,7 +3297,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,

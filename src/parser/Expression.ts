@@ -75,7 +75,7 @@ export class Function extends AstNode implements Expression {
         readonly returns: ValueKind,
         readonly body: Block,
         readonly keyword: Token,
-        readonly end: Token
+        readonly endKeyword: Token
     ) {
         super("Function");
     }
@@ -88,7 +88,7 @@ export class Function extends AstNode implements Expression {
         return {
             file: this.keyword.location.file,
             start: this.keyword.location.start,
-            end: this.end.location.end,
+            end: this.endKeyword.location.end,
         };
     }
 }

@@ -63,7 +63,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
     stdout: process.stdout,
     stderr: process.stderr,
     generateCoverage: false,
-    componentDirs: []
+    componentDirs: [],
 };
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {

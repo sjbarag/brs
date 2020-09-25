@@ -48,6 +48,7 @@ describe("callFunc", () => {
             "4",
             "arg5: ",
             "5",
+            "Inside parent function",
         ]);
 
         expect(allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n")).toEqual([

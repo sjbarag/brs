@@ -541,33 +541,39 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 // We need to search the callee's environment for this function rather than the caller's.
                 let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
 
-                // Only allow public functions (defined in the interface) to be called.
-                if (componentDef && functionname.value in componentDef.functions) {
-                    return interpreter.inSubEnv((subInterpreter) => {
-                        let functionToCall = subInterpreter.getCallableFunction(functionname.value);
-                        if (!functionToCall) {
-                            interpreter.stderr.write(
-                                `Ignoring attempt to call non-implemented function ${functionname}`
+                while (componentDef) {
+                    // Only allow public functions (defined in the interface) to be called.
+                    if (componentDef && functionname.value in componentDef.functions) {
+                        return interpreter.inSubEnv((subInterpreter) => {
+                            let functionToCall = subInterpreter.getCallableFunction(
+                                functionname.value
                             );
-                            return BrsInvalid.Instance;
-                        }
+                            if (!functionToCall) {
+                                interpreter.stderr.write(
+                                    `Ignoring attempt to call non-implemented function ${functionname}`
+                                );
+                                return BrsInvalid.Instance;
+                            }
 
-                        subInterpreter.environment.setM(this.m);
-                        subInterpreter.environment.setRootM(this.m);
+                            subInterpreter.environment.setM(this.m);
+                            subInterpreter.environment.setRootM(this.m);
 
-                        // Determine whether the function should get arguments or not.
-                        if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
-                            return functionToCall.call(subInterpreter, ...functionargs);
-                        } else {
-                            return functionToCall.call(subInterpreter);
-                        }
-                    }, componentDef.environment);
-                } else {
-                    interpreter.stderr.write(
-                        `Warning calling function in ${this.nodeSubtype}: no function interface specified for ${functionname}`
-                    );
+                            // Determine whether the function should get arguments or not.
+                            if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
+                                return functionToCall.call(subInterpreter, ...functionargs);
+                            } else {
+                                return functionToCall.call(subInterpreter);
+                            }
+                        }, componentDef.environment);
+                    }
+
+                    // Try the parent node if we can't find an implementation here
+                    componentDef = interpreter.environment.nodeDefMap.get(componentDef.extends);
                 }
 
+                interpreter.stderr.write(
+                    `Warning calling function in ${this.nodeSubtype}: no function interface specified for ${functionname}`
+                );
                 return BrsInvalid.Instance;
             },
         })

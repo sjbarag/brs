@@ -14,4 +14,6 @@ sub main()
     print "main: component privateFunc return value:" privateResult ' => invalid
 
     node.callFunc("voidFuncFiveArgs", 1, 2, 3, 4, 5)
+
+    print node.callFunc("parentFunc")
 end sub

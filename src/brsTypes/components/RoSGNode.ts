@@ -110,7 +110,7 @@ namespace FieldKind {
 }
 
 /** This is used to define a field (usually a default/built-in field in a component definition). */
-export type FieldModel = { name: string; type: string; value?: string; hidden?: boolean; };
+export type FieldModel = { name: string; type: string; value?: string; hidden?: boolean };
 
 export class Field {
     private permanentObservers: BrsCallback[] = [];
@@ -122,7 +122,7 @@ export class Field {
         private type: FieldKind,
         private alwaysNotify: boolean,
         private hidden: boolean = false
-    ) { }
+    ) {}
 
     toString(parent?: BrsType): string {
         return this.value.toString(parent);
@@ -526,15 +526,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     /**
      * Calls the function specified on this node.
      */
-    private callfunc = new Callable("callfunc",
+    private callfunc = new Callable(
+        "callfunc",
         ...Callable.variadic({
             signature: {
-                args: [
-                    new StdlibArgument("functionname", ValueKind.String)
-                ],
+                args: [new StdlibArgument("functionname", ValueKind.String)],
                 returns: ValueKind.Dynamic,
             },
-            impl: (interpreter: Interpreter, functionname: BrsString, ...functionargs: BrsType[]) => {
+            impl: (
+                interpreter: Interpreter,
+                functionname: BrsString,
+                ...functionargs: BrsType[]
+            ) => {
                 // We need to search the callee's environment for this function rather than the caller's.
                 let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
 
@@ -567,7 +570,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
                 return BrsInvalid.Instance;
             },
-        }));
+        })
+    );
 
     /** Removes all fields from the node */
     // ToDo: Built-in fields shouldn't be removed

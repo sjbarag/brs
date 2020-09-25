@@ -627,30 +627,6 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/CallFuncMain.brs", async () => {
-        await execute([resourceFile("components", "scripts", "CallFuncMain.brs")], outputStreams);
-
-        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
-            "component: inside componentFunction, args.test: ",
-            "123",
-            "component: componentField:",
-            "componentField value",
-            "component: mainField:",
-            "invalid",
-            "main: componentFunction return value success:",
-            "true",
-            "component: inside componentVoidFunction",
-            "main: componentVoidFunction return value:",
-            "invalid",
-            "main: componentPrivateFunction return value:",
-            "invalid",
-        ]);
-
-        expect(allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n")).toEqual([
-            "Warning calling function in CallFuncComponent: no function interface specified for componentPrivateFunction",
-        ]);
-    });
-
     test("components/ContentNode.brs", async () => {
         await execute([resourceFile("components", "scripts", "ContentNode.brs")], outputStreams);
 

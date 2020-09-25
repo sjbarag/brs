@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="CallFuncTestbed">
+    <script type="text/brightscript" uri="pkg:/components/call-func/scripts/CallFuncTestbed.brs" />
+    <interface>
+        <function name="voidFuncNoArgs" />
+        <function name="voidFuncFiveArgs" />
+        <function name="returnValFuncOneArg" />
+    </interface>
+</component>

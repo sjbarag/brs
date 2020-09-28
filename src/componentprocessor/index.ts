@@ -82,8 +82,12 @@ export class ComponentDefinition {
     }
 }
 
-export async function getComponentDefinitionMap(rootDir: string) {
-    const componentsPattern = rootDir + "/components/**/*.xml";
+export async function getComponentDefinitionMap(
+    rootDir: string = "",
+    additionalDirs: string[] = []
+) {
+    let searchString = `{components,${additionalDirs.join(",")}}`;
+    const componentsPattern = path.join(rootDir, searchString, "**", "*.xml");
     const xmlFiles: string[] = fg.sync(componentsPattern, {});
 
     let defs = xmlFiles.map((file) => new ComponentDefinition(file));

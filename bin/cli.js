@@ -17,10 +17,19 @@ program
         "The root directory from which `pkg:` paths will be resolved.",
         process.cwd()
     )
+    .option(
+        "-c, --component-dirs <directories>",
+        "Comma-separated list of additional directories beyond `components` to search for XML components",
+        (value) => value.split(","),
+        []
+    )
     .action(async (brsFiles, program) => {
         if (brsFiles.length > 0) {
             try {
-                await brs.execute(brsFiles, { root: program.root });
+                await brs.execute(brsFiles, {
+                    root: program.root,
+                    componentDirs: program.componentDirs,
+                });
             } catch (err) {
                 if (err.messages && err.messages.length) {
                     err.messages.forEach((message) => console.error(message));

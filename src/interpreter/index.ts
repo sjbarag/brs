@@ -45,11 +45,16 @@ import { CoverageCollector } from "../coverage";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
-    /** The base path for  */
+    /** The base path for the project. Default: process.cwd() */
     root: string;
+    /** The stdout stream that brs should use. Default: process.stdout. */
     stdout: NodeJS.WriteStream;
+    /** The stderr stream that brs should use. Default: process.stderr. */
     stderr: NodeJS.WriteStream;
+    /** Whether or not to collect coverage statistics. Default: false. */
     generateCoverage: boolean;
+    /** Additional directories to search for component definitions. Default: [] */
+    componentDirs: string[];
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
@@ -58,6 +63,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
     stdout: process.stdout,
     stderr: process.stderr,
     generateCoverage: false,
+    componentDirs: [],
 };
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {

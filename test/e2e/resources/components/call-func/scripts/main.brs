@@ -16,4 +16,6 @@ sub main()
     node.callFunc("voidFuncFiveArgs", 1, 2, 3, 4, 5)
 
     print node.callFunc("parentFunc")
+
+    print node.callFunc("overridenParentFunc")
 end sub

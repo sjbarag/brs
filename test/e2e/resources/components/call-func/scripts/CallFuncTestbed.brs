@@ -27,3 +27,7 @@ function privateFunc() as string
     print "component: inside privateFunction"
     return "private return value"
 end function
+
+function overridenParentFunc() as string
+    return "component: overriding parent func"
+end function

@@ -49,6 +49,7 @@ describe("callFunc", () => {
             "arg5: ",
             "5",
             "Inside parent function",
+            "component: overriding parent func",
         ]);
 
         expect(allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n")).toEqual([

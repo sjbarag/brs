@@ -3,5 +3,6 @@
     <script type="text/brightscript" uri="pkg:/components/call-func/scripts/CallFuncParent.brs" />
     <interface>
         <function name="parentFunc" />
+        <function name="overridenParentFunc" />
     </interface>
 </component>

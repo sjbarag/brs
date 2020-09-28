@@ -5,5 +5,6 @@
         <function name="voidFuncNoArgs" />
         <function name="voidFuncFiveArgs" />
         <function name="returnValFuncOneArg" />
+        <function name="overridenParentFunc" />
     </interface>
 </component>

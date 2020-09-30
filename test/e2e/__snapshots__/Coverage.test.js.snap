@@ -160,13 +160,13 @@ Object {
     },
   },
   "f": Object {
-    "expr:Function:9,13-11,15": 1,
-    "stmt:Function:17,0-19,7": 0,
-    "stmt:Function:2,0-14,7": 1,
-    "stmt:Function:22,0-44,7": 1,
+    "expr:Expr_Function:9,13-11,15": 1,
+    "stmt:Stmt_Function:17,0-19,7": 0,
+    "stmt:Stmt_Function:2,0-14,7": 1,
+    "stmt:Stmt_Function:22,0-44,7": 1,
   },
   "fnMap": Object {
-    "expr:Function:9,13-11,15": Object {
+    "expr:Expr_Function:9,13-11,15": Object {
       "decl": Object {
         "end": Object {
           "column": 16,
@@ -192,7 +192,7 @@ Object {
       },
       "name": "[Function]",
     },
-    "stmt:Function:17,0-19,7": Object {
+    "stmt:Stmt_Function:17,0-19,7": Object {
       "decl": Object {
         "end": Object {
           "column": 14,
@@ -218,7 +218,7 @@ Object {
       },
       "name": "unusedFunc",
     },
-    "stmt:Function:2,0-14,7": Object {
+    "stmt:Stmt_Function:2,0-14,7": Object {
       "decl": Object {
         "end": Object {
           "column": 8,
@@ -244,7 +244,7 @@ Object {
       },
       "name": "main",
     },
-    "stmt:Function:22,0-44,7": Object {
+    "stmt:Stmt_Function:22,0-44,7": Object {
       "decl": Object {
         "end": Object {
           "column": 12,

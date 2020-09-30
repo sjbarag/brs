@@ -257,7 +257,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -582,7 +582,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]

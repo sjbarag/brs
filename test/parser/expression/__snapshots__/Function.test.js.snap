@@ -129,7 +129,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -442,7 +442,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -625,7 +625,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -849,7 +849,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1100,7 +1100,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1194,7 +1194,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1329,7 +1329,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1423,7 +1423,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1517,7 +1517,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1652,7 +1652,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -1965,7 +1965,7 @@ Array [
         },
       ],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -2148,7 +2148,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -2372,7 +2372,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -2623,7 +2623,7 @@ Array [
         },
       ],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -2758,7 +2758,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -2860,7 +2860,7 @@ Array [
           },
           "parameters": Array [],
           "returns": 10,
-          "type": "Function",
+          "type": "Expr_Function",
         },
       ],
       "callee": Variable {

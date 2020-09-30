@@ -59,7 +59,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -78,7 +78,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Library {
       "tokens": Object {
@@ -228,7 +228,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -247,7 +247,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -413,7 +413,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -432,7 +432,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -553,7 +553,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -572,7 +572,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -718,7 +718,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -737,7 +737,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -827,7 +827,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -846,7 +846,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -951,7 +951,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -970,7 +970,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -1117,7 +1117,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1136,7 +1136,7 @@ Object {
         },
         "text": "main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }

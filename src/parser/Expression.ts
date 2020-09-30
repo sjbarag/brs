@@ -77,7 +77,7 @@ export class Function extends AstNode implements Expression {
         readonly keyword: Token,
         readonly endKeyword: Token
     ) {
-        super("Function");
+        super("Expr_Function");
     }
 
     accept<R>(visitor: Visitor<R>): R {

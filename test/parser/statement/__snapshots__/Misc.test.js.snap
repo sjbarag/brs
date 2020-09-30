@@ -122,7 +122,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -158,7 +158,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -177,7 +177,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -224,7 +224,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -260,7 +260,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -279,7 +279,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -361,7 +361,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -397,7 +397,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -416,7 +416,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -3534,7 +3534,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -3570,7 +3570,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -3589,7 +3589,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -4070,7 +4070,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -4106,7 +4106,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -4125,7 +4125,7 @@ Array [
       },
       "text": "Main",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;

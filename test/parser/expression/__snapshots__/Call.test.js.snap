@@ -206,7 +206,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -242,7 +242,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -261,7 +261,7 @@ Array [
       },
       "text": "DoThingOne",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
   Function {
     "func": Function {
@@ -280,7 +280,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -316,7 +316,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -335,7 +335,7 @@ Array [
       },
       "text": "DoThingTwo",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -359,7 +359,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -395,7 +395,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -414,7 +414,7 @@ Array [
       },
       "text": "DoThingOne",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
   Function {
     "func": Function {
@@ -433,7 +433,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -469,7 +469,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -488,7 +488,7 @@ Array [
       },
       "text": "DoThingTwo",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;

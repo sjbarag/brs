@@ -67,7 +67,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -103,7 +103,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -122,7 +122,7 @@ Object {
         },
         "text": "StringFunc#",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -182,7 +182,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -218,7 +218,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -237,7 +237,7 @@ Object {
         },
         "text": "IntegerFunc%",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -297,7 +297,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -333,7 +333,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -352,7 +352,7 @@ Object {
         },
         "text": "FloatFunc!",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -412,7 +412,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -448,7 +448,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -467,7 +467,7 @@ Object {
         },
         "text": "DoubleFunc#",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -492,7 +492,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -745,7 +745,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -763,7 +763,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -787,7 +787,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -910,7 +910,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -928,7 +928,7 @@ Array [
       },
       "text": "add2",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -952,7 +952,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1073,7 +1073,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1091,7 +1091,7 @@ Array [
       },
       "text": "repeat",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -1115,7 +1115,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1306,7 +1306,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1324,7 +1324,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -1348,7 +1348,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1382,7 +1382,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1400,7 +1400,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -1465,7 +1465,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1499,7 +1499,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1517,7 +1517,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -1541,7 +1541,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -1575,7 +1575,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1593,7 +1593,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -1664,7 +1664,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1700,7 +1700,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 10,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1719,7 +1719,7 @@ Object {
         },
         "text": "Main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -1738,7 +1738,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1774,7 +1774,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1793,7 +1793,7 @@ Object {
         },
         "text": "DoSomething",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -1825,7 +1825,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1861,7 +1861,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1880,7 +1880,7 @@ Object {
         },
         "text": "StringSub#",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -1899,7 +1899,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1935,7 +1935,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1954,7 +1954,7 @@ Object {
         },
         "text": "IntegerSub%",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -1973,7 +1973,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -2009,7 +2009,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -2028,7 +2028,7 @@ Object {
         },
         "text": "FloatSub!",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -2047,7 +2047,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -2083,7 +2083,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -2102,7 +2102,7 @@ Object {
         },
         "text": "DoubleSub#",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -2127,7 +2127,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -2161,7 +2161,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2179,7 +2179,7 @@ Array [
       },
       "text": "bar",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2244,7 +2244,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -2278,7 +2278,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2296,7 +2296,7 @@ Array [
       },
       "text": "foo",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2320,7 +2320,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -2573,7 +2573,7 @@ Array [
         },
       ],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2591,7 +2591,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2615,7 +2615,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -2738,7 +2738,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2756,7 +2756,7 @@ Array [
       },
       "text": "add2",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2780,7 +2780,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -2901,7 +2901,7 @@ Array [
         },
       ],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2919,7 +2919,7 @@ Array [
       },
       "text": "repeat",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2943,7 +2943,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -3134,7 +3134,7 @@ Array [
         },
       ],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -3152,7 +3152,7 @@ Array [
       },
       "text": "add",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -3223,7 +3223,7 @@ Object {
           ],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndFunction",
           "literal": undefined,
@@ -3259,7 +3259,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -3278,7 +3278,7 @@ Object {
         },
         "text": "Main",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
     Function {
       "func": Function {
@@ -3297,7 +3297,7 @@ Object {
           "statements": Array [],
           "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -3333,7 +3333,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
-        "type": "Function",
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -3352,7 +3352,7 @@ Object {
         },
         "text": "DoSomething",
       },
-      "type": "Function",
+      "type": "Stmt_Function",
     },
   ],
 }

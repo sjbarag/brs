@@ -1881,7 +1881,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -1917,7 +1917,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1936,7 +1936,7 @@ Array [
       },
       "text": "a",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2309,7 +2309,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -2345,7 +2345,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2364,7 +2364,7 @@ Array [
       },
       "text": "missingendif",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -6089,7 +6089,7 @@ Array [
               ],
               "type": "Block",
             },
-            "end": Object {
+            "endKeyword": Object {
               "isReserved": false,
               "kind": "EndSub",
               "literal": undefined,
@@ -6125,7 +6125,7 @@ Array [
             },
             "parameters": Array [],
             "returns": 11,
-            "type": "Function",
+            "type": "Expr_Function",
           },
         },
       ],
@@ -6578,7 +6578,7 @@ Array [
         ],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -6614,7 +6614,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
-      "type": "Function",
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -6633,7 +6633,7 @@ Array [
       },
       "text": "main",
     },
-    "type": "Function",
+    "type": "Stmt_Function",
   },
 ]
 `;

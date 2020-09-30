@@ -223,7 +223,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -257,7 +257,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]
@@ -548,7 +548,7 @@ Array [
         "statements": Array [],
         "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -582,7 +582,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
-      "type": "Function",
+      "type": "Expr_Function",
     },
   },
 ]

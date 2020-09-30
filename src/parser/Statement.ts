@@ -38,7 +38,7 @@ let statementTypes = new Set<string>([
     "For",
     "ForEach",
     "While",
-    "Function",
+    "Stmt_Function",
     "Return",
     "DottedSet",
     "IndexedSet",
@@ -52,9 +52,6 @@ let statementTypes = new Set<string>([
  * @param obj object to check
  */
 export function isStatement(obj: Expr.Expression | Statement): obj is Statement {
-    if (obj.type === "Function") {
-        return obj instanceof Function;
-    }
     return statementTypes.has(obj.type);
 }
 
@@ -180,7 +177,7 @@ export class ExitWhile extends AstNode implements Statement {
 
 export class Function extends AstNode implements Statement {
     constructor(readonly name: Identifier, readonly func: Expr.Function) {
-        super("Function");
+        super("Stmt_Function");
     }
 
     accept<R>(visitor: Visitor<R>): BrsType {

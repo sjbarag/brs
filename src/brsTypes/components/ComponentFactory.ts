@@ -11,6 +11,7 @@ import {
     ContentNode,
     Timer,
     Scene,
+    MiniKeyboard,
 } from "..";
 
 export enum BrsComponentName {
@@ -26,6 +27,7 @@ export enum BrsComponentName {
     ContentNode = "ContentNode",
     Timer = "Timer",
     Scene = "Scene",
+    MiniKeyboard = "MiniKeyboard",
 }
 
 // TODO: update with more components as they're implemented.
@@ -60,6 +62,8 @@ export class ComponentFactory {
                 return new Timer([], name);
             case BrsComponentName.Scene:
                 return new Scene([], name);
+            case BrsComponentName.MiniKeyboard:
+                return new MiniKeyboard([], name);
             default:
                 return;
         }

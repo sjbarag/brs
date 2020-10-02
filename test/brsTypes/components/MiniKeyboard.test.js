@@ -4,9 +4,9 @@ const { MiniKeyboard } = brs.types;
 describe("MiniKeyboard", () => {
     describe("stringification", () => {
         it("inits a new MiniKeyboard component", () => {
-            let scene = new MiniKeyboard();
+            let miniKeyboard = new MiniKeyboard();
 
-            expect(scene.toString()).toEqual(
+            expect(miniKeyboard.toString()).toEqual(
                 `<Component: roSGNode:MiniKeyboard> =
 {
     change: <Component: roAssociativeArray>

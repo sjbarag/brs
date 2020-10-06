@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="ResetMocksComponent">
+<component name="ResetMocks_Testbed">
     <interface>
         <field id="foo" type="string" value="bar" />
     </interface>

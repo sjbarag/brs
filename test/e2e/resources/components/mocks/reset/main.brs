@@ -9,17 +9,17 @@ sub Main()
     ' create mocks
     mockComponentsHelper()
 
-    node = createObject("RoSGNode", "ResetMocksComponent")
+    node = createObject("RoSGNode", "ResetMocks_Testbed")
     print node.foo ' => "fake"
 
     _brs_.resetMocks()
 
-    node = createObject("RoSGNode", "ResetMocksComponent")
+    node = createObject("RoSGNode", "ResetMocks_Testbed")
     print node.foo ' => "bar"
 
     mockFunctionsHelper()
     mockComponentsHelper()
-    node = createObject("RoSGNode", "ResetMocksComponent")
+    node = createObject("RoSGNode", "ResetMocks_Testbed")
 
     _brs_.resetMockFunctions()
 
@@ -30,7 +30,7 @@ sub Main()
     mockComponentsHelper()
 
     _brs_.resetMockComponents()
-    node = createObject("RoSGNode", "ResetMocksComponent")
+    node = createObject("RoSGNode", "ResetMocks_Testbed")
 
     print fooBar() ' => "fake"
     print node.foo ' => "bar"
@@ -48,7 +48,7 @@ function mockFunctionsHelper()
 end function
 
 function mockComponentsHelper()
-    _brs_.mockComponent("ResetMocksComponent", {
+    _brs_.mockComponent("ResetMocks_Testbed", {
         foo: "fake"
     })
 end function

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MockComponentPartial_NoMocks_Testbed">
+    <script type="text/brightscript" uri="./MockComponentPartial_NoMocks_Testbed.brs" />
+    <script type="text/brightscript" uri="./utils-A.brs" />
+    <script type="text/brightscript" uri="./utils-B.brs" />
+    <script type="text/brightscript" uri="./utils-C.brs" />
+    <children>
+    </children>
+</component>

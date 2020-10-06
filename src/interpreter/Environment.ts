@@ -340,22 +340,57 @@ export class Environment {
      */
     public resetMocks() {
         this.resetMockObjects();
-        this.resetMockFunctions();
+        this.resetUnscopedMockFunctions();
     }
 
     /**
      * resets all of the mocked objects in this environment
      */
     public resetMockObjects() {
+        this.mockObjects.forEach((mock, name) => {
+            this.resetMockObject(name);
+        });
         this.mockObjects.clear();
     }
 
     /**
-     * resets all of the mocked functions in this environment
+     * resets a single mocked object in this environment
      */
-    public resetMockFunctions() {
-        this.scopedMockFunctions.clear();
+    public resetMockObject(name: string) {
+        // Since partial-component mocks are actually just scoped function mocks,
+        // we need to go into this node's environment and remove all of the scoped mocks.
+        let nodeDef = this.nodeDefMap.get(name);
+        nodeDef?.environment?.resetScopedMockFunctions();
+
+        this.mockObjects.delete(name);
+    }
+
+    /**
+     * reset the unscoped (globally mocked) function that matches the given name
+     */
+    public resetUnscopedMockFunction(name: string) {
+        this.unscopedMockFunctions.delete(name);
+    }
+
+    /**
+     * resets all of the unscoped (globally mocked) functions
+     */
+    public resetUnscopedMockFunctions() {
         this.unscopedMockFunctions.clear();
+    }
+
+    /**
+     * reset the scoped (this environment only) function that matches the given name
+     */
+    public resetScopedMockFunction(name: string) {
+        this.scopedMockFunctions.delete(name);
+    }
+
+    /**
+     * resets all of the mocked functions *in this environment*
+     */
+    public resetScopedMockFunctions() {
+        this.scopedMockFunctions.clear();
     }
 
     /**

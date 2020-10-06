@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="BrsMockFunctions_Testbed">
+    <script type="text/brightscript" uri="./BrsMockFunctions_Testbed.brs" />
+</component>

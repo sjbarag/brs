@@ -22,8 +22,11 @@ describe("end to end brightscript functions", () => {
         jest.restoreAllMocks();
     });
 
-    test("mock-components-main.brs", async () => {
-        await execute([resourceFile("mock-components-main.brs")], outputStreams);
+    test("mocks/components/main.brs", async () => {
+        await execute(
+            [resourceFile("components", "mocks", "components", "main.brs")],
+            outputStreams
+        );
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "marking mock timespan",
@@ -51,9 +54,12 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("mock-functions-main.brs", async () => {
+    test("mocks/functions/main.brs", async () => {
         let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-        await execute([resourceFile("mock-functions-main.brs")], outputStreams);
+        await execute(
+            [resourceFile("components", "mocks", "functions", "main.brs")],
+            outputStreams
+        );
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
@@ -91,8 +97,11 @@ describe("end to end brightscript functions", () => {
         consoleErrorSpy.mockRestore();
     });
 
-    test("partial-mock-functions-main.brs", async () => {
-        await execute([resourceFile("partial-mock-functions-main.brs")], outputStreams);
+    test("mocks/components/partial/main.brs", async () => {
+        await execute(
+            [resourceFile("components", "mocks", "components", "partial", "main.brs")],
+            outputStreams
+        );
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "{fake:'json'}",
@@ -108,8 +117,8 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("reset-mocks.brs", async () => {
-        await execute([resourceFile("reset-mocks.brs")], outputStreams);
+    test("mocks/reset/main.brs", async () => {
+        await execute([resourceFile("components", "mocks", "reset", "main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "fake",

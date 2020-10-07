@@ -544,9 +544,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 // Only allow public functions (defined in the interface) to be called.
                 if (componentDef && functionname.value in componentDef.functions) {
                     return interpreter.inSubEnv((subInterpreter) => {
-                        let functionToCall = subInterpreter.getCallableFunction(
-                            functionname.value
-                        );
+                        let functionToCall = subInterpreter.getCallableFunction(functionname.value);
                         if (!functionToCall) {
                             interpreter.stderr.write(
                                 `Ignoring attempt to call non-implemented function ${functionname}`
@@ -1605,6 +1603,8 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     let fields = typeDef.fields;
     for (let [key, value] of Object.entries(fields)) {
         if (value instanceof Object) {
+            // Roku throws a run-time error if any fields are duplicated between inherited components.
+            // TODO: throw exception when fields are duplicated.
             let fieldName = new BrsString(key);
 
             let addField = node.getMethod("addField");

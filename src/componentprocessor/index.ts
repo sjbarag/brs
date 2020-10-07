@@ -129,7 +129,6 @@ async function processXmlTree(
                 }
             }
 
-            let inheritedFields: ComponentFields = {};
             let inheritedFunctions: ComponentFunctions = {};
             // pop the stack & build our component
             // we can safely assume nodes are valid ComponentDefinition objects
@@ -137,19 +136,14 @@ async function processXmlTree(
                 let newNodeDef = inheritanceStack.pop();
                 if (newNodeDef) {
                     if (newNodeDef.processed) {
-                        inheritedFields = newNodeDef.fields;
                         inheritedFunctions = newNodeDef.functions;
                     } else {
                         let nodeInterface = processInterface(newNodeDef.xmlNode!);
-                        // we will get run-time error if any fields are duplicated
-                        // between inherited components, but here we will retain
-                        // the original value without throwing an error for simplicity
-                        // TODO: throw exception when fields are duplicated.
-                        inheritedFields = { ...nodeInterface.fields, ...inheritedFields };
-                        inheritedFunctions = { ...nodeInterface.functions, ...inheritedFunctions };
+                        inheritedFunctions = { ...inheritedFunctions, ...nodeInterface.functions };
 
                         // We don't actually want our type definition to have inherited fields on it.
                         // Inherited fields will get added when we create the actual component.
+                        // We _do_ want inherited functions for callFunc.
                         newNodeDef.fields = nodeInterface.fields;
                         newNodeDef.functions = inheritedFunctions;
                         newNodeDef.processed = true;

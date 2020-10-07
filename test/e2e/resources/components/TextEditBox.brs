@@ -15,3 +15,4 @@ sub main()
     print "textEditBox width:" textEditBox.width
     print "textEditBox backgroundUri:" textEditBox.backgroundUri
 end sub
+

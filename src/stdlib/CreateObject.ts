@@ -35,8 +35,6 @@ export const CreateObject = new Callable("CreateObject", {
             objToMock = additionalArgs[0].toString();
         }
 
-        debugger;
-
         let possibleMock = interpreter.environment.getMockObject(objToMock.toLowerCase());
         if (possibleMock instanceof RoAssociativeArray) {
             return new MockNode(possibleMock, objToMock);

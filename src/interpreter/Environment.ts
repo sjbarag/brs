@@ -279,7 +279,6 @@ export class Environment {
      * @param objName the object to mock
      */
     public getMockObject(objName: string): BrsType {
-        debugger;
         return this.mockObjects.get(objName) || BrsInvalid.Instance;
     }
 
@@ -359,7 +358,6 @@ export class Environment {
      */
     public resetMockObject(name: string) {
         name = name.toLowerCase();
-        debugger;
         // Since partial-component mocks are actually just scoped function mocks,
         // we need to go into this node's environment and remove all of the scoped mocks.
         let nodeDef = this.nodeDefMap.get(name);

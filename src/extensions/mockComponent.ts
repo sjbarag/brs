@@ -17,7 +17,6 @@ export const mockComponent = new Callable("mockComponent", {
         returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, objToMock: BrsString, mock: RoAssociativeArray) => {
-        debugger;
         interpreter.environment.setMockObject(objToMock.toString(), mock);
         return BrsInvalid.Instance;
     },

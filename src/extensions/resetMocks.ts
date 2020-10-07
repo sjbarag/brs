@@ -51,7 +51,6 @@ export const resetMockComponent = new Callable("resetMockComponent", {
         returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, mockName: BrsString) => {
-        debugger;
         interpreter.environment.resetMockObject(mockName.toString());
         return BrsInvalid.Instance;
     },

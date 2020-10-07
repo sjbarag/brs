@@ -539,7 +539,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 ...functionargs: BrsType[]
             ) => {
                 // We need to search the callee's environment for this function rather than the caller's.
-                let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype.toLowerCase());
+                let componentDef = interpreter.environment.nodeDefMap.get(
+                    this.nodeSubtype.toLowerCase()
+                );
 
                 while (componentDef) {
                     // Only allow public functions (defined in the interface) to be called.
@@ -568,7 +570,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     }
 
                     // Try the parent node if we can't find an implementation here
-                    componentDef = interpreter.environment.nodeDefMap.get(componentDef.extends?.toLowerCase());
+                    componentDef = interpreter.environment.nodeDefMap.get(
+                        componentDef.extends?.toLowerCase()
+                    );
                 }
 
                 interpreter.stderr.write(

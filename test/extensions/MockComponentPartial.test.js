@@ -69,7 +69,9 @@ describe("mockComponentPartial", () => {
             mockComponentPartial.getAllSignatureMismatches(mockArgs);
             mockComponentPartial.call(interpreter, ...mockArgs);
 
-            let maybeComponent = interpreter.environment.nodeDefMap.get(mockName.value.toLowerCase());
+            let maybeComponent = interpreter.environment.nodeDefMap.get(
+                mockName.value.toLowerCase()
+            );
 
             expect(maybeComponent.environment.getMockFunction("test1")).toBe(mockFns[0].value);
             expect(maybeComponent.environment.getMockFunction("test2")).toBe(mockFns[1].value);

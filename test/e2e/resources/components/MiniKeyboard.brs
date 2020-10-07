@@ -27,4 +27,3 @@ sub main()
     print "miniKeyboard textEditBox text:" miniKeyboard.textEditBox.text
 end sub
 
-

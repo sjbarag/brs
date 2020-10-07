@@ -1525,10 +1525,10 @@ export const mGlobal = new RoSGNode([]);
 
 export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
     // If the requested component has been mocked, construct and return the mock instead
-    let maybeMock = interpreter.environment.getMockObject(type.value.toLowerCase());
+    let maybeMock = interpreter.environment.getMockObject(type.value);
     if (maybeMock instanceof RoAssociativeArray) {
         let mock: typeof MockNodeModule = require("../../extensions/MockNode");
-        return new mock.MockNode(maybeMock);
+        return new mock.MockNode(maybeMock, type.value);
     }
 
     // If this is a built-in component, then return it.

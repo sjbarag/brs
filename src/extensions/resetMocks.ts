@@ -29,8 +29,7 @@ export const resetMockFunction = new Callable("resetMockFunction", {
         returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, mockName: BrsString) => {
-        debugger;
-        interpreter.environment.resetUnscopedMockFunction(mockName.toString().toLowerCase());
+        interpreter.environment.resetUnscopedMockFunction(mockName.toString());
         return BrsInvalid.Instance;
     },
 });
@@ -52,7 +51,8 @@ export const resetMockComponent = new Callable("resetMockComponent", {
         returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, mockName: BrsString) => {
-        interpreter.environment.resetMockObject(mockName.toString().toLowerCase());
+        debugger;
+        interpreter.environment.resetMockObject(mockName.toString());
         return BrsInvalid.Instance;
     },
 });

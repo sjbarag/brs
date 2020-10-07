@@ -2,5 +2,6 @@
 <component name="ResetMocks_Testbed_2">
     <interface>
         <field id="foo" type="string" value="bar" />
+        <function name="funcTestbed" />
     </interface>
 </component>

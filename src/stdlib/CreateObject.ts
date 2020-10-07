@@ -32,12 +32,12 @@ export const CreateObject = new Callable("CreateObject", {
             additionalArgs[0] &&
             !(additionalArgs[0] instanceof BrsInvalid)
         ) {
-            objToMock = additionalArgs[0].toString().toLowerCase();
+            objToMock = additionalArgs[0].toString();
         }
 
         let possibleMock = interpreter.environment.getMockObject(objToMock);
         if (possibleMock instanceof RoAssociativeArray) {
-            return new MockNode(possibleMock);
+            return new MockNode(possibleMock, objToMock);
         }
 
         let ctor = BrsObjects.get(objName.value.toLowerCase());

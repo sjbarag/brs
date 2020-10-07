@@ -288,7 +288,7 @@ export class Environment {
      * @param mockValue the mock to return
      */
     public setMockObject(objName: string, mockValue: RoAssociativeArray): void {
-        this.mockObjects.set(objName.toLowerCase(), mockValue);
+        this.mockObjects.set(objName, mockValue);
     }
 
     /**
@@ -357,6 +357,7 @@ export class Environment {
      * resets a single mocked object in this environment
      */
     public resetMockObject(name: string) {
+        debugger;
         // Since partial-component mocks are actually just scoped function mocks,
         // we need to go into this node's environment and remove all of the scoped mocks.
         let nodeDef = this.nodeDefMap.get(name);
@@ -369,7 +370,7 @@ export class Environment {
      * reset the unscoped (globally mocked) function that matches the given name
      */
     public resetUnscopedMockFunction(name: string) {
-        this.unscopedMockFunctions.delete(name);
+        this.unscopedMockFunctions.delete(name.toLowerCase());
     }
 
     /**
@@ -383,7 +384,7 @@ export class Environment {
      * reset the scoped (this environment only) function that matches the given name
      */
     public resetScopedMockFunction(name: string) {
-        this.scopedMockFunctions.delete(name);
+        this.scopedMockFunctions.delete(name.toLowerCase());
     }
 
     /**

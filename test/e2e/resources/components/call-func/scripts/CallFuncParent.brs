@@ -1,5 +1,6 @@
 function parentFunc() as string
-    return "Inside parent function"
+    print "Inside parent function"
+    return privateFunc() ' this will work as long as we're in the child context
 end function
 
 function overridenParentFunc() as string

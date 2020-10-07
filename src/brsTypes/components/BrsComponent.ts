@@ -33,12 +33,12 @@ export class BrsComponent {
     }
 
     /** Appends a method to the component. */
-    protected appendMethod(index: string, method: Callable) {
+    appendMethod(index: string, method: Callable) {
         this.methods.set(index.toLowerCase(), method);
     }
 
     /** Given a list of methods, appends all of them to the component. */
-    protected appendMethods(methods: Callable[]) {
+    appendMethods(methods: Callable[]) {
         methods.forEach((m) => this.methods.set((m.name || "").toLowerCase(), m));
     }
 

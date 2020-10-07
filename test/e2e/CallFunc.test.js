@@ -49,6 +49,8 @@ describe("callFunc", () => {
             "arg5: ",
             "5",
             "Inside parent function",
+            "component: inside privateFunction",
+            "private return value",
             "component: overriding parent func",
         ]);
 

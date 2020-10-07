@@ -771,6 +771,39 @@ describe("end to end brightscript functions", () => {
             "true",
             "miniKeyboard lowerCase:",
             "true",
+            "miniKeyboard textEditBox text:",
+            "hello",
+        ]);
+    });
+
+    test("components/TextEditBox.brs", async () => {
+        await execute([resourceFile("components", "TextEditBox.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "textEditBox node type:",
+            "Node",
+            "textEditBox node subtype:",
+            "TextEditBox",
+            "textEditBox text:",
+            "hello",
+            "textEditBox hint text:",
+            "",
+            "textEditBox maxTextLength:",
+            "15",
+            "textEditBox cursorPosition:",
+            "0",
+            "textEditBox clearOnDownKey:",
+            "true",
+            "textEditBox active:",
+            "false",
+            "textEditBox textColor:",
+            "0x000000FF",
+            "textEditBox hintTextColor:",
+            "0x000000FF",
+            "textEditBox width:",
+            "-1",
+            "textEditBox backgroundUri:",
+            "",
         ]);
     });
 });

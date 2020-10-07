@@ -539,7 +539,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 ...functionargs: BrsType[]
             ) => {
                 // We need to search the callee's environment for this function rather than the caller's.
-                let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype);
+                let componentDef = interpreter.environment.nodeDefMap.get(this.nodeSubtype.toLowerCase());
 
                 while (componentDef) {
                     // Only allow public functions (defined in the interface) to be called.
@@ -568,7 +568,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     }
 
                     // Try the parent node if we can't find an implementation here
-                    componentDef = interpreter.environment.nodeDefMap.get(componentDef.extends);
+                    componentDef = interpreter.environment.nodeDefMap.get(componentDef.extends?.toLowerCase());
                 }
 
                 interpreter.stderr.write(
@@ -1525,7 +1525,7 @@ export const mGlobal = new RoSGNode([]);
 
 export function createNodeByType(interpreter: Interpreter, type: BrsString): RoSGNode | BrsInvalid {
     // If the requested component has been mocked, construct and return the mock instead
-    let maybeMock = interpreter.environment.getMockObject(type.value);
+    let maybeMock = interpreter.environment.getMockObject(type.value.toLowerCase());
     if (maybeMock instanceof RoAssociativeArray) {
         let mock: typeof MockNodeModule = require("../../extensions/MockNode");
         return new mock.MockNode(maybeMock, type.value);
@@ -1537,7 +1537,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         return component;
     }
 
-    let typeDef = interpreter.environment.nodeDefMap.get(type.value);
+    let typeDef = interpreter.environment.nodeDefMap.get(type.value.toLowerCase());
     if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
         let typeDefStack: ComponentDefinition[] = [];
@@ -1547,7 +1547,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         // in the correct order.
         typeDefStack.push(typeDef);
         while (typeDef) {
-            typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends);
+            typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends?.toLowerCase());
             if (typeDef) typeDefStack.push(typeDef);
         }
 

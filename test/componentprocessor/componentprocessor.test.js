@@ -94,7 +94,7 @@ describe("component parsing support", () => {
 
             it("parses children nodes in correct order", async () => {
                 let map = await getComponentDefinitionMap("/doesnt/matter");
-                let parsedExtendedComp = map.get("ExtendedComponent");
+                let parsedExtendedComp = map.get("extendedcomponent");
                 expect(parsedExtendedComp).not.toBeUndefined();
                 expect(parsedExtendedComp.children).not.toBeUndefined();
                 expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
@@ -108,7 +108,7 @@ describe("component parsing support", () => {
 
             it("adds all scripts into node in correct order", async () => {
                 let map = await getComponentDefinitionMap(process.cwd());
-                let parsedExtendedComp = map.get("ExtendedComponent");
+                let parsedExtendedComp = map.get("extendedcomponent");
                 expect(parsedExtendedComp).not.toBeUndefined();
                 expect(parsedExtendedComp.scripts).not.toBeUndefined();
                 expect(parsedExtendedComp.scripts.length).toBeGreaterThan(0);
@@ -129,7 +129,7 @@ describe("component parsing support", () => {
                 jest.spyOn(global.console, "error").mockImplementation();
                 try {
                     let map = await getComponentDefinitionMap("/doesnt/matter");
-                    let invalidExtensionComponent = map.get("UnknownExtensionComponent");
+                    let invalidExtensionComponent = map.get("unknownextensioncomponent");
                     expect(invalidExtensionComponent).toBeDefined();
                 } finally {
                     global.console.error.mockRestore();

@@ -18,7 +18,7 @@ export const mockComponentPartial = new Callable("mockComponentPartial", {
         returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, subtype: BrsString, mockFunctions: RoAssociativeArray) => {
-        let maybeComponent = interpreter.environment.nodeDefMap.get(subtype.value);
+        let maybeComponent = interpreter.environment.nodeDefMap.get(subtype.value.toLowerCase());
 
         if (!maybeComponent) {
             interpreter.stderr.write(

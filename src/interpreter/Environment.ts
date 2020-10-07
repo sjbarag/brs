@@ -279,6 +279,7 @@ export class Environment {
      * @param objName the object to mock
      */
     public getMockObject(objName: string): BrsType {
+        debugger;
         return this.mockObjects.get(objName) || BrsInvalid.Instance;
     }
 
@@ -288,7 +289,7 @@ export class Environment {
      * @param mockValue the mock to return
      */
     public setMockObject(objName: string, mockValue: RoAssociativeArray): void {
-        this.mockObjects.set(objName, mockValue);
+        this.mockObjects.set(objName.toLowerCase(), mockValue);
     }
 
     /**
@@ -357,6 +358,7 @@ export class Environment {
      * resets a single mocked object in this environment
      */
     public resetMockObject(name: string) {
+        name = name.toLowerCase();
         debugger;
         // Since partial-component mocks are actually just scoped function mocks,
         // we need to go into this node's environment and remove all of the scoped mocks.

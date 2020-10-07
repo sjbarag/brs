@@ -112,7 +112,7 @@ describe("e2e/resources/components/mocks", () => {
         ]);
     });
 
-    describe.only("reset", () => {
+    describe("reset", () => {
         describe("resetMocks", () => {
             test("function.brs", async () => {
                 await execute(

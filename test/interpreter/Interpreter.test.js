@@ -47,11 +47,11 @@ describe("integration tests", () => {
             LexerParser.getLexerParserFn(new Map(), defaultExecutionOptions)
         );
 
-        let baseComp = interpreter.environment.nodeDefMap.get("BaseComponent");
+        let baseComp = interpreter.environment.nodeDefMap.get("basecomponent");
         expect(baseComp).not.toBeUndefined();
         expect(baseComp.environment.module.size).toEqual(1);
 
-        let extendedComp = interpreter.environment.nodeDefMap.get("ExtendedComponent");
+        let extendedComp = interpreter.environment.nodeDefMap.get("extendedcomponent");
         expect(extendedComp).not.toBeUndefined();
         let actualFns = Array.from(extendedComp.environment.module).map((methodKV) => {
             let [fnName] = methodKV;

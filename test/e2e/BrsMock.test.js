@@ -121,14 +121,18 @@ describe("end to end brightscript functions", () => {
         await execute([resourceFile("components", "mocks", "reset", "main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
-            "fake",
+            "fake fooBar",
             "foo bar",
-            "fake",
+            "fake testbed 1",
             "bar",
             "foo bar",
-            "fake",
-            "fake",
+            "fake testbed 1",
+            "fake fooBar",
             "bar",
+            "fake testbed 1",
+            "bar",
+            "foo bar",
+            "fake barBaz",
         ]);
     });
 });

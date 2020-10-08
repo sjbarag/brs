@@ -600,7 +600,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, str: BrsString) => {
-            this.fields.delete(str.value);
+            this.fields.delete(str.value.toLowerCase());
             return BrsBoolean.True; //RBI always returns true
         },
     });
@@ -948,7 +948,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, fieldname: BrsString) => {
-            this.fields.delete(fieldname.value);
+            this.fields.delete(fieldname.value.toLowerCase());
             return BrsBoolean.True; //RBI always returns true
         },
     });

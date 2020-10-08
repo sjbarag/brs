@@ -37,7 +37,7 @@ describe("RoSGNode", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
+    id:
     array: <Component: roArray>
     associative-array: <Component: roAssociativeArray>
     node: <Component: roSGNode:Node>
@@ -157,6 +157,16 @@ describe("RoSGNode", () => {
                 let deleteCall = node.getMethod("delete");
                 expect(deleteCall).toBeTruthy();
                 expect(deleteCall.call(interpreter, new BrsString("foo"))).toBe(BrsBoolean.True);
+                expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.True);
+                expect(node.get(new BrsString("foo"))).toEqual(BrsInvalid.Instance);
+            });
+
+            it("deletes a given item in the associative array, ignoring case", () => {
+                let node = new RoSGNode([{ name: new BrsString("foo"), value: new Int32(-99) }]);
+
+                let deleteCall = node.getMethod("delete");
+                expect(deleteCall).toBeTruthy();
+                expect(deleteCall.call(interpreter, new BrsString("Foo"))).toBe(BrsBoolean.True);
                 expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.True);
                 expect(node.get(new BrsString("foo"))).toEqual(BrsInvalid.Instance);
             });
@@ -726,6 +736,27 @@ describe("RoSGNode", () => {
                 expect(node.getFields().size).toEqual(5);
 
                 result = removeField.call(interpreter, new BrsString("field1"));
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(4);
+            });
+
+            it("removes a field from the node, ignoring case", () => {
+                let node = new RoSGNode([]);
+
+                let addField = node.getMethod("addfield");
+                let removeField = node.getMethod("removefield");
+                expect(removeField).toBeTruthy();
+
+                let result = addField.call(
+                    interpreter,
+                    new BrsString("field1"),
+                    new BrsString("string"),
+                    BrsBoolean.False
+                );
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(5);
+
+                result = removeField.call(interpreter, new BrsString("Field1"));
                 expect(result).toEqual(BrsBoolean.True);
                 expect(node.getFields().size).toEqual(4);
             });

@@ -16,13 +16,6 @@ sub main()
     print "miniKeyboard showTextEditBox:" miniKeyboard.showTextEditBox
     print "miniKeyboard lowerCase:" miniKeyboard.lowerCase
 
-
-    textEditBox = createObject("roSGNode", "TextEditBox")
-
-    ' The ROKU documentation says not to set the textEditBox field as it is provided automatically by the system.
-    ' I figured this could simulate that operation in a trivial fashion.
-    miniKeyboard.textEditBox = textEditBox
-
     miniKeyboard.textEditBox.text = "hello"
     print "miniKeyboard textEditBox text:" miniKeyboard.textEditBox.text
 end sub

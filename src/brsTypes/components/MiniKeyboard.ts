@@ -1,6 +1,8 @@
 import { FieldModel } from "./RoSGNode";
 import { Group } from "./Group";
 import { AAMember } from "./RoAssociativeArray";
+import { BrsString } from "../BrsType";
+import { TextEditBox } from "./TextEditBox";
 
 export class MiniKeyboard extends Group {
     readonly defaultFields: FieldModel[] = [
@@ -19,5 +21,7 @@ export class MiniKeyboard extends Group {
 
         this.registerDefaultFields(this.defaultFields);
         this.registerInitializedFields(initializedFields);
+
+        this.set(new BrsString("textEditBox"), new TextEditBox());
     }
 }

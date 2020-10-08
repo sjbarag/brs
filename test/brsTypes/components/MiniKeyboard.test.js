@@ -32,7 +32,7 @@ describe("MiniKeyboard", () => {
     focusedkeycolor: 0x000000FF
     keyboardbitmapuri: 
     focusbitmapuri: 
-    texteditbox: invalid
+    texteditbox: <Component: roSGNode:TextEditBox>
     showtexteditbox: true
     lowercase: true
 }`

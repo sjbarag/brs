@@ -141,11 +141,9 @@ async function processXmlTree(
                         let nodeInterface = processInterface(newNodeDef.xmlNode!);
                         inheritedFunctions = { ...inheritedFunctions, ...nodeInterface.functions };
 
-                        // We don't actually want our type definition to have inherited fields on it.
-                        // Inherited fields will get added when we create the actual component.
-                        // We _do_ want inherited functions for callFunc.
-                        newNodeDef.fields = nodeInterface.fields;
+                        // Use inherited functions in children so that we can correctly find functions in callFunc.
                         newNodeDef.functions = inheritedFunctions;
+                        newNodeDef.fields = nodeInterface.fields;
                         newNodeDef.processed = true;
                     }
                 }

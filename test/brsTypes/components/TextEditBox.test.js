@@ -33,8 +33,8 @@ describe("TextEditBox", () => {
     cursorposition: 0
     clearondownkey: true
     active: false
-    textcolor: 0x000000FF
-    hinttextcolor: 0x000000FF
+    textcolor: OxFFFFFFFF
+    hinttextcolor: OxFFFFFFFF
     width: -1
     backgrounduri: 
 }`

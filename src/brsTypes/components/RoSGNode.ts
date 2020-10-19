@@ -543,36 +543,27 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     this.nodeSubtype.toLowerCase()
                 );
 
-                while (componentDef) {
-                    // Only allow public functions (defined in the interface) to be called.
-                    if (componentDef && functionname.value in componentDef.functions) {
-                        return interpreter.inSubEnv((subInterpreter) => {
-                            let functionToCall = subInterpreter.getCallableFunction(
-                                functionname.value
+                // Only allow public functions (defined in the interface) to be called.
+                if (componentDef && functionname.value in componentDef.functions) {
+                    return interpreter.inSubEnv((subInterpreter) => {
+                        let functionToCall = subInterpreter.getCallableFunction(functionname.value);
+                        if (!functionToCall) {
+                            interpreter.stderr.write(
+                                `Ignoring attempt to call non-implemented function ${functionname}`
                             );
-                            if (!functionToCall) {
-                                interpreter.stderr.write(
-                                    `Ignoring attempt to call non-implemented function ${functionname}`
-                                );
-                                return BrsInvalid.Instance;
-                            }
+                            return BrsInvalid.Instance;
+                        }
 
-                            subInterpreter.environment.setM(this.m);
-                            subInterpreter.environment.setRootM(this.m);
+                        subInterpreter.environment.setM(this.m);
+                        subInterpreter.environment.setRootM(this.m);
 
-                            // Determine whether the function should get arguments or not.
-                            if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
-                                return functionToCall.call(subInterpreter, ...functionargs);
-                            } else {
-                                return functionToCall.call(subInterpreter);
-                            }
-                        }, componentDef.environment);
-                    }
-
-                    // Try the parent node if we can't find an implementation here
-                    componentDef = interpreter.environment.nodeDefMap.get(
-                        componentDef.extends?.toLowerCase()
-                    );
+                        // Determine whether the function should get arguments or not.
+                        if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
+                            return functionToCall.call(subInterpreter, ...functionargs);
+                        } else {
+                            return functionToCall.call(subInterpreter);
+                        }
+                    }, componentDef.environment);
                 }
 
                 interpreter.stderr.write(
@@ -1614,6 +1605,8 @@ function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentD
     let fields = typeDef.fields;
     for (let [key, value] of Object.entries(fields)) {
         if (value instanceof Object) {
+            // Roku throws a run-time error if any fields are duplicated between inherited components.
+            // TODO: throw exception when fields are duplicated.
             let fieldName = new BrsString(key);
 
             let addField = node.getMethod("addField");

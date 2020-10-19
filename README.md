@@ -272,10 +272,47 @@ Resets all component mocks. Usage:
 _brs_.resetMockComponents()
 ```
 
+### `_brs_.resetMockComponent`
+
+Resets a specific component mock. Works on both partially mocked and fully mocked components. Usage:
+
+```brightscript
+_brs_.resetMockComponent("MyComponent")
+```
+
 ### `_brs_.resetMockFunctions`
 
 Resets all function mocks. Usage:
 
 ```brightscript
 _brs_.resetMockFunctions()
+```
+
+### `_brs_.resetMockFunction`
+
+Resets a specific function mock. Usage:
+
+```brightscript
+_brs_.resetMockFunction("MyFunction")
+```
+
+**Note:** If you have a mocked component that has a function with the same name, this _will not_ reset that component member function. For example:
+
+```brightscript
+_brs_.mockComponent("Component", {
+    foo: sub()
+        print "mock component foo"
+    end sub
+})
+_brs_.mockFunction("foo", sub()
+    print "mock global foo"
+end sub)
+
+node = createObject("roSGNode", "Component")
+foo() ' => "mock global foo"
+node.foo() ' => "mock component foo"
+
+_brs_.resetMockFunction("foo")
+foo() ' => "original implementation"
+node.foo() ' => "mock component foo"
 ```

@@ -73,7 +73,7 @@ export class ComponentScopeResolver {
             }
 
             let previousComponent = currentComponent;
-            currentComponent = this.componentMap.get(currentComponent.extends);
+            currentComponent = this.componentMap.get(currentComponent.extends?.toLowerCase());
             if (!currentComponent) {
                 // The reference implementation doesn't allow extensions of unknown node subtypes, but
                 // BRS hasn't implemented every node type in the reference implementation!  For now,

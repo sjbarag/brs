@@ -62,14 +62,16 @@ describe("mockComponentPartial", () => {
             let component = new ComponentDefinition("/some/path/to/IAmAComponent.xml");
             let anotherComponent = new ComponentDefinition("/another/path/to/AnotherComponent.xml");
 
-            interpreter.environment.nodeDefMap.set(mockName.value, component);
+            interpreter.environment.nodeDefMap.set(mockName.value.toLowerCase(), component);
             component.environment = interpreter.environment.createSubEnvironment(false);
             anotherComponent.environment = interpreter.environment.createSubEnvironment(false);
 
             mockComponentPartial.getAllSignatureMismatches(mockArgs);
             mockComponentPartial.call(interpreter, ...mockArgs);
 
-            let maybeComponent = interpreter.environment.nodeDefMap.get(mockName.value);
+            let maybeComponent = interpreter.environment.nodeDefMap.get(
+                mockName.value.toLowerCase()
+            );
 
             expect(maybeComponent.environment.getMockFunction("test1")).toBe(mockFns[0].value);
             expect(maybeComponent.environment.getMockFunction("test2")).toBe(mockFns[1].value);

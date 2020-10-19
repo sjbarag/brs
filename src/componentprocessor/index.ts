@@ -106,7 +106,7 @@ async function processXmlTree(
     // create map of just ComponentDefinition objects
     nodeDefs.map((item) => {
         if (item.isFulfilled && !item.isRejected) {
-            nodeDefMap.set(item.value!.name!, item.value!);
+            nodeDefMap.set(item.value!.name!.toLowerCase(), item.value!);
         }
     });
 
@@ -120,7 +120,7 @@ async function processXmlTree(
             inheritanceStack.push(nodeDef);
             //builds inheritance stack
             while (xmlNode && xmlNode.attr.extends) {
-                let superNodeDef = nodeDefMap.get(xmlNode.attr.extends);
+                let superNodeDef = nodeDefMap.get(xmlNode.attr.extends?.toLowerCase());
                 if (superNodeDef) {
                     inheritanceStack.push(superNodeDef);
                     xmlNode = superNodeDef.xmlNode;

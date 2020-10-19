@@ -51,7 +51,7 @@ describe("ComponentScopeResolver", () => {
     });
 
     test("resolving function scope across two components", async () => {
-        let componentToResolve = componentMap.get("ExtendedComponent");
+        let componentToResolve = componentMap.get("extendedcomponent");
         let componentScopeResolver = new brs.parser.ComponentScopeResolver(componentMap, parseFn);
         let statements = await componentScopeResolver.resolve(componentToResolve);
         expect(statements).toBeDefined();
@@ -65,7 +65,7 @@ describe("ComponentScopeResolver", () => {
     });
 
     test("resolving function scope with multiple scripts", async () => {
-        let componentToResolve = componentMap.get("ExtendedComponent2");
+        let componentToResolve = componentMap.get("extendedcomponent2");
         let componentScopeResolver = new brs.parser.ComponentScopeResolver(componentMap, parseFn);
         let statements = await componentScopeResolver.resolve(componentToResolve);
         expect(statements).toBeDefined();
@@ -80,7 +80,7 @@ describe("ComponentScopeResolver", () => {
     });
 
     it("doesn't copy init into scope", async () => {
-        let componentToResolve = componentMap.get("ExtendedComponent");
+        let componentToResolve = componentMap.get("extendedcomponent");
         let componentScopeResolver = new brs.parser.ComponentScopeResolver(componentMap, parseFn);
         let statements = await componentScopeResolver.resolve(componentToResolve);
         expect(statements).toBeDefined();

@@ -52,6 +52,8 @@ describe("callFunc", () => {
             "component: inside privateFunction",
             "private return value",
             "component: overriding parent func",
+            "main: mocked component voidFuncNoArgs return value:",
+            "this is a mock",
         ]);
 
         expect(allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n")).toEqual([

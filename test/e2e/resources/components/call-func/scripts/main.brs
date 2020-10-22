@@ -18,4 +18,13 @@ sub main()
     print node.callFunc("parentFunc")
 
     print node.callFunc("overridenParentFunc")
+
+    _brs_.mockComponent("CallFuncTestbed", {
+        voidFuncNoArgs: function() as string
+            return "this is a mock"
+        end function
+    })
+    node = createObject("RoSGNode", "CallFuncTestbed")
+    result = node.callFunc("voidFuncNoArgs")
+    print "main: mocked component voidFuncNoArgs return value:" result ' => "this is a mock"
 end sub

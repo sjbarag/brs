@@ -545,6 +545,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
                 // Only allow public functions (defined in the interface) to be called.
                 if (componentDef && functionname.value in componentDef.functions) {
+                    // Use the mocked component functions instead of the real one, if it's a mocked component.
+                    if (interpreter.environment.isMockedObject(this.nodeSubtype.toLowerCase())) {
+                        let maybeMethod = this.getMethod(functionname.value);
+                        return (
+                            maybeMethod?.call(interpreter, ...functionargs) || BrsInvalid.Instance
+                        );
+                    }
+
                     return interpreter.inSubEnv((subInterpreter) => {
                         let functionToCall = subInterpreter.getCallableFunction(functionname.value);
                         if (!functionToCall) {

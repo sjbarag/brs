@@ -275,6 +275,14 @@ export class Environment {
     }
 
     /**
+     * returns true if the variable has a mocked object
+     * @param objName the object to mock
+     */
+    public isMockedObject(objName: string): boolean {
+        return this.mockObjects.has(objName);
+    }
+
+    /**
      * retrieves mocked object if it exists
      * @param objName the object to mock
      */

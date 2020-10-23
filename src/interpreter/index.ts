@@ -200,6 +200,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let originalEnvironment = this._environment;
         let newEnv = environment || this._environment.createSubEnvironment();
 
+        // Set the focused node of the sub env, because our current env has the most up-to-date reference.
+        newEnv.setFocusedNode(this._environment.getFocusedNode());
+
         try {
             this._environment = newEnv;
             return func(this);

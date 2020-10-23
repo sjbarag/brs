@@ -1486,7 +1486,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 interpreter.environment.setFocusedNode(BrsInvalid.Instance);
 
                 // If we're unsetting focus on ourself, we need to unset it on all ancestors as well.
-                if (currFocusedNode == this) {
+                if (currFocusedNode === this) {
                     // Get the focus chain, with root-most ancestor first.
                     let currFocusChain = this.createPath(currFocusedNode);
                     currFocusChain.forEach((node) => {

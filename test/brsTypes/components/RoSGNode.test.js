@@ -37,7 +37,7 @@ describe("RoSGNode", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id:
+    id: 
     array: <Component: roArray>
     associative-array: <Component: roAssociativeArray>
     node: <Component: roSGNode:Node>
@@ -2160,7 +2160,7 @@ describe("RoSGNode", () => {
             });
         });
 
-        describe.only("setfocus", () => {
+        describe("setfocus", () => {
             let focusedChildString = new BrsString("focusedchild");
             it("sets focus on a node", () => {
                 let hasFocus = parent.getMethod("hasfocus");

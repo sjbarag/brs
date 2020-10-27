@@ -1417,8 +1417,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
     /**
      * Starting with a leaf node, traverses upward through the parents until it reaches
-     * a node without a parent (root node). Returns the parent chain starting with root-most parent.
-     * @param node The leaf node to create the tree with
+     * a node without a parent (root node).
+     * @param {RoSGNode} node The leaf node to create the tree with
+     * @returns RoSGNode[] The parent chain starting with root-most parent
      */
     private createPath(node: RoSGNode): RoSGNode[] {
         let path: RoSGNode[] = [node];
@@ -1474,9 +1475,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     }
                 }
 
-                // Set _all_ of the ancestors of the newly focused node.
+                // Set the focusedChild for each ancestor to the next node in the chain,
+                // which is the current node's child.
                 for (let i = 0; i < newFocusChain.length - 1; i++) {
-                    // Set the focusedChild to the next node in the chain, which is the current node's child.
                     newFocusChain[i].set(focusedChildString, newFocusChain[i + 1]);
                 }
 

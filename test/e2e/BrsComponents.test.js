@@ -293,10 +293,12 @@ describe("end to end brightscript functions", () => {
             "abx",
             ", ",
             "bx",
+            " ]",
             "[ ",
             "aby",
             ", ",
             "by",
+            " ]",
             " ]",
         ]);
     });

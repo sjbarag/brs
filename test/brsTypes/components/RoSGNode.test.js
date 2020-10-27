@@ -2161,6 +2161,7 @@ describe("RoSGNode", () => {
         });
 
         describe("setfocus", () => {
+            let focusedChildString = new BrsString("focusedchild");
             it("sets focus on a node", () => {
                 let hasFocus = parent.getMethod("hasfocus");
                 let setFocus = parent.getMethod("setfocus");
@@ -2171,6 +2172,7 @@ describe("RoSGNode", () => {
                 setFocus.call(interpreter, BrsBoolean.True);
                 result = hasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
+                expect(parent.get(focusedChildString)).toEqual(parent);
             });
 
             it("sets focus on a node should disable focus on another", () => {
@@ -2185,12 +2187,18 @@ describe("RoSGNode", () => {
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
 
+                // by default their focusedChild fields should be invalid
+                expect(child1.get(focusedChildString)).toEqual(BrsInvalid.Instance);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
+
                 //focus on child 1
                 child1SetFocus.call(interpreter, BrsBoolean.True);
                 result = child1HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
+                expect(child1.get(focusedChildString)).toEqual(child1);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
 
                 //focus on child 2 should remove focus from child 1
                 child2SetFocus.call(interpreter, BrsBoolean.True);
@@ -2198,6 +2206,8 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.False);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
+                expect(child2.get(focusedChildString)).toEqual(child2);
+                expect(child1.get(focusedChildString)).toEqual(BrsInvalid.Instance);
             });
 
             it("set focus to false", () => {
@@ -2212,6 +2222,8 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.True);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
+                expect(child1.get(focusedChildString)).toEqual(child1);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
 
                 //set focus to false on child 1
                 child1SetFocus.call(interpreter, BrsBoolean.False);
@@ -2219,6 +2231,8 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.False);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
+                expect(child1.get(focusedChildString)).toEqual(BrsInvalid.Instance);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
             });
         });
 

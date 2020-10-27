@@ -1,0 +1,210 @@
+const { execute } = require("../../lib");
+const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
+
+describe("components/roSGNode", () => {
+    let outputStreams;
+
+    beforeAll(() => {
+        outputStreams = createMockStreams();
+        outputStreams.root = __dirname + "/resources";
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
+
+    describe("ifSGNodeFocus", () => {
+        test("main.brs", async () => {
+            await execute(
+                [resourceFile("components", "roSGNode", "ifSGNodeFocus", "main.brs")],
+                outputStreams
+            );
+
+            expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+                // FORMAT: *<node id>* <focused child id> <event id> <isInFocusChain>
+                "*top* child1 child1 true",
+                "*child1* child2 child2 true",
+                "*child2* child3 child3 true",
+                "*child3* child3 child3 true",
+                "*top* invalid invalid false",
+                "*child1* invalid invalid false",
+                "*child2* invalid invalid false",
+                "*child3* invalid invalid false",
+                "----",
+                "*top* child1 child1 true",
+                "*child1* child2 child2 true",
+                "*child2* child3 child3 true",
+                "*child3* child3 child3 true",
+                "*child3* invalid invalid false",
+                "*top* child1 child1 true",
+                "*child1* child2 child2 true",
+                "*child2* child4 child4 true",
+                "*child4* child4 child4 true",
+                "*top* invalid invalid false",
+                "*child1* invalid invalid false",
+                "*child2* invalid invalid false",
+                "*child4* invalid invalid false",
+                "----",
+                "*top* child1 child1 true",
+                "*child1* child2 child2 true",
+                "*child2* child3 child3 true",
+                "*child3* child3 child3 true",
+                "*child1* invalid invalid false",
+                "*child2* invalid invalid false",
+                "*child3* invalid invalid false",
+                "*top* child5 child5 true",
+                "*child5* child6 child6 true",
+                "*child6* child6 child6 true",
+                "*top* invalid invalid false",
+                "*child5* invalid invalid false",
+                "*child6* invalid invalid false",
+                "----",
+                "*top* child1 child1 true",
+                "*child1* child1 child1 true",
+                "*top* child1 child1 true",
+                "*child1* child2 child2 true",
+                "*child2* child3 child3 true",
+                "*child3* child3 child3 true",
+                "*top* invalid invalid false",
+                "*child1* invalid invalid false",
+                "*child2* invalid invalid false",
+                "*child3* invalid invalid false",
+                "----",
+                "*top* child1 child1 true",
+                "*child1* child1 child1 true",
+                "*child1* invalid invalid false",
+                "*top* child5 child5 true",
+                "*child5* child6 child6 true",
+                "*child6* child6 child6 true",
+                "*top* invalid invalid false",
+                "*child5* invalid invalid false",
+                "*child6* invalid invalid false",
+            ]);
+        });
+    });
+
+    test("main.brs", async () => {
+        await execute([resourceFile("components", "roSGNode", "main.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "node size: ",
+            "7",
+            "node keys size: ",
+            "7",
+            "node items size: ",
+            "7",
+            "can delete elements: ",
+            "true",
+            "can look up elements: ",
+            "true",
+            "can look up elements (brackets): ",
+            "true",
+            "can check for existence: ",
+            "true",
+            "can empty itself: ",
+            "true",
+            //ifNodeField tests
+            "node size: ",
+            "3",
+            "node size: ",
+            "2",
+            "field3 in node is: ",
+            "false",
+            "field3 in node now is: ",
+            "true",
+            "number of fields, via getFields().count(): ",
+            "2",
+            "field1 in node now is: ",
+            "hello",
+            "field3 in node now is: ",
+            "false",
+            "field3 present? ",
+            "true",
+            "fieldほ present? ",
+            "false",
+            "callback 1 called",
+            "callback 2 called",
+            "field 3 updated",
+            //ifNodeChildren tests
+            "parent child count: ",
+            "0",
+            "get same parent from child: ",
+            "true",
+            "parent child count: ",
+            "1",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "2",
+            "children size: ",
+            "2",
+            "first child id after replacing: ",
+            "new node",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "0",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "0",
+            "parent child count: ",
+            "2",
+            "parent child count: ",
+            "3",
+            "parent child count: ",
+            "4",
+            "parent child count: ",
+            "4",
+            "parent child count: ",
+            "6",
+            "parent child count: ",
+            "4",
+            "inserted child id: ",
+            "new node",
+            "parent child count: ",
+            "4",
+            "new parent id: ",
+            "new node",
+            //ifNodeDict tests
+            "find node that does not exist: ",
+            "invalid",
+            "node finds itself: ",
+            "current",
+            "node finds one of its children: ",
+            "Child",
+            "node finds its grandchild: ",
+            "Grandchild",
+            "node finds its sibling: ",
+            "sibling-c7",
+            "node finds a cousin node: ",
+            "Cousin-2",
+            "node finds its grandparent: ",
+            "root-node",
+            "returns invalid on empty:",
+            "invalid",
+            "is same node returns true:",
+            "true",
+            "is same node returns false:",
+            "false",
+            "Node subtype is returned:",
+            "Node",
+            "updatedId",
+            "invalid",
+            "updatedId",
+            "newValue",
+            "updatedId",
+            "invalid",
+            "33",
+            "37",
+        ]);
+    });
+});

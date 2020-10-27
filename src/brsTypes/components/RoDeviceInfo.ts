@@ -17,6 +17,9 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
     private enableAudioGuideChanged = BrsBoolean.True;
     private enableCodecCapChanged = BrsBoolean.True;
 
+    /** The current locale to use for Brightscript functions. */
+    private static _locale: string | undefined;
+
     constructor() {
         super("roDeviceInfo");
         this.registerMethods({
@@ -75,6 +78,14 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
                 this.enableAudioGuideChangedEvent,
             ],
         });
+    }
+
+    public static set locale(newLocale: string) {
+        RoDeviceInfo._locale = newLocale;
+    }
+
+    public static get locale(): string {
+        return RoDeviceInfo._locale || process.env.LOCALE || "";
     }
 
     toString(parent?: BrsType): string {
@@ -191,8 +202,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            let countryCode = process.env.LOCALE;
-            return countryCode ? new BrsString(countryCode) : new BrsString("");
+            return new BrsString(RoDeviceInfo.locale);
         },
     });
 
@@ -234,8 +244,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            let locale = process.env.LOCALE;
-            return locale ? new BrsString(locale) : new BrsString("");
+            return new BrsString(RoDeviceInfo.locale);
         },
     });
 
@@ -245,8 +254,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_interpreter) => {
-            let countryCode = process.env.LOCALE;
-            return countryCode ? new BrsString(countryCode) : new BrsString("");
+            return new BrsString(RoDeviceInfo.locale);
         },
     });
 

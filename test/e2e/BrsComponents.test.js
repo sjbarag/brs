@@ -288,6 +288,16 @@ describe("end to end brightscript functions", () => {
             "789",
             " ]",
             " ]",
+            "Matches with groups: [ ",
+            "[ ",
+            "abx",
+            ", ",
+            "bx",
+            "[ ",
+            "aby",
+            ", ",
+            "by",
+            " ]",
         ]);
     });
 

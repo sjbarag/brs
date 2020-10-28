@@ -316,3 +316,23 @@ _brs_.resetMockFunction("foo")
 foo() ' => "original implementation"
 node.foo() ' => "mock component foo"
 ```
+
+### `_brs_.triggerKeyEvent(key as string, press as boolean)`
+
+This will call `onKeyEvent` handlers up the focus chain until the event is handled. If there is no focused component, nothing will happen (which is how RBI behaves). Usage:
+
+```brs
+_brs_.triggerKeyEvent("OK", true)
+```
+
+Note: if you call this function with a non-remote key string, this function will append `Lit_` to the string, which is how RBI behaves. See the [Brightscript docs](https://developer.roku.com/docs/references/scenegraph/component-functions/onkeyevent.md) for a list of the remote keys. For example:
+
+```brs
+' in the test case
+_brs_.triggerKeyEvent("foo", true)
+
+' in MyComponent.brs
+function onKeyEvent(key as string, press as boolean)
+    print key ' => "Lit_foo"
+end function
+```

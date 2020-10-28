@@ -325,7 +325,7 @@ This will call `onKeyEvent` handlers up the focus chain until the event is handl
 _brs_.triggerKeyEvent("OK", true)
 ```
 
-Note: if you call this function with a non-remote key string, this function will append `Lit_` to the string, which is how RBI behaves. See the [Brightscript docs](https://developer.roku.com/docs/references/scenegraph/component-functions/onkeyevent.md) for a list of the remote keys. For example:
+Note: if you call this function with a non-remote key string, this function will prepend `Lit_` to the string, which is how RBI behaves. See the [Brightscript docs](https://developer.roku.com/docs/references/scenegraph/component-functions/onkeyevent.md) for a list of the remote keys. For example:
 
 ```brs
 ' in the test case

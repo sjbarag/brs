@@ -3,28 +3,12 @@ import {
     Callable,
     StdlibArgument,
     BrsInvalid,
-    RoAssociativeArray,
     BrsString,
     BrsBoolean,
     RoSGNode,
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 import { Stmt } from "../parser";
-
-let ButtonNames: Set<string> = new Set([
-    "back",
-    "up",
-    "down",
-    "left",
-    "right",
-    "OK",
-    "replay",
-    "play",
-    "playonly",
-    "rewind",
-    "fastforward",
-    "options",
-]);
 
 export const triggerKeyEvent = new Callable("triggerKeyEvent", {
     signature: {
@@ -35,11 +19,6 @@ export const triggerKeyEvent = new Callable("triggerKeyEvent", {
         returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, key: BrsString, press: BrsBoolean) => {
-        // Arbitrary key presses are supported, but they're prefixed by "Lit_"
-        if (!ButtonNames.has(key.value)) {
-            key = new BrsString("Lit_" + key.value);
-        }
-
         let focusedNode = interpreter.environment.getFocusedNode();
         while (focusedNode instanceof RoSGNode) {
             // We need to use the focused node's environment

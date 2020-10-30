@@ -22,13 +22,13 @@ describe("e2e/components/key-events", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "onKeyEvent KeyEvents_Child",
-            "Lit_foo",
+            "foo",
             "true",
             "onKeyEvent KeyEvents_Parent",
-            "Lit_foo",
+            "foo",
             "true",
             "onKeyEvent KeyEvents_Grandparent",
-            "Lit_foo",
+            "foo",
             "true",
             "onKeyEvent KeyEvents_Child",
             "OK",

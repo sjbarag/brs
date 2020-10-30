@@ -2,7 +2,7 @@ sub main()
     ' onKeyEvent without a focused node should not call anything
     _brs_.triggerKeyEvent("OK", true)
 
-    ' With non-standard keys, Lit_ should be appended to key value
+    ' Send arbitrary string
     this = createComponents()
     this.child.setFocus(true)
     _brs_.triggerKeyEvent("foo", true)

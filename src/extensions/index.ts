@@ -11,6 +11,7 @@ import {
     resetMockComponent,
     resetMockFunction,
 } from "./resetMocks";
+import { triggerKeyEvent } from "./triggerKeyEvent";
 
 export const _brs_ = new RoAssociativeArray([
     { name: new BrsString("mockComponent"), value: mockComponent },
@@ -24,4 +25,5 @@ export const _brs_ = new RoAssociativeArray([
     { name: new BrsString("runInScope"), value: RunInScope },
     { name: new BrsString("process"), value: Process },
     { name: new BrsString("global"), value: mGlobal },
+    { name: new BrsString("triggerKeyEvent"), value: triggerKeyEvent },
 ]);

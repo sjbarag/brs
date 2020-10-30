@@ -46,6 +46,7 @@
     "@types/p-settle": "^2.0.1",
     "@types/uuid": "^8.3.0",
     "@types/xmldoc": "^1.1.4",
+    "doctoc": "^1.4.0",
     "husky": ">=1",
     "jest": "26",
     "jest-junit": "^6.1.0",
@@ -75,6 +76,7 @@
   "lint-staged": {
     "*.{ts,js}": [
       "prettier --write"
-    ]
+    ],
+    "README.md": "doctoc"
   }
 }

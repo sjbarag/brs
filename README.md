@@ -1,3 +1,42 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [BRS: Off-Roku BrightScript](#brs-off-roku-brightscript)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [REPL](#repl)
+    - [Executing a file](#executing-a-file)
+  - [Sure, but why?](#sure-but-why)
+  - [So can I use this to watch TV without a Roku?](#so-can-i-use-this-to-watch-tv-without-a-roku)
+  - [Building from source](#building-from-source)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+    - [The build-test-clean dance](#the-build-test-clean-dance)
+      - [Build](#build)
+      - [Testing](#testing)
+      - [Cleaning](#cleaning)
+      - [All Together](#all-together)
+  - [Extensions](#extensions)
+    - [`_brs_.process`](#_brs_process)
+    - [`_brs_.global`](#_brs_global)
+    - [`_brs_.runInScope`](#_brs_runinscope)
+    - [`_brs_.mockComponent`](#_brs_mockcomponent)
+    - [`_brs_.mockFunction`](#_brs_mockfunction)
+      - [Mock Function API](#mock-function-api)
+        - [`mock.calls`](#mockcalls)
+        - [`mock.results`](#mockresults)
+        - [`mock.clearMock()`](#mockclearmock)
+        - [`mock.getMockName()`](#mockgetmockname)
+    - [`_brs_.resetMocks`](#_brs_resetmocks)
+    - [`_brs_.resetMockComponents`](#_brs_resetmockcomponents)
+    - [`_brs_.resetMockComponent`](#_brs_resetmockcomponent)
+    - [`_brs_.resetMockFunctions`](#_brs_resetmockfunctions)
+    - [`_brs_.resetMockFunction`](#_brs_resetmockfunction)
+    - [`_brs_.triggerKeyEvent(key as string, press as boolean)`](#_brs_triggerkeyeventkey-as-string-press-as-boolean)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # BRS: Off-Roku BrightScript
 An interpreter for the BrightScript language that runs on non-Roku platforms.
 
@@ -315,4 +354,12 @@ node.foo() ' => "mock component foo"
 _brs_.resetMockFunction("foo")
 foo() ' => "original implementation"
 node.foo() ' => "mock component foo"
+```
+
+### `_brs_.triggerKeyEvent(key as string, press as boolean)`
+
+This will call `onKeyEvent` handlers up the focus chain until the event is handled. If there is no focused component, nothing will happen (which is how RBI behaves). Usage:
+
+```brs
+_brs_.triggerKeyEvent("OK", true)
 ```

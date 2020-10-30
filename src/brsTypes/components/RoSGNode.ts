@@ -426,6 +426,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return BrsInvalid.Instance;
     }
 
+    getParent() {
+        return this.parent;
+    }
+
     setParent(parent: RoSGNode) {
         this.parent = parent;
     }

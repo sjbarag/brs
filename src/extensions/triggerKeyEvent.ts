@@ -46,7 +46,7 @@ export const triggerKeyEvent = new Callable("triggerKeyEvent", {
                     return BrsBoolean.False;
                 }, componentDef.environment);
 
-                if (handled instanceof BrsBoolean && handled === BrsBoolean.True) break;
+                if (handled === BrsBoolean.True) break;
             }
 
             focusedNode = focusedNode.getParent();

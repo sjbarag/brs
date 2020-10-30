@@ -22,6 +22,8 @@ import { RoSGNode } from "./components/RoSGNode";
 import { Font } from "./components/Font";
 import { Group } from "./components/Group";
 import { Scene } from "./components/Scene";
+import { MiniKeyboard } from "./components/MiniKeyboard";
+import { TextEditBox } from "./components/TextEditBox";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -48,6 +50,8 @@ export * from "./components/RoSGNodeEvent";
 export * from "./components/RoSGNode";
 export * from "./components/Group";
 export * from "./components/Scene";
+export * from "./components/MiniKeyboard";
+export * from "./components/TextEditBox";
 export * from "./components/LayoutGroup";
 export * from "./components/Rectangle";
 export * from "./components/Label";

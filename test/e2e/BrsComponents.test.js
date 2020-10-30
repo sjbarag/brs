@@ -628,4 +628,62 @@ describe("end to end brightscript functions", () => {
             "0xEB1010FF",
         ]);
     });
+
+    test("components/MiniKeyboard.brs", async () => {
+        await execute([resourceFile("components", "MiniKeyboard.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "miniKeyboard node type:",
+            "Node",
+            "miniKeyboard node subtype:",
+            "MiniKeyboard",
+            "miniKeyboard text:",
+            "hello",
+            "miniKeyboard keyColor:",
+            "0x000000FF",
+            "miniKeyboard focusedKeyColor:",
+            "0x000000FF",
+            "miniKeyboard keyBitmapUri:",
+            "/images/somebitmap.bmp",
+            "miniKeyboard focusBitmapUri:",
+            "/images/somebitmap.bmp",
+            "miniKeyboard showTextEditBox:",
+            "true",
+            "miniKeyboard lowerCase:",
+            "true",
+            "miniKeyboard textEditBox text:",
+            "hello",
+        ]);
+    });
+
+    test("components/TextEditBox.brs", async () => {
+        await execute([resourceFile("components", "TextEditBox.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "textEditBox node type:",
+            "Node",
+            "textEditBox node subtype:",
+            "TextEditBox",
+            "textEditBox text:",
+            "hello",
+            "textEditBox hint text:",
+            "",
+            "textEditBox maxTextLength:",
+            "15",
+            "textEditBox cursorPosition:",
+            "0",
+            "textEditBox clearOnDownKey:",
+            "true",
+            "textEditBox active:",
+            "false",
+            "textEditBox textColor:",
+            "OxFFFFFFFF",
+            "textEditBox hintTextColor:",
+            "OxFFFFFFFF",
+            "textEditBox width:",
+            "-1",
+            "textEditBox backgroundUri:",
+            "",
+        ]);
+    });
 });

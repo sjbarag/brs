@@ -2,11 +2,14 @@ import * as fs from "fs";
 import * as path from "path";
 import { promisify } from "util";
 
-const access = promisify(fs.access);
 const readFile = promisify(fs.readFile);
 
-/** The set of possible value types in a `manifest` file's `key=value` pair. */
-export type ManifestValue = number | string | boolean;
+/**
+ * The set of possible value types in a `manifest` file's `key=value` pair.
+ *
+ * While numbers are allowed, they're not parsed here to avoid loss of precision.
+ */
+export type ManifestValue = string | boolean;
 
 /** A map containing the data from a `manifest` file. */
 export type Manifest = Map<string, ManifestValue>;
@@ -90,13 +93,7 @@ export function parseManifest(contents: string) {
                 return [key, false];
             }
 
-            let maybeNumber = Number(value);
-
-            // if it's not a number, it's just a string
-            if (Number.isNaN(maybeNumber)) {
-                return [key, value];
-            }
-            return [key, maybeNumber];
+            return [key, value];
         });
 
     return new Map<string, ManifestValue>(keyValuePairs);

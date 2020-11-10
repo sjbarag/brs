@@ -66,8 +66,8 @@ describe("manifest support", () => {
                 new Map([
                     ["foo", "bar=baz"],
                     ["lorem", true],
-                    ["five", 5],
-                    ["six", 6],
+                    ["five", "5"],
+                    ["six", "6.000"],
                     ["version", "1.2.3"],
                 ])
             );

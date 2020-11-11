@@ -143,8 +143,7 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getUserCountryCode");
 
-                // RoDeviceInfo.locale ="en_US";
-                RoDeviceInfo.locale = "en_US";
+                process.env.LOCALE = "en_US";
 
                 expect(method).toBeTruthy();
                 expect(method.call(interpreter)).toEqual(new BrsString("en_US"));
@@ -185,7 +184,7 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getCurrentLocale");
 
-                RoDeviceInfo.locale = "en_US";
+                process.env.LOCALE = "en_US";
 
                 expect(method).toBeTruthy();
                 expect(method.call(interpreter)).toEqual(new BrsString("en_US"));
@@ -196,7 +195,7 @@ describe("RoDeviceInfo", () => {
                 let deviceInfo = new RoDeviceInfo();
                 let method = deviceInfo.getMethod("getCountryCode");
 
-                RoDeviceInfo.locale = "en_US";
+                process.env.LOCALE = "en_US";
 
                 expect(method).toBeTruthy();
                 expect(method.call(interpreter)).toEqual(new BrsString("en_US"));

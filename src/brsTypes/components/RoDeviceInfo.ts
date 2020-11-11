@@ -17,7 +17,7 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
     private enableAudioGuideChanged = BrsBoolean.True;
     private enableCodecCapChanged = BrsBoolean.True;
 
-    /** The current locale to use for Brightscript functions. */
+    /** A user-specified locale to use for Brightscript functions. */
     private static _locale: string | undefined;
 
     constructor() {
@@ -80,10 +80,15 @@ export class RoDeviceInfo extends BrsComponent implements BrsValue {
         });
     }
 
+    /** Sets the locale for Brightscript functions. */
     public static set locale(newLocale: string) {
         RoDeviceInfo._locale = newLocale;
     }
 
+    /**
+     * Returns the locale for Brightscript functions. If a custom
+     * locale has been specified, use that. Otherwise, default to the Node process.
+     */
     public static get locale(): string {
         return RoDeviceInfo._locale || process.env.LOCALE || "";
     }

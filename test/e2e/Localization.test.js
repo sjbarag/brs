@@ -1,4 +1,3 @@
-const path = require("path");
 const { execute } = require("../../lib");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 
@@ -19,18 +18,15 @@ describe("Localization", () => {
     });
 
     test("components/localization/main.brs", async () => {
-        await execute(
-            [resourceFile("components", "localization", "source", "main.brs")],
-            {
-                ...outputStreams,
-                root: "test/e2e/resources/components/localization"
-            }
-        );
+        await execute([resourceFile("components", "localization", "source", "main.brs")], {
+            ...outputStreams,
+            root: "test/e2e/resources/components/localization",
+        });
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "Bonjour",
             "hello",
-            "Au revoir"
+            "Au revoir",
         ]);
     });
 });

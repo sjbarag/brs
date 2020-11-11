@@ -4,13 +4,7 @@ import { promisify } from "util";
 const readFile = promisify(fs.readFile);
 
 import { Interpreter } from "../interpreter";
-import {
-    BrsString,
-    Callable,
-    ValueKind,
-    StdlibArgument,
-    RoDeviceInfo,
-} from "../brsTypes";
+import { BrsString, Callable, ValueKind, StdlibArgument, RoDeviceInfo } from "../brsTypes";
 import { XmlDocument } from "xmldoc";
 
 /**
@@ -41,7 +35,7 @@ let fileTranslations = new Map<string, Translations>();
 function parseTranslations(xmlNode: XmlDocument, locale: string) {
     let translations: Translations = new Map();
     let contextNode = xmlNode.childNamed("context");
-    contextNode?.childrenNamed("message").forEach(messageElement => {
+    contextNode?.childrenNamed("message").forEach((messageElement) => {
         let source = messageElement.childNamed("source");
         let translation = messageElement.childNamed("translation");
         if (source && translation) {
@@ -57,7 +51,7 @@ function parseTranslations(xmlNode: XmlDocument, locale: string) {
  * @param rootDir The root package directory
  */
 export async function loadTranslationFiles(interpreter: Interpreter, rootDir: string) {
-    locales.forEach(async locale => {
+    locales.forEach(async (locale) => {
         const filePath = path.join(rootDir, "locale", locale, "translations.ts");
         if (fs.existsSync(filePath)) {
             let xmlNode: XmlDocument;
@@ -81,7 +75,6 @@ export const Tr = new Callable("Tr", {
         args: [new StdlibArgument("source", ValueKind.String)],
     },
     impl: (_: Interpreter, source: BrsString) => {
-        debugger;
         let locale = RoDeviceInfo.locale;
         let translationFile = fileTranslations.get(locale);
         let translatedString = translationFile?.get(source.value);

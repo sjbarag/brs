@@ -47,7 +47,6 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         executionOptions.componentDirs
     );
 
-
     componentDefinitions.forEach((component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
         try {

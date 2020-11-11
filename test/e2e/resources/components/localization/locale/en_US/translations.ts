@@ -12,5 +12,9 @@
     <source>Fare thee well</source>
     <translation>Au revoir</translation>
   </message>
+  <message>
+    <source>Not a straightforward string</source>
+    <translation>{ "hello": ["world"], "foo": 123 }</translation>
+  </message>
 </context>
 </TS>

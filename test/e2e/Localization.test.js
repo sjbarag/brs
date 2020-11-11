@@ -27,6 +27,8 @@ describe("Localization", () => {
             "Bonjour",
             "hello",
             "Au revoir",
+            "world",
+            "123",
         ]);
     });
 });

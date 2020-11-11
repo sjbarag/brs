@@ -131,13 +131,19 @@ For the most part, `brs` attempts to emulate BrightScript as closely as possible
 
 ### `_brs_.process`
 
-Allows you to access the command line arguments. Usage:
+Allows you to access the command line arguments and locale. Locale changes will be reflected in related `RoDeviceInfo` functions and the standard library `Tr` function. Usage:
 
 ```brightscript
 print _brs_.process
 ' {
-'   argv: [ "some", "arg" ]
+'   argv: [ "some", "arg" ],
+'   getLocale: [Function getLocale]
+'   setLocale: [Function setLocale]
 ' }
+
+_brs_.process.setLocale("fr_CA")
+print _brs_.process.getLocale() ' => "fr_CA"
+print createObject("roDeviceInfo").getCurrentLocale() ' => "fr_CA"
 ```
 
 ### `_brs_.global`

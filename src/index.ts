@@ -13,6 +13,7 @@ import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interp
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
 import { CoverageCollector } from "./coverage";
+import { loadTranslationFiles } from "./stdlib";
 
 import * as _lexer from "./lexer";
 export { _lexer as lexer };
@@ -68,6 +69,8 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     if (!interpreter) {
         throw new Error("Unable to build interpreter.");
     }
+
+    loadTranslationFiles(interpreter, executionOptions.root);
 
     if (executionOptions.generateCoverage) {
         coverageCollector = new CoverageCollector(executionOptions.root, lexerParserFn);

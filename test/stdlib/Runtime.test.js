@@ -12,7 +12,6 @@ const {
     Double,
     Uninitialized,
     ValueKind,
-    RoString,
     Callable,
     BrsComponent,
 } = brs.types;

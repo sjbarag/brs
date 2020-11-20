@@ -11,8 +11,12 @@ const {
     Float,
     Double,
     Uninitialized,
+    ValueKind,
+    RoString,
+    Callable,
+    BrsComponent,
 } = brs.types;
-const { CreateObject, Type } = require("../../lib/stdlib");
+const { CreateObject, Type, AddAdditionalBrsObject } = require("../../lib/stdlib");
 const { Interpreter } = require("../../lib/interpreter");
 
 describe("global runtime functions", () => {
@@ -27,6 +31,32 @@ describe("global runtime functions", () => {
         it("returns invalid for an undefined BrsObject", () => {
             let obj = CreateObject.call(interpreter, new BrsString("notAnObject"));
             expect(obj).toEqual(BrsInvalid.Instance);
+        });
+
+        describe("AdditionalBrsObjects", () => {
+            class HelloWorld extends BrsComponent {
+                constructor() {
+                    super("HelloWorld");
+                    this.registerMethods({
+                        ifHelloWorld: [this.sayHello],
+                    });
+                }
+                sayHello = new Callable("sayHello", {
+                    signature: {
+                        args: [],
+                        returns: ValueKind.String,
+                    },
+                    impl: (interpreter) => {
+                        return "Hello world";
+                    },
+                });
+            }
+
+            it.only("can return a new object defined at run time", () => {
+                AddAdditionalBrsObject("HelloWorld", (_interpreter) => new HelloWorld());
+                let obj = CreateObject.call(interpreter, new BrsString("HelloWorld"));
+                expect(obj.sayHello.call(interpreter)).toEqual("Hello world");
+            });
         });
     });
 

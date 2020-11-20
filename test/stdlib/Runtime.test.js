@@ -36,19 +36,21 @@ describe("global runtime functions", () => {
             class HelloWorld extends BrsComponent {
                 constructor() {
                     super("HelloWorld");
+
+                    this.sayHello = new Callable("sayHello", {
+                        signature: {
+                            args: [],
+                            returns: ValueKind.String,
+                        },
+                        impl: (_interpreter) => {
+                            return "Hello world";
+                        },
+                    });
+
                     this.registerMethods({
                         ifHelloWorld: [this.sayHello],
                     });
                 }
-                sayHello = new Callable("sayHello", {
-                    signature: {
-                        args: [],
-                        returns: ValueKind.String,
-                    },
-                    impl: (interpreter) => {
-                        return "Hello world";
-                    },
-                });
             }
 
             it.only("can return a new object defined at run time", () => {

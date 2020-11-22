@@ -16,13 +16,22 @@ const AdditionalBrsObjects = new Map<string, Function>();
 /**
  * Lets another software using BRS as a library to add/overwrite an implementation of a BrsObject.
  * This is useful, for example, if another piece of software wanted to implement video playback or Draw2d functionality
+ * In each element of the objectList param, it is pair:
+ * [the name of the BrsObject (e.g. "roScreen", etc.), a function (interpreter, ...additionalArgs) that returns a new object]
+ *
+ * @example
+ *
+ * AddAdditionalBrsObjects([
+ *   ["roScreen", (_interpreter) => {return new roScreen();}]
+ * ])
  *
  * @export
- * @param {string} name - the name of the BrsObject (e.g. "roScreen", etc.)
- * @param {Function} ctor  - a function (interpreter, ...additionalArgs) that returns a new object
+ * @param {[string, Function][]} objectList - array of pairs: [name, constructor function]
  */
-export function AddAdditionalBrsObject(name: string, ctor: Function): void {
-    AdditionalBrsObjects.set(name.toLowerCase(), ctor);
+export function AddAdditionalBrsObjects(objectList: [string, Function][]): void {
+    objectList.forEach(([name, ctor]) => {
+        AdditionalBrsObjects.set(name.toLowerCase(), ctor);
+    });
 }
 
 /** Creates a new instance of a given brightscript component (e.g. roAssociativeArray) */

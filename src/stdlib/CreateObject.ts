@@ -15,9 +15,11 @@ const AdditionalBrsObjects = new Map<string, Function>();
 
 /**
  * Lets another software using BRS as a library to add/overwrite an implementation of a BrsObject.
- * This is useful, for example, if another piece of software wanted to implement video playback or Draw2d functionality
+ *
+ * This is useful, for example, if another piece of software wanted to implement video playback or Draw2d functionality.
+ *
  * In each element of the objectList param, it is pair:
- * [the name of the BrsObject (e.g. "roScreen", etc.), a function (interpreter, ...additionalArgs) that returns a new object]
+ * [name of the BrsObject (e.g. "roScreen", etc.), function (interpreter, ...additionalArgs) that returns a new object]
  *
  * @example
  *

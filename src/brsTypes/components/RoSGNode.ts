@@ -26,6 +26,7 @@ import { Environment } from "../../interpreter/Environment";
 import { roInvalid } from "./RoInvalid";
 import type * as MockNodeModule from "../../extensions/MockNode";
 import { BlockEnd } from "../../parser/Statement";
+import { lstat } from "fs";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -268,11 +269,15 @@ export class Field {
     }
 }
 
+/* Hierarchy of all node Types. Used to discover is a current nods is a subtype of another node */
+const SubTypeHierarchy = new Map<string, string>();
+
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     private fields = new Map<string, Field>();
     private children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
+
     readonly defaultFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
@@ -283,6 +288,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
     constructor(initializedFields: AAMember[], readonly nodeSubtype: string = "Node") {
         super("Node");
+        this.setExtendsType();
 
         // All nodes start have some built-in fields when created.
         this.registerDefaultFields(this.defaultFields);
@@ -337,7 +343,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.insertchildren,
             ],
             ifSGNodeFocus: [this.hasfocus, this.setfocus, this.isinfocuschain],
-            ifSGNodeDict: [this.findnode, this.issamenode, this.subtype, this.callfunc],
+            ifSGNodeDict: [
+                this.findnode,
+                this.issamenode,
+                this.subtype,
+                this.callfunc,
+                this.issubtype,
+                this.parentsubtype,
+            ],
         });
     }
 
@@ -531,6 +544,31 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             return true;
         }
         return false;
+    }
+
+    /* used for isSubtype */
+    protected setExtendsType() {
+        let baseClass = this.constructor;
+        let currentNodeType: string, parentType: string;
+        while (baseClass) {
+            currentNodeType = baseClass.name.toLowerCase();
+
+            const parentClass = Object.getPrototypeOf(baseClass);
+
+            if (parentClass && parentClass !== Object && parentClass.name) {
+                baseClass = parentClass;
+                parentType = parentClass.name;
+                if (parentType === "BrsComponent") {
+                    // Only care about RoSgNode and above
+                    break;
+                }
+                if (!SubTypeHierarchy.has(currentNodeType)) {
+                    SubTypeHierarchy.set(currentNodeType, parentType);
+                }
+            } else {
+                break;
+            }
+        }
     }
 
     /**
@@ -1550,6 +1588,40 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /* Checks whether the subtype of the subject node is a descendant of the subtype nodeType
+     * in the SceneGraph node class hierarchy.
+     *
+     *
+     */
+    private issubtype = new Callable("issubtype", {
+        signature: {
+            args: [new StdlibArgument("nodeType", ValueKind.String)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, nodeType: BrsString) => {
+            return BrsBoolean.from(this.isSubtypeCheck(this.nodeSubtype, nodeType.value));
+        },
+    });
+
+    /* Checks whether the subtype of the subject node is a descendant of the subtype nodeType
+     * in the SceneGraph node class hierarchy.
+     *
+     *
+     */
+    private parentsubtype = new Callable("parentsubtype", {
+        signature: {
+            args: [new StdlibArgument("nodeType", ValueKind.String)],
+            returns: ValueKind.String | ValueKind.Invalid,
+        },
+        impl: (interpreter: Interpreter, nodeType: BrsString) => {
+            const parentType = SubTypeHierarchy.get(nodeType.value.toLowerCase());
+            if (parentType) {
+                return new BrsString(parentType);
+            }
+            return BrsInvalid.Instance;
+        },
+    });
+
     /* Returns a Boolean value indicating whether the roSGNode parameter
             refers to the same node object as this node */
     private issamenode = new Callable("issamenode", {
@@ -1603,6 +1675,24 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 );
             }
         });
+    }
+
+    /**
+     *  Checks the node sub type hierarchy to see if the current node is a sub compnent of the given node type
+     *
+     * @param {string} checkType
+     * @returns {boolean}
+     */
+    protected isSubtypeCheck(currentNodeType?: string, checkType?: string): boolean {
+        if (!currentNodeType || !checkType) {
+            return false;
+        }
+        checkType = checkType.toLowerCase();
+        currentNodeType = currentNodeType.toLowerCase();
+        if (currentNodeType === checkType) {
+            return true;
+        }
+        return this.isSubtypeCheck(SubTypeHierarchy.get(currentNodeType), checkType);
     }
 }
 

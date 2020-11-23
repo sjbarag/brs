@@ -13,6 +13,7 @@ const {
     ValueKind,
     Uninitialized,
     Callable,
+    MarkupGrid,
 } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 const { Scope } = require("../../../lib/interpreter/Environment");
@@ -2435,6 +2436,51 @@ describe("RoSGNode", () => {
 
                 let result = subtype.call(interpreter);
                 expect(result.value).toBe("randomType");
+            });
+
+            describe("issubtype", () => {
+                class ParentComponent extends RoSGNode {
+                    constructor(name = "ParentComponent") {
+                        super([], name);
+                    }
+                }
+
+                class ChildComponent extends ParentComponent {
+                    constructor(name = "ChildComponent") {
+                        super(name);
+                    }
+                }
+
+                it("acurately checks isSubtype", () => {
+                    let childNode = new ChildComponent();
+                    let issubtype = childNode.getMethod("issubtype");
+
+                    let result = issubtype.call(interpreter, new BrsString("RoSgNode"));
+                    expect(result.value).toBe(true);
+
+                    let parentNode = new ParentComponent();
+                    issubtype = parentNode.getMethod("issubtype");
+                    result = issubtype.call(interpreter, new BrsString("ChildComponent"));
+                    expect(result.value).toBe(false);
+                });
+
+                it("does isSubType for other built in components", () => {
+                    let markupNode = new MarkupGrid();
+                    let issubtype = markupNode.getMethod("issubtype");
+
+                    let result = issubtype.call(interpreter, new BrsString("ArrayGrid"));
+                    expect(result.value).toBe(true);
+                });
+            });
+
+            describe("parentsubtype", () => {
+                it("acurately gets parent subtype", () => {
+                    let markupNode = new MarkupGrid();
+                    let parentsubtype = markupNode.getMethod("parentsubtype");
+
+                    let result = parentsubtype.call(interpreter, new BrsString("MarkUpGrid"));
+                    expect(result.value).toBe("ArrayGrid");
+                });
             });
         });
     });

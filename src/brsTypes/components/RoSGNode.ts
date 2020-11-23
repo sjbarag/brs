@@ -26,7 +26,6 @@ import { Environment } from "../../interpreter/Environment";
 import { roInvalid } from "./RoInvalid";
 import type * as MockNodeModule from "../../extensions/MockNode";
 import { BlockEnd } from "../../parser/Statement";
-import { lstat } from "fs";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -269,7 +268,7 @@ export class Field {
     }
 }
 
-/* Hierarchy of all node Types. Used to discover is a current nods is a subtype of another node */
+/* Hierarchy of all node Types. Used to discover is a current node is a subtype of another node */
 const SubTypeHierarchy = new Map<string, string>();
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {

@@ -56,7 +56,6 @@ describe("e2e/resources/components/mocks", () => {
     });
 
     test("functions/main.brs", async () => {
-        let consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         await execute([resourceFile("functions", "main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
@@ -82,17 +81,6 @@ describe("e2e/resources/components/mocks", () => {
             "0",
             "0",
         ]);
-
-        // split the warning because the line number output is user-specific.
-        let warning = allArgs(consoleErrorSpy)
-            .filter((arg) => arg !== "\n")[0]
-            .split("WARNING: ")[1]
-            .trim();
-        expect(warning).toEqual(
-            "using mocked function 'thisfuncdoesnotexist', but no function with that name is found in-scope in source."
-        );
-
-        consoleErrorSpy.mockRestore();
     });
 
     test("components/partial/main.brs", async () => {

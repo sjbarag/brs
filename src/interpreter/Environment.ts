@@ -181,22 +181,10 @@ export class Environment {
             }
             return variableToReturn;
         } else {
-            // Because brs hasn't implemented every built-in global function yet,
-            // allow mocking of functions that "don't exist" in source. This unblocks
-            // unit testing of code that calls the not-yet-implemented global functions.
-            //
-            // TODO: remove this once all built-in global functions are implemented?
-
             // Don't allow mocks of reserved functions like "init" and "main".
             if (!name.isReserved) {
                 let mockedFunc = this.getMockFunction(lowercaseName);
                 if (mockedFunc !== BrsInvalid.Instance) {
-                    console.error(
-                        new BrsError(
-                            `WARNING: using mocked function '${lowercaseName}', but no function with that name is found in-scope in source.`,
-                            name.location
-                        ).format()
-                    );
                     return mockedFunc;
                 }
             }

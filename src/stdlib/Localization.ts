@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import pSettle from "p-settle";
 import { promisify } from "util";
 const readFile = promisify(fs.readFile);
 
@@ -51,22 +52,22 @@ function parseTranslations(xmlNode: XmlDocument, locale: string) {
  * @param rootDir The root package directory
  */
 export async function loadTranslationFiles(interpreter: Interpreter, rootDir: string) {
-    locales.forEach(async (locale) => {
-        const filePath = path.join(rootDir, "locale", locale, "translations.ts");
-        if (fs.existsSync(filePath)) {
-            let xmlNode: XmlDocument;
-            try {
-                let contents = await readFile(filePath, "utf-8");
-                let xmlStr = contents.toString().replace(/\r?\n|\r/g, "");
-                xmlNode = new XmlDocument(xmlStr);
-            } catch (err) {
-                interpreter.stderr.write(`Error reading translations file ${filePath}: ${err}`);
-                return;
+    await pSettle(
+        Array.from(locales).map(async (locale) => {
+            const filePath = path.join(rootDir, "locale", locale, "translations.ts");
+            if (fs.existsSync(filePath)) {
+                let xmlNode: XmlDocument;
+                try {
+                    let contents = await readFile(filePath, "utf-8");
+                    let xmlStr = contents.toString().replace(/\r?\n|\r/g, "");
+                    xmlNode = new XmlDocument(xmlStr);
+                    parseTranslations(xmlNode, locale);
+                } catch (err) {
+                    interpreter.stderr.write(`Error reading translations file ${filePath}: ${err}`);
+                }
             }
-
-            parseTranslations(xmlNode, locale);
-        }
-    });
+        })
+    );
 }
 
 export const Tr = new Callable("Tr", {

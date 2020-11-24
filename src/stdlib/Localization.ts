@@ -61,12 +61,10 @@ export async function loadTranslationFiles(interpreter: Interpreter, rootDir: st
                     let contents = await readFile(filePath, "utf-8");
                     let xmlStr = contents.toString().replace(/\r?\n|\r/g, "");
                     xmlNode = new XmlDocument(xmlStr);
+                    parseTranslations(xmlNode, locale);
                 } catch (err) {
                     interpreter.stderr.write(`Error reading translations file ${filePath}: ${err}`);
-                    return;
                 }
-
-                parseTranslations(xmlNode, locale);
             }
         })
     );

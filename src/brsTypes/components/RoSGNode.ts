@@ -269,7 +269,7 @@ export class Field {
 }
 
 /* Hierarchy of all node Types. Used to discover is a current node is a subtype of another node */
-const subTypeHierarchy = new Map<string, string>();
+const subtypeHierarchy = new Map<string, string>();
 
 /**
  *  Checks the node sub type hierarchy to see if the current node is a sub component of the given node type
@@ -287,7 +287,7 @@ function isSubtypeCheck(currentNodeType: string, checkType: string): boolean {
     if (currentNodeType === checkType) {
         return true;
     }
-    return isSubtypeCheck(subTypeHierarchy.get(currentNodeType)!, checkType);
+    return isSubtypeCheck(subtypeHierarchy.get(currentNodeType)!, checkType);
 }
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
@@ -584,8 +584,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     // RoSGNode is referenced as "Node"
                     parentType = "Node";
                 }
-                if (!subTypeHierarchy.has(currentNodeType)) {
-                    subTypeHierarchy.set(currentNodeType, parentType);
+                if (!subtypeHierarchy.has(currentNodeType)) {
+                    subtypeHierarchy.set(currentNodeType, parentType);
                 }
             } else {
                 break;
@@ -1636,7 +1636,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.String | ValueKind.Invalid,
         },
         impl: (interpreter: Interpreter, nodeType: BrsString) => {
-            const parentType = subTypeHierarchy.get(nodeType.value.toLowerCase());
+            const parentType = subtypeHierarchy.get(nodeType.value.toLowerCase());
             if (parentType) {
                 return new BrsString(parentType);
             }
@@ -1728,7 +1728,7 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         typeDefStack.push(typeDef);
         while (typeDef) {
             // Add the current typedef to the subtypeHierarchy
-            subTypeHierarchy.set(typeDef.name!.toLowerCase(), typeDef.extends || "Node");
+            subtypeHierarchy.set(typeDef.name!.toLowerCase(), typeDef.extends || "Node");
 
             typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends?.toLowerCase());
             if (typeDef) typeDefStack.push(typeDef);

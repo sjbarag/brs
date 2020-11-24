@@ -70,7 +70,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         throw new Error("Unable to build interpreter.");
     }
 
-    loadTranslationFiles(interpreter, executionOptions.root);
+    await loadTranslationFiles(interpreter, executionOptions.root);
 
     if (executionOptions.generateCoverage) {
         coverageCollector = new CoverageCollector(executionOptions.root, lexerParserFn);

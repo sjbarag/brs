@@ -229,6 +229,10 @@ describe("end to end brightscript functions", () => {
             "ExtendedChild init",
             "ExtendedComponent init",
             "ExtendedComponent start",
+            "true",
+            "true",
+            "true",
+            "false",
         ]);
 
         let warning = allArgs(consoleWarningSpy)

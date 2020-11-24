@@ -269,7 +269,26 @@ export class Field {
 }
 
 /* Hierarchy of all node Types. Used to discover is a current node is a subtype of another node */
-const SubTypeHierarchy = new Map<string, string>();
+const subTypeHierarchy = new Map<string, string>();
+
+/**
+ *  Checks the node sub type hierarchy to see if the current node is a sub component of the given node type
+ *
+ * @param {string} currentNodeType
+ * @param {string} checkType
+ * @returns {boolean}
+ */
+function isSubtypeCheck(currentNodeType: string, checkType: string): boolean {
+    if (!currentNodeType || !checkType) {
+        return false;
+    }
+    checkType = checkType.toLowerCase();
+    currentNodeType = currentNodeType.toLowerCase();
+    if (currentNodeType === checkType) {
+        return true;
+    }
+    return isSubtypeCheck(subTypeHierarchy.get(currentNodeType)!, checkType);
+}
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
@@ -561,8 +580,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                     // Only care about RoSgNode and above
                     break;
                 }
-                if (!SubTypeHierarchy.has(currentNodeType)) {
-                    SubTypeHierarchy.set(currentNodeType, parentType);
+                if (parentType === "RoSGNode") {
+                    // RoSGNode is referenced as "Node"
+                    parentType = "Node";
+                }
+                if (!subTypeHierarchy.has(currentNodeType)) {
+                    subTypeHierarchy.set(currentNodeType, parentType);
                 }
             } else {
                 break;
@@ -1598,7 +1621,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, nodeType: BrsString) => {
-            return BrsBoolean.from(this.isSubtypeCheck(this.nodeSubtype, nodeType.value));
+            return BrsBoolean.from(isSubtypeCheck(this.nodeSubtype, nodeType.value));
         },
     });
 
@@ -1613,7 +1636,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.String | ValueKind.Invalid,
         },
         impl: (interpreter: Interpreter, nodeType: BrsString) => {
-            const parentType = SubTypeHierarchy.get(nodeType.value.toLowerCase());
+            const parentType = subTypeHierarchy.get(nodeType.value.toLowerCase());
             if (parentType) {
                 return new BrsString(parentType);
             }
@@ -1675,24 +1698,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
         });
     }
-
-    /**
-     *  Checks the node sub type hierarchy to see if the current node is a sub compnent of the given node type
-     *
-     * @param {string} checkType
-     * @returns {boolean}
-     */
-    protected isSubtypeCheck(currentNodeType?: string, checkType?: string): boolean {
-        if (!currentNodeType || !checkType) {
-            return false;
-        }
-        checkType = checkType.toLowerCase();
-        currentNodeType = currentNodeType.toLowerCase();
-        if (currentNodeType === checkType) {
-            return true;
-        }
-        return this.isSubtypeCheck(SubTypeHierarchy.get(currentNodeType), checkType);
-    }
 }
 
 // A node that represents the m.global, referenced by all other nodes
@@ -1722,6 +1727,9 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString): RoS
         // in the correct order.
         typeDefStack.push(typeDef);
         while (typeDef) {
+            // Add the current typedef to the subtypeHierarchy
+            subTypeHierarchy.set(typeDef.name!.toLowerCase(), typeDef.extends || "Node");
+
             typeDef = interpreter.environment.nodeDefMap.get(typeDef.extends?.toLowerCase());
             if (typeDef) typeDefStack.push(typeDef);
         }

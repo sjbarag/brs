@@ -16,6 +16,7 @@ import { Float } from "../Float";
 import { Int32 } from "../Int32";
 import { Interpreter } from "../../interpreter";
 import { roInvalid } from "./RoInvalid";
+import { BrsComponent } from "./BrsComponent";
 
 /** Map containing a list of brightscript components that can be created. */
 export const BrsObjects = new Map<string, Function>([
@@ -39,3 +40,26 @@ export const BrsObjects = new Map<string, Function>([
     ["roint", (_: Interpreter, literal: Int32) => new roInt(literal)],
     ["roinvalid", (_: Interpreter) => new roInvalid()],
 ]);
+
+/**
+ * Lets another software using BRS as a library to add/overwrite an implementation of a BrsObject.
+ *
+ * This is useful, for example, if another piece of software wanted to implement video playback or Draw2d functionality.
+ *
+ * In each element of the objectList param, it is pair:
+ * [name of the BrsObject (e.g. "roScreen", etc.), function (interpreter, ...additionalArgs) that returns a new object]
+ *
+ * @example
+ *
+ * AddAdditionalBrsObjects([
+ *   ["roScreen", (_interpreter) => {return new roScreen();}]
+ * ])
+ *
+ * @export
+ * @param {[string, Function][]} objectList - array of pairs: [name, constructor function]
+ */
+export function AddAdditionalBrsObjects(objectList: [string, () => BrsComponent][]): void {
+    objectList.forEach(([name, ctor]) => {
+        BrsObjects.set(name.toLowerCase(), ctor);
+    });
+}

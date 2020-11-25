@@ -11,31 +11,6 @@ import { BrsObjects } from "../brsTypes/components/BrsObjects";
 import { Interpreter } from "../interpreter";
 import { MockNode } from "../extensions/MockNode";
 
-const AdditionalBrsObjects = new Map<string, Function>();
-
-/**
- * Lets another software using BRS as a library to add/overwrite an implementation of a BrsObject.
- *
- * This is useful, for example, if another piece of software wanted to implement video playback or Draw2d functionality.
- *
- * In each element of the objectList param, it is pair:
- * [name of the BrsObject (e.g. "roScreen", etc.), function (interpreter, ...additionalArgs) that returns a new object]
- *
- * @example
- *
- * AddAdditionalBrsObjects([
- *   ["roScreen", (_interpreter) => {return new roScreen();}]
- * ])
- *
- * @export
- * @param {[string, Function][]} objectList - array of pairs: [name, constructor function]
- */
-export function AddAdditionalBrsObjects(objectList: [string, Function][]): void {
-    objectList.forEach(([name, ctor]) => {
-        AdditionalBrsObjects.set(name.toLowerCase(), ctor);
-    });
-}
-
 /** Creates a new instance of a given brightscript component (e.g. roAssociativeArray) */
 export const CreateObject = new Callable("CreateObject", {
     signature: {
@@ -64,9 +39,7 @@ export const CreateObject = new Callable("CreateObject", {
         if (possibleMock instanceof RoAssociativeArray) {
             return new MockNode(possibleMock, objToMock);
         }
-        const objNameLookup = objName.value.toLowerCase();
-
-        let ctor = AdditionalBrsObjects.get(objNameLookup) || BrsObjects.get(objNameLookup);
+        let ctor = BrsObjects.get(objName.value.toLowerCase());
 
         return ctor ? ctor(interpreter, ...additionalArgs) : BrsInvalid.Instance;
     },

@@ -84,7 +84,8 @@ export class ComponentDefinition {
 
 export async function getComponentDefinitionMap(
     rootDir: string = "",
-    additionalDirs: string[] = []
+    additionalDirs: string[] = [],
+    libraryName: string | undefined
 ) {
     let searchString = `{components,${additionalDirs.join(",")}}`;
     const componentsPattern = path.join(rootDir, searchString, "**", "*.xml");
@@ -93,12 +94,13 @@ export async function getComponentDefinitionMap(
     let defs = xmlFiles.map((file) => new ComponentDefinition(file));
     let parsedPromises = defs.map(async (def) => def.parse());
 
-    return processXmlTree(pSettle(parsedPromises), rootDir);
+    return processXmlTree(pSettle(parsedPromises), rootDir, libraryName);
 }
 
 async function processXmlTree(
     settledPromises: Promise<pSettle.SettledResult<ComponentDefinition>[]>,
-    rootDir: string
+    rootDir: string,
+    libraryName: string | undefined
 ) {
     let nodeDefs = await settledPromises;
     let nodeDefMap = new Map<string, ComponentDefinition>();
@@ -106,7 +108,11 @@ async function processXmlTree(
     // create map of just ComponentDefinition objects
     nodeDefs.map((item) => {
         if (item.isFulfilled && !item.isRejected) {
-            nodeDefMap.set(item.value!.name!.toLowerCase(), item.value!);
+            let name = item.value!.name!.toLowerCase();
+            if (libraryName) {
+                name = `${libraryName.toLowerCase()}:${name}`;
+            }
+            nodeDefMap.set(name, item.value!);
         }
     });
 

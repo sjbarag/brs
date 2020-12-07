@@ -1,12 +1,18 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
+import { promisify } from "util";
+const mkdtemp = promisify(fs.mkdtemp);
+import decompress from "decompress";
+import sanitizeFilename from "sanitize-filename";
+
 import { Lexer } from "./lexer";
 import * as PP from "./preprocessor";
 import {
     getComponentDefinitionMap,
     ComponentDefinition,
     ComponentScript,
+    ComponentNode,
 } from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
@@ -24,6 +30,9 @@ import * as _parser from "./parser";
 export { _parser as parser };
 import { URL } from "url";
 import * as path from "path";
+import { Return } from "./parser/Statement";
+import pSettle from "p-settle";
+import os from "os";
 
 let coverageCollector: CoverageCollector | null = null;
 
@@ -39,13 +48,83 @@ let coverageCollector: CoverageCollector | null = null;
  *          executed, or be rejected if an error occurs.
  */
 export async function execute(filenames: string[], options: Partial<ExecutionOptions>) {
+    let { lexerParserFn, interpreter } = await loadFiles(options);
+    let mainStatements = await lexerParserFn(filenames);
+    return interpreter.exec(mainStatements);
+}
+
+async function loadFiles(options: Partial<ExecutionOptions>) {
     const executionOptions = Object.assign(defaultExecutionOptions, options);
 
     let manifest = await PP.getManifest(executionOptions.root);
+    let maybeLibraryName = options.isComponentLibrary
+        ? manifest.get("sg_component_libs_provided")
+        : undefined;
+    if (typeof maybeLibraryName === "boolean") {
+        throw new Error(
+            "Encountered invalid boolean value for manifest key 'sg_component_libs_provided'"
+        );
+    } else if (options.isComponentLibrary && maybeLibraryName == null) {
+        throw new Error(
+            "Could not find required manifest key 'sg_component_libs_provided' in component library"
+        );
+    }
     let componentDefinitions = await getComponentDefinitionMap(
         executionOptions.root,
-        executionOptions.componentDirs
+        executionOptions.componentDirs,
+        maybeLibraryName
     );
+
+    let componentLibraries = Array.from(componentDefinitions.values())
+        .map((component: ComponentDefinition) => ({
+            component,
+            libraries: component.children.filter(
+                (child) => child.name.toLowerCase() === "componentlibrary"
+            ),
+        }))
+        .filter(({ libraries }) => libraries && libraries.length > 0);
+
+    let knownComponentLibraries = new Map<string, string>();
+    let componentLibrariesToLoad: ReturnType<typeof loadFiles>[] = [];
+    for (let { component, libraries } of componentLibraries) {
+        for (let cl of libraries) {
+            let uri = cl.fields.uri;
+            if (!uri) {
+                continue;
+            }
+            if (uri.startsWith("http://") || uri.startsWith("https://")) {
+                executionOptions.stderr.write(
+                    `WARNING: Only pkg:/-local component libraries are supported; ignoring '${uri}'\n`
+                );
+                continue;
+            }
+
+            let packageUri = new URL(
+                uri,
+                `pkg:/${path.posix.relative(executionOptions.root, component.xmlPath)}`
+            ).toString();
+            if (knownComponentLibraries.has(packageUri)) {
+                continue;
+            }
+
+            let sanitizedUri = sanitizeFilename(packageUri);
+            let tempdir = await mkdtemp(path.join(os.tmpdir(), `brs-${sanitizedUri}`), "utf8");
+            knownComponentLibraries.set(packageUri, tempdir);
+
+            let zipFileOnDisk = path.join(executionOptions.root, new URL(uri).pathname);
+
+            componentLibrariesToLoad.push(
+                decompress(zipFileOnDisk, tempdir).then(() =>
+                    loadFiles({
+                        ...options,
+                        root: tempdir,
+                        componentDirs: [],
+                        isComponentLibrary: true,
+                    })
+                )
+            );
+        }
+    }
 
     componentDefinitions.forEach((component: ComponentDefinition) => {
         if (component.scripts.length < 1) return;
@@ -70,6 +149,11 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         throw new Error("Unable to build interpreter.");
     }
 
+    let componentLibraryInterpreters = (await pSettle(componentLibrariesToLoad))
+        .filter((result) => result.isFulfilled)
+        .map((result) => result.value!.interpreter);
+    interpreter.mergeNodeDefinitionsWith(componentLibraryInterpreters);
+
     await loadTranslationFiles(interpreter, executionOptions.root);
 
     if (executionOptions.generateCoverage) {
@@ -77,9 +161,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
         await coverageCollector.crawlBrsFiles();
         interpreter.setCoverageCollector(coverageCollector);
     }
-
-    let mainStatements = await lexerParserFn(filenames);
-    return interpreter.exec(mainStatements);
+    return { lexerParserFn, interpreter };
 }
 
 /**

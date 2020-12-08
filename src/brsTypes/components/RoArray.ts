@@ -26,8 +26,10 @@ function sortCompare(a: BrsType, b: BrsType, caseInsensitive: boolean = false): 
             }
             // roku does not use locale for sorting strings
             compare = aStr > bStr ? 1 : -1;
-        } else if ((isBrsNumber(a) && isBrsNumber(b)) || (isBrsBoolean(a) && isBrsBoolean(b))) {
+        } else if (isBrsNumber(a) && isBrsNumber(b)) {
             compare = (a as Comparable).greaterThan(b).toBoolean() ? 1 : -1;
+        } else if (isBrsBoolean(a) && isBrsBoolean(b)) {
+            compare = 0;
         } else {
             compare = a > b ? 1 : -1;
         }

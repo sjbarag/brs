@@ -302,7 +302,7 @@ describe("RoArray", () => {
         });
 
         describe("sort", () => {
-            it("sorts number, string and boolean elements properly", () => {
+            it("sorts mixed elements properly", () => {
                 let a = new BrsString("a");
                 let aaa = new BrsString("aaa");
                 let b = new BrsString("b");
@@ -315,13 +315,39 @@ describe("RoArray", () => {
                 let i10 = new Int32(10);
                 let bool_t = new BrsBoolean(true);
                 let bool_f = new BrsBoolean(false);
+                let aa1 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(1) },
+                    { name: new BrsString("name"), value: new BrsString("Carol") },
+                ]);
+                let aa2 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(2) },
+                    { name: new BrsString("name"), value: new BrsString("Betty") },
+                ]);
 
-                let src = new RoArray([a, b, c, i3, i1, i2, i10, f2_5, baa, aaa, bool_f, bool_t]);
+                let ar = new RoArray([]);
+
+                let src = new RoArray([
+                    a,
+                    b,
+                    c,
+                    i3,
+                    aa1,
+                    i1,
+                    i2,
+                    i10,
+                    ar,
+                    f2_5,
+                    bool_t,
+                    baa,
+                    aaa,
+                    aa2,
+                    bool_f,
+                ]);
 
                 let sort = src.getMethod("sort");
                 expect(sort).toBeTruthy();
                 expect(sort.call(interpreter)).toBe(BrsInvalid.Instance);
-                // numbers in order, strings in order (case sensitive - uppercase first), booleans (true then false)
+                // numbers in order, strings in order (case sensitive - uppercase first), booleans
                 expect(src.elements).toEqual([
                     i1,
                     i2,
@@ -333,6 +359,9 @@ describe("RoArray", () => {
                     b,
                     baa,
                     c,
+                    aa1,
+                    aa2,
+                    ar,
                     bool_t,
                     bool_f,
                 ]);

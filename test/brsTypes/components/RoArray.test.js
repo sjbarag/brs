@@ -1,5 +1,5 @@
 const brs = require("brs");
-const { RoArray, RoAssociativeArray, BrsBoolean, BrsString, Int32, BrsInvalid } = brs.types;
+const { RoArray, RoAssociativeArray, BrsBoolean, BrsString, Int32, BrsInvalid, Float } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 const { createMockStreams } = require("../../e2e/E2ETests");
 
@@ -302,6 +302,42 @@ describe("RoArray", () => {
         });
 
         describe("sort", () => {
+            it("sorts number, string and boolean elements properly", () => {
+                let a = new BrsString("a");
+                let aaa = new BrsString("aaa");
+                let b = new BrsString("b");
+                let baa = new BrsString("baa");
+                let c = new BrsString("c");
+                let i3 = new Int32(3);
+                let i1 = new Int32(1);
+                let f2_5 = new Float(2.5);
+                let i2 = new Int32(2);
+                let i10 = new Int32(10);
+                let bool_t = new BrsBoolean(true);
+                let bool_f = new BrsBoolean(false);
+
+                let src = new RoArray([a, b, c, i3, i1, i2, i10, f2_5, baa, aaa, bool_f, bool_t]);
+
+                let sort = src.getMethod("sort");
+                expect(sort).toBeTruthy();
+                expect(sort.call(interpreter)).toBe(BrsInvalid.Instance);
+                // numbers in order, strings in order (case sensitive - uppercase first), booleans (true then false)
+                expect(src.elements).toEqual([
+                    i1,
+                    i2,
+                    f2_5,
+                    i3,
+                    i10,
+                    a,
+                    aaa,
+                    b,
+                    baa,
+                    c,
+                    bool_t,
+                    bool_f,
+                ]);
+            });
+
             it("sorts the elements of the array with no flags", () => {
                 let a = new BrsString("a");
                 let b = new BrsString("B");
@@ -661,6 +697,40 @@ describe("RoArray", () => {
                 expect(sortBy).toBeTruthy();
                 expect(sortBy.call(interpreter, new BrsString("id"))).toBe(BrsInvalid.Instance);
                 expect(src.elements).toEqual([i2, i1, a, b, a1, a2, a3, ar]);
+            });
+
+            it("sorts the array based on AA valid mixed field", () => {
+                let a3 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(3) },
+                    { name: new BrsString("name"), value: new BrsString("Betty") },
+                    { name: new BrsString("data"), value: new BrsString("abc") },
+                ]);
+                let a1 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(1) },
+                    { name: new BrsString("name"), value: new BrsString("Carol") },
+                    { name: new BrsString("data"), value: new Int32(10) },
+                ]);
+                let a2 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(2) },
+                    { name: new BrsString("name"), value: new BrsString("anne") },
+                    { name: new BrsString("data"), value: new Float(9.5) },
+                ]);
+                let a4 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(4) },
+                    { name: new BrsString("name"), value: new BrsString("Dave") },
+                    { name: new BrsString("data"), value: new BrsBoolean(true) },
+                ]);
+                let a = new BrsString("a");
+                let b = new BrsString("B");
+                let ar = new RoArray([]);
+                let i2 = new Int32(2);
+                let i1 = new Int32(1);
+                let src = new RoArray([a3, a4, a1, a2, a, b, ar, i2, i1]);
+
+                let sortBy = src.getMethod("sortBy");
+                expect(sortBy).toBeTruthy();
+                expect(sortBy.call(interpreter, new BrsString("data"))).toBe(BrsInvalid.Instance);
+                expect(src.elements).toEqual([i2, i1, a, b, a2, a1, a3, a4, ar]);
             });
 
             it("sorts the array based on AA valid numeric field with flags = r", () => {

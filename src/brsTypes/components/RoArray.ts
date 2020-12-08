@@ -1,10 +1,39 @@
-import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid } from "../BrsType";
-import { BrsType, isBrsString, isBrsNumber } from "..";
+import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid, Comparable } from "../BrsType";
+import { BrsType, isBrsString, isBrsNumber, isBrsBoolean } from "..";
 import { BrsComponent, BrsIterable } from "./BrsComponent";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
+
+function sortCompare(a: BrsType, b: BrsType, caseInsensitive: boolean = false): number {
+    let compare = 0;
+    if (a !== undefined && b !== undefined) {
+        if (a instanceof RoArray && b instanceof RoAssociativeArray) {
+            compare = 1;
+        } else if (a instanceof RoAssociativeArray && b instanceof RoArray) {
+            compare = -1;
+        } else if (!(isBrsString(a) || isBrsNumber(a)) && (isBrsString(b) || isBrsNumber(b))) {
+            compare = 1;
+        } else if ((isBrsString(a) || isBrsNumber(a)) && !(isBrsString(b) || isBrsNumber(b))) {
+            compare = -1;
+        } else if (isBrsString(a) && isBrsString(b)) {
+            let aStr = a.toString();
+            let bStr = b.toString();
+            if (caseInsensitive) {
+                aStr = aStr.toLowerCase();
+                bStr = bStr.toLowerCase();
+            }
+            // roku does not use locale for sorting strings
+            compare = aStr > bStr ? 1 : -1;
+        } else if ((isBrsNumber(a) && isBrsNumber(b)) || (isBrsBoolean(a) && isBrsBoolean(b))) {
+            compare = (a as Comparable).greaterThan(b).toBoolean() ? 1 : -1;
+        } else {
+            compare = a > b ? 1 : -1;
+        }
+    }
+    return compare;
+}
 
 export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
@@ -214,41 +243,13 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
             if (flags.toString().match(/([^ir])/g) != null) {
                 interpreter.stderr.write("roArray.Sort: Flags contains invalid option(s).\n");
             } else {
+                const caseInsensitive = flags.toString().indexOf("i") > -1;
                 this.elements = this.elements.sort(function (a, b) {
-                    var compare = 0;
-                    if (a !== undefined && b !== undefined) {
-                        if (a instanceof RoArray && b instanceof RoAssociativeArray) {
-                            compare = 1;
-                        } else if (a instanceof RoAssociativeArray && b instanceof RoArray) {
-                            compare = -1;
-                        } else if (
-                            !(isBrsString(a) || isBrsNumber(a)) &&
-                            (isBrsString(b) || isBrsNumber(b))
-                        ) {
-                            compare = 1;
-                        } else if (
-                            (isBrsString(a) || isBrsNumber(a)) &&
-                            !(isBrsString(b) || isBrsNumber(b))
-                        ) {
-                            compare = -1;
-                        } else if (
-                            flags.toString().indexOf("i") > -1 &&
-                            isBrsString(a) &&
-                            isBrsString(b)
-                        ) {
-                            compare = a
-                                .toString()
-                                .toLowerCase()
-                                .localeCompare(b.toString().toLowerCase());
-                        } else {
-                            compare = a > b ? 1 : -1;
-                        }
-                    }
-                    if (flags.toString().indexOf("r") > -1) {
-                        compare = -compare;
-                    }
-                    return compare;
+                    return sortCompare(a, b, caseInsensitive);
                 });
+                if (flags.toString().indexOf("r") > -1) {
+                    this.elements = this.elements.reverse();
+                }
             }
             return BrsInvalid.Instance;
         },
@@ -266,27 +267,22 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
             if (flags.toString().match(/([^ir])/g) != null) {
                 interpreter.stderr.write("roArray.SortBy: Flags contains invalid option(s).\n");
             } else {
+                const caseInsensitive = flags.toString().indexOf("i") > -1;
                 this.elements = this.elements.sort(function (a, b) {
                     var compare = 0;
                     if (a instanceof RoAssociativeArray && b instanceof RoAssociativeArray) {
-                        if (
-                            a.elements.has(fieldName.toString().toLowerCase()) &&
-                            b.elements.has(fieldName.toString().toLowerCase())
-                        ) {
+                        let aHasField = a.elements.has(fieldName.toString().toLowerCase()),
+                            bHasField = b.elements.has(fieldName.toString().toLowerCase());
+                        if (aHasField && bHasField) {
                             var valueA = a.get(fieldName);
                             var valueB = b.get(fieldName);
-                            if (
-                                flags.toString().indexOf("i") > -1 &&
-                                isBrsString(valueA) &&
-                                isBrsString(valueB)
-                            ) {
-                                compare = valueA
-                                    .toString()
-                                    .toLowerCase()
-                                    .localeCompare(valueB.toString().toLowerCase());
-                            } else if (valueA !== undefined && valueB !== undefined) {
-                                compare = valueA > valueB ? 1 : -1;
-                            }
+                            compare = sortCompare(valueA, valueB, caseInsensitive);
+                        } else if (aHasField) {
+                            // assocArray with fields come before assocArrays without
+                            compare = -1;
+                        } else if (bHasField) {
+                            // assocArray with fields come before assocArrays without
+                            compare = 1;
                         }
                     } else if (a !== undefined && b !== undefined) {
                         if (a instanceof RoArray && b instanceof RoAssociativeArray) {
@@ -294,8 +290,10 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                         } else if (a instanceof RoAssociativeArray && b instanceof RoArray) {
                             compare = -1;
                         } else if (isBrsString(a) && isBrsNumber(b)) {
+                            // if element is not an assocArray, strings come after numbers in array order
                             compare = 1;
                         } else if (isBrsNumber(a) && isBrsString(b)) {
+                            // if element is not an assocArray, numbers come before strings in array order
                             compare = -1;
                         } else if (
                             !(isBrsString(a) || isBrsNumber(a)) &&

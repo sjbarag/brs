@@ -18,21 +18,23 @@
       - [Cleaning](#cleaning)
       - [All Together](#all-together)
   - [Extensions](#extensions)
-    - [`_brs_.process`](#_brs_process)
+    - [`_brs_.getStackTrace(numEntries = 10, excludePatterns = [])`](#_brs_getstacktracenumentries--10-excludepatterns--)
     - [`_brs_.global`](#_brs_global)
-    - [`_brs_.runInScope`](#_brs_runinscope)
     - [`_brs_.mockComponent`](#_brs_mockcomponent)
+    - [`_brs_.mockComponentPartial`](#_brs_mockcomponentpartial)
     - [`_brs_.mockFunction`](#_brs_mockfunction)
       - [Mock Function API](#mock-function-api)
         - [`mock.calls`](#mockcalls)
         - [`mock.results`](#mockresults)
         - [`mock.clearMock()`](#mockclearmock)
         - [`mock.getMockName()`](#mockgetmockname)
-    - [`_brs_.resetMocks`](#_brs_resetmocks)
-    - [`_brs_.resetMockComponents`](#_brs_resetmockcomponents)
+    - [`_brs_.process`](#_brs_process)
     - [`_brs_.resetMockComponent`](#_brs_resetmockcomponent)
-    - [`_brs_.resetMockFunctions`](#_brs_resetmockfunctions)
+    - [`_brs_.resetMockComponents`](#_brs_resetmockcomponents)
     - [`_brs_.resetMockFunction`](#_brs_resetmockfunction)
+    - [`_brs_.resetMockFunctions`](#_brs_resetmockfunctions)
+    - [`_brs_.resetMocks`](#_brs_resetmocks)
+    - [`_brs_.runInScope`](#_brs_runinscope)
     - [`_brs_.triggerKeyEvent(key as string, press as boolean)`](#_brs_triggerkeyeventkey-as-string-press-as-boolean)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -168,21 +170,28 @@ $ yarn run-s clean build test
 
 For the most part, `brs` attempts to emulate BrightScript as closely as possible. However, in the spirit of unit testing, it also has a few extensions that will help with testing.
 
-### `_brs_.process`
+### `_brs_.getStackTrace(numEntries = 10, excludePatterns = [])`
 
-Allows you to access the command line arguments and locale. Locale changes will be reflected in related `RoDeviceInfo` functions and the standard library `Tr` function. Usage:
+Prints out the stack trace. You can configure how many lines to print, and also add filters to exclude files/folders from being included in the trace.
 
-```brightscript
-print _brs_.process
-' {
-'   argv: [ "some", "arg" ],
-'   getLocale: [Function getLocale]
-'   setLocale: [Function setLocale]
-' }
+```brs
+print _brs_.getStackTrace()
+' [
+'     "test/baz.test.brs:1:10",
+'     "lib/utils.brs:25:4",
+'     "foo/baz.brs:50:29"
+' ]
 
-_brs_.process.setLocale("fr_CA")
-print _brs_.process.getLocale() ' => "fr_CA"
-print createObject("roDeviceInfo").getCurrentLocale() ' => "fr_CA"
+print _brs_.getStackTrace(1)
+' [
+'     "test/baz.test.brs:1:10",
+' ]
+
+print _brs_.getStackTrace(10, ["lib"])
+' [
+'     "test/baz.test.brs:1:10",
+'     "foo/baz.brs:50:29"
+' ]
 ```
 
 ### `_brs_.global`
@@ -196,14 +205,6 @@ print _brs_.global
 ' }
 ```
 
-### `_brs_.runInScope`
-
-Runs a file (or set of files) **in the current global + module scope** with the provided arguments, returning either the value returned by those files' `main` function or `invalid` if an error occurs.
-
-```brightscript
-_brs_.runInScope("/path/to/myFile.brs", { foo: "bar" })
-```
-
 ### `_brs_.mockComponent`
 
 Allows you to mock a component. Usage:
@@ -215,6 +216,31 @@ _brs_.mockComponent("ComponentName", {
       return 123
     end sub
 })
+```
+
+### `_brs_.mockComponentPartial`
+
+Allows you to mock some of the functions of a component but keep others. Usage:
+
+```brightscript
+' Foo.brs
+sub bar()
+    print "original bar"
+end sub
+
+sub baz()
+    print "original baz"
+end sub
+
+' Foo.test.brs
+_brs_.mockComponentPartial("Foo", {
+    bar: sub()
+        print "mocked bar"
+    end sub
+})
+node = createObject("roSGNode", "Foo")
+node.callFunc("bar") ' => "mocked bar"
+node.callFunc("baz") ' => "original baz"
 ```
 
 ### `_brs_.mockFunction`
@@ -301,20 +327,21 @@ end function)
 print mock.getMockName() ' => "fooBar"
 ```
 
-### `_brs_.resetMocks`
+### `_brs_.process`
 
-Resets all component and function mocks. Usage:
-
-```brightscript
-_brs_.resetMocks()
-```
-
-### `_brs_.resetMockComponents`
-
-Resets all component mocks. Usage:
+Allows you to access the command line arguments and locale. Locale changes will be reflected in related `RoDeviceInfo` functions and the standard library `Tr` function. Usage:
 
 ```brightscript
-_brs_.resetMockComponents()
+print _brs_.process
+' {
+'   argv: [ "some", "arg" ],
+'   getLocale: [Function getLocale]
+'   setLocale: [Function setLocale]
+' }
+
+_brs_.process.setLocale("fr_CA")
+print _brs_.process.getLocale() ' => "fr_CA"
+print createObject("roDeviceInfo").getCurrentLocale() ' => "fr_CA"
 ```
 
 ### `_brs_.resetMockComponent`
@@ -325,12 +352,12 @@ Resets a specific component mock. Works on both partially mocked and fully mocke
 _brs_.resetMockComponent("MyComponent")
 ```
 
-### `_brs_.resetMockFunctions`
+### `_brs_.resetMockComponents`
 
-Resets all function mocks. Usage:
+Resets all component mocks. Usage:
 
 ```brightscript
-_brs_.resetMockFunctions()
+_brs_.resetMockComponents()
 ```
 
 ### `_brs_.resetMockFunction`
@@ -339,6 +366,14 @@ Resets a specific function mock. Usage:
 
 ```brightscript
 _brs_.resetMockFunction("MyFunction")
+```
+
+### `_brs_.resetMockFunctions`
+
+Resets all function mocks. Usage:
+
+```brightscript
+_brs_.resetMockFunctions()
 ```
 
 **Note:** If you have a mocked component that has a function with the same name, this _will not_ reset that component member function. For example:
@@ -360,6 +395,22 @@ node.foo() ' => "mock component foo"
 _brs_.resetMockFunction("foo")
 foo() ' => "original implementation"
 node.foo() ' => "mock component foo"
+```
+
+### `_brs_.resetMocks`
+
+Resets all component and function mocks. Usage:
+
+```brightscript
+_brs_.resetMocks()
+```
+
+### `_brs_.runInScope`
+
+Runs a file (or set of files) **in the current global + module scope** with the provided arguments, returning either the value returned by those files' `main` function or `invalid` if an error occurs.
+
+```brightscript
+_brs_.runInScope("/path/to/myFile.brs", { foo: "bar" })
 ```
 
 ### `_brs_.triggerKeyEvent(key as string, press as boolean)`

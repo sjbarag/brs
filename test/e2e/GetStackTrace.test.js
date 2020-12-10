@@ -14,12 +14,16 @@ describe("GetStackTrace", () => {
             [
                 resourceFile("components", "stack-trace", "@external", "package", "utils.brs"),
                 resourceFile("components", "stack-trace", "print.brs"),
-                resourceFile("components", "stack-trace", "main.brs")
+                resourceFile("components", "stack-trace", "main.brs"),
             ],
             outputStreams
         );
 
-        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n").map(line => line.replace(process.cwd(), ""))).toEqual([
+        expect(
+            allArgs(outputStreams.stdout.write)
+                .filter((arg) => arg !== "\n")
+                .map((line) => line.replace(process.cwd(), ""))
+        ).toEqual([
             "--- stack ---",
             "/test/e2e/resources/components/stack-trace/main.brs:2:4",
             "/test/e2e/resources/components/stack-trace/@external/package/utils.brs:2:4",

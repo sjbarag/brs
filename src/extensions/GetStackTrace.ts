@@ -7,7 +7,7 @@ import {
     Int32,
     BrsInvalid,
     BrsType,
-    isBrsString
+    isBrsString,
 } from "../brsTypes";
 import type { Location } from "../lexer";
 import { Interpreter } from "../interpreter";
@@ -38,29 +38,27 @@ export const GetStackTrace = new Callable("GetStackTrace", {
 
         // Filter out any files that the consumer doesn't want to include
         if (excludePatterns instanceof RoArray) {
-            excludePatterns.getValue().forEach(pattern => {
+            excludePatterns.getValue().forEach((pattern) => {
                 if (isBrsString(pattern)) {
                     let regexFilter = new RegExp(pattern.value);
-                    stack = stack.filter(location => !regexFilter.test(location.file));
+                    stack = stack.filter((location) => !regexFilter.test(location.file));
                 }
             });
         } else if (!(excludePatterns instanceof BrsInvalid)) {
-            interpreter.stderr.write("Patterns to exclude argument must be an roArray")
+            interpreter.stderr.write("Patterns to exclude argument must be an roArray");
         }
 
         return new RoArray(
             stack
                 // Filter out any internal stack traces.
-                .filter(location => !INTERNAL_REGEX_FILTER.test(location.file))
+                .filter((location) => !INTERNAL_REGEX_FILTER.test(location.file))
                 // Remove any duplicate entries that appear next to each other in the stack.
                 .filter((location, index, locations) => {
                     if (index === 0) return true;
-                    let prevLocation = locations[index-1];
+                    let prevLocation = locations[index - 1];
                     return stringifyLocation(prevLocation) !== stringifyLocation(location);
                 })
-                .map((location) => {
-                    return new BrsString(`${location.file}:${location.start.line}:${location.start.column}`);
-                })
+                .map((location) => new BrsString(stringifyLocation(location)))
                 // Get the last item on the stack
                 .slice(-1 * numEntries.getValue())
         );

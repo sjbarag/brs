@@ -7,12 +7,16 @@ import {
     Int32,
     BrsInvalid,
     BrsType,
-    isBrsString,
-    escapeStringForRegex,
+    isBrsString
 } from "../brsTypes";
+import type { Location } from "../lexer";
 import { Interpreter } from "../interpreter";
 
 const INTERNAL_REGEX_FILTER = /\(internal\)/;
+
+function stringifyLocation(location: Location) {
+    return `${location.file}:${location.start.line}:${location.start.column}`;
+}
 
 /**
  * Returns a stack trace in the format:
@@ -48,11 +52,17 @@ export const GetStackTrace = new Callable("GetStackTrace", {
             stack
                 // Filter out any internal stack traces.
                 .filter(location => !INTERNAL_REGEX_FILTER.test(location.file))
-                // Get the last item on the stack
-                .slice(-1 * numEntries.getValue())
+                // Remove any duplicate entries that appear next to each other in the stack.
+                .filter((location, index, locations) => {
+                    if (index === 0) return true;
+                    let prevLocation = locations[index-1];
+                    return stringifyLocation(prevLocation) !== stringifyLocation(location);
+                })
                 .map((location) => {
                     return new BrsString(`${location.file}:${location.start.line}:${location.start.column}`);
                 })
+                // Get the last item on the stack
+                .slice(-1 * numEntries.getValue())
         );
     },
 });

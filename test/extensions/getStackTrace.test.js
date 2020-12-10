@@ -61,5 +61,15 @@ describe("GetStackTrace", () => {
             "a/b/c.brs:5:6",
             "test/a/b/c.test.brs:1:2",
         ]);
+
+        result = GetStackTrace.call(
+            interpreter,
+            new Int32(10),
+            new RoArray([new BrsString("package")])
+        );
+        expect(result.getValue().map(line => line.value)).toEqual([
+            "a/b/c.brs:5:6",
+            "test/a/b/c.test.brs:1:2",
+        ]);
     });
 });

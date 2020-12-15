@@ -27,11 +27,18 @@ function getTypeSortIndex(a: BrsType): number {
     return 3;
 }
 
+/**
+ * Sorts two BrsTypes in the order that ROku would sort them
+ * @param a
+ * @param b
+ * @param caseInsensitive Should strings be compared case insensitively? defaults to false
+ * @param sortInsideTypes Should two numbers or two strings be sorted? defaults to true
+ */
 function sortCompare(
     a: BrsType,
     b: BrsType,
     caseInsensitive: boolean = false,
-    sortInsideTypes = true
+    sortInsideTypes: boolean = true
 ): number {
     let compare = 0;
     if (a !== undefined && b !== undefined) {

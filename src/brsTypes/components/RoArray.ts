@@ -29,12 +29,15 @@ function getTypeSortIndex(a: BrsType): number {
 
 /**
  * Sorts two BrsTypes in the order that ROku would sort them
+ * @param originalArray A copy of the original array. Used to get the order of items
  * @param a
  * @param b
  * @param caseInsensitive Should strings be compared case insensitively? defaults to false
  * @param sortInsideTypes Should two numbers or two strings be sorted? defaults to true
+ * @return compare value for array.sort()
  */
 function sortCompare(
+    originalArray: Array<BrsType>,
     a: BrsType,
     b: BrsType,
     caseInsensitive: boolean = false,
@@ -44,6 +47,8 @@ function sortCompare(
     if (a !== undefined && b !== undefined) {
         const aSortOrder = getTypeSortIndex(a);
         const bSortOrder = getTypeSortIndex(b);
+        const aOriginalIndex = originalArray.indexOf(a);
+        const bOriginalIndex = originalArray.indexOf(b);
         if (aSortOrder < bSortOrder) {
             compare = -1;
         } else if (bSortOrder < aSortOrder) {
@@ -63,9 +68,9 @@ function sortCompare(
                 }
                 // roku does not use locale for sorting strings
                 compare = aStr > bStr ? 1 : -1;
-            } else {
-                // for everything else, return in original array order
-                compare = 0;
+            } else if (aOriginalIndex > -1 && bOriginalIndex > -1) {
+                // everything else is in the same order as the original
+                compare = aOriginalIndex - bOriginalIndex;
             }
         }
     }
@@ -281,8 +286,9 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                 interpreter.stderr.write("roArray.Sort: Flags contains invalid option(s).\n");
             } else {
                 const caseInsensitive = flags.toString().indexOf("i") > -1;
-                this.elements = this.elements.sort(function (a, b) {
-                    return sortCompare(a, b, caseInsensitive);
+                const originalArrayCopy = [...this.elements];
+                this.elements = this.elements.sort((a, b) => {
+                    return sortCompare(originalArrayCopy, a, b, caseInsensitive);
                 });
                 if (flags.toString().indexOf("r") > -1) {
                     this.elements = this.elements.reverse();
@@ -305,7 +311,8 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                 interpreter.stderr.write("roArray.SortBy: Flags contains invalid option(s).\n");
             } else {
                 const caseInsensitive = flags.toString().indexOf("i") > -1;
-                this.elements = this.elements.sort(function (a, b) {
+                const originalArrayCopy = [...this.elements];
+                this.elements = this.elements.sort((a, b) => {
                     var compare = 0;
                     if (a instanceof RoAssociativeArray && b instanceof RoAssociativeArray) {
                         let aHasField = a.elements.has(fieldName.toString().toLowerCase()),
@@ -313,7 +320,12 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                         if (aHasField && bHasField) {
                             var valueA = a.get(fieldName);
                             var valueB = b.get(fieldName);
-                            compare = sortCompare(valueA, valueB, caseInsensitive);
+                            compare = sortCompare(
+                                originalArrayCopy,
+                                valueA,
+                                valueB,
+                                caseInsensitive
+                            );
                         } else if (aHasField) {
                             // assocArray with fields come before assocArrays without
                             compare = -1;
@@ -322,7 +334,7 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                             compare = 1;
                         }
                     } else if (a !== undefined && b !== undefined) {
-                        compare = sortCompare(a, b, false, false);
+                        compare = sortCompare(originalArrayCopy, a, b, false, false);
                     }
                     return compare;
                 });

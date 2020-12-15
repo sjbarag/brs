@@ -335,9 +335,9 @@ describe("RoArray", () => {
                     i1,
                     i2,
                     i10,
-                    ar,
                     f2_5,
                     bool_t,
+                    ar,
                     baa,
                     aaa,
                     aa2,
@@ -361,8 +361,8 @@ describe("RoArray", () => {
                     c,
                     aa1,
                     aa2,
-                    ar,
                     bool_t,
+                    ar,
                     bool_f,
                 ]);
             });
@@ -751,15 +751,29 @@ describe("RoArray", () => {
                 ]);
                 let a = new BrsString("a");
                 let b = new BrsString("B");
-                let ar = new RoArray([]);
+                let boolTrue = new BrsBoolean(true);
+                let arr = new RoArray([]);
                 let i2 = new Int32(2);
                 let i1 = new Int32(1);
-                let src = new RoArray([a3, a4, a1, a2, a, b, ar, i2, i1]);
+                let boolFalse = new BrsBoolean(false);
+                let src = new RoArray([a3, a4, a1, a2, a, b, boolTrue, arr, i2, i1, boolFalse]);
 
                 let sortBy = src.getMethod("sortBy");
                 expect(sortBy).toBeTruthy();
                 expect(sortBy.call(interpreter, new BrsString("data"))).toBe(BrsInvalid.Instance);
-                expect(src.elements).toEqual([i2, i1, a, b, a2, a1, a3, a4, ar]);
+                expect(src.elements).toEqual([
+                    i2,
+                    i1,
+                    a,
+                    b,
+                    a2,
+                    a1,
+                    a3,
+                    a4,
+                    boolTrue,
+                    arr,
+                    boolFalse,
+                ]);
             });
 
             it("sorts the array based on AA valid numeric field with flags = r", () => {

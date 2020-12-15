@@ -6,32 +6,60 @@ import { Interpreter } from "../../interpreter";
 import { Int32 } from "../Int32";
 import { RoAssociativeArray } from "./RoAssociativeArray";
 
-function sortCompare(a: BrsType, b: BrsType, caseInsensitive: boolean = false): number {
+/**
+ * Gives the order for sorting different types in a mixed array
+ *
+ * Mixed Arrays seem to get sorted in this order (tested with Roku OS 9.4):
+ *
+ * numbers in numeric order
+ * strings in alphabetical order,
+ * assocArrays in original order
+ * everything else in original order
+ */
+function getTypeSortIndex(a: BrsType): number {
+    if (isBrsNumber(a)) {
+        return 0;
+    } else if (isBrsString(a)) {
+        return 1;
+    } else if (a instanceof RoAssociativeArray) {
+        return 2;
+    }
+    return 3;
+}
+
+function sortCompare(
+    a: BrsType,
+    b: BrsType,
+    caseInsensitive: boolean = false,
+    sortInsideTypes = true
+): number {
     let compare = 0;
     if (a !== undefined && b !== undefined) {
-        if (a instanceof RoArray && b instanceof RoAssociativeArray) {
-            compare = 1;
-        } else if (a instanceof RoAssociativeArray && b instanceof RoArray) {
+        const aSortOrder = getTypeSortIndex(a);
+        const bSortOrder = getTypeSortIndex(b);
+        if (aSortOrder < bSortOrder) {
             compare = -1;
-        } else if (!(isBrsString(a) || isBrsNumber(a)) && (isBrsString(b) || isBrsNumber(b))) {
+        } else if (bSortOrder < aSortOrder) {
             compare = 1;
-        } else if ((isBrsString(a) || isBrsNumber(a)) && !(isBrsString(b) || isBrsNumber(b))) {
-            compare = -1;
-        } else if (isBrsString(a) && isBrsString(b)) {
-            let aStr = a.toString();
-            let bStr = b.toString();
-            if (caseInsensitive) {
-                aStr = aStr.toLowerCase();
-                bStr = bStr.toLowerCase();
-            }
-            // roku does not use locale for sorting strings
-            compare = aStr > bStr ? 1 : -1;
-        } else if (isBrsNumber(a) && isBrsNumber(b)) {
-            compare = (a as Comparable).greaterThan(b).toBoolean() ? 1 : -1;
-        } else if (isBrsBoolean(a) && isBrsBoolean(b)) {
-            compare = 0;
         } else {
-            compare = a > b ? 1 : -1;
+            // a and b have the same type
+            if (sortInsideTypes && isBrsNumber(a)) {
+                // two numbers are in numeric order
+                compare = (a as Comparable).greaterThan(b).toBoolean() ? 1 : -1;
+            } else if (sortInsideTypes && isBrsString(a)) {
+                // two strings are in alphabetical order
+                let aStr = a.toString();
+                let bStr = b.toString();
+                if (caseInsensitive) {
+                    aStr = aStr.toLowerCase();
+                    bStr = bStr.toLowerCase();
+                }
+                // roku does not use locale for sorting strings
+                compare = aStr > bStr ? 1 : -1;
+            } else {
+                // for everything else, return in original array order
+                compare = 0;
+            }
         }
     }
     return compare;
@@ -287,27 +315,7 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                             compare = 1;
                         }
                     } else if (a !== undefined && b !== undefined) {
-                        if (a instanceof RoArray && b instanceof RoAssociativeArray) {
-                            compare = 1;
-                        } else if (a instanceof RoAssociativeArray && b instanceof RoArray) {
-                            compare = -1;
-                        } else if (isBrsString(a) && isBrsNumber(b)) {
-                            // if element is not an assocArray, strings come after numbers in array order
-                            compare = 1;
-                        } else if (isBrsNumber(a) && isBrsString(b)) {
-                            // if element is not an assocArray, numbers come before strings in array order
-                            compare = -1;
-                        } else if (
-                            !(isBrsString(a) || isBrsNumber(a)) &&
-                            (isBrsString(b) || isBrsNumber(b))
-                        ) {
-                            compare = 1;
-                        } else if (
-                            (isBrsString(a) || isBrsNumber(a)) &&
-                            !(isBrsString(b) || isBrsNumber(b))
-                        ) {
-                            compare = -1;
-                        }
+                        compare = sortCompare(a, b, false, false);
                     }
                     return compare;
                 });

@@ -37,7 +37,7 @@ function getTypeSortIndex(a: BrsType): number {
  * @return compare value for array.sort()
  */
 function sortCompare(
-    originalArray: Array<BrsType>,
+    originalArray: BrsType[],
     a: BrsType,
     b: BrsType,
     caseInsensitive: boolean = false,

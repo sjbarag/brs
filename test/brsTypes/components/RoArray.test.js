@@ -303,11 +303,11 @@ describe("RoArray", () => {
 
         describe("sort", () => {
             it("sorts mixed elements properly", () => {
-                let a = new BrsString("a");
-                let aaa = new BrsString("aaa");
-                let b = new BrsString("b");
-                let baa = new BrsString("baa");
-                let c = new BrsString("c");
+                let strA = new BrsString("a");
+                let strAaa = new BrsString("aaa");
+                let strB = new BrsString("b");
+                let strBaa = new BrsString("baa");
+                let strC = new BrsString("c");
                 let i3 = new Int32(3);
                 let i1 = new Int32(1);
                 let f2_5 = new Float(2.5);
@@ -327,9 +327,9 @@ describe("RoArray", () => {
                 let ar = new RoArray([]);
 
                 let src = new RoArray([
-                    a,
-                    b,
-                    c,
+                    strA,
+                    strB,
+                    strC,
                     i3,
                     aa1,
                     i1,
@@ -338,8 +338,8 @@ describe("RoArray", () => {
                     f2_5,
                     bool_t,
                     ar,
-                    baa,
-                    aaa,
+                    strBaa,
+                    strAaa,
                     aa2,
                     bool_f,
                 ]);
@@ -347,21 +347,21 @@ describe("RoArray", () => {
                 let sort = src.getMethod("sort");
                 expect(sort).toBeTruthy();
                 expect(sort.call(interpreter)).toBe(BrsInvalid.Instance);
-                // numbers in order, strings in order (case sensitive - uppercase first), booleans
+                // numbers in order, strings in order (case sensitive - uppercase first), assocArrays, everything else
                 expect(src.elements).toEqual([
-                    i1,
-                    i2,
-                    f2_5,
-                    i3,
-                    i10,
-                    a,
-                    aaa,
-                    b,
-                    baa,
-                    c,
-                    aa1,
+                    i1, // numbers in order - value = 1
+                    i2, // value = 2
+                    f2_5, // value = 2.5
+                    i3, // value = 3
+                    i10, // value = 10
+                    strA, // strings in order - value = "a"
+                    strAaa, // value = "aaa"
+                    strB, // value = "b"
+                    strBaa, //value = "baa"
+                    strC, // value = "c"
+                    aa1, // assoc arrays in original order
                     aa2,
-                    bool_t,
+                    bool_t, // everything else in original order
                     ar,
                     bool_f,
                 ]);
@@ -729,11 +729,6 @@ describe("RoArray", () => {
             });
 
             it("sorts the array based on AA valid mixed field", () => {
-                let a3 = new RoAssociativeArray([
-                    { name: new BrsString("id"), value: new Int32(3) },
-                    { name: new BrsString("name"), value: new BrsString("Betty") },
-                    { name: new BrsString("data"), value: new BrsString("abc") },
-                ]);
                 let a1 = new RoAssociativeArray([
                     { name: new BrsString("id"), value: new Int32(1) },
                     { name: new BrsString("name"), value: new BrsString("Carol") },
@@ -744,33 +739,56 @@ describe("RoArray", () => {
                     { name: new BrsString("name"), value: new BrsString("anne") },
                     { name: new BrsString("data"), value: new Float(9.5) },
                 ]);
+                let a3 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(3) },
+                    { name: new BrsString("name"), value: new BrsString("Betty") },
+                    { name: new BrsString("data"), value: new BrsString("abc") },
+                ]);
                 let a4 = new RoAssociativeArray([
                     { name: new BrsString("id"), value: new Int32(4) },
                     { name: new BrsString("name"), value: new BrsString("Dave") },
                     { name: new BrsString("data"), value: new BrsBoolean(true) },
                 ]);
-                let a = new BrsString("a");
-                let b = new BrsString("B");
+                let a5 = new RoAssociativeArray([
+                    { name: new BrsString("id"), value: new Int32(5) },
+                    { name: new BrsString("name"), value: new BrsString("Dave") },
+                ]);
+                let strA = new BrsString("a");
+                let strB = new BrsString("B");
                 let boolTrue = new BrsBoolean(true);
+                let boolFalse = new BrsBoolean(false);
                 let arr = new RoArray([]);
                 let i2 = new Int32(2);
                 let i1 = new Int32(1);
-                let boolFalse = new BrsBoolean(false);
-                let src = new RoArray([a3, a4, a1, a2, a, b, boolTrue, arr, i2, i1, boolFalse]);
+                let src = new RoArray([
+                    a3,
+                    a4,
+                    a5,
+                    a1,
+                    a2,
+                    strA,
+                    strB,
+                    boolTrue,
+                    arr,
+                    i2,
+                    i1,
+                    boolFalse,
+                ]);
 
                 let sortBy = src.getMethod("sortBy");
                 expect(sortBy).toBeTruthy();
                 expect(sortBy.call(interpreter, new BrsString("data"))).toBe(BrsInvalid.Instance);
                 expect(src.elements).toEqual([
-                    i2,
+                    i2, // numbers in original order
                     i1,
-                    a,
-                    b,
-                    a2,
-                    a1,
-                    a3,
-                    a4,
-                    boolTrue,
+                    strA, // strings in original order
+                    strB,
+                    a2, // data = 9.5
+                    a1, // data = 10
+                    a3, // data = "abc"
+                    a4, // data = true
+                    a5, // no data property
+                    boolTrue, // everything else in original order
                     arr,
                     boolFalse,
                 ]);

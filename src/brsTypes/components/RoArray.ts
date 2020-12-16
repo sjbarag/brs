@@ -47,8 +47,6 @@ function sortCompare(
     if (a !== undefined && b !== undefined) {
         const aSortOrder = getTypeSortIndex(a);
         const bSortOrder = getTypeSortIndex(b);
-        const aOriginalIndex = originalArray.indexOf(a);
-        const bOriginalIndex = originalArray.indexOf(b);
         if (aSortOrder < bSortOrder) {
             compare = -1;
         } else if (bSortOrder < aSortOrder) {
@@ -68,9 +66,14 @@ function sortCompare(
                 }
                 // roku does not use locale for sorting strings
                 compare = aStr > bStr ? 1 : -1;
-            } else if (aOriginalIndex > -1 && bOriginalIndex > -1) {
+            } else {
                 // everything else is in the same order as the original
-                compare = aOriginalIndex - bOriginalIndex;
+
+                const aOriginalIndex = originalArray.indexOf(a);
+                const bOriginalIndex = originalArray.indexOf(b);
+                if (aOriginalIndex > -1 && bOriginalIndex > -1) {
+                    compare = aOriginalIndex - bOriginalIndex;
+                }
             }
         }
     }
@@ -313,13 +316,13 @@ export class RoArray extends BrsComponent implements BrsValue, BrsIterable {
                 const caseInsensitive = flags.toString().indexOf("i") > -1;
                 const originalArrayCopy = [...this.elements];
                 this.elements = this.elements.sort((a, b) => {
-                    var compare = 0;
+                    let compare = 0;
                     if (a instanceof RoAssociativeArray && b instanceof RoAssociativeArray) {
-                        let aHasField = a.elements.has(fieldName.toString().toLowerCase()),
-                            bHasField = b.elements.has(fieldName.toString().toLowerCase());
+                        const aHasField = a.elements.has(fieldName.toString().toLowerCase());
+                        const bHasField = b.elements.has(fieldName.toString().toLowerCase());
                         if (aHasField && bHasField) {
-                            var valueA = a.get(fieldName);
-                            var valueB = b.get(fieldName);
+                            const valueA = a.get(fieldName);
+                            const valueB = b.get(fieldName);
                             compare = sortCompare(
                                 originalArrayCopy,
                                 valueA,

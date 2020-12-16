@@ -1,6 +1,8 @@
 import { ComponentDefinition, ComponentScript } from "../componentprocessor";
 import * as Stmt from "./Statement";
 import { BrsComponentName } from "../brsTypes";
+import pSettle from "p-settle";
+import { ExitForReason } from "./BlockEndReason";
 
 export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];
@@ -20,7 +22,15 @@ export class ComponentScopeResolver {
      * @returns All statements in scope for the resolved component
      */
     public async resolve(component: ComponentDefinition): Promise<Stmt.Statement[]> {
-        return Promise.all(this.getStatements(component)).then(this.flatten.bind(this));
+        let statementResults = await pSettle(Array.from(this.getStatements(component)));
+        let rejected = statementResults.filter((res) => res.isRejected);
+        if (rejected.length > 0) {
+            rejected.forEach((rejection) =>
+                rejection.reason.messages.forEach((msg: string) => console.error(msg))
+            );
+            return Promise.reject(`Unable to resolve scope for component ${component.name}`);
+        }
+        return this.flatten(statementResults.map((res) => res.value!));
     }
 
     /**

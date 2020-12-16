@@ -55,6 +55,8 @@ export interface ExecutionOptions {
     generateCoverage: boolean;
     /** Additional directories to search for component definitions. Default: [] */
     componentDirs: string[];
+    /** Whether or not a component library is being processed. */
+    isComponentLibrary: boolean;
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
@@ -64,6 +66,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
     stderr: process.stderr,
     generateCoverage: false,
     componentDirs: [],
+    isComponentLibrary: false,
 };
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
@@ -155,6 +158,21 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         );
 
         return interpreter;
+    }
+
+    /**
+     * Merges this environment's node definition mapping with the ones included in an array of other
+     * interpreters, acting logically equivalent to
+     * `Object.assign(this.environment, other1.environment, other2.environment, …)`.
+     * @param interpreters the array of interpreters who's environment's node definition maps will
+     *                     be merged into this one
+     */
+    public mergeNodeDefinitionsWith(interpreters: Interpreter[]): void {
+        interpreters.map((other) =>
+            other.environment.nodeDefMap.forEach((value, key) =>
+                this.environment.nodeDefMap.set(key, value)
+            )
+        );
     }
 
     /**

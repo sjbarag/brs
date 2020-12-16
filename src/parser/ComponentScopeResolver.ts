@@ -1,7 +1,6 @@
 import { ComponentDefinition, ComponentScript } from "../componentprocessor";
 import * as Stmt from "./Statement";
 import pSettle from "p-settle";
-import { ExitForReason } from "./BlockEndReason";
 import { ComponentFactory } from "../brsTypes";
 
 export class ComponentScopeResolver {
@@ -14,7 +13,7 @@ export class ComponentScopeResolver {
     constructor(
         readonly componentMap: Map<string, ComponentDefinition>,
         readonly parserLexerFn: (filenames: string[]) => Promise<Stmt.Statement[]> // TODO: Remove and just build here?
-    ) { }
+    ) {}
 
     /**
      * Resolves the component functions in scope based on the extends hierarchy.

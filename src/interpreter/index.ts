@@ -78,6 +78,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     readonly stderr: OutputProxy;
     readonly temporaryVolume: MemoryFileSystem = new MemoryFileSystem();
 
+    stack: Location[] = [];
     location: Location;
 
     /** Allows consumers to observe errors as they're detected. */
@@ -1632,14 +1633,32 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
         this.location = expression.location;
+        this.stack.push(this.location);
         this.reportCoverageHit(expression);
-        return expression.accept<BrsType>(this);
+
+        let value;
+        try {
+            value = expression.accept<BrsType>(this);
+        } finally {
+            this.stack.pop();
+        }
+
+        return value;
     }
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
         this.location = statement.location;
+        this.stack.push(this.location);
         this.reportCoverageHit(statement);
-        return statement.accept<BrsType>(this);
+
+        let value;
+        try {
+            value = statement.accept<BrsType>(this);
+        } finally {
+            this.stack.pop();
+        }
+
+        return value;
     }
 
     /**

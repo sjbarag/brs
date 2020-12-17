@@ -168,6 +168,30 @@ $ yarn run-s clean build test
 
 For the most part, `brs` attempts to emulate BrightScript as closely as possible. However, in the spirit of unit testing, it also has a few extensions that will help with testing.
 
+### `_brs_.getStackTrace(numEntries = 10, excludePatterns = [])`
+
+Prints out the stack trace. You can configure how many lines to print, and also use the `excludePatterns` arg, which is an **array of strings**, to exclude files/folders from being included in the trace. *Note: this function internally uses the [Javascript regex engine](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) to match the strings, not [Brightscript PCRE](https://developer.roku.com/en-ca/docs/references/brightscript/components/roregex.md).*
+
+```brs
+print _brs_.getStackTrace()
+' [
+'     "test/baz.test.brs:1:10",
+'     "lib/utils.brs:25:4",
+'     "foo/baz.brs:50:29"
+' ]
+
+print _brs_.getStackTrace(1)
+' [
+'     "test/baz.test.brs:1:10",
+' ]
+
+print _brs_.getStackTrace(10, ["lib"])
+' [
+'     "test/baz.test.brs:1:10",
+'     "foo/baz.brs:50:29"
+' ]
+```
+
 ### `_brs_.process`
 
 Allows you to access the command line arguments and locale. Locale changes will be reflected in related `RoDeviceInfo` functions and the standard library `Tr` function. Usage:

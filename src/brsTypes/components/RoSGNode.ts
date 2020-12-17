@@ -1634,7 +1634,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     private parentsubtype = new Callable("parentsubtype", {
         signature: {
             args: [new StdlibArgument("nodeType", ValueKind.String)],
-            returns: ValueKind.String | ValueKind.Invalid,
+            returns: ValueKind.Object,
         },
         impl: (interpreter: Interpreter, nodeType: BrsString) => {
             const parentType = subtypeHierarchy.get(nodeType.value.toLowerCase());

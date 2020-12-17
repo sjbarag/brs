@@ -279,15 +279,16 @@ const subtypeHierarchy = new Map<string, string>();
  * @returns {boolean}
  */
 function isSubtypeCheck(currentNodeType: string, checkType: string): boolean {
-    if (!currentNodeType || !checkType) {
-        return false;
-    }
     checkType = checkType.toLowerCase();
     currentNodeType = currentNodeType.toLowerCase();
     if (currentNodeType === checkType) {
         return true;
     }
-    return isSubtypeCheck(subtypeHierarchy.get(currentNodeType)!, checkType);
+    let nextNodeType = subtypeHierarchy.get(currentNodeType);
+    if (nextNodeType == null) {
+        return false;
+    }
+    return isSubtypeCheck(nextNodeType, checkType);
 }
 
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {

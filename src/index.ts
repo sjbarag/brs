@@ -54,7 +54,7 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
 }
 
 async function loadFiles(options: Partial<ExecutionOptions>) {
-    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    const executionOptions = { ...defaultExecutionOptions, ...options };
 
     let manifest = await PP.getManifest(executionOptions.root);
     let maybeLibraryName = options.isComponentLibrary
@@ -143,7 +143,8 @@ async function loadFiles(options: Partial<ExecutionOptions>) {
     let lexerParserFn = LexerParser.getLexerParserFn(manifest, options);
     const interpreter = await Interpreter.withSubEnvsFromComponents(
         componentDefinitions,
-        lexerParserFn
+        lexerParserFn,
+        executionOptions
     );
     if (!interpreter) {
         throw new Error("Unable to build interpreter.");
@@ -182,7 +183,7 @@ export function getCoverageResults() {
  * @returns the AST produced from lexing and parsing the provided files
  */
 export function lexParseSync(filenames: string[], options: Partial<ExecutionOptions>) {
-    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    const executionOptions = { ...defaultExecutionOptions, ...options };
 
     let manifest = PP.getManifestSync(executionOptions.root);
 

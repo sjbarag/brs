@@ -68,6 +68,7 @@ export const defaultExecutionOptions: ExecutionOptions = {
     componentDirs: [],
     isComponentLibrary: false,
 };
+Object.freeze(defaultExecutionOptions);
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();

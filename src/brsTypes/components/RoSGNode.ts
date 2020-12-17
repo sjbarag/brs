@@ -1628,8 +1628,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
     /* Checks whether the subtype of the subject node is a descendant of the subtype nodeType
      * in the SceneGraph node class hierarchy.
-     *
-     *
      */
     private parentsubtype = new Callable("parentsubtype", {
         signature: {

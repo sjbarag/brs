@@ -9,14 +9,10 @@ import {
     BrsType,
     isBrsString,
 } from "../brsTypes";
-import type { Location } from "../lexer";
+import { Location } from "../lexer";
 import { Interpreter } from "../interpreter";
 
 const INTERNAL_REGEX_FILTER = /\(internal\)/;
-
-function stringifyLocation(location: Location) {
-    return `${location.file}:${location.start.line}:${location.start.column}`;
-}
 
 /**
  * Returns a stack trace in the format:
@@ -56,9 +52,9 @@ export const GetStackTrace = new Callable("GetStackTrace", {
                 .filter((location, index, locations) => {
                     if (index === 0) return true;
                     let prevLocation = locations[index - 1];
-                    return stringifyLocation(prevLocation) !== stringifyLocation(location);
+                    return !Location.equalTo(location, prevLocation);
                 })
-                .map((location) => new BrsString(stringifyLocation(location)))
+                .map((location) => new BrsString(`${location.file}:${location.start.line}:${location.start.column}`))
                 // Get the last item on the stack
                 .slice(-1 * numEntries.getValue())
         );

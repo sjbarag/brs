@@ -62,6 +62,7 @@ export const GetStackTrace = new Callable("GetStackTrace", {
                 )
                 // Get the last item on the stack
                 .slice(-1 * numEntries.getValue())
+                .reverse()
         );
     },
 });

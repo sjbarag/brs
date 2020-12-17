@@ -1636,9 +1636,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.stack.push(this.location);
         this.reportCoverageHit(expression);
 
-        let value = expression.accept<BrsType>(this);
+        let value;
+        try {
+            value = expression.accept<BrsType>(this);
+        } finally {
+            this.stack.pop();
+        }
 
-        this.stack.pop();
         return value;
     }
 
@@ -1647,9 +1651,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.stack.push(this.location);
         this.reportCoverageHit(statement);
 
-        let value = statement.accept<BrsType>(this);
+        let value;
+        try {
+            value = statement.accept<BrsType>(this);
+        } finally {
+            this.stack.pop();
+        }
 
-        this.stack.pop();
         return value;
     }
 

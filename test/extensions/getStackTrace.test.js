@@ -38,9 +38,9 @@ describe("GetStackTrace", () => {
         let result = GetStackTrace.call(interpreter);
         expect(result).toBeInstanceOf(RoArray);
         expect(result.getValue().map((line) => line.value)).toEqual([
-            "a/b/c.brs:5:6",
-            "@external/package/utils.brs:3:4",
             "test/a/b/c.test.brs:1:2",
+            "@external/package/utils.brs:3:4",
+            "a/b/c.brs:5:6",
         ]);
     });
 
@@ -56,8 +56,8 @@ describe("GetStackTrace", () => {
             new RoArray([new BrsString("@external/package")])
         );
         expect(result.getValue().map((line) => line.value)).toEqual([
-            "a/b/c.brs:5:6",
             "test/a/b/c.test.brs:1:2",
+            "a/b/c.brs:5:6",
         ]);
 
         result = GetStackTrace.call(
@@ -66,8 +66,8 @@ describe("GetStackTrace", () => {
             new RoArray([new BrsString("package")])
         );
         expect(result.getValue().map((line) => line.value)).toEqual([
-            "a/b/c.brs:5:6",
             "test/a/b/c.test.brs:1:2",
+            "a/b/c.brs:5:6",
         ]);
     });
 });

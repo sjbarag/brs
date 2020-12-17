@@ -18,7 +18,7 @@ export function getLexerParserFn(
     manifest: Map<string, ManifestValue>,
     options: Partial<ExecutionOptions>
 ) {
-    const executionOptions = Object.assign(defaultExecutionOptions, options);
+    const executionOptions = { ...defaultExecutionOptions, ...options };
     /**
      * Map file URIs to promises. The promises resolve to an array of that file's statements.
      * This allows us to only parse each file once.

@@ -18,21 +18,22 @@
       - [Cleaning](#cleaning)
       - [All Together](#all-together)
   - [Extensions](#extensions)
-    - [`_brs_.process`](#_brs_process)
+    - [`_brs_.getStackTrace(numEntries = 10, excludePatterns = [])`](#_brs_getstacktracenumentries--10-excludepatterns--)
     - [`_brs_.global`](#_brs_global)
-    - [`_brs_.runInScope`](#_brs_runinscope)
-    - [`_brs_.mockComponent`](#_brs_mockcomponent)
-    - [`_brs_.mockFunction`](#_brs_mockfunction)
+    - [`_brs_.mockComponent(componentName as string, impl as AssocArray)`](#_brs_mockcomponentcomponentname-as-string-impl-as-assocarray)
+    - [`_brs_.mockFunction(funcName as string, impl as Function)`](#_brs_mockfunctionfuncname-as-string-impl-as-function)
       - [Mock Function API](#mock-function-api)
         - [`mock.calls`](#mockcalls)
-        - [`mock.results`](#mockresults)
         - [`mock.clearMock()`](#mockclearmock)
         - [`mock.getMockName()`](#mockgetmockname)
-    - [`_brs_.resetMocks`](#_brs_resetmocks)
-    - [`_brs_.resetMockComponents`](#_brs_resetmockcomponents)
-    - [`_brs_.resetMockComponent`](#_brs_resetmockcomponent)
-    - [`_brs_.resetMockFunctions`](#_brs_resetmockfunctions)
-    - [`_brs_.resetMockFunction`](#_brs_resetmockfunction)
+        - [`mock.results`](#mockresults)
+    - [`_brs_.process`](#_brs_process)
+    - [`_brs_.resetMockComponent(componentName as string)`](#_brs_resetmockcomponentcomponentname-as-string)
+    - [`_brs_.resetMockComponents()`](#_brs_resetmockcomponents)
+    - [`_brs_.resetMockFunction(funcName as string)`](#_brs_resetmockfunctionfuncname-as-string)
+    - [`_brs_.resetMockFunctions()`](#_brs_resetmockfunctions)
+    - [`_brs_.resetMocks()`](#_brs_resetmocks)
+    - [`_brs_.runInScope(filePath as string, mainArgs as AssocArray)`](#_brs_runinscopefilepath-as-string-mainargs-as-assocarray)
     - [`_brs_.triggerKeyEvent(key as string, press as boolean)`](#_brs_triggerkeyeventkey-as-string-press-as-boolean)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -192,23 +193,6 @@ print _brs_.getStackTrace(10, ["lib"])
 ' ]
 ```
 
-### `_brs_.process`
-
-Allows you to access the command line arguments and locale. Locale changes will be reflected in related `RoDeviceInfo` functions and the standard library `Tr` function. Usage:
-
-```brightscript
-print _brs_.process
-' {
-'   argv: [ "some", "arg" ],
-'   getLocale: [Function getLocale]
-'   setLocale: [Function setLocale]
-' }
-
-_brs_.process.setLocale("fr_CA")
-print _brs_.process.getLocale() ' => "fr_CA"
-print createObject("roDeviceInfo").getCurrentLocale() ' => "fr_CA"
-```
-
 ### `_brs_.global`
 
 Allows you to access `m.global` from inside your unit tests. Usage:
@@ -220,15 +204,7 @@ print _brs_.global
 ' }
 ```
 
-### `_brs_.runInScope`
-
-Runs a file (or set of files) **in the current global + module scope** with the provided arguments, returning either the value returned by those files' `main` function or `invalid` if an error occurs.
-
-```brightscript
-_brs_.runInScope("/path/to/myFile.brs", { foo: "bar" })
-```
-
-### `_brs_.mockComponent`
+### `_brs_.mockComponent(componentName as string, impl as AssocArray)`
 
 Allows you to mock a component. Usage:
 
@@ -241,7 +217,7 @@ _brs_.mockComponent("ComponentName", {
 })
 ```
 
-### `_brs_.mockFunction`
+### `_brs_.mockFunction(funcName as string, impl as Function)`
 
 Allows you to mock a function. It also returns an associative array mock function (also known as a "spy" or "stub") that keeps track of calls and return values. Usage:
 
@@ -279,22 +255,6 @@ print mock.calls
 ' ]
 ```
 
-##### `mock.results`
-
-An array containing the return value for each call to this function. For example:
-
-```brightscript
-mock = _brs_.mockFunction("fooBar", function(arg as boolean)
-    if arg then return "foo" : else return "bar" : end if
-end function)
-
-fooBar(true)
-print mock.results ' => [ "foo" ]
-
-fooBar(false)
-print mock.results ' => [ "foo", "bar" ]
-```
-
 ##### `mock.clearMock()`
 
 Clears the `calls` and `results` arrays. Does not affect the mock implementation.
@@ -325,23 +285,40 @@ end function)
 print mock.getMockName() ' => "fooBar"
 ```
 
-### `_brs_.resetMocks`
+##### `mock.results`
 
-Resets all component and function mocks. Usage:
-
-```brightscript
-_brs_.resetMocks()
-```
-
-### `_brs_.resetMockComponents`
-
-Resets all component mocks. Usage:
+An array containing the return value for each call to this function. For example:
 
 ```brightscript
-_brs_.resetMockComponents()
+mock = _brs_.mockFunction("fooBar", function(arg as boolean)
+    if arg then return "foo" : else return "bar" : end if
+end function)
+
+fooBar(true)
+print mock.results ' => [ "foo" ]
+
+fooBar(false)
+print mock.results ' => [ "foo", "bar" ]
 ```
 
-### `_brs_.resetMockComponent`
+### `_brs_.process`
+
+Allows you to access the command line arguments and locale. Locale changes will be reflected in related `RoDeviceInfo` functions and the standard library `Tr` function. Usage:
+
+```brightscript
+print _brs_.process
+' {
+'   argv: [ "some", "arg" ],
+'   getLocale: [Function getLocale]
+'   setLocale: [Function setLocale]
+' }
+
+_brs_.process.setLocale("fr_CA")
+print _brs_.process.getLocale() ' => "fr_CA"
+print createObject("roDeviceInfo").getCurrentLocale() ' => "fr_CA"
+```
+
+### `_brs_.resetMockComponent(componentName as string)`
 
 Resets a specific component mock. Works on both partially mocked and fully mocked components. Usage:
 
@@ -349,15 +326,15 @@ Resets a specific component mock. Works on both partially mocked and fully mocke
 _brs_.resetMockComponent("MyComponent")
 ```
 
-### `_brs_.resetMockFunctions`
+### `_brs_.resetMockComponents()`
 
-Resets all function mocks. Usage:
+Resets all component mocks. Usage:
 
 ```brightscript
-_brs_.resetMockFunctions()
+_brs_.resetMockComponents()
 ```
 
-### `_brs_.resetMockFunction`
+### `_brs_.resetMockFunction(funcName as string)`
 
 Resets a specific function mock. Usage:
 
@@ -384,6 +361,30 @@ node.foo() ' => "mock component foo"
 _brs_.resetMockFunction("foo")
 foo() ' => "original implementation"
 node.foo() ' => "mock component foo"
+```
+
+### `_brs_.resetMockFunctions()`
+
+Resets all function mocks. Usage:
+
+```brightscript
+_brs_.resetMockFunctions()
+```
+
+### `_brs_.resetMocks()`
+
+Resets all component and function mocks. Usage:
+
+```brightscript
+_brs_.resetMocks()
+```
+
+### `_brs_.runInScope(filePath as string, mainArgs as AssocArray)`
+
+Runs a file (or set of files) **in the current global + module scope** with the provided arguments, returning either the value returned by those files' `main` function or `invalid` if an error occurs.
+
+```brightscript
+_brs_.runInScope("/path/to/myFile.brs", { foo: "bar" })
 ```
 
 ### `_brs_.triggerKeyEvent(key as string, press as boolean)`

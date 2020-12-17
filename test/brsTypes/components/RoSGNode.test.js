@@ -2511,7 +2511,7 @@ describe("RoSGNode", () => {
                     let parentsubtype = node.getMethod("parentsubtype");
 
                     let result = parentsubtype.call(interpreter, new BrsString("UnknownNode"));
-                    expect(result.value).toBe(undefined);
+                    expect(result).toBe(BrsInvalid.Instance);
                 });
             });
         });

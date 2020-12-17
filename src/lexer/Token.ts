@@ -39,11 +39,13 @@ export interface Location {
 
 export namespace Location {
     export function equalTo(loc1: Location, loc2: Location) {
-        return loc1.file === loc2.file
-            && loc1.start.line === loc2.start.line
-            && loc1.start.column === loc2.start.column
-            && loc1.end.line === loc2.end.line
-            && loc1.end.column === loc2.end.column;
+        return (
+            loc1.file === loc2.file &&
+            loc1.start.line === loc2.start.line &&
+            loc1.start.column === loc2.start.column &&
+            loc1.end.line === loc2.end.line &&
+            loc1.end.column === loc2.end.column
+        );
     }
 }
 

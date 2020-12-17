@@ -54,7 +54,12 @@ export const GetStackTrace = new Callable("GetStackTrace", {
                     let prevLocation = locations[index - 1];
                     return !Location.equalTo(location, prevLocation);
                 })
-                .map((location) => new BrsString(`${location.file}:${location.start.line}:${location.start.column}`))
+                .map(
+                    (location) =>
+                        new BrsString(
+                            `${location.file}:${location.start.line}:${location.start.column}`
+                        )
+                )
                 // Get the last item on the stack
                 .slice(-1 * numEntries.getValue())
         );

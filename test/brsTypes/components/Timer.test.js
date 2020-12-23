@@ -16,7 +16,7 @@ describe("Timer", () => {
     control: 
     repeat: false
     duration: 0
-    fire: <UNINITIALIZED>
+    fire: <uninitialized>
 }`
             );
         });

@@ -373,7 +373,7 @@ describe("end to end brightscript functions", () => {
             "timer node duration:",
             "0",
             "timer node fire:",
-            "<UNINITIALIZED>",
+            "<uninitialized>",
         ]);
     });
 

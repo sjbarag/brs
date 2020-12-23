@@ -2,3 +2,4 @@ types
 lib
 package.json
 **/*.js.snap
+translations.ts

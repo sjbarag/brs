@@ -8,6 +8,7 @@ import {
     BrsValue,
 } from "./BrsType";
 import { RoArray } from "./components/RoArray";
+import { RoDeviceInfo } from "./components/RoDeviceInfo";
 import { RoAssociativeArray } from "./components/RoAssociativeArray";
 import { Int32 } from "./Int32";
 import { Int64 } from "./Int64";
@@ -20,6 +21,9 @@ import { BrsInterface } from "./BrsInterface";
 import { RoSGNode } from "./components/RoSGNode";
 import { Font } from "./components/Font";
 import { Group } from "./components/Group";
+import { Scene } from "./components/Scene";
+import { MiniKeyboard } from "./components/MiniKeyboard";
+import { TextEditBox } from "./components/TextEditBox";
 
 export * from "./BrsType";
 export * from "./Int32";
@@ -28,6 +32,7 @@ export * from "./Float";
 export * from "./Double";
 export * from "./BrsInterface";
 export * from "./Callable";
+export * from "./components/RoDeviceInfo";
 export * from "./components/ComponentFactory";
 export * from "./components/RoArray";
 export * from "./components/RoDateTime";
@@ -44,6 +49,9 @@ export * from "./components/RoInvalid";
 export * from "./components/RoSGNodeEvent";
 export * from "./components/RoSGNode";
 export * from "./components/Group";
+export * from "./components/Scene";
+export * from "./components/MiniKeyboard";
+export * from "./components/TextEditBox";
 export * from "./components/LayoutGroup";
 export * from "./components/Rectangle";
 export * from "./components/Label";

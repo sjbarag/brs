@@ -6,6 +6,7 @@ import { Float } from "./Float";
 import { Double } from "./Double";
 import { Int64 } from "./Int64";
 import { roInt } from "./components/RoInt";
+import Long from "long";
 
 export class Int32 implements Numeric, Comparable, Boxable {
     readonly kind = ValueKind.Int32;
@@ -20,8 +21,9 @@ export class Int32 implements Numeric, Comparable, Boxable {
      * @param value the value to store in the BrightScript number, truncated to a 32-bit
      *              integer.
      */
-    constructor(initialValue: number) {
-        this.value = Math.trunc(initialValue);
+    constructor(value: number | Long) {
+        if (value instanceof Long) value = value.toNumber();
+        this.value = Math.trunc(value);
     }
 
     /**

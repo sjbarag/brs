@@ -12,7 +12,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -26,7 +26,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 39,
+                  "column": 38,
                   "line": 3,
                 },
               },
@@ -51,6 +51,7 @@ Array [
                         },
                         "text": "i",
                       },
+                      "type": "Variable",
                     },
                   ],
                   "tokens": Object {
@@ -72,8 +73,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "counterDeclaration": Assignment {
               "name": Object {
@@ -112,6 +115,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -124,6 +128,7 @@ Array [
                     "line": 3,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 0,
@@ -142,6 +147,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 10,
@@ -159,6 +165,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 1,
@@ -234,10 +241,12 @@ Array [
                 "text": "To",
               },
             },
+            "type": "For",
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -273,6 +282,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -291,6 +301,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -307,7 +318,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -349,6 +360,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -361,6 +373,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": Int32 {
                 "kind": 4,
                 "value": 1,
@@ -368,8 +381,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -405,6 +419,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -423,6 +438,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -439,7 +455,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -457,6 +473,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -470,7 +487,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 21,
+                  "column": 20,
                   "line": 7,
                 },
               },
@@ -489,6 +506,7 @@ Array [
                           "line": 8,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "true",
@@ -514,8 +532,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "elseIfs": Array [
               Object {
@@ -531,6 +551,7 @@ Array [
                       "line": 5,
                     },
                   },
+                  "type": "Literal",
                   "value": BrsBoolean {
                     "kind": 2,
                     "value": true,
@@ -544,7 +565,7 @@ Array [
                     },
                     "file": "",
                     "start": Object {
-                      "column": 34,
+                      "column": 33,
                       "line": 5,
                     },
                   },
@@ -563,6 +584,7 @@ Array [
                               "line": 6,
                             },
                           },
+                          "type": "Literal",
                           "value": BrsString {
                             "kind": 3,
                             "value": "true",
@@ -588,9 +610,12 @@ Array [
                           "text": "print",
                         },
                       },
+                      "type": "Print",
                     },
                   ],
+                  "type": "Block",
                 },
+                "type": "ElseIf",
               },
             ],
             "thenBranch": Block {
@@ -601,7 +626,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 29,
+                  "column": 28,
                   "line": 3,
                 },
               },
@@ -620,6 +645,7 @@ Array [
                           "line": 4,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "true",
@@ -645,10 +671,29 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "tokens": Object {
+              "else": Object {
+                "isReserved": true,
+                "kind": "Else",
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 20,
+                    "line": 7,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 16,
+                    "line": 7,
+                  },
+                },
+                "text": "else",
+              },
               "elseIfs": Array [
                 Object {
                   "isReserved": false,
@@ -720,10 +765,12 @@ Array [
                 "text": "then",
               },
             },
+            "type": "If",
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -759,6 +806,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -777,6 +825,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;

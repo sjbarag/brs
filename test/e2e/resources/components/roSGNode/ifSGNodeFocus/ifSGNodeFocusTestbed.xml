@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="IfSGNodeFocusTestbed">
+    <script type="text/brightscript" uri="./ifSGNodeFocus.brs" />
+    <children>
+        <Group id="child1">
+            <Group id="child2">
+                <Node id="child3" />
+                <Node id="child4" />
+            </Group>
+        </Group>
+        <Group id="child5">
+            <Node id="child6" />
+        </Group>
+    </children>
+</component>

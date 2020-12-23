@@ -37,6 +37,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -49,6 +50,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -65,6 +67,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -86,6 +89,7 @@ Array [
         },
         "text": "=",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -128,6 +132,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -140,6 +145,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -156,6 +162,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -177,6 +184,7 @@ Array [
         },
         "text": ">",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -219,6 +227,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -231,6 +240,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -247,6 +257,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -268,6 +279,7 @@ Array [
         },
         "text": ">=",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -310,6 +322,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -322,6 +335,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -338,6 +352,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -359,6 +374,7 @@ Array [
         },
         "text": "<>",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -401,6 +417,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -413,6 +430,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -429,6 +447,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -450,6 +469,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -492,6 +512,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -504,6 +525,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
@@ -520,6 +542,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -541,6 +564,7 @@ Array [
         },
         "text": "<=",
       },
+      "type": "Binary",
     },
   },
 ]

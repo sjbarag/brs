@@ -10,16 +10,19 @@ import { Float } from "../Float";
 
 export class RoString extends BrsComponent implements BrsValue, Comparable, Unboxable {
     readonly kind = ValueKind.Object;
-    private intrinsic: BrsString;
+    private intrinsic: BrsString = new BrsString("");
 
     public getValue(): string {
         return this.intrinsic.value;
     }
 
-    constructor(initialValue: BrsString) {
+    constructor(initialValue?: BrsString) {
         super("roString");
 
-        this.intrinsic = initialValue;
+        if (initialValue) {
+            this.intrinsic = initialValue;
+        }
+
         this.registerMethods({
             ifString: [this.setString, this.getString],
             ifStringOps: [
@@ -34,6 +37,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
                 this.toInt,
                 this.toFloat,
                 this.tokenize,
+                this.setString,
                 this.split,
                 this.getEntityEncode,
                 this.escape,
@@ -91,21 +95,36 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
         return this.intrinsic.toString();
     }
 
-    // ---------- ifStringOps ----------
-    /** Sets the string to the first len characters of s. */
-    private setString = new Callable("SetString", {
-        signature: {
-            args: [
-                new StdlibArgument("s", ValueKind.String),
-                new StdlibArgument("len", ValueKind.Int32),
-            ],
-            returns: ValueKind.Void,
+    /**
+     * Sets the string to the first len characters of s.
+     * Note: this method is implemented in the ifString and ifStringOps interfaces
+     */
+    private setString = new Callable(
+        "SetString",
+        {
+            signature: {
+                args: [new StdlibArgument("s", ValueKind.String)],
+                returns: ValueKind.Void,
+            },
+            impl: (_interpreter, s: BrsString) => {
+                this.intrinsic = new BrsString(s.value);
+                return BrsInvalid.Instance;
+            },
         },
-        impl: (_interpreter, s: BrsString, len: Int32) => {
-            this.intrinsic = new BrsString(s.value.substr(0, len.getValue()));
-            return BrsInvalid.Instance;
-        },
-    });
+        {
+            signature: {
+                args: [
+                    new StdlibArgument("s", ValueKind.String),
+                    new StdlibArgument("len", ValueKind.Int32),
+                ],
+                returns: ValueKind.Void,
+            },
+            impl: (_interpreter, s: BrsString, len: Int32) => {
+                this.intrinsic = new BrsString(s.value.substr(0, len.getValue()));
+                return BrsInvalid.Instance;
+            },
+        }
+    );
 
     private getString = new Callable("GetString", {
         signature: {
@@ -115,6 +134,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
         impl: (_interpreter) => this.intrinsic,
     });
 
+    // ---------- ifStringOps ----------
     /** Appends the first len characters of s to the end of the string. */
     private appendString = new Callable("AppendString", {
         signature: {

@@ -12,7 +12,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -54,6 +54,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": AALiteral {
               "close": Object {
                 "isReserved": false,
@@ -90,6 +91,7 @@ Array [
                         "line": 4,
                       },
                     },
+                    "type": "Literal",
                     "value": BrsBoolean {
                       "kind": 2,
                       "value": false,
@@ -114,6 +116,7 @@ Array [
                 },
                 "text": "{",
               },
+              "type": "AALiteral",
             },
           },
           DottedSet {
@@ -152,7 +155,9 @@ Array [
                 },
                 "text": "theObject",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -165,6 +170,7 @@ Array [
                   "line": 6,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -172,8 +178,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -209,6 +216,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -227,6 +235,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -252,6 +261,7 @@ Array [
         "text": "stop",
       },
     },
+    "type": "Stop",
   },
 ]
 `;
@@ -277,6 +287,7 @@ Array [
         "text": "stop",
       },
     },
+    "type": "Stop",
   },
 ]
 `;

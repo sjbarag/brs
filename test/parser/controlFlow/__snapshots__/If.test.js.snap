@@ -16,6 +16,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -33,6 +34,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -55,6 +57,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -64,7 +67,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 7,
         },
       },
@@ -106,6 +109,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -118,6 +122,7 @@ Array [
                 "line": 8,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -125,6 +130,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [
       Object {
@@ -141,6 +147,7 @@ Array [
                 "line": 4,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 1,
@@ -158,6 +165,7 @@ Array [
                 "line": 4,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 2,
@@ -180,6 +188,7 @@ Array [
             },
             "text": ">",
           },
+          "type": "Binary",
         },
         "thenBranch": Block {
           "location": Object {
@@ -189,7 +198,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 30,
+              "column": 29,
               "line": 4,
             },
           },
@@ -231,6 +240,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -243,6 +253,7 @@ Array [
                     "line": 5,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 3,
@@ -286,6 +297,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -298,6 +310,7 @@ Array [
                     "line": 6,
                   },
                 },
+                "type": "Literal",
                 "value": BrsBoolean {
                   "kind": 2,
                   "value": true,
@@ -305,7 +318,9 @@ Array [
               },
             },
           ],
+          "type": "Block",
         },
+        "type": "ElseIf",
       },
     ],
     "thenBranch": Block {
@@ -316,7 +331,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 25,
+          "column": 24,
           "line": 2,
         },
       },
@@ -358,6 +373,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -370,6 +386,7 @@ Array [
                 "line": 3,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -377,8 +394,26 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 7,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 7,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -434,6 +469,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -454,6 +490,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -471,6 +508,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -493,6 +531,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
@@ -504,7 +543,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 30,
+          "column": 29,
           "line": 2,
         },
       },
@@ -546,6 +585,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -558,6 +598,7 @@ Array [
                 "line": 3,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -601,6 +642,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -613,6 +655,7 @@ Array [
                 "line": 4,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -620,8 +663,10 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -675,6 +720,7 @@ Array [
         "text": "THEN",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -695,6 +741,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -712,6 +759,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -734,6 +782,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -743,7 +792,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 4,
         },
       },
@@ -785,6 +834,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -797,6 +847,7 @@ Array [
                 "line": 5,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -840,6 +891,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -852,6 +904,7 @@ Array [
                 "line": 6,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -859,6 +912,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [],
     "thenBranch": Block {
@@ -869,7 +923,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 30,
+          "column": 29,
           "line": 2,
         },
       },
@@ -911,6 +965,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -923,6 +978,7 @@ Array [
                 "line": 3,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -930,8 +986,26 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 4,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -985,6 +1059,7 @@ Array [
         "text": "then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -1005,6 +1080,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -1022,6 +1098,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -1044,6 +1121,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -1053,7 +1131,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 7,
         },
       },
@@ -1095,6 +1173,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -1107,6 +1186,7 @@ Array [
                 "line": 8,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -1114,6 +1194,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [
       Object {
@@ -1130,6 +1211,7 @@ Array [
                 "line": 4,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 1,
@@ -1147,6 +1229,7 @@ Array [
                 "line": 4,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 2,
@@ -1169,6 +1252,7 @@ Array [
             },
             "text": ">",
           },
+          "type": "Binary",
         },
         "thenBranch": Block {
           "location": Object {
@@ -1178,7 +1262,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 35,
+              "column": 34,
               "line": 4,
             },
           },
@@ -1220,6 +1304,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -1232,6 +1317,7 @@ Array [
                     "line": 5,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 3,
@@ -1275,6 +1361,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -1287,6 +1374,7 @@ Array [
                     "line": 6,
                   },
                 },
+                "type": "Literal",
                 "value": BrsBoolean {
                   "kind": 2,
                   "value": true,
@@ -1294,7 +1382,9 @@ Array [
               },
             },
           ],
+          "type": "Block",
         },
+        "type": "ElseIf",
       },
     ],
     "thenBranch": Block {
@@ -1305,7 +1395,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 30,
+          "column": 29,
           "line": 2,
         },
       },
@@ -1347,6 +1437,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -1359,6 +1450,7 @@ Array [
                 "line": 3,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -1366,8 +1458,26 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 20,
+            "line": 7,
+          },
+          "file": "",
+          "start": Object {
+            "column": 16,
+            "line": 7,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -1439,6 +1549,7 @@ Array [
         "text": "then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -1455,7 +1566,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 24,
+            "column": 23,
             "line": 2,
           },
         },
@@ -1473,6 +1584,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1486,7 +1598,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 25,
+                  "column": 24,
                   "line": 7,
                 },
               },
@@ -1505,6 +1617,7 @@ Array [
                           "line": 8,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "else",
@@ -1530,8 +1643,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "elseIfs": Array [
               Object {
@@ -1547,6 +1662,7 @@ Array [
                       "line": 5,
                     },
                   },
+                  "type": "Literal",
                   "value": BrsBoolean {
                     "kind": 2,
                     "value": true,
@@ -1560,7 +1676,7 @@ Array [
                     },
                     "file": "",
                     "start": Object {
-                      "column": 38,
+                      "column": 37,
                       "line": 5,
                     },
                   },
@@ -1579,6 +1695,7 @@ Array [
                               "line": 6,
                             },
                           },
+                          "type": "Literal",
                           "value": BrsString {
                             "kind": 3,
                             "value": "true",
@@ -1604,9 +1721,12 @@ Array [
                           "text": "print",
                         },
                       },
+                      "type": "Print",
                     },
                   ],
+                  "type": "Block",
                 },
+                "type": "ElseIf",
               },
             ],
             "thenBranch": Block {
@@ -1617,7 +1737,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 33,
+                  "column": 32,
                   "line": 3,
                 },
               },
@@ -1636,6 +1756,7 @@ Array [
                           "line": 4,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsBoolean {
                         "kind": 2,
                         "value": false,
@@ -1661,10 +1782,29 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "tokens": Object {
+              "else": Object {
+                "isReserved": true,
+                "kind": "Else",
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 24,
+                    "line": 7,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 20,
+                    "line": 7,
+                  },
+                },
+                "text": "else",
+              },
               "elseIfs": Array [
                 Object {
                   "isReserved": false,
@@ -1736,10 +1876,12 @@ Array [
                 "text": "then",
               },
             },
+            "type": "If",
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -1775,6 +1917,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -1793,6 +1936,7 @@ Array [
       },
       "text": "a",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -1813,6 +1957,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -1830,6 +1975,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -1852,6 +1998,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
@@ -1863,7 +2010,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 35,
+          "column": 21,
           "line": 2,
         },
       },
@@ -1888,6 +2035,7 @@ Array [
               "text": "return",
             },
           },
+          "type": "Return",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -1900,6 +2048,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -1907,8 +2056,10 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -1930,6 +2081,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -1950,6 +2102,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -1967,6 +2120,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -1989,6 +2143,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
@@ -2000,7 +2155,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 22,
+          "column": 21,
           "line": 2,
         },
       },
@@ -2025,6 +2180,7 @@ Array [
               "text": "return",
             },
           },
+          "type": "Return",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2037,6 +2193,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -2044,8 +2201,10 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -2083,6 +2242,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -2101,7 +2261,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 36,
+            "column": 35,
             "line": 2,
           },
         },
@@ -2126,6 +2286,7 @@ Array [
                 "text": "return",
               },
             },
+            "type": "Return",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2138,6 +2299,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2145,8 +2307,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -2182,6 +2345,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -2200,6 +2364,7 @@ Array [
       },
       "text": "missingendif",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -2220,6 +2385,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -2237,6 +2403,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -2259,6 +2426,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -2268,7 +2436,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 40,
+          "column": 41,
           "line": 2,
         },
       },
@@ -2293,6 +2461,7 @@ Array [
               "text": "return",
             },
           },
+          "type": "Return",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2305,6 +2474,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -2312,6 +2482,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [],
     "thenBranch": Block {
@@ -2322,7 +2493,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 22,
+          "column": 21,
           "line": 2,
         },
       },
@@ -2347,6 +2518,7 @@ Array [
               "text": "return",
             },
           },
+          "type": "Return",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2359,6 +2531,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -2366,8 +2539,26 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 40,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 36,
+            "line": 2,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -2405,6 +2596,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -2424,6 +2616,7 @@ Array [
           "line": 2,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": true,
@@ -2432,13 +2625,13 @@ Array [
     "elseBranch": Block {
       "location": Object {
         "end": Object {
-          "column": 9,
-          "line": 3,
+          "column": 72,
+          "line": 2,
         },
         "file": "",
         "start": Object {
-          "column": 8,
-          "line": 3,
+          "column": 51,
+          "line": 2,
         },
       },
       "statements": Array [
@@ -2496,8 +2689,11 @@ Array [
                 },
                 "text": "m",
               },
+              "type": "Variable",
             },
+            "type": "DottedGet",
           },
+          "type": "DottedSet",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2510,6 +2706,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -2517,17 +2714,18 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [],
     "thenBranch": Block {
       "location": Object {
         "end": Object {
-          "column": 52,
+          "column": 46,
           "line": 2,
         },
         "file": "",
         "start": Object {
-          "column": 51,
+          "column": 25,
           "line": 2,
         },
       },
@@ -2586,8 +2784,11 @@ Array [
                 },
                 "text": "m",
               },
+              "type": "Variable",
             },
+            "type": "DottedGet",
           },
+          "type": "DottedSet",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2600,6 +2801,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -2607,8 +2809,26 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 50,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 46,
+            "line": 2,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -2646,6 +2866,7 @@ Array [
         "text": "then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -2665,6 +2886,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -2681,6 +2903,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -2702,6 +2925,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -2709,6 +2933,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -2750,6 +2975,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2761,6 +2987,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -2768,6 +2995,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [
       Object {
@@ -2783,6 +3011,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 1,
@@ -2799,6 +3028,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 2,
@@ -2820,6 +3050,7 @@ Array [
             },
             "text": "=",
           },
+          "type": "Binary",
         },
         "thenBranch": Block {
           "location": Object {
@@ -2827,6 +3058,7 @@ Array [
               "column": -9,
               "line": -9,
             },
+            "file": undefined,
             "start": Object {
               "column": -9,
               "line": -9,
@@ -2868,6 +3100,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -2879,6 +3112,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsBoolean {
                   "kind": 2,
                   "value": true,
@@ -2886,7 +3120,9 @@ Array [
               },
             },
           ],
+          "type": "Block",
         },
+        "type": "ElseIf",
       },
     ],
     "thenBranch": Block {
@@ -2895,6 +3131,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -2936,6 +3173,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -2947,6 +3185,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -2954,9 +3193,43 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
-      "elseIfs": Array [],
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "else",
+      },
+      "elseIfs": Array [
+        Object {
+          "isReserved": false,
+          "kind": "ElseIf",
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
+          "text": "else if",
+        },
+      ],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -2976,6 +3249,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -2995,6 +3269,7 @@ Array [
           "line": 2,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": true,
@@ -3008,11 +3283,12 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 17,
+          "column": 16,
           "line": 4,
         },
       },
       "statements": Array [],
+      "type": "Block",
     },
     "elseIfs": Array [],
     "thenBranch": Block {
@@ -3023,7 +3299,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 20,
+          "column": 19,
           "line": 2,
         },
       },
@@ -3041,6 +3317,7 @@ Array [
                 "line": 3,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -3051,13 +3328,13 @@ Array [
           "thenBranch": Block {
             "location": Object {
               "end": Object {
-                "column": 16,
-                "line": 4,
+                "column": 34,
+                "line": 3,
               },
               "file": "",
               "start": Object {
-                "column": 12,
-                "line": 4,
+                "column": 29,
+                "line": 3,
               },
             },
             "statements": Array [
@@ -3098,6 +3375,7 @@ Array [
                     "text": "=",
                   },
                 },
+                "type": "Assignment",
                 "value": Literal {
                   "_location": Object {
                     "end": Object {
@@ -3110,6 +3388,7 @@ Array [
                       "line": 3,
                     },
                   },
+                  "type": "Literal",
                   "value": Int32 {
                     "kind": 4,
                     "value": 1,
@@ -3117,8 +3396,10 @@ Array [
                 },
               },
             ],
+            "type": "Block",
           },
           "tokens": Object {
+            "else": undefined,
             "elseIfs": Array [],
             "endIf": undefined,
             "if": Object {
@@ -3156,10 +3437,29 @@ Array [
               "text": "then",
             },
           },
+          "type": "If",
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 4,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 4,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -3197,6 +3497,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -3261,8 +3562,11 @@ Array [
                   },
                   "text": "component",
                 },
+                "type": "Variable",
               },
+              "type": "DottedGet",
             },
+            "type": "DottedGet",
           },
         ],
         "callee": Variable {
@@ -3283,6 +3587,7 @@ Array [
             },
             "text": "type",
           },
+          "type": "Variable",
         },
         "closingParen": Object {
           "isReserved": false,
@@ -3301,6 +3606,7 @@ Array [
           },
           "text": ")",
         },
+        "type": "Call",
       },
       "right": Literal {
         "_location": Object {
@@ -3314,6 +3620,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": BrsString {
           "kind": 3,
           "value": "roString",
@@ -3336,6 +3643,7 @@ Array [
         },
         "text": "=",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -3345,7 +3653,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 17,
+          "column": 16,
           "line": 7,
         },
       },
@@ -3387,6 +3695,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Call {
             "args": Array [],
             "callee": DottedGet {
@@ -3461,9 +3770,13 @@ Array [
                       },
                       "text": "m",
                     },
+                    "type": "Variable",
                   },
+                  "type": "DottedGet",
                 },
+                "type": "DottedGet",
               },
+              "type": "DottedGet",
             },
             "closingParen": Object {
               "isReserved": false,
@@ -3482,9 +3795,11 @@ Array [
               },
               "text": ")",
             },
+            "type": "Call",
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [
       Object {
@@ -3545,8 +3860,11 @@ Array [
                       },
                       "text": "component",
                     },
+                    "type": "Variable",
                   },
+                  "type": "DottedGet",
                 },
+                "type": "DottedGet",
               },
             ],
             "callee": Variable {
@@ -3567,6 +3885,7 @@ Array [
                 },
                 "text": "type",
               },
+              "type": "Variable",
             },
             "closingParen": Object {
               "isReserved": false,
@@ -3585,6 +3904,7 @@ Array [
               },
               "text": ")",
             },
+            "type": "Call",
           },
           "right": Literal {
             "_location": Object {
@@ -3598,6 +3918,7 @@ Array [
                 "line": 5,
               },
             },
+            "type": "Literal",
             "value": BrsString {
               "kind": 3,
               "value": "roFont",
@@ -3620,6 +3941,7 @@ Array [
             },
             "text": "=",
           },
+          "type": "Binary",
         },
         "thenBranch": Block {
           "location": Object {
@@ -3629,7 +3951,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 62,
+              "column": 61,
               "line": 5,
             },
           },
@@ -3671,6 +3993,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": DottedGet {
                 "name": Object {
                   "isReserved": false,
@@ -3725,12 +4048,17 @@ Array [
                       },
                       "text": "component",
                     },
+                    "type": "Variable",
                   },
+                  "type": "DottedGet",
                 },
+                "type": "DottedGet",
               },
             },
           ],
+          "type": "Block",
         },
+        "type": "ElseIf",
       },
     ],
     "thenBranch": Block {
@@ -3741,7 +4069,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 59,
+          "column": 58,
           "line": 2,
         },
       },
@@ -3783,6 +4111,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Call {
             "args": Array [
               DottedGet {
@@ -3839,8 +4168,11 @@ Array [
                       },
                       "text": "component",
                     },
+                    "type": "Variable",
                   },
+                  "type": "DottedGet",
                 },
+                "type": "DottedGet",
               },
             ],
             "callee": DottedGet {
@@ -3897,8 +4229,11 @@ Array [
                     },
                     "text": "m",
                   },
+                  "type": "Variable",
                 },
+                "type": "DottedGet",
               },
+              "type": "DottedGet",
             },
             "closingParen": Object {
               "isReserved": false,
@@ -3917,6 +4252,7 @@ Array [
               },
               "text": ")",
             },
+            "type": "Call",
           },
         },
         If {
@@ -3939,6 +4275,7 @@ Array [
                 },
                 "text": "font",
               },
+              "type": "Variable",
             },
             "right": Literal {
               "_location": Object {
@@ -3952,6 +4289,7 @@ Array [
                   "line": 4,
                 },
               },
+              "type": "Literal",
               "value": BrsInvalid {
                 "kind": 1,
               },
@@ -3973,19 +4311,20 @@ Array [
               },
               "text": "=",
             },
+            "type": "Binary",
           },
           "elseBranch": undefined,
           "elseIfs": Array [],
           "thenBranch": Block {
             "location": Object {
               "end": Object {
-                "column": 19,
-                "line": 5,
+                "column": 60,
+                "line": 4,
               },
               "file": "",
               "start": Object {
-                "column": 12,
-                "line": 5,
+                "column": 39,
+                "line": 4,
               },
             },
             "statements": Array [
@@ -4026,6 +4365,7 @@ Array [
                     "text": "=",
                   },
                 },
+                "type": "Assignment",
                 "value": DottedGet {
                   "name": Object {
                     "isReserved": false,
@@ -4080,13 +4420,18 @@ Array [
                         },
                         "text": "m",
                       },
+                      "type": "Variable",
                     },
+                    "type": "DottedGet",
                   },
+                  "type": "DottedGet",
                 },
               },
             ],
+            "type": "Block",
           },
           "tokens": Object {
+            "else": undefined,
             "elseIfs": Array [],
             "endIf": undefined,
             "if": Object {
@@ -4124,10 +4469,29 @@ Array [
               "text": "then",
             },
           },
+          "type": "If",
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 16,
+            "line": 7,
+          },
+          "file": "",
+          "start": Object {
+            "column": 12,
+            "line": 7,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -4183,6 +4547,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -4202,6 +4567,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -4218,6 +4584,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -4239,6 +4606,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
@@ -4248,6 +4616,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4289,6 +4658,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -4300,6 +4670,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -4307,8 +4678,10 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -4344,6 +4717,7 @@ Array [
         "text": "then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -4363,6 +4737,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -4379,6 +4754,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -4400,6 +4776,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -4407,6 +4784,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4448,6 +4826,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -4459,6 +4838,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": false,
@@ -4466,6 +4846,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [],
     "thenBranch": Block {
@@ -4474,6 +4855,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4515,6 +4897,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -4526,6 +4909,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -4533,8 +4917,25 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
@@ -4570,6 +4971,7 @@ Array [
         "text": "Then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -4589,6 +4991,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -4605,6 +5008,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -4626,6 +5030,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": Block {
       "location": Object {
@@ -4633,6 +5038,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4674,6 +5080,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -4685,6 +5092,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -4692,6 +5100,7 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [
       Object {
@@ -4707,6 +5116,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 1,
@@ -4723,6 +5133,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 2,
@@ -4744,6 +5155,7 @@ Array [
             },
             "text": "=",
           },
+          "type": "Binary",
         },
         "thenBranch": Block {
           "location": Object {
@@ -4751,6 +5163,7 @@ Array [
               "column": -9,
               "line": -9,
             },
+            "file": undefined,
             "start": Object {
               "column": -9,
               "line": -9,
@@ -4792,6 +5205,7 @@ Array [
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -4803,6 +5217,7 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsBoolean {
                   "kind": 2,
                   "value": true,
@@ -4810,7 +5225,9 @@ Array [
               },
             },
           ],
+          "type": "Block",
         },
+        "type": "ElseIf",
       },
     ],
     "thenBranch": Block {
@@ -4819,6 +5236,7 @@ Array [
           "column": -9,
           "line": -9,
         },
+        "file": undefined,
         "start": Object {
           "column": -9,
           "line": -9,
@@ -4860,6 +5278,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -4871,6 +5290,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -4878,9 +5298,43 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
-      "elseIfs": Array [],
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": -9,
+            "line": -9,
+          },
+          "start": Object {
+            "column": -9,
+            "line": -9,
+          },
+        },
+        "text": "else",
+      },
+      "elseIfs": Array [
+        Object {
+          "isReserved": false,
+          "kind": "ElseIf",
+          "literal": undefined,
+          "location": Object {
+            "end": Object {
+              "column": -9,
+              "line": -9,
+            },
+            "start": Object {
+              "column": -9,
+              "line": -9,
+            },
+          },
+          "text": "else if",
+        },
+      ],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -4915,6 +5369,7 @@ Array [
         "text": "then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -4934,6 +5389,7 @@ Array [
           "line": 2,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": false,
@@ -4949,7 +5405,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 22,
+          "column": 21,
           "line": 2,
         },
       },
@@ -4968,6 +5424,7 @@ Array [
                   "line": 2,
                 },
               },
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "true",
@@ -4993,10 +5450,13 @@ Array [
               "text": "print",
             },
           },
+          "type": "Print",
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -5034,6 +5494,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -5053,6 +5514,7 @@ Array [
           "line": 2,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": true,
@@ -5066,7 +5528,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 75,
+          "column": 74,
           "line": 2,
         },
       },
@@ -5085,6 +5547,7 @@ Array [
                   "line": 2,
                 },
               },
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "not run",
@@ -5110,8 +5573,10 @@ Array [
               "text": "print",
             },
           },
+          "type": "Print",
         },
       ],
+      "type": "Block",
     },
     "elseIfs": Array [
       Object {
@@ -5127,6 +5592,7 @@ Array [
               "line": 2,
             },
           },
+          "type": "Literal",
           "value": BrsBoolean {
             "kind": 2,
             "value": true,
@@ -5140,7 +5606,7 @@ Array [
             },
             "file": "",
             "start": Object {
-              "column": 52,
+              "column": 51,
               "line": 2,
             },
           },
@@ -5159,6 +5625,7 @@ Array [
                       "line": 2,
                     },
                   },
+                  "type": "Literal",
                   "value": BrsString {
                     "kind": 3,
                     "value": "not run",
@@ -5184,9 +5651,12 @@ Array [
                   "text": "print",
                 },
               },
+              "type": "Print",
             },
           ],
+          "type": "Block",
         },
+        "type": "ElseIf",
       },
     ],
     "thenBranch": Block {
@@ -5197,7 +5667,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 20,
+          "column": 19,
           "line": 2,
         },
       },
@@ -5216,6 +5686,7 @@ Array [
                   "line": 2,
                 },
               },
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "8 worked",
@@ -5241,10 +5712,29 @@ Array [
               "text": "print",
             },
           },
+          "type": "Print",
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": Object {
+        "isReserved": true,
+        "kind": "Else",
+        "literal": undefined,
+        "location": Object {
+          "end": Object {
+            "column": 74,
+            "line": 2,
+          },
+          "file": "",
+          "start": Object {
+            "column": 70,
+            "line": 2,
+          },
+        },
+        "text": "else",
+      },
       "elseIfs": Array [
         Object {
           "isReserved": false,
@@ -5300,6 +5790,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -5320,6 +5811,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -5337,6 +5829,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -5359,6 +5852,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
@@ -5370,7 +5864,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 2,
         },
       },
@@ -5395,6 +5889,7 @@ Array [
               "text": "return",
             },
           },
+          "type": "Return",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -5407,6 +5902,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -5414,8 +5910,10 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -5453,6 +5951,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;
@@ -5472,6 +5971,7 @@ Array [
           "line": 2,
         },
       },
+      "type": "Literal",
       "value": BrsBoolean {
         "kind": 2,
         "value": true,
@@ -5487,7 +5987,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 26,
+          "column": 25,
           "line": 2,
         },
       },
@@ -5529,6 +6029,7 @@ Array [
               "text": "=",
             },
           },
+          "type": "Assignment",
           "value": Function {
             "body": Block {
               "location": Object {
@@ -5538,7 +6039,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 41,
+                  "column": 40,
                   "line": 2,
                 },
               },
@@ -5557,6 +6058,7 @@ Array [
                           "line": 2,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "yes",
@@ -5582,10 +6084,12 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
-            "end": Object {
+            "endKeyword": Object {
               "isReserved": false,
               "kind": "EndSub",
               "literal": undefined,
@@ -5621,11 +6125,14 @@ Array [
             },
             "parameters": Array [],
             "returns": 11,
+            "type": "Expr_Function",
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -5679,6 +6186,7 @@ Array [
         "text": "then",
       },
     },
+    "type": "If",
   },
 ]
 `;
@@ -5695,7 +6203,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -5714,6 +6222,7 @@ Array [
                     "line": 3,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 1,
@@ -5731,6 +6240,7 @@ Array [
                     "line": 3,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 0,
@@ -5753,6 +6263,7 @@ Array [
                 },
                 "text": ">",
               },
+              "type": "Binary",
             },
             "elseBranch": Block {
               "location": Object {
@@ -5762,7 +6273,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 22,
+                  "column": 20,
                   "line": 7,
                 },
               },
@@ -5781,6 +6292,7 @@ Array [
                           "line": 8,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "tHaT NuMbEr iS ZeRo",
@@ -5806,8 +6318,10 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "elseIfs": Array [
               Object {
@@ -5824,6 +6338,7 @@ Array [
                         "line": 5,
                       },
                     },
+                    "type": "Literal",
                     "value": Int32 {
                       "kind": 4,
                       "value": 1,
@@ -5841,6 +6356,7 @@ Array [
                         "line": 5,
                       },
                     },
+                    "type": "Literal",
                     "value": Int32 {
                       "kind": 4,
                       "value": 0,
@@ -5863,6 +6379,7 @@ Array [
                     },
                     "text": "<",
                   },
+                  "type": "Binary",
                 },
                 "thenBranch": Block {
                   "location": Object {
@@ -5872,7 +6389,7 @@ Array [
                     },
                     "file": "",
                     "start": Object {
-                      "column": 31,
+                      "column": 29,
                       "line": 5,
                     },
                   },
@@ -5891,6 +6408,7 @@ Array [
                               "line": 6,
                             },
                           },
+                          "type": "Literal",
                           "value": BrsString {
                             "kind": 3,
                             "value": "negative!",
@@ -5916,9 +6434,12 @@ Array [
                           "text": "print",
                         },
                       },
+                      "type": "Print",
                     },
                   ],
+                  "type": "Block",
                 },
+                "type": "ElseIf",
               },
             ],
             "thenBranch": Block {
@@ -5929,7 +6450,7 @@ Array [
                 },
                 "file": "",
                 "start": Object {
-                  "column": 26,
+                  "column": 24,
                   "line": 3,
                 },
               },
@@ -5948,6 +6469,7 @@ Array [
                           "line": 4,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "positive!",
@@ -5973,10 +6495,29 @@ Array [
                       "text": "print",
                     },
                   },
+                  "type": "Print",
                 },
               ],
+              "type": "Block",
             },
             "tokens": Object {
+              "else": Object {
+                "isReserved": true,
+                "kind": "Else",
+                "literal": undefined,
+                "location": Object {
+                  "end": Object {
+                    "column": 20,
+                    "line": 7,
+                  },
+                  "file": "",
+                  "start": Object {
+                    "column": 16,
+                    "line": 7,
+                  },
+                },
+                "text": "else",
+              },
               "elseIfs": Array [
                 Object {
                   "isReserved": false,
@@ -6032,10 +6573,12 @@ Array [
               },
               "then": undefined,
             },
+            "type": "If",
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -6071,6 +6614,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -6089,6 +6633,7 @@ Array [
       },
       "text": "main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -6109,6 +6654,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -6126,6 +6672,7 @@ Array [
             "line": 2,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 2,
@@ -6148,6 +6695,7 @@ Array [
         },
         "text": "<",
       },
+      "type": "Binary",
     },
     "elseBranch": undefined,
     "elseIfs": Array [],
@@ -6159,7 +6707,7 @@ Array [
         },
         "file": "",
         "start": Object {
-          "column": 21,
+          "column": 20,
           "line": 2,
         },
       },
@@ -6184,6 +6732,7 @@ Array [
               "text": "return",
             },
           },
+          "type": "Return",
           "value": Literal {
             "_location": Object {
               "end": Object {
@@ -6196,6 +6745,7 @@ Array [
                 "line": 2,
               },
             },
+            "type": "Literal",
             "value": BrsBoolean {
               "kind": 2,
               "value": true,
@@ -6203,8 +6753,10 @@ Array [
           },
         },
       ],
+      "type": "Block",
     },
     "tokens": Object {
+      "else": undefined,
       "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
@@ -6242,6 +6794,7 @@ Array [
       },
       "then": undefined,
     },
+    "type": "If",
   },
 ]
 `;

@@ -5,7 +5,7 @@ const brs = require("brs");
 const { Lexeme } = brs.lexer;
 const { ValueKind } = brs.types;
 
-const { token, identifier } = require("../parser/ParserTests");
+const { token } = require("../parser/ParserTests");
 
 let interpreter;
 
@@ -25,7 +25,13 @@ describe("interpreter function expressions", () => {
                         left: token(Lexeme.LeftParen),
                         right: token(Lexeme.RightParen),
                     },
-                    new Expr.Function([], ValueKind.Void, emptyBlock)
+                    new Expr.Function(
+                        [],
+                        ValueKind.Void,
+                        emptyBlock,
+                        token(Lexeme.Sub, "sub"),
+                        token(Lexeme.EndSub, "end sub")
+                    )
                 ),
                 token(Lexeme.RightParen, ")"),
                 []

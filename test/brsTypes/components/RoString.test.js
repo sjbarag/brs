@@ -3,6 +3,13 @@ const { Int32, Float, BrsString, RoString, RoArray, BrsBoolean, Callable } = brs
 const { Interpreter } = require("../../../lib/interpreter");
 
 describe("RoString", () => {
+    describe("constructor", () => {
+        it("starts with empty string when no arg is passed to constructor", () => {
+            let a = new RoString();
+            expect(a.equalTo(new BrsString(""))).toBe(BrsBoolean.True);
+        });
+    });
+
     describe("equality", () => {
         it("compares to intrinsic strings", () => {
             let a = new RoString(new BrsString("foo"));
@@ -43,19 +50,15 @@ describe("RoString", () => {
                 expect(setString).toBeInstanceOf(Callable);
             });
 
-            it("overwrites its stored string", () => {
-                setString.call(interpreter, new BrsString("after"), new Int32(2));
-                expect(s.intrinsic).toEqual(new BrsString("af"));
+            it("sets a string into the object", () => {
+                setString.call(interpreter, new BrsString("hello"));
+                expect(s.intrinsic).toEqual(new BrsString("hello"));
             });
 
-            it("overwrites an empty string for zero `len`", () => {
-                setString.call(interpreter, new BrsString("after"), new Int32(0));
-                expect(s.intrinsic).toEqual(new BrsString(""));
-            });
-
-            it("overwrites an empty string for negative `len`", () => {
-                setString.call(interpreter, new BrsString("after"), new Int32(-1));
-                expect(s.intrinsic).toEqual(new BrsString(""));
+            it("overwrites string value previously set", () => {
+                setString.call(interpreter, new BrsString("hello"));
+                setString.call(interpreter, new BrsString("world"));
+                expect(s.intrinsic).toEqual(new BrsString("world"));
             });
         });
 
@@ -410,6 +413,31 @@ describe("RoString", () => {
             // TODO: implement after RoList exists
             it.todo("splits by single-character delimiter");
             it.todo("splits by multi-character delimiter");
+        });
+
+        describe("seString", () => {
+            let s, setString;
+
+            beforeEach(() => {
+                s = new RoString(new BrsString("before"));
+                setString = s.getMethod("setString");
+                expect(setString).toBeInstanceOf(Callable);
+            });
+
+            it("overwrites its stored string", () => {
+                setString.call(interpreter, new BrsString("after"), new Int32(2));
+                expect(s.intrinsic).toEqual(new BrsString("af"));
+            });
+
+            it("overwrites an empty string for zero `len`", () => {
+                setString.call(interpreter, new BrsString("after"), new Int32(0));
+                expect(s.intrinsic).toEqual(new BrsString(""));
+            });
+
+            it("overwrites an empty string for negative `len`", () => {
+                setString.call(interpreter, new BrsString("after"), new Int32(-1));
+                expect(s.intrinsic).toEqual(new BrsString(""));
+            });
         });
 
         describe("split", () => {

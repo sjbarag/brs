@@ -36,6 +36,7 @@ Array [
                 "text": "return",
               },
             },
+            "type": "Return",
             "value": Call {
               "args": Array [],
               "callee": Variable {
@@ -55,6 +56,7 @@ Array [
                   },
                   "text": "RebootSystem",
                 },
+                "type": "Variable",
               },
               "closingParen": Object {
                 "isReserved": false,
@@ -72,11 +74,13 @@ Array [
                 },
                 "text": ")",
               },
+              "type": "Call",
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -110,6 +114,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -127,6 +132,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -167,8 +173,10 @@ Array [
                 "text": "return",
               },
             },
+            "type": "Return",
             "value": Literal {
               "_location": undefined,
+              "type": "Literal",
               "value": BrsString {
                 "kind": 3,
                 "value": "test",
@@ -176,8 +184,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -211,6 +220,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -228,6 +238,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -268,11 +279,13 @@ Array [
                 "text": "return",
               },
             },
+            "type": "Return",
             "value": undefined,
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
@@ -306,6 +319,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 10,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -323,6 +337,7 @@ Array [
       },
       "text": "foo",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;

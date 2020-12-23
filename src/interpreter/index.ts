@@ -21,15 +21,16 @@ import {
     Float,
 } from "../brsTypes";
 
-import { Lexeme } from "../lexer";
+import { Lexeme, Location } from "../lexer";
 import { isToken } from "../lexer/Token";
 import { Expr, Stmt, ComponentScopeResolver } from "../parser";
-import { BrsError, TypeMismatch, getLoggerUsing } from "../Error";
+import { BrsError, getLoggerUsing } from "../Error";
 
 import * as StdLib from "../stdlib";
 import { _brs_ } from "../extensions";
 
 import { Scope, Environment, NotFound } from "./Environment";
+import { TypeMismatch } from "./TypeMismatch";
 import { OutputProxy } from "./OutputProxy";
 import { toCallable } from "./BrsFunction";
 import { Runtime } from "../parser/Statement";
@@ -40,13 +41,22 @@ import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 
 import { ComponentDefinition } from "../componentprocessor";
 import pSettle from "p-settle";
+import { CoverageCollector } from "../coverage";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
-    /** The base path for  */
+    /** The base path for the project. Default: process.cwd() */
     root: string;
+    /** The stdout stream that brs should use. Default: process.stdout. */
     stdout: NodeJS.WriteStream;
+    /** The stderr stream that brs should use. Default: process.stderr. */
     stderr: NodeJS.WriteStream;
+    /** Whether or not to collect coverage statistics. Default: false. */
+    generateCoverage: boolean;
+    /** Additional directories to search for component definitions. Default: [] */
+    componentDirs: string[];
+    /** Whether or not a component library is being processed. */
+    isComponentLibrary: boolean;
 }
 
 /** The default set of execution options.  Includes the `stdout`/`stderr` pair from the process that invoked `brs`. */
@@ -54,15 +64,23 @@ export const defaultExecutionOptions: ExecutionOptions = {
     root: process.cwd(),
     stdout: process.stdout,
     stderr: process.stderr,
+    generateCoverage: false,
+    componentDirs: [],
+    isComponentLibrary: false,
 };
+Object.freeze(defaultExecutionOptions);
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
+    private coverageCollector: CoverageCollector | null = null;
 
     readonly options: ExecutionOptions;
     readonly stdout: OutputProxy;
     readonly stderr: OutputProxy;
     readonly temporaryVolume: MemoryFileSystem = new MemoryFileSystem();
+
+    stack: Location[] = [];
+    location: Location;
 
     /** Allows consumers to observe errors as they're detected. */
     readonly events = new EventEmitter();
@@ -72,6 +90,16 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     get environment() {
         return this._environment;
+    }
+
+    setCoverageCollector(collector: CoverageCollector) {
+        this.coverageCollector = collector;
+    }
+
+    reportCoverageHit(statement: Expr.Expression | Stmt.Statement) {
+        if (this.options.generateCoverage && this.coverageCollector) {
+            this.coverageCollector.logHit(statement);
+        }
     }
 
     /**
@@ -135,6 +163,21 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     /**
+     * Merges this environment's node definition mapping with the ones included in an array of other
+     * interpreters, acting logically equivalent to
+     * `Object.assign(this.environment, other1.environment, other2.environment, …)`.
+     * @param interpreters the array of interpreters who's environment's node definition maps will
+     *                     be merged into this one
+     */
+    public mergeNodeDefinitionsWith(interpreters: Interpreter[]): void {
+        interpreters.map((other) =>
+            other.environment.nodeDefMap.forEach((value, key) =>
+                this.environment.nodeDefMap.set(key, value)
+            )
+        );
+    }
+
+    /**
      * Creates a new Interpreter, including any global properties and functions.
      * @param options configuration for the execution, including the streams to use for `stdout` and
      *                `stderr` and the base directory for path resolution
@@ -143,6 +186,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.stdout = new OutputProxy(options.stdout);
         this.stderr = new OutputProxy(options.stderr);
         this.options = options;
+        this.location = {
+            file: "(none)",
+            start: { line: -1, column: -1 },
+            end: { line: -1, column: -1 },
+        };
 
         Object.keys(StdLib)
             .map((name) => (StdLib as any)[name])
@@ -171,6 +219,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     inSubEnv(func: (interpreter: Interpreter) => BrsType, environment?: Environment): BrsType {
         let originalEnvironment = this._environment;
         let newEnv = environment || this._environment.createSubEnvironment();
+
+        // Set the focused node of the sub env, because our current env has the most up-to-date reference.
+        newEnv.setFocusedNode(this._environment.getFocusedNode());
 
         try {
             this._environment = newEnv;
@@ -203,11 +254,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 },
             });
 
-            let maybeMain = this.visitVariable(mainVariable);
+            let maybeMain = this.evaluate(mainVariable);
 
             if (maybeMain.kind === ValueKind.Callable) {
                 results = [
-                    this.visitCall(
+                    this.evaluate(
                         new Expr.Call(
                             mainVariable,
                             mainVariable.name,
@@ -219,12 +270,13 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         } catch (err) {
             if (err instanceof Stmt.ReturnValue) {
                 results = [err.value || BrsInvalid.Instance];
-            } else {
+            } else if (!(err instanceof BrsError)) {
+                // Swallow BrsErrors, because they should have been exposed to the user downstream.
                 throw err;
             }
-        } finally {
-            return results;
         }
+
+        return results;
     }
 
     getCallableFunction(functionName: string): Callable | undefined {
@@ -250,7 +302,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return maybeCallback;
         }
 
-        console.warn(`Warning: "${functionName}" was not found in scope.`);
+        // If we can't find the function, return undefined and let the consumer handle it.
         return;
     }
 
@@ -410,6 +462,56 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         this.environment.define(Scope.Function, statement.name.text, value);
+        return BrsInvalid.Instance;
+    }
+
+    visitDim(statement: Stmt.Dim): BrsType {
+        if (statement.name.isReserved) {
+            this.addError(
+                new BrsError(
+                    `Cannot assign a value to reserved name '${statement.name.text}'`,
+                    statement.name.location
+                )
+            );
+            return BrsInvalid.Instance;
+        }
+
+        // NOTE: Roku's dim implementation creates a resizeable, empty array for the
+        //   bottom children. Resizeable arrays aren't implemented yet (issue #530),
+        //   so when that's added this code should be updated so the bottom-level arrays
+        //   are resizeable, but empty
+        let dimensionValues: number[] = [];
+        statement.dimensions.forEach((expr) => {
+            let val = this.evaluate(expr);
+            if (val.kind !== ValueKind.Int32) {
+                this.addError(
+                    new BrsError(`Dim expression must evaluate to an integer`, expr.location)
+                );
+                return BrsInvalid.Instance;
+            }
+            // dim takes max-index, so +1 to get the actual array size
+            dimensionValues.push(val.getValue() + 1);
+            return;
+        });
+
+        let createArrayTree = (dimIndex: number = 0): RoArray => {
+            let children: RoArray[] = [];
+            let size = dimensionValues[dimIndex];
+            for (let i = 0; i < size; i++) {
+                if (dimIndex < dimensionValues.length) {
+                    let subchildren = createArrayTree(dimIndex + 1);
+                    if (subchildren !== undefined) children.push(subchildren);
+                }
+            }
+            let child = new RoArray(children);
+
+            return child;
+        };
+
+        let array = createArrayTree();
+
+        this.environment.define(Scope.Function, statement.name.text, array);
+
         return BrsInvalid.Instance;
     }
 
@@ -1138,28 +1240,33 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     visitIndexedGet(expression: Expr.IndexedGet): BrsType {
         let source = this.evaluate(expression.obj);
         if (!isIterable(source)) {
-            throw new TypeMismatch({
-                message: "Attempting to retrieve property from non-iterable value",
-                left: {
-                    type: source,
-                    location: expression.location,
-                },
-            });
+            this.addError(
+                new TypeMismatch({
+                    message: "Attempting to retrieve property from non-iterable value",
+                    left: {
+                        type: source,
+                        location: expression.location,
+                    },
+                })
+            );
         }
 
         let index = this.evaluate(expression.index);
         if (!isBrsNumber(index) && !isBrsString(index)) {
-            throw new TypeMismatch({
-                message: "Attempting to retrieve property from iterable with illegal index type",
-                left: {
-                    type: source,
-                    location: expression.obj.location,
-                },
-                right: {
-                    type: index,
-                    location: expression.index.location,
-                },
-            });
+            this.addError(
+                new TypeMismatch({
+                    message:
+                        "Attempting to retrieve property from iterable with illegal index type",
+                    left: {
+                        type: source,
+                        location: expression.obj.location,
+                    },
+                    right: {
+                        type: index,
+                        location: expression.index.location,
+                    },
+                })
+            );
         }
 
         try {
@@ -1526,11 +1633,33 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
-        return expression.accept<BrsType>(this);
+        this.location = expression.location;
+        this.stack.push(this.location);
+        this.reportCoverageHit(expression);
+
+        let value;
+        try {
+            value = expression.accept<BrsType>(this);
+        } finally {
+            this.stack.pop();
+        }
+
+        return value;
     }
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
-        return statement.accept<BrsType>(this);
+        this.location = statement.location;
+        this.stack.push(this.location);
+        this.reportCoverageHit(statement);
+
+        let value;
+        try {
+            value = statement.accept<BrsType>(this);
+        } finally {
+            this.stack.pop();
+        }
+
+        return value;
     }
 
     /**

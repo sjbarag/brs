@@ -1,0 +1,520 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`coverage matches snapshot 1`] = `
+Object {
+  "b": Object {
+    "stmt:If:23,4-29,10": Array [
+      1,
+      0,
+      0,
+    ],
+    "stmt:If:31,4-37,10": Array [
+      0,
+      1,
+      0,
+    ],
+    "stmt:If:39,4-43,10": Array [
+      0,
+      1,
+    ],
+  },
+  "branchMap": Object {
+    "stmt:If:23,4-29,10": Object {
+      "line": 23,
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 29,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 23,
+        },
+      },
+      "locations": Array [
+        Object {
+          "end": Object {
+            "column": 11,
+            "line": 23,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 23,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 17,
+            "line": 25,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 25,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 4,
+            "line": 29,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 27,
+          },
+        },
+      ],
+      "type": "if",
+    },
+    "stmt:If:31,4-37,10": Object {
+      "line": 31,
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 37,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 31,
+        },
+      },
+      "locations": Array [
+        Object {
+          "end": Object {
+            "column": 12,
+            "line": 31,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 31,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 16,
+            "line": 33,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 33,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 4,
+            "line": 37,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 35,
+          },
+        },
+      ],
+      "type": "if",
+    },
+    "stmt:If:39,4-43,10": Object {
+      "line": 39,
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 43,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 4,
+          "line": 39,
+        },
+      },
+      "locations": Array [
+        Object {
+          "end": Object {
+            "column": 12,
+            "line": 39,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 39,
+          },
+        },
+        Object {
+          "end": Object {
+            "column": 4,
+            "line": 43,
+          },
+          "file": "main.brs",
+          "start": Object {
+            "column": 4,
+            "line": 41,
+          },
+        },
+      ],
+      "type": "if",
+    },
+  },
+  "f": Object {
+    "expr:Expr_Function:9,13-11,15": 1,
+    "stmt:Stmt_Function:17,0-19,7": 0,
+    "stmt:Stmt_Function:2,0-14,7": 1,
+    "stmt:Stmt_Function:22,0-44,7": 1,
+  },
+  "fnMap": Object {
+    "expr:Expr_Function:9,13-11,15": Object {
+      "decl": Object {
+        "end": Object {
+          "column": 16,
+          "line": 9,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 13,
+          "line": 9,
+        },
+      },
+      "line": 9,
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 11,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 13,
+          "line": 9,
+        },
+      },
+      "name": "[Function]",
+    },
+    "stmt:Stmt_Function:17,0-19,7": Object {
+      "decl": Object {
+        "end": Object {
+          "column": 14,
+          "line": 17,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 17,
+        },
+      },
+      "line": 17,
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 19,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 17,
+        },
+      },
+      "name": "unusedFunc",
+    },
+    "stmt:Stmt_Function:2,0-14,7": Object {
+      "decl": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "line": 2,
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 14,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "name": "main",
+    },
+    "stmt:Stmt_Function:22,0-44,7": Object {
+      "decl": Object {
+        "end": Object {
+          "column": 12,
+          "line": 22,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 22,
+        },
+      },
+      "line": 22,
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 44,
+        },
+        "file": "main.brs",
+        "start": Object {
+          "column": 0,
+          "line": 22,
+        },
+      },
+      "name": "branches",
+    },
+  },
+  "path": "main.brs",
+  "s": Object {
+    "stmt:Assignment:24,8-24,21": 1,
+    "stmt:Assignment:26,8-26,21": 0,
+    "stmt:Assignment:28,8-28,21": 0,
+    "stmt:Assignment:32,8-32,21": 0,
+    "stmt:Assignment:34,8-34,21": 1,
+    "stmt:Assignment:36,8-36,21": 0,
+    "stmt:Assignment:40,8-40,21": 0,
+    "stmt:Assignment:42,8-42,21": 1,
+    "stmt:Assignment:5,4-5,19": 1,
+    "stmt:Assignment:8,4-12,5": 1,
+    "stmt:Expression:13,4-13,13": 1,
+    "stmt:Expression:3,4-3,14": 1,
+    "stmt:If:23,4-29,10.elseif-0": 0,
+    "stmt:If:23,4-29,10.if": 1,
+    "stmt:If:31,4-37,10.elseif-0": 1,
+    "stmt:If:31,4-37,10.if": 1,
+    "stmt:If:39,4-43,10.if": 1,
+    "stmt:IndexedSet:6,4-6,14": 1,
+    "stmt:Print:10,12-10,24": 1,
+    "stmt:Print:18,4-18,23": 0,
+  },
+  "statementMap": Object {
+    "stmt:Assignment:24,8-24,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 24,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 24,
+      },
+    },
+    "stmt:Assignment:26,8-26,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 26,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 26,
+      },
+    },
+    "stmt:Assignment:28,8-28,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 28,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 28,
+      },
+    },
+    "stmt:Assignment:32,8-32,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 32,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 32,
+      },
+    },
+    "stmt:Assignment:34,8-34,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 34,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 34,
+      },
+    },
+    "stmt:Assignment:36,8-36,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 36,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 36,
+      },
+    },
+    "stmt:Assignment:40,8-40,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 40,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 40,
+      },
+    },
+    "stmt:Assignment:42,8-42,21": Object {
+      "end": Object {
+        "column": 21,
+        "line": 42,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 8,
+        "line": 42,
+      },
+    },
+    "stmt:Assignment:5,4-5,19": Object {
+      "end": Object {
+        "column": 19,
+        "line": 5,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 5,
+      },
+    },
+    "stmt:Assignment:8,4-12,5": Object {
+      "end": Object {
+        "column": 5,
+        "line": 12,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 8,
+      },
+    },
+    "stmt:Expression:13,4-13,13": Object {
+      "end": Object {
+        "column": 13,
+        "line": 13,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 13,
+      },
+    },
+    "stmt:Expression:3,4-3,14": Object {
+      "end": Object {
+        "column": 14,
+        "line": 3,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 3,
+      },
+    },
+    "stmt:If:23,4-29,10.elseif-0": Object {
+      "end": Object {
+        "column": 17,
+        "line": 25,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 12,
+        "line": 25,
+      },
+    },
+    "stmt:If:23,4-29,10.if": Object {
+      "end": Object {
+        "column": 11,
+        "line": 23,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 7,
+        "line": 23,
+      },
+    },
+    "stmt:If:31,4-37,10.elseif-0": Object {
+      "end": Object {
+        "column": 16,
+        "line": 33,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 12,
+        "line": 33,
+      },
+    },
+    "stmt:If:31,4-37,10.if": Object {
+      "end": Object {
+        "column": 12,
+        "line": 31,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 7,
+        "line": 31,
+      },
+    },
+    "stmt:If:39,4-43,10.if": Object {
+      "end": Object {
+        "column": 12,
+        "line": 39,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 7,
+        "line": 39,
+      },
+    },
+    "stmt:IndexedSet:6,4-6,14": Object {
+      "end": Object {
+        "column": 14,
+        "line": 6,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 6,
+      },
+    },
+    "stmt:Print:10,12-10,24": Object {
+      "end": Object {
+        "column": 24,
+        "line": 10,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 12,
+        "line": 10,
+      },
+    },
+    "stmt:Print:18,4-18,23": Object {
+      "end": Object {
+        "column": 23,
+        "line": 18,
+      },
+      "file": "main.brs",
+      "start": Object {
+        "column": 4,
+        "line": 18,
+      },
+    },
+  },
+}
+`;

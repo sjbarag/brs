@@ -67,7 +67,7 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             let neededKey = str.value.toLowerCase();
             let arr = [];
             for (let item of this.xmlNode?.children ?? []) {
-                if (item.name?.toLowerCase() == neededKey) {
+                if (item.name?.toLowerCase() === neededKey) {
                     arr.push(new RoXMLElement().setXMLElem(item));
                 }
             }

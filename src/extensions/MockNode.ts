@@ -1,8 +1,8 @@
 import { RoSGNode, Callable, RoAssociativeArray, BrsType, BrsString } from "../brsTypes";
 
 export class MockNode extends RoSGNode {
-    constructor(mock: RoAssociativeArray) {
-        super([]);
+    constructor(mock: RoAssociativeArray, mockName: string) {
+        super([], mockName);
 
         // set up the fields here
         let mockElements = mock.getValue();

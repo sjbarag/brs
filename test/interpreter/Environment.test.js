@@ -4,6 +4,7 @@ const { Lexeme } = brs.lexer;
 const { BrsString, RoAssociativeArray, Int32, BrsInvalid, Callable } = brs.types;
 
 const { token, identifier } = require("../parser/ParserTests");
+const { RoSGNode } = require("../../lib/brsTypes/components/RoSGNode");
 
 describe("Environment", () => {
     let env;
@@ -142,6 +143,12 @@ describe("Environment", () => {
         env = new Environment(rootM);
 
         expect(env.getRootM()).toBe(env.createSubEnvironment().getRootM());
+    });
+
+    it("maintains host node between sub-environments", () => {
+        env = new Environment();
+        env.hostNode = new RoSGNode([], "SomeNode");
+        expect(env.createSubEnvironment().hostNode).toBe(env.hostNode);
     });
 
     it("gets & sets mock objects on the mock scope", () => {

@@ -6,11 +6,16 @@ const {
     BrsBoolean,
     BrsString,
     Int32,
+    Int64,
+    Float,
+    Double,
     BrsInvalid,
     ValueKind,
     Uninitialized,
+    Callable,
 } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
+const { Scope } = require("../../../lib/interpreter/Environment");
 
 describe("RoSGNode", () => {
     describe("stringification", () => {
@@ -77,6 +82,51 @@ describe("RoSGNode", () => {
 
             expect(node.get(new BrsString("foo"))).toEqual(new Int32(66));
         });
+
+        it("converts types on number fields", () => {
+            let node = new RoSGNode([
+                {
+                    name: new BrsString("intFoo"),
+                    value: new Int32(99),
+                },
+                {
+                    name: new BrsString("longBar"),
+                    value: new Int64(4321),
+                },
+                {
+                    name: new BrsString("floatBat"),
+                    value: new Float(33.7),
+                },
+                {
+                    name: new BrsString("doubleTrouble"),
+                    value: new Double(33.7),
+                },
+            ]);
+
+            node.set(new BrsString("intFoo"), new Float(34.3));
+            expect(node.get(new BrsString("intFoo"))).toEqual(new Int32(34));
+
+            node.set(new BrsString("intFoo"), new Double(38.7));
+            expect(node.get(new BrsString("intFoo"))).toEqual(new Int32(38));
+
+            node.set(new BrsString("longBar"), new Float(34.3));
+            expect(node.get(new BrsString("longBar"))).toEqual(new Int64(34));
+
+            node.set(new BrsString("longBar"), new Double(38.7));
+            expect(node.get(new BrsString("longBar"))).toEqual(new Int64(38));
+
+            node.set(new BrsString("floatBat"), new Int32(38));
+            expect(node.get(new BrsString("floatBat"))).toEqual(new Float(38));
+
+            node.set(new BrsString("floatBat"), new Double(31.7));
+            expect(node.get(new BrsString("floatBat"))).toEqual(new Float(31.7));
+
+            node.set(new BrsString("doubleTrouble"), new Int32(49));
+            expect(node.get(new BrsString("doubleTrouble"))).toEqual(new Double(49));
+
+            node.set(new BrsString("doubleTrouble"), new Float(11.2));
+            expect(node.get(new BrsString("doubleTrouble"))).toEqual(new Double(11.2));
+        });
     });
 
     describe("methods", () => {
@@ -107,6 +157,16 @@ describe("RoSGNode", () => {
                 let deleteCall = node.getMethod("delete");
                 expect(deleteCall).toBeTruthy();
                 expect(deleteCall.call(interpreter, new BrsString("foo"))).toBe(BrsBoolean.True);
+                expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.True);
+                expect(node.get(new BrsString("foo"))).toEqual(BrsInvalid.Instance);
+            });
+
+            it("deletes a given item in the associative array, ignoring case", () => {
+                let node = new RoSGNode([{ name: new BrsString("foo"), value: new Int32(-99) }]);
+
+                let deleteCall = node.getMethod("delete");
+                expect(deleteCall).toBeTruthy();
+                expect(deleteCall.call(interpreter, new BrsString("Foo"))).toBe(BrsBoolean.True);
                 expect(deleteCall.call(interpreter, new BrsString("baz"))).toBe(BrsBoolean.True);
                 expect(node.get(new BrsString("foo"))).toEqual(BrsInvalid.Instance);
             });
@@ -456,6 +516,31 @@ describe("RoSGNode", () => {
             });
         });
 
+        describe("getFields", () => {
+            it("returns all visible fields", () => {
+                let node = new RoSGNode([]);
+
+                let getFields = node.getMethod("getfields");
+                expect(getFields).toBeTruthy();
+
+                let result = getFields.call(interpreter);
+                let expected = new RoAssociativeArray([
+                    { name: new BrsString("change"), value: new RoAssociativeArray([]) },
+                    { name: new BrsString("focusable"), value: BrsBoolean.False },
+                    { name: new BrsString("focusedChild"), value: BrsInvalid.Instance },
+                    { name: new BrsString("id"), value: new BrsString("") },
+                ]);
+                result.elements.forEach((value, name) => {
+                    if (value instanceof RoAssociativeArray) {
+                        expect(value.elements).toBeInstanceOf(Map);
+                        expect(value.elements).toEqual(expected.elements.get(name).elements);
+                    } else {
+                        expect(value).toEqual(expected.elements.get(name));
+                    }
+                });
+            });
+        });
+
         describe("hasfield", () => {
             it("returns presence of a field", () => {
                 let node = new RoSGNode([{ name: new BrsString("foo"), value: new Int32(17) }]);
@@ -471,13 +556,165 @@ describe("RoSGNode", () => {
 
         describe("observefield", () => {
             it("adds an observer", () => {
+                let cbImpl = jest.fn();
                 let node = new RoSGNode([
                     { name: new BrsString("foo"), value: new Int32(-99) },
                     { name: new BrsString("bar"), value: new BrsString("hello") },
                 ]);
 
+                interpreter.environment.hostNode = node;
+                interpreter.environment.define(
+                    Scope.Module,
+                    "callback",
+                    new Callable("callback", {
+                        signature: {
+                            args: [],
+                            returns: ValueKind.Void,
+                        },
+                        impl: cbImpl,
+                    })
+                );
+
                 let observeField = node.getMethod("observefield");
                 expect(observeField).toBeTruthy();
+
+                observeField.call(interpreter, new BrsString("foo"), new BrsString("callback"));
+
+                node.set(new BrsString("foo"), new Int32(1));
+                expect(cbImpl).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        describe("unobserveField", () => {
+            it("removes all non-permanent observers", () => {
+                let cbImpl = jest.fn();
+                let target = new RoSGNode([
+                    { name: new BrsString("foo"), value: new Int32(-99) },
+                    { name: new BrsString("bar"), value: new BrsString("hello") },
+                ]);
+
+                let subscriberA = new RoSGNode([]);
+                let subscriberB = new RoSGNode([]);
+
+                [subscriberA, subscriberB].forEach((subscriber) => {
+                    interpreter.environment.hostNode = subscriber;
+                    interpreter.environment.define(
+                        Scope.Module,
+                        "callback",
+                        new Callable("callback", {
+                            signature: {
+                                args: [],
+                                returns: ValueKind.Void,
+                            },
+                            impl: cbImpl,
+                        })
+                    );
+
+                    // observe the field from each subscriber
+                    let observeField = target.getMethod("observefield");
+                    expect(observeField).toBeTruthy();
+                    observeField.call(interpreter, new BrsString("foo"), new BrsString("callback"));
+                });
+
+                // update the field to trigger both subscribers
+                target.set(new BrsString("foo"), new Int32(1));
+                expect(cbImpl).toHaveBeenCalledTimes(2);
+
+                // now remove the observer
+                let unobserveField = target.getMethod("unobserveField");
+                expect(unobserveField).toBeTruthy();
+                unobserveField.call(interpreter, new BrsString("foo"));
+
+                // and make sure neither subscriber is called
+                target.set(new BrsString("foo"), new Int32(-99));
+                expect(cbImpl).toHaveBeenCalledTimes(2);
+            });
+        });
+
+        describe("observeFieldScoped", () => {
+            it("adds an observer", () => {
+                let cbImpl = jest.fn();
+                let node = new RoSGNode([
+                    { name: new BrsString("foo"), value: new Int32(-99) },
+                    { name: new BrsString("bar"), value: new BrsString("hello") },
+                ]);
+
+                interpreter.environment.hostNode = node;
+                interpreter.environment.define(
+                    Scope.Module,
+                    "callback",
+                    new Callable("callback", {
+                        signature: {
+                            args: [],
+                            returns: ValueKind.Void,
+                        },
+                        impl: cbImpl,
+                    })
+                );
+
+                let observeFieldScoped = node.getMethod("observefieldscoped");
+                expect(observeFieldScoped).toBeTruthy();
+
+                observeFieldScoped.call(
+                    interpreter,
+                    new BrsString("foo"),
+                    new BrsString("callback")
+                );
+
+                node.set(new BrsString("foo"), new Int32(1));
+                expect(cbImpl).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        describe("unobserveFieldScoped", () => {
+            it("removes all subscribers of calling node", () => {
+                let target = new RoSGNode([
+                    { name: new BrsString("foo"), value: new Int32(-99) },
+                    { name: new BrsString("bar"), value: new BrsString("hello") },
+                ]);
+
+                let subscriberA = new RoSGNode([]);
+                let callbackA = jest.fn();
+                let subscriberB = new RoSGNode([]);
+                let callbackB = jest.fn();
+
+                [
+                    [subscriberA, callbackA],
+                    [subscriberB, callbackB],
+                ].forEach(([subscriber, cbImpl]) => {
+                    interpreter.environment.hostNode = subscriber;
+                    interpreter.environment.define(
+                        Scope.Module,
+                        "callback",
+                        new Callable("callback", {
+                            signature: {
+                                args: [],
+                                returns: ValueKind.Void,
+                            },
+                            impl: cbImpl,
+                        })
+                    );
+
+                    // observe the field from each subscriber
+                    let observeField = target.getMethod("observefieldScoped");
+                    expect(observeField).toBeTruthy();
+                    observeField.call(interpreter, new BrsString("foo"), new BrsString("callback"));
+                });
+
+                // update the field to trigger both subscribers
+                target.set(new BrsString("foo"), new Int32(1));
+                expect(callbackA).toHaveBeenCalledTimes(1);
+                expect(callbackB).toHaveBeenCalledTimes(1);
+
+                // now remove observer B (since subscriberB is still the host node)
+                let unobserveFieldScoped = target.getMethod("unobserveFieldScoped");
+                expect(unobserveFieldScoped).toBeTruthy();
+                unobserveFieldScoped.call(interpreter, new BrsString("foo"));
+
+                // and make sure B is only called once
+                target.set(new BrsString("foo"), new Int32(-99));
+                expect(callbackA).toHaveBeenCalledTimes(2);
+                expect(callbackB).toHaveBeenCalledTimes(1);
             });
         });
 
@@ -499,6 +736,27 @@ describe("RoSGNode", () => {
                 expect(node.getFields().size).toEqual(5);
 
                 result = removeField.call(interpreter, new BrsString("field1"));
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(4);
+            });
+
+            it("removes a field from the node, ignoring case", () => {
+                let node = new RoSGNode([]);
+
+                let addField = node.getMethod("addfield");
+                let removeField = node.getMethod("removefield");
+                expect(removeField).toBeTruthy();
+
+                let result = addField.call(
+                    interpreter,
+                    new BrsString("field1"),
+                    new BrsString("string"),
+                    BrsBoolean.False
+                );
+                expect(result).toEqual(BrsBoolean.True);
+                expect(node.getFields().size).toEqual(5);
+
+                result = removeField.call(interpreter, new BrsString("Field1"));
                 expect(result).toEqual(BrsBoolean.True);
                 expect(node.getFields().size).toEqual(4);
             });
@@ -1903,6 +2161,7 @@ describe("RoSGNode", () => {
         });
 
         describe("setfocus", () => {
+            let focusedChildString = new BrsString("focusedchild");
             it("sets focus on a node", () => {
                 let hasFocus = parent.getMethod("hasfocus");
                 let setFocus = parent.getMethod("setfocus");
@@ -1913,6 +2172,7 @@ describe("RoSGNode", () => {
                 setFocus.call(interpreter, BrsBoolean.True);
                 result = hasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
+                expect(parent.get(focusedChildString)).toEqual(parent);
             });
 
             it("sets focus on a node should disable focus on another", () => {
@@ -1927,12 +2187,18 @@ describe("RoSGNode", () => {
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
 
+                // by default their focusedChild fields should be invalid
+                expect(child1.get(focusedChildString)).toEqual(BrsInvalid.Instance);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
+
                 //focus on child 1
                 child1SetFocus.call(interpreter, BrsBoolean.True);
                 result = child1HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
+                expect(child1.get(focusedChildString)).toEqual(child1);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
 
                 //focus on child 2 should remove focus from child 1
                 child2SetFocus.call(interpreter, BrsBoolean.True);
@@ -1940,6 +2206,8 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.False);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.True);
+                expect(child2.get(focusedChildString)).toEqual(child2);
+                expect(child1.get(focusedChildString)).toEqual(BrsInvalid.Instance);
             });
 
             it("set focus to false", () => {
@@ -1954,6 +2222,8 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.True);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
+                expect(child1.get(focusedChildString)).toEqual(child1);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
 
                 //set focus to false on child 1
                 child1SetFocus.call(interpreter, BrsBoolean.False);
@@ -1961,6 +2231,8 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(BrsBoolean.False);
                 result = child2HasFocus.call(interpreter);
                 expect(result).toEqual(BrsBoolean.False);
+                expect(child1.get(focusedChildString)).toEqual(BrsInvalid.Instance);
+                expect(child2.get(focusedChildString)).toEqual(BrsInvalid.Instance);
             });
         });
 
@@ -2025,6 +2297,7 @@ describe("RoSGNode", () => {
             child2 = new RoSGNode([{ name: idString, value: new BrsString("child2") }]);
             child3 = new RoSGNode([{ name: idString, value: new BrsString("child3") }]);
             child4 = new RoSGNode([{ name: idString, value: new BrsString("child4") }]);
+            child5 = new RoSGNode([{ name: idString, value: new BrsString("") }]);
         });
 
         describe("findnode", () => {
@@ -2033,6 +2306,13 @@ describe("RoSGNode", () => {
                 expect(findNode).toBeTruthy();
 
                 let invalidNode = findNode.call(interpreter, new BrsString("someRandomId"));
+                expect(invalidNode).toEqual(BrsInvalid.Instance);
+            });
+
+            it("returns invalid on empty id string", () => {
+                let findNode = parent.getMethod("findnode");
+
+                let invalidNode = findNode.call(interpreter, new BrsString(""));
                 expect(invalidNode).toEqual(BrsInvalid.Instance);
             });
 

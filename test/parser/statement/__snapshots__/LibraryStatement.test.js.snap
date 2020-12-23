@@ -16,13 +16,14 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 2,
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -58,6 +59,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -76,6 +78,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
     Library {
       "tokens": Object {
@@ -117,6 +120,7 @@ Object {
           "text": "Library",
         },
       },
+      "type": "Library",
     },
   ],
 }
@@ -138,7 +142,7 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 2,
             },
           },
@@ -183,10 +187,12 @@ Object {
                   "text": "Library",
                 },
               },
+              "type": "Library",
             },
           ],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -222,6 +228,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -240,6 +247,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -259,7 +267,7 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 2,
             },
           },
@@ -301,6 +309,7 @@ Object {
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": AALiteral {
                 "close": Object {
                   "isReserved": false,
@@ -337,6 +346,7 @@ Object {
                           "line": 4,
                         },
                       },
+                      "type": "Literal",
                       "value": BrsString {
                         "kind": 3,
                         "value": "Gotham City Library",
@@ -361,11 +371,13 @@ Object {
                   },
                   "text": "{",
                 },
+                "type": "AALiteral",
               },
             },
           ],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -401,6 +413,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -419,6 +432,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -438,7 +452,7 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 2,
             },
           },
@@ -480,6 +494,7 @@ Object {
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -492,6 +507,7 @@ Object {
                     "line": 3,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Gotham City Library",
@@ -499,8 +515,9 @@ Object {
               },
             },
           ],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -536,6 +553,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -554,6 +572,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -586,6 +605,7 @@ Object {
           "text": "library",
         },
       },
+      "type": "Library",
     },
     Function {
       "func": Function {
@@ -597,7 +617,7 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 3,
             },
           },
@@ -639,6 +659,7 @@ Object {
                   "text": "=",
                 },
               },
+              "type": "Assignment",
               "value": Literal {
                 "_location": Object {
                   "end": Object {
@@ -651,6 +672,7 @@ Object {
                     "line": 4,
                   },
                 },
+                "type": "Literal",
                 "value": BrsString {
                   "kind": 3,
                   "value": "Your Library",
@@ -658,8 +680,9 @@ Object {
               },
             },
           ],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -695,6 +718,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -713,6 +737,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -747,6 +772,7 @@ Object {
           "text": "library",
         },
       },
+      "type": "Library",
     },
     Function {
       "func": Function {
@@ -758,13 +784,14 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 3,
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -800,6 +827,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -818,6 +846,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -867,6 +896,7 @@ Object {
           "text": "Library",
         },
       },
+      "type": "Library",
     },
     Function {
       "func": Function {
@@ -878,13 +908,14 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 3,
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -920,6 +951,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -938,6 +970,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }
@@ -987,6 +1020,7 @@ Object {
           "text": "Library",
         },
       },
+      "type": "Library",
     },
     Library {
       "tokens": Object {
@@ -1028,6 +1062,7 @@ Object {
           "text": "Library",
         },
       },
+      "type": "Library",
     },
     Function {
       "func": Function {
@@ -1039,13 +1074,14 @@ Object {
             },
             "file": "",
             "start": Object {
-              "column": 23,
+              "column": 22,
               "line": 3,
             },
           },
           "statements": Array [],
+          "type": "Block",
         },
-        "end": Object {
+        "endKeyword": Object {
           "isReserved": false,
           "kind": "EndSub",
           "literal": undefined,
@@ -1081,6 +1117,7 @@ Object {
         },
         "parameters": Array [],
         "returns": 11,
+        "type": "Expr_Function",
       },
       "name": Object {
         "isReserved": false,
@@ -1099,6 +1136,7 @@ Object {
         },
         "text": "main",
       },
+      "type": "Stmt_Function",
     },
   ],
 }

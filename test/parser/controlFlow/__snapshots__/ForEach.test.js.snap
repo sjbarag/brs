@@ -16,6 +16,7 @@ Array [
         },
       },
       "statements": Array [],
+      "type": "Block",
     },
     "item": Object {
       "isReserved": false,
@@ -50,6 +51,7 @@ Array [
         },
         "text": "lipsum",
       },
+      "type": "Variable",
     },
     "tokens": Object {
       "endFor": Object {
@@ -101,6 +103,7 @@ Array [
         "text": "in",
       },
     },
+    "type": "ForEach",
   },
 ]
 `;
@@ -121,6 +124,7 @@ Array [
         },
       },
       "statements": Array [],
+      "type": "Block",
     },
     "item": Object {
       "isReserved": false,
@@ -155,6 +159,7 @@ Array [
         },
         "text": "lipsum",
       },
+      "type": "Variable",
     },
     "tokens": Object {
       "endFor": Object {
@@ -206,6 +211,7 @@ Array [
         "text": "in",
       },
     },
+    "type": "ForEach",
   },
 ]
 `;

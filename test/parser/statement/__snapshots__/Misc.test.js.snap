@@ -12,7 +12,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 27,
+            "column": 26,
             "line": 2,
           },
         },
@@ -54,6 +54,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": AALiteral {
               "close": Object {
                 "isReserved": false,
@@ -90,6 +91,7 @@ Array [
                         "line": 4,
                       },
                     },
+                    "type": "Literal",
                     "value": BrsBoolean {
                       "kind": 2,
                       "value": true,
@@ -114,11 +116,13 @@ Array [
                 },
                 "text": "{",
               },
+              "type": "AALiteral",
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -154,6 +158,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -172,6 +177,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -188,7 +194,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 27,
+            "column": 26,
             "line": 2,
           },
         },
@@ -213,10 +219,12 @@ Array [
                 "text": "end",
               },
             },
+            "type": "End",
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -252,6 +260,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -270,6 +279,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -286,7 +296,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 27,
+            "column": 26,
             "line": 2,
           },
         },
@@ -328,6 +338,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -340,6 +351,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -347,8 +359,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -384,6 +397,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -402,6 +416,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -418,7 +433,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -460,6 +475,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": AALiteral {
               "close": Object {
                 "isReserved": false,
@@ -496,6 +512,7 @@ Array [
                 },
                 "text": "{",
               },
+              "type": "AALiteral",
             },
           },
           DottedSet {
@@ -534,7 +551,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -547,6 +566,7 @@ Array [
                   "line": 4,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -589,7 +609,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -602,6 +624,7 @@ Array [
                   "line": 5,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -644,7 +667,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -657,6 +682,7 @@ Array [
                   "line": 6,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -699,7 +725,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -712,6 +740,7 @@ Array [
                   "line": 7,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -754,7 +783,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -767,6 +798,7 @@ Array [
                   "line": 8,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -809,7 +841,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -822,6 +856,7 @@ Array [
                   "line": 9,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -864,7 +899,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -877,6 +914,7 @@ Array [
                   "line": 10,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -919,7 +957,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -932,6 +972,7 @@ Array [
                   "line": 11,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -974,7 +1015,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -987,6 +1030,7 @@ Array [
                   "line": 12,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1029,7 +1073,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1042,6 +1088,7 @@ Array [
                   "line": 13,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1084,7 +1131,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1097,6 +1146,7 @@ Array [
                   "line": 14,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1139,7 +1189,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1152,6 +1204,7 @@ Array [
                   "line": 15,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1194,7 +1247,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1207,6 +1262,7 @@ Array [
                   "line": 16,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1249,7 +1305,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1262,6 +1320,7 @@ Array [
                   "line": 17,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1304,7 +1363,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1317,6 +1378,7 @@ Array [
                   "line": 18,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1359,7 +1421,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1372,6 +1436,7 @@ Array [
                   "line": 19,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1414,7 +1479,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1427,6 +1494,7 @@ Array [
                   "line": 20,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1469,7 +1537,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1482,6 +1552,7 @@ Array [
                   "line": 21,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1524,7 +1595,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1537,6 +1610,7 @@ Array [
                   "line": 22,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1579,7 +1653,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1592,6 +1668,7 @@ Array [
                   "line": 23,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1634,7 +1711,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1647,6 +1726,7 @@ Array [
                   "line": 24,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1689,7 +1769,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1702,6 +1784,7 @@ Array [
                   "line": 25,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1744,7 +1827,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1757,6 +1842,7 @@ Array [
                   "line": 26,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1799,7 +1885,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1812,6 +1900,7 @@ Array [
                   "line": 27,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1854,7 +1943,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1867,6 +1958,7 @@ Array [
                   "line": 28,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1909,7 +2001,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1922,6 +2016,7 @@ Array [
                   "line": 29,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -1964,7 +2059,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -1977,6 +2074,7 @@ Array [
                   "line": 30,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2019,7 +2117,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2032,6 +2132,7 @@ Array [
                   "line": 31,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2074,7 +2175,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2087,6 +2190,7 @@ Array [
                   "line": 32,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2129,7 +2233,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2142,6 +2248,7 @@ Array [
                   "line": 33,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2184,7 +2291,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2197,6 +2306,7 @@ Array [
                   "line": 34,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2239,7 +2349,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2252,6 +2364,7 @@ Array [
                   "line": 35,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2294,7 +2407,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2307,6 +2422,7 @@ Array [
                   "line": 36,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2349,7 +2465,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2362,6 +2480,7 @@ Array [
                   "line": 37,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2404,7 +2523,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2417,6 +2538,7 @@ Array [
                   "line": 38,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2459,7 +2581,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2472,6 +2596,7 @@ Array [
                   "line": 39,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2514,7 +2639,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2527,6 +2654,7 @@ Array [
                   "line": 40,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2569,7 +2697,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2582,6 +2712,7 @@ Array [
                   "line": 41,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2624,7 +2755,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2637,6 +2770,7 @@ Array [
                   "line": 42,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2679,7 +2813,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2692,6 +2828,7 @@ Array [
                   "line": 43,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2734,7 +2871,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2747,6 +2886,7 @@ Array [
                   "line": 44,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2789,7 +2929,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2802,6 +2944,7 @@ Array [
                   "line": 45,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2844,7 +2987,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2857,6 +3002,7 @@ Array [
                   "line": 46,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2899,7 +3045,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2912,6 +3060,7 @@ Array [
                   "line": 47,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -2954,7 +3103,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -2967,6 +3118,7 @@ Array [
                   "line": 48,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3009,7 +3161,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3022,6 +3176,7 @@ Array [
                   "line": 49,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3064,7 +3219,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3077,6 +3234,7 @@ Array [
                   "line": 50,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3119,7 +3277,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3132,6 +3292,7 @@ Array [
                   "line": 51,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3174,7 +3335,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3187,6 +3350,7 @@ Array [
                   "line": 52,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3229,7 +3393,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3242,6 +3408,7 @@ Array [
                   "line": 53,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3284,7 +3451,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3297,6 +3466,7 @@ Array [
                   "line": 54,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3339,7 +3509,9 @@ Array [
                 },
                 "text": "person",
               },
+              "type": "Variable",
             },
+            "type": "DottedSet",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3352,6 +3524,7 @@ Array [
                   "line": 55,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3359,8 +3532,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -3396,6 +3570,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -3414,6 +3589,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -3430,7 +3606,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -3472,6 +3648,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3484,6 +3661,7 @@ Array [
                   "line": 3,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3527,6 +3705,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3539,6 +3718,7 @@ Array [
                   "line": 4,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3582,6 +3762,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3594,6 +3775,7 @@ Array [
                   "line": 5,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3637,6 +3819,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3649,6 +3832,7 @@ Array [
                   "line": 6,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3692,6 +3876,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3704,6 +3889,7 @@ Array [
                   "line": 7,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3747,6 +3933,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3759,6 +3946,7 @@ Array [
                   "line": 8,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3802,6 +3990,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3814,6 +4003,7 @@ Array [
                   "line": 9,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3857,6 +4047,7 @@ Array [
                 "text": "=",
               },
             },
+            "type": "Assignment",
             "value": Literal {
               "_location": Object {
                 "end": Object {
@@ -3869,6 +4060,7 @@ Array [
                   "line": 10,
                 },
               },
+              "type": "Literal",
               "value": BrsBoolean {
                 "kind": 2,
                 "value": true,
@@ -3876,8 +4068,9 @@ Array [
             },
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -3913,6 +4106,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -3931,6 +4125,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;

@@ -1,10 +1,10 @@
 import {
-    BrsType,
     ValueKind,
     Callable,
     StdlibArgument,
     BrsInvalid,
     RoAssociativeArray,
+    BrsString,
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 
@@ -16,7 +16,7 @@ export const mockComponent = new Callable("mockComponent", {
         ],
         returns: ValueKind.Void,
     },
-    impl: (interpreter: Interpreter, objToMock: BrsType, mock: RoAssociativeArray) => {
+    impl: (interpreter: Interpreter, objToMock: BrsString, mock: RoAssociativeArray) => {
         interpreter.environment.setMockObject(objToMock.toString(), mock);
         return BrsInvalid.Instance;
     },

@@ -7,6 +7,9 @@ const { Int32, BrsString, BrsInvalid, Callable, ValueKind, StdlibArgument } = br
 
 const { token, identifier } = require("../parser/ParserTests");
 
+const FUNCTION = token(Lexeme.Function, "function");
+const END_FUNCTION = token(Lexeme.EndFunction, "end function");
+
 let interpreter;
 
 describe("interpreter function declarations", () => {
@@ -18,7 +21,7 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 identifier("foo"),
-                new Expr.Function([], ValueKind.Void, new Stmt.Block([]))
+                new Expr.Function([], ValueKind.Void, new Stmt.Block([]), FUNCTION, END_FUNCTION)
             ),
         ];
 
@@ -34,7 +37,10 @@ describe("interpreter function declarations", () => {
         jest.spyOn(emptyBlock, "accept");
 
         let statements = [
-            new Stmt.Function(identifier("foo"), new Expr.Function([], ValueKind.Void, emptyBlock)),
+            new Stmt.Function(
+                identifier("foo"),
+                new Expr.Function([], ValueKind.Void, emptyBlock, FUNCTION, END_FUNCTION)
+            ),
             new Stmt.Expression(
                 new Expr.Call(
                     new Expr.Variable(identifier("foo")),
@@ -64,7 +70,9 @@ describe("interpreter function declarations", () => {
                             ),
                         ],
                         token(Lexeme.Newline, "\n")
-                    )
+                    ),
+                    FUNCTION,
+                    END_FUNCTION
                 )
             ),
             new Stmt.Assignment(
@@ -97,8 +105,8 @@ describe("interpreter function declarations", () => {
                             new Expr.Variable(identifier("input"))
                         ),
                     ]),
-                    token(Lexeme.Function, "function"),
-                    token(Lexeme.EndFunction, "end function")
+                    FUNCTION,
+                    END_FUNCTION
                 )
             ),
             new Stmt.Assignment(
@@ -136,8 +144,8 @@ describe("interpreter function declarations", () => {
                         ],
                         token(Lexeme.Newline, "\n")
                     ),
-                    token(Lexeme.Function, "function"),
-                    token(Lexeme.EndFunction, "end function")
+                    FUNCTION,
+                    END_FUNCTION
                 )
             ),
             new Stmt.Assignment(
@@ -169,7 +177,9 @@ describe("interpreter function declarations", () => {
                             ),
                         ],
                         token(Lexeme.Newline, "\n")
-                    )
+                    ),
+                    FUNCTION,
+                    END_FUNCTION
                 )
             ),
             new Stmt.Assignment(
@@ -195,7 +205,7 @@ describe("interpreter function declarations", () => {
         let statements = [
             new Stmt.Function(
                 identifier("type"),
-                new Expr.Function([], ValueKind.Void, new Stmt.Block([]))
+                new Expr.Function([], ValueKind.Void, new Stmt.Block([]), FUNCTION, END_FUNCTION)
             ),
         ];
 
@@ -209,7 +219,9 @@ describe("interpreter function declarations", () => {
                 new Expr.Function(
                     [], // accepts no arguments
                     ValueKind.Void, // returns nothing
-                    new Stmt.Block([]) // does nothing. It's a really silly function, but the implementation doesn't matter
+                    new Stmt.Block([]), // does nothing. It's a really silly function, but the implementation doesn't matter
+                    FUNCTION,
+                    END_FUNCTION
                 )
             ),
         ];
@@ -227,7 +239,9 @@ describe("interpreter function declarations", () => {
                 new Expr.Function(
                     [], // accepts no arguments
                     ValueKind.Void, // returns nothing
-                    mainBody
+                    mainBody,
+                    FUNCTION,
+                    END_FUNCTION
                 )
             ),
         ];

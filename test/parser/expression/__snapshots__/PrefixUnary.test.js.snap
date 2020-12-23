@@ -37,6 +37,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Unary {
       "operator": Object {
         "isReserved": false,
@@ -133,15 +134,21 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": Int32 {
                   "kind": 4,
                   "value": 5,
                 },
               },
+              "type": "Unary",
             },
+            "type": "Unary",
           },
+          "type": "Unary",
         },
+        "type": "Unary",
       },
+      "type": "Unary",
     },
   },
 ]
@@ -184,6 +191,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Unary {
       "operator": Object {
         "isReserved": true,
@@ -280,15 +288,21 @@ Array [
                     "line": -9,
                   },
                 },
+                "type": "Literal",
                 "value": BrsBoolean {
                   "kind": 2,
                   "value": true,
                 },
               },
+              "type": "Unary",
             },
+            "type": "Unary",
           },
+          "type": "Unary",
         },
+        "type": "Unary",
       },
+      "type": "Unary",
     },
   },
 ]
@@ -331,6 +345,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Unary {
       "operator": Object {
         "isReserved": false,
@@ -359,11 +374,13 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 5,
         },
       },
+      "type": "Unary",
     },
   },
 ]
@@ -406,6 +423,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Unary {
       "operator": Object {
         "isReserved": true,
@@ -434,11 +452,13 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": BrsBoolean {
           "kind": 2,
           "value": true,
         },
       },
+      "type": "Unary",
     },
   },
 ]

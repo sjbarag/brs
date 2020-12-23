@@ -37,6 +37,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Binary {
       "left": Literal {
         "_location": Object {
@@ -49,6 +50,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 1,
@@ -67,6 +69,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 2,
@@ -83,6 +86,7 @@ Array [
                 "line": -9,
               },
             },
+            "type": "Literal",
             "value": Int32 {
               "kind": 4,
               "value": 3,
@@ -104,6 +108,7 @@ Array [
             },
             "text": "*",
           },
+          "type": "Binary",
         },
         "tokens": Object {
           "left": Object {
@@ -139,6 +144,7 @@ Array [
             "text": ")",
           },
         },
+        "type": "Grouping",
       },
       "token": Object {
         "isReserved": false,
@@ -156,6 +162,7 @@ Array [
         },
         "text": "+",
       },
+      "type": "Binary",
     },
   },
 ]
@@ -198,6 +205,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Literal {
       "_location": Object {
         "end": Object {
@@ -209,6 +217,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 5,
@@ -255,6 +264,7 @@ Array [
         "text": "=",
       },
     },
+    "type": "Assignment",
     "value": Literal {
       "_location": Object {
         "end": Object {
@@ -266,6 +276,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": BrsString {
         "kind": 3,
         "value": "hello",

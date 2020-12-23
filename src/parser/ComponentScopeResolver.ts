@@ -1,16 +1,11 @@
 import { ComponentDefinition, ComponentScript } from "../componentprocessor";
 import * as Stmt from "./Statement";
 import { BrsComponentName } from "../brsTypes";
+import pSettle from "p-settle";
+import { ExitForReason } from "./BlockEndReason";
 
 export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];
-
-    /**
-     * A map of file URIs to a promise that resolves to an array of that file's statements.
-     * Used primary to avoid re-lexing and re-parsing files that are included
-     * in <script /> tags in multiple components.
-     */
-    private memoizedStatements = new Map<string, Promise<Stmt.Statement[]>>();
 
     /**
      * @param componentMap Component definition map to reference for function resolution.
@@ -27,7 +22,15 @@ export class ComponentScopeResolver {
      * @returns All statements in scope for the resolved component
      */
     public async resolve(component: ComponentDefinition): Promise<Stmt.Statement[]> {
-        return Promise.all(this.getStatements(component)).then(this.flatten.bind(this));
+        let statementResults = await pSettle(Array.from(this.getStatements(component)));
+        let rejected = statementResults.filter((res) => res.isRejected);
+        if (rejected.length > 0) {
+            rejected.forEach((rejection) =>
+                rejection.reason.messages.forEach((msg: string) => console.error(msg))
+            );
+            return Promise.reject(`Unable to resolve scope for component ${component.name}`);
+        }
+        return this.flatten(statementResults.map((res) => res.value!));
     }
 
     /**
@@ -70,9 +73,7 @@ export class ComponentScopeResolver {
      * @returns An ordered array of component statement arrays.
      */
     private *getStatements(component: ComponentDefinition) {
-        for (const statements of this.fetchMemoizedStatements(component.scripts)) {
-            yield statements;
-        }
+        yield this.parserLexerFn(component.scripts.map((c) => c.uri));
 
         let currentComponent: ComponentDefinition | undefined = component;
         while (currentComponent.extends) {
@@ -82,43 +83,19 @@ export class ComponentScopeResolver {
             }
 
             let previousComponent = currentComponent;
-            currentComponent = this.componentMap.get(currentComponent.extends);
+            currentComponent = this.componentMap.get(currentComponent.extends?.toLowerCase());
             if (!currentComponent) {
                 // The reference implementation doesn't allow extensions of unknown node subtypes, but
                 // BRS hasn't implemented every node type in the reference implementation!  For now,
                 // let's warn when we detect unknown subtypes.
                 console.error(
-                    `Warning: XML component '${previousComponent.extends}' extends unknown component '${previousComponent.name}'. Ignoring extension.`
+                    `Warning: XML component '${previousComponent.name}' extends unknown component '${previousComponent.extends}'. Ignoring extension.`
                 );
                 return Promise.resolve();
             }
-            for (const statements of this.fetchMemoizedStatements(currentComponent.scripts)) {
-                yield statements;
-            }
+            yield this.parserLexerFn(currentComponent.scripts.map((c) => c.uri));
         }
 
         return Promise.resolve();
-    }
-
-    /**
-     * Generator function that fetches statements from an array of script files without repeatedly
-     * lexing, preprocessing, and parsing files (via memoization).
-     * @param scripts the array of scripts to get statements for
-     * @yields promises that each resolve to an array of statements; one promise per file in `scripts`.
-     */
-    private *fetchMemoizedStatements(scripts: ComponentScript[]) {
-        for (let { uri } of scripts) {
-            let maybeStatements = this.memoizedStatements.get(uri);
-            if (maybeStatements) {
-                yield maybeStatements;
-            } else {
-                let statementsPromise = this.parserLexerFn([uri]);
-                if (!this.memoizedStatements.has(uri)) {
-                    this.memoizedStatements.set(uri, statementsPromise);
-                }
-
-                yield statementsPromise;
-            }
-        }
     }
 }

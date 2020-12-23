@@ -16,6 +16,7 @@ Array [
         },
       },
       "statements": Array [],
+      "type": "Block",
     },
     "counterDeclaration": Assignment {
       "name": Object {
@@ -52,6 +53,7 @@ Array [
           "text": "=",
         },
       },
+      "type": "Assignment",
       "value": Literal {
         "_location": Object {
           "end": Object {
@@ -63,6 +65,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 0,
@@ -80,6 +83,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 5,
@@ -96,6 +100,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 2,
@@ -167,6 +172,7 @@ Array [
         "text": "to",
       },
     },
+    "type": "For",
   },
 ]
 `;
@@ -187,6 +193,7 @@ Array [
         },
       },
       "statements": Array [],
+      "type": "Block",
     },
     "counterDeclaration": Assignment {
       "name": Object {
@@ -223,6 +230,7 @@ Array [
           "text": "=",
         },
       },
+      "type": "Assignment",
       "value": Literal {
         "_location": Object {
           "end": Object {
@@ -234,6 +242,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 0,
@@ -251,6 +260,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 5,
@@ -267,6 +277,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 1,
@@ -323,6 +334,7 @@ Array [
         "text": "to",
       },
     },
+    "type": "For",
   },
 ]
 `;
@@ -343,6 +355,7 @@ Array [
         },
       },
       "statements": Array [],
+      "type": "Block",
     },
     "counterDeclaration": Assignment {
       "name": Object {
@@ -379,6 +392,7 @@ Array [
           "text": "=",
         },
       },
+      "type": "Assignment",
       "value": Literal {
         "_location": Object {
           "end": Object {
@@ -390,6 +404,7 @@ Array [
             "line": -9,
           },
         },
+        "type": "Literal",
         "value": Int32 {
           "kind": 4,
           "value": 0,
@@ -407,6 +422,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 5,
@@ -423,6 +439,7 @@ Array [
           "line": -9,
         },
       },
+      "type": "Literal",
       "value": Int32 {
         "kind": 4,
         "value": 1,
@@ -479,6 +496,7 @@ Array [
         "text": "to",
       },
     },
+    "type": "For",
   },
 ]
 `;

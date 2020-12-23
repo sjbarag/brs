@@ -12,7 +12,7 @@ Array [
           },
           "file": "",
           "start": Object {
-            "column": 23,
+            "column": 22,
             "line": 2,
           },
         },
@@ -54,6 +54,7 @@ Array [
                 "text": "myLabel",
               },
             },
+            "type": "Goto",
           },
           Goto {
             "tokens": Object {
@@ -92,6 +93,7 @@ Array [
                 "text": "myLabel",
               },
             },
+            "type": "Goto",
           },
           Label {
             "tokens": Object {
@@ -130,10 +132,12 @@ Array [
                 "text": "myLabel",
               },
             },
+            "type": "Label",
           },
         ],
+        "type": "Block",
       },
-      "end": Object {
+      "endKeyword": Object {
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
@@ -169,6 +173,7 @@ Array [
       },
       "parameters": Array [],
       "returns": 11,
+      "type": "Expr_Function",
     },
     "name": Object {
       "isReserved": false,
@@ -187,6 +192,7 @@ Array [
       },
       "text": "Main",
     },
+    "type": "Stmt_Function",
   },
 ]
 `;
@@ -228,6 +234,7 @@ Array [
         "text": "SomeLabel",
       },
     },
+    "type": "Label",
   },
 ]
 `;
@@ -271,6 +278,7 @@ Object {
           "text": "SomeLabel",
         },
       },
+      "type": "Goto",
     },
   ],
 }

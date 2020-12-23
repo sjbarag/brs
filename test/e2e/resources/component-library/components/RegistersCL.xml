@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="RegistersCL">
+    <script type="text/brightscript" uri="./RegistersCL.brs"/>
+    <script type="text/brightscript" uri="pkg:/source/util.brs"/>
+    <children>
+        <ComponentLibrary id="remote-lib" uri="https://example.com/library.zip"/>
+        <ComponentLibrary id="foo-lib" uri="pkg:/components/library.zip"/>
+        <Foo:Bar id="xml-bar"/>
+    </children>
+</component>

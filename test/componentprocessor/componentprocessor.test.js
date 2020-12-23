@@ -24,6 +24,24 @@ describe("component parsing support", () => {
             expect(nodeDefs).toEqual(new Map());
         });
 
+        it("searches custom directories if they exist", async () => {
+            fg.sync.mockImplementation((pattern, options) => {
+                expect(pattern.includes("{components,foo,bar}")).toBeTruthy();
+                return [];
+            });
+
+            await getComponentDefinitionMap("", ["foo", "bar"]);
+        });
+
+        it("only searches components if no custom directories", async () => {
+            fg.sync.mockImplementation((pattern, options) => {
+                expect(pattern.includes("{components,}")).toBeTruthy();
+                return [];
+            });
+
+            await getComponentDefinitionMap();
+        });
+
         it("parses bad component definitions", async () => {
             const badDefXml = `
 <?xml version="1.0" encoding="utf-8" ?>
@@ -76,7 +94,7 @@ describe("component parsing support", () => {
 
             it("parses children nodes in correct order", async () => {
                 let map = await getComponentDefinitionMap("/doesnt/matter");
-                let parsedExtendedComp = map.get("ExtendedComponent");
+                let parsedExtendedComp = map.get("extendedcomponent");
                 expect(parsedExtendedComp).not.toBeUndefined();
                 expect(parsedExtendedComp.children).not.toBeUndefined();
                 expect(parsedExtendedComp.children.length).toBeGreaterThan(0);
@@ -90,7 +108,7 @@ describe("component parsing support", () => {
 
             it("adds all scripts into node in correct order", async () => {
                 let map = await getComponentDefinitionMap(process.cwd());
-                let parsedExtendedComp = map.get("ExtendedComponent");
+                let parsedExtendedComp = map.get("extendedcomponent");
                 expect(parsedExtendedComp).not.toBeUndefined();
                 expect(parsedExtendedComp.scripts).not.toBeUndefined();
                 expect(parsedExtendedComp.scripts.length).toBeGreaterThan(0);
@@ -111,7 +129,7 @@ describe("component parsing support", () => {
                 jest.spyOn(global.console, "error").mockImplementation();
                 try {
                     let map = await getComponentDefinitionMap("/doesnt/matter");
-                    let invalidExtensionComponent = map.get("UnknownExtensionComponent");
+                    let invalidExtensionComponent = map.get("unknownextensioncomponent");
                     expect(invalidExtensionComponent).toBeDefined();
                 } finally {
                     global.console.error.mockRestore();

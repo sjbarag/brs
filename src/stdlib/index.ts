@@ -18,6 +18,7 @@ export * from "./GlobalUtilities";
 export * from "./CreateObject";
 export * from "./File";
 export * from "./Json";
+export * from "./Localization";
 export * from "./Math";
 export * from "./Print";
 export { Run } from "./Run";

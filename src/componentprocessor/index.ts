@@ -82,19 +82,25 @@ export class ComponentDefinition {
     }
 }
 
-export async function getComponentDefinitionMap(rootDir: string) {
-    const componentsPattern = rootDir + "/components/**/*.xml";
+export async function getComponentDefinitionMap(
+    rootDir: string = "",
+    additionalDirs: string[] = [],
+    libraryName: string | undefined
+) {
+    let searchString = `{components,${additionalDirs.join(",")}}`;
+    const componentsPattern = path.join(rootDir, searchString, "**", "*.xml");
     const xmlFiles: string[] = fg.sync(componentsPattern, {});
 
     let defs = xmlFiles.map((file) => new ComponentDefinition(file));
     let parsedPromises = defs.map(async (def) => def.parse());
 
-    return processXmlTree(pSettle(parsedPromises), rootDir);
+    return processXmlTree(pSettle(parsedPromises), rootDir, libraryName);
 }
 
 async function processXmlTree(
     settledPromises: Promise<pSettle.SettledResult<ComponentDefinition>[]>,
-    rootDir: string
+    rootDir: string,
+    libraryName: string | undefined
 ) {
     let nodeDefs = await settledPromises;
     let nodeDefMap = new Map<string, ComponentDefinition>();
@@ -102,7 +108,11 @@ async function processXmlTree(
     // create map of just ComponentDefinition objects
     nodeDefs.map((item) => {
         if (item.isFulfilled && !item.isRejected) {
-            nodeDefMap.set(item.value!.name!, item.value!);
+            let name = item.value!.name!.toLowerCase();
+            if (libraryName) {
+                name = `${libraryName.toLowerCase()}:${name}`;
+            }
+            nodeDefMap.set(name, item.value!);
         }
     });
 
@@ -116,7 +126,7 @@ async function processXmlTree(
             inheritanceStack.push(nodeDef);
             //builds inheritance stack
             while (xmlNode && xmlNode.attr.extends) {
-                let superNodeDef = nodeDefMap.get(xmlNode.attr.extends);
+                let superNodeDef = nodeDefMap.get(xmlNode.attr.extends?.toLowerCase());
                 if (superNodeDef) {
                     inheritanceStack.push(superNodeDef);
                     xmlNode = superNodeDef.xmlNode;
@@ -125,26 +135,21 @@ async function processXmlTree(
                 }
             }
 
-            let inheritedFields: ComponentFields = {};
+            let inheritedFunctions: ComponentFunctions = {};
             // pop the stack & build our component
             // we can safely assume nodes are valid ComponentDefinition objects
             while (inheritanceStack.length > 0) {
                 let newNodeDef = inheritanceStack.pop();
                 if (newNodeDef) {
                     if (newNodeDef.processed) {
-                        inheritedFields = newNodeDef.fields;
+                        inheritedFunctions = newNodeDef.functions;
                     } else {
                         let nodeInterface = processInterface(newNodeDef.xmlNode!);
-                        // we will get run-time error if any fields are duplicated
-                        // between inherited components, but here we will retain
-                        // the original value without throwing an error for simplicity
-                        // TODO: throw exception when fields are duplicated.
-                        inheritedFields = { ...nodeInterface.fields, ...inheritedFields };
+                        inheritedFunctions = { ...inheritedFunctions, ...nodeInterface.functions };
 
-                        // We don't actually want our type definition to have inherited fields on it.
-                        // Inherited fields will get added when we create the actual component.
+                        // Use inherited functions in children so that we can correctly find functions in callFunc.
+                        newNodeDef.functions = inheritedFunctions;
                         newNodeDef.fields = nodeInterface.fields;
-                        newNodeDef.functions = nodeInterface.functions;
                         newNodeDef.processed = true;
                     }
                 }

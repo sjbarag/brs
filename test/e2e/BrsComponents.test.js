@@ -5,11 +5,16 @@ const lolex = require("lolex");
 describe("end to end brightscript functions", () => {
     let outputStreams;
     let clock;
+    const OLD_ENV = process.env;
 
     beforeAll(() => {
         clock = lolex.install({ now: 1547072370937 });
         outputStreams = createMockStreams();
         outputStreams.root = __dirname + "/resources";
+    });
+
+    beforeEach(() => {
+        process.env = { ...OLD_ENV };
     });
 
     afterEach(() => {
@@ -19,6 +24,7 @@ describe("end to end brightscript functions", () => {
     afterAll(() => {
         clock.uninstall();
         jest.restoreAllMocks();
+        process.env = OLD_ENV;
     });
 
     test("components/roArray.brs", async () => {
@@ -60,6 +66,12 @@ describe("end to end brightscript functions", () => {
             "bar",
             "items() example value: ",
             "5",
+            "key is not found if sensitive mode is enabled",
+            "false",
+            "key exits with correct casing",
+            "value1",
+            "lookup uses mode case too",
+            "value1",
             "can empty itself: ",
             "true",
         ]);
@@ -111,132 +123,6 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/roSGNode.brs", async () => {
-        await execute([resourceFile("components", "roSGNode.brs")], outputStreams);
-
-        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
-            "node size: ",
-            "7",
-            "node keys size: ",
-            "7",
-            "node items size: ",
-            "7",
-            "can delete elements: ",
-            "true",
-            "can look up elements: ",
-            "true",
-            "can look up elements (brackets): ",
-            "true",
-            "can check for existence: ",
-            "true",
-            "can empty itself: ",
-            "true",
-            //ifNodeField tests
-            "node size: ",
-            "3",
-            "node size: ",
-            "2",
-            "field3 in node is: ",
-            "false",
-            "field3 in node now is: ",
-            "true",
-            "field1 in node now is: ",
-            "hello",
-            "field3 in node now is: ",
-            "false",
-            "field3 present? ",
-            "true",
-            "fieldほ present? ",
-            "false",
-            "callback 1 called",
-            "callback 2 called",
-            "field 3 updated",
-            //ifNodeChildren tests
-            "parent child count: ",
-            "0",
-            "get same parent from child: ",
-            "true",
-            "parent child count: ",
-            "1",
-            "parent child count: ",
-            "2",
-            "parent child count: ",
-            "3",
-            "parent child count: ",
-            "2",
-            "children size: ",
-            "2",
-            "first child id after replacing: ",
-            "new node",
-            "parent child count: ",
-            "2",
-            "parent child count: ",
-            "2",
-            "parent child count: ",
-            "0",
-            "parent child count: ",
-            "3",
-            "parent child count: ",
-            "0",
-            "parent child count: ",
-            "2",
-            "parent child count: ",
-            "3",
-            "parent child count: ",
-            "4",
-            "parent child count: ",
-            "4",
-            "parent child count: ",
-            "6",
-            "parent child count: ",
-            "4",
-            "inserted child id: ",
-            "new node",
-            "parent child count: ",
-            "4",
-            "new parent id: ",
-            "new node",
-            //ifSGNodeFocus tests
-            "is parent in focus chain: ",
-            "false",
-            "is parent in focus chain: ",
-            "true",
-            "does grand child1 have focus: ",
-            "true",
-            "does grand child1 still have focus: ",
-            "false",
-            "does child2 have focus: ",
-            "true",
-            //ifNodeDict tests
-            "find node that does not exist: ",
-            "invalid",
-            "node finds itself: ",
-            "current",
-            "node finds one of its children: ",
-            "Child",
-            "node finds its grandchild: ",
-            "Grandchild",
-            "node finds its sibling: ",
-            "sibling-c7",
-            "node finds a cousin node: ",
-            "Cousin-2",
-            "node finds its grandparent: ",
-            "root-node",
-            "is same node returns true:",
-            "true",
-            "is same node returns false:",
-            "false",
-            "Node subtype is returned:",
-            "Node",
-            "updatedId",
-            "invalid",
-            "updatedId",
-            "newValue",
-            "updatedId",
-            "invalid",
-        ]);
-    });
-
     test("components/roRegex.brs", async () => {
         await execute([resourceFile("components", "roRegex.brs")], outputStreams);
 
@@ -270,6 +156,18 @@ describe("end to end brightscript functions", () => {
             "789",
             " ]",
             " ]",
+            "Matches with groups: [ ",
+            "[ ",
+            "abx",
+            ", ",
+            "bx",
+            " ]",
+            "[ ",
+            "aby",
+            ", ",
+            "by",
+            " ]",
+            " ]",
         ]);
     });
 
@@ -278,8 +176,10 @@ describe("end to end brightscript functions", () => {
 
         expect(allArgs(outputStreams.stderr.write)).toEqual([]);
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "hello",
             "bar",
             "bar",
+            "foo",
             "true", // comparison
             "5", // length
             "b", // split("/")[1]
@@ -318,8 +218,6 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/componentExtension.brs", async () => {
-        let consoleWarningSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-
         await execute([resourceFile("components", "componentExtension.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
@@ -330,13 +228,6 @@ describe("end to end brightscript functions", () => {
             "ExtendedComponent init",
             "ExtendedComponent start",
         ]);
-
-        let warning = allArgs(consoleWarningSpy)
-            .filter((arg) => arg !== "\n")[0]
-            .split("Warning: ")[1]
-            .trim();
-        expect(warning).toEqual(`"nonImplementedSub" was not found in scope.`);
-        consoleWarningSpy.mockRestore();
     });
 
     test("components/roIntrinsics.brs", async () => {
@@ -566,11 +457,8 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/FieldChangeMain.brs", async () => {
-        await execute(
-            [resourceFile("components", "scripts", "FieldChangeMain.brs")],
-            outputStreams
-        );
+    test("components/field-change/main.brs", async () => {
+        await execute([resourceFile("components", "field-change", "main.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             // inheritance/overrides
@@ -610,30 +498,6 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test("components/scripts/CallFuncMain.brs", async () => {
-        await execute([resourceFile("components", "scripts", "CallFuncMain.brs")], outputStreams);
-
-        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
-            "component: inside componentFunction, args.test: ",
-            "123",
-            "component: componentField:",
-            "componentField value",
-            "component: mainField:",
-            "invalid",
-            "main: componentFunction return value success:",
-            "true",
-            "component: inside componentVoidFunction",
-            "main: componentVoidFunction return value:",
-            "invalid",
-            "main: componentPrivateFunction return value:",
-            "invalid",
-        ]);
-
-        expect(allArgs(outputStreams.stderr.write).filter((arg) => arg !== "\n")).toEqual([
-            "Warning calling function in CallFuncComponent: no function interface specified for componentPrivateFunction",
-        ]);
-    });
-
     test("components/ContentNode.brs", async () => {
         await execute([resourceFile("components", "scripts", "ContentNode.brs")], outputStreams);
 
@@ -664,6 +528,156 @@ describe("end to end brightscript functions", () => {
             "invalid",
             "invalid",
             "Node",
+        ]);
+    });
+
+    test("components/roDeviceInfo.brs", async () => {
+        process.env.TZ = "PST";
+        process.env.LOCALE = "en_US";
+
+        await execute([resourceFile("components", "roDeviceInfo.brs")], outputStreams);
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "",
+            "",
+            "",
+            "0",
+            "",
+            "0",
+            "",
+            "",
+            "true",
+            "",
+            "36",
+            "PST",
+            "false",
+            "en_US",
+            "en_US",
+            "en_US",
+            "fr_CA",
+            "fr_CA",
+            "fr_CA",
+            "",
+            "0",
+            "0",
+            "0",
+            "true",
+            "on",
+            "default",
+            "",
+            "true",
+            "true",
+            "true",
+            "",
+            "false",
+            "true",
+            "true",
+            "",
+            "",
+            "0",
+            "0",
+            "",
+            "",
+            "",
+            "0",
+            "",
+            "0",
+            "0",
+            "true",
+            "mpeg4 avc",
+            "0",
+            "",
+            "true",
+            "",
+            "0",
+            "true",
+            "0",
+            "",
+            "true",
+        ]);
+    });
+
+    test("components/Scene.brs", async () => {
+        await execute([resourceFile("components", "Scene.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "scene node type:",
+            "Node",
+            "scene node subtype:",
+            "Scene",
+            "scene node backs exit scene:",
+            "true",
+            "scene node background uri:",
+            "/images/arrow.png",
+            "scene node background color:",
+            "0xEB1010FF",
+            "extended scene node type:",
+            "Node",
+            "extended scene node subtype:",
+            "ExtendedScene",
+            "extended scene node backs exit scene:",
+            "true",
+            "extended scene node background uri:",
+            "/images/arrow.png",
+            "extended scene node background color:",
+            "0xEB1010FF",
+        ]);
+    });
+
+    test("components/MiniKeyboard.brs", async () => {
+        await execute([resourceFile("components", "MiniKeyboard.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "miniKeyboard node type:",
+            "Node",
+            "miniKeyboard node subtype:",
+            "MiniKeyboard",
+            "miniKeyboard text:",
+            "hello",
+            "miniKeyboard keyColor:",
+            "0x000000FF",
+            "miniKeyboard focusedKeyColor:",
+            "0x000000FF",
+            "miniKeyboard keyBitmapUri:",
+            "/images/somebitmap.bmp",
+            "miniKeyboard focusBitmapUri:",
+            "/images/somebitmap.bmp",
+            "miniKeyboard showTextEditBox:",
+            "true",
+            "miniKeyboard lowerCase:",
+            "true",
+            "miniKeyboard textEditBox text:",
+            "hello",
+        ]);
+    });
+
+    test("components/TextEditBox.brs", async () => {
+        await execute([resourceFile("components", "TextEditBox.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "textEditBox node type:",
+            "Node",
+            "textEditBox node subtype:",
+            "TextEditBox",
+            "textEditBox text:",
+            "hello",
+            "textEditBox hint text:",
+            "",
+            "textEditBox maxTextLength:",
+            "15",
+            "textEditBox cursorPosition:",
+            "0",
+            "textEditBox clearOnDownKey:",
+            "true",
+            "textEditBox active:",
+            "false",
+            "textEditBox textColor:",
+            "OxFFFFFFFF",
+            "textEditBox hintTextColor:",
+            "OxFFFFFFFF",
+            "textEditBox width:",
+            "-1",
+            "textEditBox backgroundUri:",
+            "",
         ]);
     });
 });

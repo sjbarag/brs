@@ -45,7 +45,6 @@ import pSettle from "p-settle";
 import { Double } from "../brsTypes/Double";
 import { CoverageCollector } from "../coverage";
 
-
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
     /** The base path for the project. Default: process.cwd() */

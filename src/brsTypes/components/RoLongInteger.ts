@@ -63,7 +63,7 @@ export class roLongInteger extends BrsComponent implements BrsValue, Unboxable {
         },
     });
 
-    // ---------- ifIntOps, ifToStr ----------
+    // ---------- ifLongIntOps, ifToStr ----------
 
     private toStr = new Callable("toStr", {
         signature: {

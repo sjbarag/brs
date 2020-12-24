@@ -20,6 +20,7 @@ import {
     Callable,
     BrsNumber,
     Float,
+    Double,
 } from "../brsTypes";
 
 import { Lexeme, Location } from "../lexer";
@@ -42,7 +43,6 @@ import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 
 import { ComponentDefinition } from "../componentprocessor";
 import pSettle from "p-settle";
-import { Double } from "../brsTypes/Double";
 import { CoverageCollector } from "../coverage";
 
 /** The set of options used to configure an interpreter's execution. */

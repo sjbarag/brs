@@ -100,11 +100,11 @@ describe("interpreter variables", () => {
             },
             {
                 lhs: "double#",
-                values: [str, int32, float, int64],
+                values: [str, int32, int64, ""],
             },
             {
                 lhs: "int64&",
-                values: [str, int32, float, double],
+                values: [str, float, double, ""],
             },
         ].forEach(({ lhs, values }) => {
             test(lhs, () => {

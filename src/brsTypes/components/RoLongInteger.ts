@@ -30,7 +30,9 @@ export class roLongInteger extends BrsComponent implements BrsValue, Unboxable {
 
     equalTo(other: BrsType): BrsBoolean {
         if (other instanceof roLongInteger) {
-            return BrsBoolean.from(other.intrinsic.getValue() === this.intrinsic.getValue());
+            return BrsBoolean.from(
+                other.intrinsic.getValue().low === this.intrinsic.getValue().low
+            );
         }
 
         return BrsBoolean.False;
@@ -45,7 +47,7 @@ export class roLongInteger extends BrsComponent implements BrsValue, Unboxable {
     private getLongInt = new Callable("getLongInt", {
         signature: {
             args: [],
-            returns: ValueKind.Double,
+            returns: ValueKind.Int64,
         },
         impl: (interpreter: Interpreter) => {
             return this.intrinsic;
@@ -63,7 +65,7 @@ export class roLongInteger extends BrsComponent implements BrsValue, Unboxable {
         },
     });
 
-    // ---------- ifLongIntOps, ifToStr ----------
+    // ---------- ifToStr ----------
 
     private toStr = new Callable("toStr", {
         signature: {

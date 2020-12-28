@@ -18,6 +18,7 @@ sub main()
     print "Double to string "doubleObject.toStr()
     print "Float to string "floatObject.toStr()
     print "Integer to string "integerObject.toStr()
+    print "LongInteger object "longIntegerObject
     print "LongInteger to string "longIntegerObject.toStr()
 
 end sub

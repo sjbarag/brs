@@ -39,6 +39,6 @@ export const BrsObjects = new Map<string, Function>([
     ["rodouble", (_: Interpreter, literal: Double) => new roDouble(literal)],
     ["rofloat", (_: Interpreter, literal: Float) => new roFloat(literal)],
     ["roint", (_: Interpreter, literal: Int32) => new roInt(literal)],
-    ["roLongInteger", (_: Interpreter, literal: Int64) => new roLongInteger(literal)],
+    ["rolonginteger", (_: Interpreter, literal: Int64) => new roLongInteger(literal)],
     ["roinvalid", (_: Interpreter) => new roInvalid()],
 ]);

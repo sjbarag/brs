@@ -1,6 +1,6 @@
 const brs = require("brs");
 const { BrsString, RoXMLElement } = brs.types;
-const { Interpreter } = require("../lib/interpreter");
+const { Interpreter } = require("../../../lib/interpreter");
 
 describe("RoXMLElement", () => {
     let xmlParser;

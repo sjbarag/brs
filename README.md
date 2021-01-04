@@ -17,6 +17,7 @@
       - [Testing](#testing)
       - [Cleaning](#cleaning)
       - [All Together](#all-together)
+  - [Gaps](#gaps)
   - [Extensions](#extensions)
     - [`_brs_.getStackTrace(numEntries = 10, excludePatterns = [])`](#_brs_getstacktracenumentries--10-excludepatterns--)
     - [`_brs_.global`](#_brs_global)
@@ -164,6 +165,9 @@ Thanks to the [npm-run-all](https://www.npmjs.com/package/npm-run-all) package, 
 ```shell
 $ yarn run-s clean build test
 ```
+
+## Gaps
+The API provided to BrightScript developers is quite large, and implementing it in its entirety is a daunting task.  Parts in the standard library included with the Reference BrightScript Implementation (RBI) are [listed in NotImplemented.md](./docs/NotImplemented.md).
 
 ## Extensions
 

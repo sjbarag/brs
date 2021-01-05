@@ -1114,7 +1114,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     );
                 }
 
-                if (!returnedValue && satisfiedSignature.signature.returns !== ValueKind.Void) {
+                if (!returnedValue && satisfiedSignature.signature.returns !== ValueKind.Void && satisfiedSignature.signature.returns !== ValueKind.Dynamic) {
                     this.addError(
                         new Stmt.Runtime(
                             `Attempting to return void value from function ${callee.getName()} with non-void return type.`,

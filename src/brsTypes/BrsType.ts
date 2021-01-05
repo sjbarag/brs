@@ -391,7 +391,7 @@ export class Uninitialized implements BrsValue, Comparable {
         if (other.kind === ValueKind.String) {
             // Allow variables to be compared to the string "<uninitialized>" to test if they've
             // been initialized
-            return BrsBoolean.from(other.value === this.toString());
+            return BrsBoolean.from(other.value === this.toString().toLowerCase());
         }
 
         return BrsBoolean.False;

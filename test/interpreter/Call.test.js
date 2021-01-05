@@ -298,4 +298,37 @@ describe("interpreter calls", () => {
 
         expect(() => interpreter.exec(ast)).toThrow(/Attempting to return void value/);
     });
+
+    it("allows dynamic functions to not return a value", () => {
+        const ast = [
+            new Stmt.Function(
+                identifier("foo"),
+                new Expr.Function(
+                    [],
+                    ValueKind.Dynamic,
+                    new Stmt.Block(
+                        [new Stmt.Return({ return: token(Lexeme.Return, "return") })],
+                        token(Lexeme.Newline, "\n")
+                    ),
+                    FUNCTION,
+                    END_FUNCTION
+                )
+            ),
+            new Stmt.Assignment(
+                { equals: token(Lexeme.Equals, "=") },
+                identifier("result"),
+                new Stmt.Expression(
+                    new Expr.Call(
+                        new Expr.Variable(identifier("foo")),
+                        token(Lexeme.RightParen, ")"),
+                        [] // no args required
+                    )
+                )
+            ),
+        ];
+
+        interpreter.exec(ast);
+        let result = interpreter.environment.get(identifier("result"));
+        expect(result).toEqual(BrsInvalid.Instance);
+    });
 });

@@ -638,9 +638,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
                         // Determine whether the function should get arguments or not.
                         if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
-                            return functionToCall.call(subInterpreter, ...functionargs);
+                            return functionToCall.call(subInterpreter, ...functionargs) || BrsInvalid.Instance;
                         } else {
-                            return functionToCall.call(subInterpreter);
+                            return functionToCall.call(subInterpreter) || BrsInvalid.Instance;
                         }
                     }, componentDef.environment);
                 }

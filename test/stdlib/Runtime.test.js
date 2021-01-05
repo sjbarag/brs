@@ -14,7 +14,7 @@ const {
     ValueKind,
     Callable,
     BrsComponent,
-    AddAdditionalBrsObjects,
+    extendBrsObjects,
 } = brs.types;
 const { CreateObject, Type } = require("../../lib/stdlib");
 const { Interpreter } = require("../../lib/interpreter");
@@ -33,7 +33,7 @@ describe("global runtime functions", () => {
             expect(obj).toEqual(BrsInvalid.Instance);
         });
 
-        describe("AdditionalBrsObjects", () => {
+        describe("extendBrsObjects", () => {
             class HelloWorld extends BrsComponent {
                 constructor() {
                     super("HelloWorld");
@@ -55,7 +55,7 @@ describe("global runtime functions", () => {
             }
 
             it("can return a new object defined at run time", () => {
-                AddAdditionalBrsObjects([["HelloWorld", (_interpreter) => new HelloWorld()]]);
+                extendBrsObjects([["HelloWorld", (_interpreter) => new HelloWorld()]]);
                 let obj = CreateObject.call(interpreter, new BrsString("HelloWorld"));
                 expect(obj.sayHello.call(interpreter)).toEqual("Hello world");
             });

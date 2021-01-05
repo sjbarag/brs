@@ -51,14 +51,13 @@ export const BrsObjects = new Map<string, Function>([
  *
  * @example
  *
- * AddAdditionalBrsObjects([
+ * extendBrsObjects([
  *   ["roScreen", (_interpreter) => {return new roScreen();}]
  * ])
  *
- * @export
- * @param {[string, Function][]} objectList - array of pairs: [name, constructor function]
+ * @param objectList array of pairs: [name, constructor function]
  */
-export function AddAdditionalBrsObjects(objectList: [string, () => BrsComponent][]): void {
+export function extendBrsObjects(objectList: [string, () => BrsComponent][]): void {
     objectList.forEach(([name, ctor]) => {
         BrsObjects.set(name.toLowerCase(), ctor);
     });

@@ -44,8 +44,7 @@ export class ComponentFactory {
      * adding additional types (PinPad, BusySpinner, etc) that aren't here yet
      *
      * @static
-     * @param {[componentType: string, ctor: (name: string) => RoSGNode][]} types
-     * @memberof ComponentFactory
+     * @param types Array of pairs of [componentTypeName, construction function], such that when a given componentType is requested, the construction function is called and returns one of those components
      */
     public static addComponentTypes(types: [string, (name: string) => RoSGNode][]) {
         types.forEach(([componentType, ctor]) => {
@@ -97,13 +96,12 @@ export class ComponentFactory {
     }
 
     /**
-     * Checks to see if teh given component type can be resolved by the Factory
+     * Checks to see if the given component type can be resolved by the Factory
      * That is, if it is a built in type or has been added at run time.
      *
      * @static
-     * @param {(BrsComponentName | string)} componentType
-     * @returns {boolean}
-     * @memberof ComponentFactory
+     * @param componentType The name of component to resolve
+     * @returns {boolean} true if that type is resolvable/constructable, false otherwise
      */
     public static canResolveComponentType(componentType: BrsComponentName | string): boolean {
         return (

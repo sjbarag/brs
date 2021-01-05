@@ -31,12 +31,10 @@ class Foo extends RoSGNode {
 
 describe("Extending custom components", () => {
     let outputStreams;
-    let clock;
 
     beforeAll(() => {
-        clock = lolex.install({ now: 1547072370937 });
         brs.types.ComponentFactory.addComponentTypes([["Foo", (name) => new Foo([], name)]]);
-        brs.types.AddAdditionalBrsObjects([["Foo", (_interpreter) => new Foo()]]);
+        brs.types.extendBrsObjects([["Foo", (_interpreter) => new Foo()]]);
 
         outputStreams = createMockStreams();
     });
@@ -46,12 +44,11 @@ describe("Extending custom components", () => {
     });
 
     afterAll(() => {
-        clock.uninstall();
         jest.restoreAllMocks();
     });
 
     test("components/ExtendCustom.brs", async () => {
-        outputStreams.root = __dirname + "/customResources";
+        outputStreams.root = path.join(__dirname, "customResources");
         let customFile = path.join(
             __dirname,
             "customResources",

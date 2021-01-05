@@ -398,6 +398,6 @@ export class Uninitialized implements BrsValue, Comparable {
     }
 
     toString(parent?: BrsType) {
-        return "<uninitialized>";
+        return "<UNINITIALIZED>";
     }
 }

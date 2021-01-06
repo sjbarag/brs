@@ -5,16 +5,19 @@ const { Interpreter } = require("../../../lib/interpreter");
 describe("roLongInteger", () => {
     describe("equality", () => {
         it("compares to intrinsic Int64", () => {
-            let a = new roLongInteger(new Int64(10));
-            let b = new roLongInteger(new Int64(5));
-            let c = new roLongInteger(new Int64(123));
-            let d = new roLongInteger(new Int64(10));
+            let a = new roLongInteger(new Int64(40000111222));
+            let b = new roLongInteger(new Int64(0));
+            let c = new roLongInteger(new Int64(-40000111222));
+            let d = new roLongInteger(new Int64(40000111222));
+            let e = new roLongInteger(new Int64(-5));
 
             expect(a.equalTo(b)).toBe(BrsBoolean.False);
             expect(a.equalTo(c)).toBe(BrsBoolean.False);
             expect(b.equalTo(c)).toBe(BrsBoolean.False);
             expect(a.equalTo(d)).toBe(BrsBoolean.True);
             expect(d.equalTo(a)).toBe(BrsBoolean.True);
+            expect(a.equalTo(e)).toBe(BrsBoolean.False);
+            expect(b.equalTo(e)).toBe(BrsBoolean.False);
         });
     });
 

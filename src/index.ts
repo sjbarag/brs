@@ -210,6 +210,44 @@ export function lexParseSync(filenames: string[], options: Partial<ExecutionOpti
         .reduce((allStatements, statements) => [...allStatements, ...statements], []);
 }
 
+export type ExecuteWithScope = (filenames: string[], args: BrsTypes.BrsType[]) => BrsTypes.BrsType;
+/**
+ * Runs a set of files to create an execution scope, and generates an execution function that runs in that scope.
+ *
+ * @param filenamesForScope List of filenames to put into the execution scope
+ * @param options Execution options
+ *
+ * @returns A function to execute files using the created scope.
+ */
+export async function createExecuteWithScope(
+    filenamesForScope: string[],
+    options: Partial<ExecutionOptions>
+): Promise<ExecuteWithScope> {
+    let { lexerParserFn, interpreter } = await loadFiles(options);
+    let mainStatements = await lexerParserFn(filenamesForScope);
+    interpreter.exec(mainStatements);
+    // Clear any errors that accumulated, so that we can isolate errors from future calls to the execute function.
+    interpreter.errors = [];
+
+    return (filenames: string[], args: BrsTypes.BrsType[]) => {
+        let ast = lexParseSync(filenames, interpreter.options);
+        let execErrors: BrsError.BrsError[] = [];
+        let returnValue = interpreter.inSubEnv((subInterpreter) => {
+            let value = subInterpreter.exec(ast, ...args)[0] || BrsTypes.BrsInvalid.Instance;
+            execErrors = subInterpreter.errors;
+            return value;
+        });
+
+        // Re-throw any errors the interpreter encounters. We can't throw them directly from the `inSubEnv` call,
+        // because they get caught by upstream handlers.
+        if (execErrors.length) {
+            throw execErrors;
+        }
+
+        return returnValue;
+    };
+}
+
 /**
  * Launches an interactive read-execute-print loop, which reads input from
  * `stdin` and executes it.

@@ -26,6 +26,7 @@ import { Environment } from "../../interpreter/Environment";
 import { roInvalid } from "./RoInvalid";
 import type * as MockNodeModule from "../../extensions/MockNode";
 import { BlockEnd } from "../../parser/Statement";
+import { Stmt } from "../../parser";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -636,11 +637,19 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                         subInterpreter.environment.setM(this.m);
                         subInterpreter.environment.setRootM(this.m);
 
-                        // Determine whether the function should get arguments or not.
-                        if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
-                            return functionToCall.call(subInterpreter, ...functionargs);
-                        } else {
-                            return functionToCall.call(subInterpreter);
+                        try {
+                            // Determine whether the function should get arguments or not.
+                            if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
+                                return functionToCall.call(subInterpreter, ...functionargs);
+                            } else {
+                                return functionToCall.call(subInterpreter);
+                            }
+                        } catch (reason) {
+                            if (!(reason instanceof Stmt.ReturnValue)) {
+                                // re-throw interpreter errors
+                                throw reason;
+                            }
+                            return reason.value || BrsInvalid.Instance;
                         }
                     }, componentDef.environment);
                 }

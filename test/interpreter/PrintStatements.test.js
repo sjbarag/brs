@@ -123,6 +123,6 @@ describe("interperter print statements", () => {
 
         const [result] = interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
-        expect(allArgs(stdout.write).join("")).toEqual("<uninitialized>\n");
+        expect(allArgs(stdout.write).join("")).toEqual("<UNINITIALIZED>\n");
     });
 });

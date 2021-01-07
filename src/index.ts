@@ -235,6 +235,7 @@ export async function createExecuteWithScope(
         let returnValue = interpreter.inSubEnv((subInterpreter) => {
             let value = subInterpreter.exec(ast, ...args)[0] || BrsTypes.BrsInvalid.Instance;
             execErrors = subInterpreter.errors;
+            subInterpreter.errors = [];
             return value;
         });
 

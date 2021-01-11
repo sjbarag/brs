@@ -188,6 +188,35 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test.only("components/roXMLElement.brs", () => {
+        return execute([resourceFile("components", "roXMLElement.brs")], outputStreams).then(() => {
+            expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+                "xmlParser = ",
+                "<Component: roXMLElement>",
+                "type(xmlParser) = ",
+                "roXMLElement",
+                "parse bad xml string, result = ",
+                "false",
+                "parse good xml string, result = ",
+                "true",
+                "getName() = ",
+                "tag1",
+                "getAttributes() = ",
+                `<Component: roAssociativeArray> =\n` +
+                    `{\n` +
+                    `    id: someId\n` +
+                    `    attr1: 0\n` +
+                    `}`,
+                'getNamedElementsCi("child1") count = ',
+                "2",
+                "name of first child  = ",
+                "Child1",
+                "mame of second child = ",
+                "CHILD1",
+            ]);
+        });
+    });
+
     test("components/customComponent.brs", async () => {
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 

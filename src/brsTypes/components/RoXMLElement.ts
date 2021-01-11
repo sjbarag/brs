@@ -9,19 +9,14 @@ import { XmlDocument, XmlElement } from "xmldoc";
 
 export class RoXMLElement extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
-    private xmlNode?: any;
+    private xmlNode: any;
 
     constructor() {
         super("roXMLElement");
 
         this.registerMethods({
-            ifXMLEelement: [this.parse, this.getName, this.getNamedElementsCi, this.getAttributes],
+            ifXMLElement: [this.parse, this.getName, this.getNamedElementsCi, this.getAttributes],
         });
-    }
-
-    public setXMLElem(xmlElem: XmlElement) {
-        this.xmlNode = xmlElem;
-        return this;
     }
 
     toString(parent?: BrsType) {
@@ -40,10 +35,10 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
         impl: (interpreter: Interpreter, str: BrsString) => {
             try {
                 this.xmlNode = new XmlDocument(str.value);
-                return BrsBoolean.from(true);
+                return BrsBoolean.True;
             } catch (err) {
                 this.xmlNode = undefined;
-                return BrsBoolean.from(false);
+                return BrsBoolean.False;
             }
         },
     });
@@ -68,7 +63,9 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             let arr = [];
             for (let item of this.xmlNode?.children ?? []) {
                 if (item.name?.toLowerCase() === neededKey) {
-                    arr.push(new RoXMLElement().setXMLElem(item));
+                    let childXmlElement = new RoXMLElement();
+                    childXmlElement.xmlNode = item;
+                    arr.push(childXmlElement);
                 }
             }
             return new RoArray(arr);
@@ -81,18 +78,15 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (interpreter: Interpreter, str: BrsString) => {
-            return this.convertObjectToBrsAA(this.xmlNode?.attr ?? {});
+            let array = [];
+            let attrs = this.xmlNode?.attr ?? {};
+            for (let key in attrs) {
+                array.push({
+                    name: new BrsString(key),
+                    value: new BrsString(attrs[key]),
+                });
+            }
+            return new RoAssociativeArray(array);
         },
     });
-
-    private convertObjectToBrsAA(object_: any) {
-        let array = [];
-        for (let key in object_) {
-            array.push({
-                name: new BrsString(key),
-                value: new BrsString(object_[key]),
-            });
-        }
-        return new RoAssociativeArray(array);
-    }
 }

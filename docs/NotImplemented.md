@@ -88,3 +88,72 @@ The following components are deprecated in the Reference BrightScript Interprete
 * [roSlideShow](https://developer.roku.com/docs/references/brightscript/components/roslideshow.md)
 * [roTextScreen](https://developer.roku.com/docs/references/brightscript/components/rotextscreen.md)
 * [roVideoScreen](https://developer.roku.com/docs/references/brightscript/components/rovideoscreen.md)
+
+# SceneGraph
+Custom SceneGraph components (defined in XML files) are supported, but with a few caveats:
+
+1. The entire chain of `extends="..."` components must be implemented by `brs` or custom nodes.  A missing standard-library node will result in a partially-created component that likely won't function properly.
+2. BrightScript included in a [CDATA](https://en.wikipedia.org/wiki/CDATA) tag is ignored.
+
+Additionally, many components are implemented as "stubs" - their fields exist and are of the correct type, but assigning values to them doesn't trigger any effects (e.g. assigning a string to a `Label`'s `.text` field doesn't change the resulting `.boundingRect()`).  This is intentional for now, as some components are either very complex (e.g. `MarkupGrid`) or would be prohibitively expensive to make accurate (e.g. font rendering nuances that affect layout, wrapping, etc.).  Given that `brs` doesn't intend to implement any sort of graphical rendering, implementing some SceneGraph components as non-stubs would lead to near-meaningless components (what's it mean for an `Video` component to exist if it doesn't play video, advance progress, buffer, etc.?).
+
+| Name | Status | Notes |
+| ---- | ------ | ----- |
+| [AnimationBase](https://developer.roku.com/docs/references/scenegraph/abstract-nodes/animationbase.md) | ⛔ None | Includes all subclasses |
+| [Animation](https://developer.roku.com/docs/references/scenegraph/animation-nodes/animation.md) | ⛔ None | Extends `AnimationBase` |
+| [ArrayGrid](https://developer.roku.com/docs/references/scenegraph/abstract-nodes/arraygrid.md) | ⚠ Stub | |
+| [Audio](https://developer.roku.com/docs/references/scenegraph/media-playback-nodes/audio.md) | ⛔ None | |
+| [BusySpinner](https://developer.roku.com/docs/references/scenegraph/widget-nodes/busyspinner.md) | ⛔ None | |
+| [ButtonGroup](https://developer.roku.com/docs/references/scenegraph/layout-group-nodes/buttongroup.md) | ⛔ None | |
+| [Button](https://developer.roku.com/docs/references/scenegraph/widget-nodes/button.md) | ⛔ None | |
+| [ChannelStore](https://developer.roku.com/docs/references/scenegraph/control-nodes/channelstore.md) | ⛔ None | |
+| [CheckList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/checklist.md) | ⛔ None | |
+| [ColorFieldInterpolator](https://developer.roku.com/docs/references/scenegraph/animation-nodes/colorfieldinterpolator.md) | ⛔ None | Extends `AnimationBase` |
+| [ComponentLibrary](https://developer.roku.com/docs/references/scenegraph/control-nodes/componentlibrary.md) | ⚠ Partial | `pkg:/`-local libraries only (as `.zip` files) |
+| [ContentNode](https://developer.roku.com/docs/references/scenegraph/control-nodes/contentnode.md) | ✅ Complete | |
+| [Dialog](https://developer.roku.com/docs/references/scenegraph/dialog-nodes/dialog.md) | ⛔ None | |
+| [FloatFieldInterpolator](https://developer.roku.com/docs/references/scenegraph/animation-nodes/floatfieldinterpolator.md) | ⛔ None | Extends `AnimationBase` |
+| [Font](https://developer.roku.com/docs/references/scenegraph/typographic-nodes/font.md) | ⚠ Stub | |
+| [GridPanel](https://developer.roku.com/docs/references/scenegraph/sliding-panels-nodes/gridpanel.md) | ⛔ None | |
+| [Group](https://developer.roku.com/docs/references/scenegraph/layout-group-nodes/group.md) | ⚠ Partial | Fields can be set, but `renderTracking` never gets updated (because nothing renders) |
+| [KeyboardDialog](https://developer.roku.com/docs/references/scenegraph/dialog-nodes/keyboarddialog.md) | ⛔ None | Extends `Dialog` |
+| [Keyboard](https://developer.roku.com/docs/references/scenegraph/widget-nodes/keyboard.md) | ⛔ None | |
+| [LabelList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/labellist.md) | ⛔ None | |
+| [Label](https://developer.roku.com/docs/references/scenegraph/renderable-nodes/label.md) | ⚠ Stub | |
+| [LayoutGroup](https://developer.roku.com/docs/references/scenegraph/layout-group-nodes/layoutgroup.md) | ⚠ Stub | |
+| [ListPanel](https://developer.roku.com/docs/references/scenegraph/sliding-panels-nodes/listpanel.md) | ⛔ None | |
+| [MarkupGrid](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/markupgrid.md) | ⚠ Stub | Assigning `ContentNode` to `.content` field doesn't create items |
+| [MarkupList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/markuplist.md) | ⛔ None | |
+| [MaskGroup](https://developer.roku.com/docs/references/scenegraph/control-nodes/maskgroup.md) | ⛔ None | |
+| [MiniKeyboard](https://developer.roku.com/docs/references/scenegraph/widget-nodes/minikeyboard.md) | ⚠ Stub | |
+| [Node](https://developer.roku.com/docs/references/scenegraph/abstract-nodes/node.md) | ✅ Mostly complete | Some interfaces may not be accurate (e.g. `ifSGNodeBoundingRect`) |
+| [OverhangPanelSetScene](https://developer.roku.com/docs/references/scenegraph/sliding-panels-nodes/overhangpanelsetscene.md) | ⛔ None | |
+| [Overhang](https://developer.roku.com/docs/references/scenegraph/sliding-panels-nodes/overhang.md) | ⛔ None | |
+| [PanelSet](https://developer.roku.com/docs/references/scenegraph/sliding-panels-nodes/panelset.md) | ⛔ None | |
+| [Panel](https://developer.roku.com/docs/references/scenegraph/sliding-panels-nodes/panel.md) | ⛔ None | |
+| [ParallelAnimation](https://developer.roku.com/docs/references/scenegraph/animation-nodes/parallelanimation.md) | ⛔ None | Extends `AnimationBase` |
+| [ParentalControlPinpad](https://developer.roku.com/docs/references/scenegraph/widget-nodes/parentalcontrolpinpad.md) | ⛔ None | |
+| [PinDialog](https://developer.roku.com/docs/references/scenegraph/dialog-nodes/pindialog.md) | ⛔ None | Extends `Dialog` |
+| [Pinpad](https://developer.roku.com/docs/references/scenegraph/widget-nodes/pinpad.md) | ⛔ None | |
+| [PosterGrid](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/postergrid.md) | ⛔ None | |
+| [Poster](https://developer.roku.com/docs/references/scenegraph/renderable-nodes/poster.md) ⚠ Stub | Does not fetch images |
+| [ProgressDialog](https://developer.roku.com/docs/references/scenegraph/dialog-nodes/progressdialog.md) | ⛔ None | Extends `Dialog` |
+| [RadioButtonList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/radiobuttonlist.md) | ⛔ None | |
+| [Rectangle](https://developer.roku.com/docs/references/scenegraph/renderable-nodes/rectangle.md) | ⚠ Stub | |
+| [RowList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/rowlist.md) | ⛔ None | |
+| [Scene](https://developer.roku.com/docs/references/scenegraph/abstract-nodes/scene.md) | ⚠ Stub | |
+| [ScrollableText](https://developer.roku.com/docs/references/scenegraph/typographic-nodes/scrollabletext.md) | ⛔ None | |
+| [ScrollingLabel](https://developer.roku.com/docs/references/scenegraph/typographic-nodes/scrollinglabel.md) | ⛔ None | |
+| [SequentialAnimation](https://developer.roku.com/docs/references/scenegraph/animation-nodes/sequentialanimation.md) | ⛔ None | Extends `AnimationBase` |
+| [SimpleLabel](https://developer.roku.com/docs/references/scenegraph/renderable-nodes/simplelabel.md) | ⛔ None | |
+| [SoundEffect](https://developer.roku.com/docs/references/scenegraph/media-playback-nodes/soundeffect.md) | ⛔ None | |
+| [TargetGroup](https://developer.roku.com/docs/references/scenegraph/layout-group-nodes/targetgroup.md) | ⚠ Stub | |
+| [TargetList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/targetlist.md) | ⛔ None | |
+| [TargetSet](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/targetset.md) | ⛔ None | |
+| [Task](https://developer.roku.com/docs/references/scenegraph/control-nodes/task.md) | ⛔ None | |
+| [TextEditBox](https://developer.roku.com/docs/references/scenegraph/widget-nodes/texteditbox.md) | ⚠ Stub | |
+| [TimeGrid](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/timegrid.md) | ⛔ None | |
+| [Timer](https://developer.roku.com/docs/references/scenegraph/control-nodes/timer.md) | ⚠ Stub | |
+| [Vector2DFieldInterpolator](https://developer.roku.com/docs/references/scenegraph/animation-nodes/vector2dfieldinterpolator.md) | ⛔ None | Extends `AnimationBase` |
+| [Video](https://developer.roku.com/docs/references/scenegraph/media-playback-nodes/video.md) | ⛔ None | |
+| [ZoomRowList](https://developer.roku.com/docs/references/scenegraph/list-and-grid-nodes/zoomrowlist.md) | ⛔ None | |

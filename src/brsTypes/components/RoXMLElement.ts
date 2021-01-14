@@ -48,7 +48,7 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             args: [],
             returns: ValueKind.String,
         },
-        impl: (interpreter: Interpreter, str: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             return new BrsString(this.xmlNode?.name ?? "");
         },
     });
@@ -77,7 +77,7 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             args: [],
             returns: ValueKind.Object,
         },
-        impl: (interpreter: Interpreter, str: BrsString) => {
+        impl: (interpreter: Interpreter) => {
             let array = [];
             let attrs = this.xmlNode?.attr ?? {};
             for (let key in attrs) {

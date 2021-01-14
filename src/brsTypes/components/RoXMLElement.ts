@@ -9,7 +9,7 @@ import { XmlDocument, XmlElement } from "xmldoc";
 
 export class RoXMLElement extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
-    private xmlNode: any;
+    private xmlNode?: XmlElement;
 
     constructor() {
         super("roXMLElement");
@@ -62,7 +62,7 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             let neededKey = str.value.toLowerCase();
             let arr = [];
             for (let item of this.xmlNode?.children ?? []) {
-                if (item.name?.toLowerCase() === neededKey) {
+                if (item.type === "element" && item.name?.toLowerCase() === neededKey) {
                     let childXmlElement = new RoXMLElement();
                     childXmlElement.xmlNode = item;
                     arr.push(childXmlElement);
@@ -78,15 +78,13 @@ export class RoXMLElement extends BrsComponent implements BrsValue {
             returns: ValueKind.Object,
         },
         impl: (interpreter: Interpreter) => {
-            let array = [];
             let attrs = this.xmlNode?.attr ?? {};
-            for (let key in attrs) {
-                array.push({
-                    name: new BrsString(key),
-                    value: new BrsString(attrs[key]),
-                });
-            }
-            return new RoAssociativeArray(array);
+            return new RoAssociativeArray(
+                Object.entries(attrs).map(([name, value]) => ({
+                    name: new BrsString(name),
+                    value: new BrsString(value),
+                }))
+            );
         },
     });
 }

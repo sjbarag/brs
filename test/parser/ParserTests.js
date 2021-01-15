@@ -65,3 +65,14 @@ exports.locationEqual = function (loc1, loc2) {
         loc1.end.column === loc2.end.column
     );
 };
+
+exports.deindent = function deindent(str) {
+    let lines = str.split("\n");
+    let firstNonEmptyLine = lines.find((line) => line.trim() !== "");
+    if (firstNonEmptyLine == null) {
+        return str;
+    }
+
+    let baseIndent = firstNonEmptyLine.length - firstNonEmptyLine.trim().length;
+    return lines.map((line) => line.substring(baseIndent)).join("\n");
+};

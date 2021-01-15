@@ -17,6 +17,7 @@
       - [Testing](#testing)
       - [Cleaning](#cleaning)
       - [All Together](#all-together)
+  - [Gaps](#gaps)
   - [Extensions](#extensions)
     - [`_brs_.getStackTrace(numEntries = 10, excludePatterns = [])`](#_brs_getstacktracenumentries--10-excludepatterns--)
     - [`_brs_.global`](#_brs_global)
@@ -86,7 +87,7 @@ Dennis Ritchie said "Hello, World!"
 The [Roku](https://roku.com) series of media streaming devices are wildly popular amongst consumers, and several [very](https://netflix.com) [popular](https://hulu.com) [streaming](https://amazon.com/primevideo) [services](https://crackle.com) offer Channels for the Roku platform.  Unfortunately, Roku chanels *must* be written in a language called BrightScript, which is only executable directly on a Roku device.  BRS hopes to change that by allowing Roku developers to test their code on their own machines, thus improving the quality of their channels and the end-user's experience as a whole.
 
 ## So can I use this to watch TV without a Roku?
-Nope!  The BRS project currently has no intention of emulating the Roku user interface, integrating with the Roku store, or emulating content playback.  In addition to likely getting this project in legal trouble, that sort of emulation is a ton of work.  BRS isn't mature enough to be able to sustain that yet.
+Nope!  The BRS project currently has no intention of emulating the Roku user interface, integrating with the Roku store, or emulating content playback.  In addition to likely getting this project in legal trouble, that sort of emulation is a ton of work.
 
 ## Building from source
 The BRS project follows pretty standard `node` development patterns, with the caveat that it uses `yarn` for dependency management.
@@ -164,6 +165,9 @@ Thanks to the [npm-run-all](https://www.npmjs.com/package/npm-run-all) package, 
 ```shell
 $ yarn run-s clean build test
 ```
+
+## Gaps
+The API provided to BrightScript developers is quite large, and implementing it in its entirety is a daunting task.  Parts in the standard library included with the Reference BrightScript Implementation (RBI) are [listed in NotImplemented.md](./docs/NotImplemented.md).
 
 ## Extensions
 

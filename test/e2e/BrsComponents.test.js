@@ -227,6 +227,12 @@ describe("end to end brightscript functions", () => {
             "ExtendedChild init",
             "ExtendedComponent init",
             "ExtendedComponent start",
+            "true", //m.top.isSubtype("ExtendedComponent")
+            "true", //m.top.isSubtype("BaseComponent")
+            "true", //m.top.isSubtype("Node")
+            "false", // m.top.isSubtype("OtherComponent")
+            "BaseComponent", //m.top.parentSubtype("ExtendedComponent")
+            "Node", //m.top.parentSubtype("BaseComponent")
         ]);
     });
 

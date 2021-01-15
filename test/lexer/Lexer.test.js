@@ -295,11 +295,11 @@ describe("lexer", () => {
         it("reads try/catch/throw properly", () => {
             let { tokens } = Lexer.scan("try catch throw end try endtry");
             expect(tokens.map((w) => w.kind)).toEqual([
-                Lexeme.Identifier, // try
-                Lexeme.Identifier, // catch
-                Lexeme.Throw, // throw
-                Lexeme.EndTry, // end try
-                Lexeme.Identifier, // endtry
+                Lexeme.Try,
+                Lexeme.Catch,
+                Lexeme.Throw,
+                Lexeme.EndTry,
+                Lexeme.EndTry,
                 Lexeme.Eof,
             ]);
         });

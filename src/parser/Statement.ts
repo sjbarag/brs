@@ -1,8 +1,8 @@
 import * as Expr from "./Expression";
 import { Token, Identifier, Location, Lexeme } from "../lexer";
 import { BrsType, BrsInvalid } from "../brsTypes";
-import { InvalidZone } from "luxon";
 import { AstNode } from "./AstNode";
+import { Stmt } from ".";
 
 /** A set of reasons why a `Block` stopped executing. */
 export * from "./BlockEndReason";
@@ -25,6 +25,7 @@ export interface Visitor<T> {
     visitIndexedSet(statement: IndexedSet): BrsType;
     visitIncrement(expression: Increment): BrsInvalid;
     visitLibrary(statement: Library): BrsInvalid;
+    visitTryCatch(statement: TryCatch): BrsInvalid;
 }
 
 let statementTypes = new Set<string>([
@@ -573,6 +574,33 @@ export class Library extends AstNode implements Statement {
             end: this.tokens.filePath
                 ? this.tokens.filePath.location.end
                 : this.tokens.library.location.end,
+        };
+    }
+}
+
+export class TryCatch extends AstNode implements Statement {
+    constructor(
+        readonly tryBlock: Stmt.Block,
+        readonly catchBlock: Stmt.Block,
+        readonly errorBinding: Expr.Variable,
+        readonly tokens: {
+            try: Token;
+            catch: Token;
+            endtry: Token;
+        }
+    ) {
+        super("TryCatch");
+    }
+
+    accept<R>(visitor: Visitor<R>): BrsType {
+        return visitor.visitTryCatch(this);
+    }
+
+    get location() {
+        return {
+            file: this.tokens.try.location.file,
+            start: this.tokens.endtry.location.start,
+            end: this.tokens.endtry.location.end,
         };
     }
 }

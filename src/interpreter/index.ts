@@ -10,6 +10,7 @@ import {
     BrsString,
     isBrsBoolean,
     Int32,
+    Int64,
     isBrsCallable,
     Uninitialized,
     RoArray,
@@ -19,6 +20,7 @@ import {
     Callable,
     BrsNumber,
     Float,
+    Double,
 } from "../brsTypes";
 
 import { Lexeme, Location } from "../lexer";
@@ -446,19 +448,25 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let requiredType = typeDesignators[name.charAt(name.length - 1)];
 
         if (requiredType && requiredType !== value.kind) {
-            return this.addError(
-                new TypeMismatch({
-                    message: `Attempting to assign incorrect value to statically-typed variable '${name}'`,
-                    left: {
-                        type: requiredType,
-                        location: statement.name.location,
-                    },
-                    right: {
-                        type: value,
-                        location: statement.value.location,
-                    },
-                })
-            );
+            if (requiredType === ValueKind.Int64 && value.kind === ValueKind.Int32) {
+                value = new Int64(value.getValue());
+            } else if (requiredType === ValueKind.Double && value.kind === ValueKind.Float) {
+                value = new Double(value.getValue());
+            } else {
+                return this.addError(
+                    new TypeMismatch({
+                        message: `Attempting to assign incorrect value to statically-typed variable '${name}'`,
+                        left: {
+                            type: requiredType,
+                            location: statement.name.location,
+                        },
+                        right: {
+                            type: value,
+                            location: statement.value.location,
+                        },
+                    })
+                );
+            }
         }
 
         this.environment.define(Scope.Function, statement.name.text, value);

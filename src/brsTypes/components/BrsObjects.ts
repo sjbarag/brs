@@ -12,9 +12,11 @@ import { roBoolean } from "./RoBoolean";
 import { roDouble } from "./RoDouble";
 import { roFloat } from "./RoFloat";
 import { roInt } from "./RoInt";
+import { roLongInteger } from "./RoLongInteger";
 import { Double } from "../Double";
 import { Float } from "../Float";
 import { Int32 } from "../Int32";
+import { Int64 } from "../Int64";
 import { Interpreter } from "../../interpreter";
 import { roInvalid } from "./RoInvalid";
 
@@ -39,5 +41,6 @@ export const BrsObjects = new Map<string, Function>([
     ["rodouble", (_: Interpreter, literal: Double) => new roDouble(literal)],
     ["rofloat", (_: Interpreter, literal: Float) => new roFloat(literal)],
     ["roint", (_: Interpreter, literal: Int32) => new roInt(literal)],
+    ["rolonginteger", (_: Interpreter, literal: Int64) => new roLongInteger(literal)],
     ["roinvalid", (_: Interpreter) => new roInvalid()],
 ]);

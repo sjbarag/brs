@@ -79,7 +79,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     readonly stderr: OutputProxy;
     readonly temporaryVolume: MemoryFileSystem = new MemoryFileSystem();
 
-    stack: Location[] = [];
+    stack: [string, Location][] = [];
     location: Location;
 
     /** Allows consumers to observe errors as they're detected. */
@@ -1015,7 +1015,30 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitTryCatch(statement: Stmt.TryCatch): BrsInvalid {
-        this.visitBlock(statement.tryBlock);
+        try {
+            // TODO: check scoping rules of try/catch
+            // are varaibles first-defined outside of try available in try and/or catch? both!
+            // are variables first-defined in try available in catch? yes!
+            // are variables first-defined in try available after end of catch? yes!
+            // are variables first-defined in catch available outside of catch? yes!
+            // tl;dr: this all operates on the current environment, _not_ a subenv
+            this.visitBlock(statement.tryBlock);
+        } catch (err) {
+            if (err instanceof Stmt.Runtime) {
+                // TODO: figure out how we'll get that error — probably attach it to Stmt.Runtime —
+                // then bind it to a variable with
+                let __the_error__;
+                this.environment.define(
+                    Scope.Function,
+                    statement.errorBinding.name.text,
+                    __the_error__
+                );
+                this.visitBlock(statement.catchBlock);
+            } else if (!(err instanceof BrsError)) {
+                throw err;
+            }
+        }
+
         return BrsInvalid.Instance;
     }
 
@@ -1095,6 +1118,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     }
                 }
 
+                this.stack.push([satisfiedSignature, expression.location]);
                 return this.inSubEnv((subInterpreter) => {
                     subInterpreter.environment.setM(mPointer);
                     return callee.call(this, ...args);
@@ -1154,6 +1178,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 }
 
                 return returnedValue || BrsInvalid.Instance;
+            } finally {
+                this.stack.pop();
             }
         } else {
             function formatMismatch(mismatchedSignature: SignatureAndMismatches) {
@@ -1639,7 +1665,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
         this.location = expression.location;
-        this.stack.push(this.location);
         this.reportCoverageHit(expression);
 
         let value;
@@ -1654,7 +1679,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
         this.location = statement.location;
-        this.stack.push(this.location);
         this.reportCoverageHit(statement);
 
         let value;

@@ -188,7 +188,7 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
-    test.only("components/roXMLElement.brs", () => {
+    test("components/roXMLElement.brs", () => {
         return execute([resourceFile("components", "roXMLElement.brs")], outputStreams).then(() => {
             expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
                 "xmlParser = ",

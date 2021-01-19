@@ -40,6 +40,7 @@ export * from "./components/RoAssociativeArray";
 export * from "./components/Timespan";
 export * from "./components/BrsObjects";
 export * from "./components/RoRegex";
+export * from "./components/RoXMLElement";
 export * from "./components/RoString";
 export * from "./components/RoBoolean";
 export * from "./components/RoDouble";

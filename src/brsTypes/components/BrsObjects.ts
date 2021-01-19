@@ -5,6 +5,7 @@ import { RoDateTime } from "./RoDateTime";
 import { Timespan } from "./Timespan";
 import { createNodeByType } from "./RoSGNode";
 import { RoRegex } from "./RoRegex";
+import { RoXMLElement } from "./RoXMLElement";
 import { BrsString, BrsBoolean } from "../BrsType";
 import { RoString } from "./RoString";
 import { roBoolean } from "./RoBoolean";
@@ -32,6 +33,7 @@ export const BrsObjects = new Map<string, Function>([
         "roregex",
         (_: Interpreter, expression: BrsString, flags: BrsString) => new RoRegex(expression, flags),
     ],
+    ["roxmlelement", (_: Interpreter) => new RoXMLElement()],
     ["rostring", (_: Interpreter) => new RoString()],
     ["roboolean", (_: Interpreter, literal: BrsBoolean) => new roBoolean(literal)],
     ["rodouble", (_: Interpreter, literal: Double) => new roDouble(literal)],

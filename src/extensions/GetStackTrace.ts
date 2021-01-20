@@ -37,7 +37,7 @@ export const GetStackTrace = new Callable("GetStackTrace", {
             excludePatterns.getValue().forEach((pattern) => {
                 if (isBrsString(pattern)) {
                     let regexFilter = new RegExp(pattern.value);
-                    stack = stack.filter((location) => !regexFilter.test(location.file));
+                    stack = stack.filter((location) => !regexFilter.test(location[1].file));
                 }
             });
         } else if (!(excludePatterns instanceof BrsInvalid)) {
@@ -47,15 +47,15 @@ export const GetStackTrace = new Callable("GetStackTrace", {
         return new RoArray(
             stack
                 // Filter out any internal stack traces.
-                .filter((location) => !INTERNAL_REGEX_FILTER.test(location.file))
+                .filter(([_, location]) => !INTERNAL_REGEX_FILTER.test(location.file))
                 // Remove any duplicate entries that appear next to each other in the stack.
-                .filter((location, index, locations) => {
+                .filter(([_, location], index, locations) => {
                     if (index === 0) return true;
-                    let prevLocation = locations[index - 1];
+                    let prevLocation = locations[index - 1][1];
                     return !Location.equalTo(location, prevLocation);
                 })
                 .map(
-                    (location) =>
+                    ([_, location]) =>
                         new BrsString(
                             `${location.file}:${location.start.line}:${location.start.column}`
                         )

@@ -1027,12 +1027,19 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             if (err instanceof Stmt.Runtime) {
                 // TODO: figure out how we'll get that error — probably attach it to Stmt.Runtime —
                 // then bind it to a variable with
-                let __the_error__;
-                this.environment.define(
-                    Scope.Function,
-                    statement.errorBinding.name.text,
-                    __the_error__
-                );
+                // TODO: move this into BrsError or BlockEndReason or something
+                let errorAA = new RoAssociativeArray([
+                    {
+                        name: new BrsString("backtrace"),
+                        value: new RoArray([
+                            /* TODO: fill me */
+                        ]),
+                    },
+                    { name: new BrsString("message"), value: new BrsString(err.name) },
+                    { name: new BrsString("number"), value: new Int32(-1 /* TODO: fill me */) },
+                    { name: new BrsString("rethrown"), value: BrsBoolean.False },
+                ]);
+                this.environment.define(Scope.Function, statement.errorBinding.name.text, errorAA);
                 this.visitBlock(statement.catchBlock);
             } else if (!(err instanceof BrsError)) {
                 throw err;
@@ -1118,7 +1125,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     }
                 }
 
-                this.stack.push([satisfiedSignature, expression.location]);
+                this.stack.push([
+                    satisfiedSignature.signatureAsStackFrame(functionName),
+                    expression.location,
+                ]);
                 return this.inSubEnv((subInterpreter) => {
                     subInterpreter.environment.setM(mPointer);
                     return callee.call(this, ...args);

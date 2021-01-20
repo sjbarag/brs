@@ -6,6 +6,7 @@ import { Location } from "../lexer";
 import { Int32 } from "./Int32";
 import { Float } from "./Float";
 import { Double } from "./Double";
+import { ValueKind } from "./BrsType";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
@@ -70,12 +71,25 @@ export interface Signature {
     readonly returns: Brs.ValueKind;
 }
 
+function getStackFrameFormatter(sig: Signature, args: Brs.BrsType[]): (name: string) => string {
+    let arg_list = sig.args
+        .slice(0, Math.min(sig.args.length, args.length))
+        .map((a) => `${a.name} as ${ValueKind.toString(a.type.kind)}`)
+        .join(", ");
+
+    return (name: string) => `${name}(${arg_list}) as ${ValueKind.toString(sig.returns)}`;
+}
+
 /** A BrightScript function signature paired with its implementation. */
 export type SignatureAndImplementation = {
     /** A BrightScript function's signature. */
     signature: Signature;
     /** The implementation corresponding to `signature`. */
     impl: CallableImplementation;
+};
+
+export type CalledSignatureAndImplementation = SignatureAndImplementation & {
+    signatureAsStackFrame: (name: string) => string;
 };
 
 type SignatureMismatch = AnonymousMismatch | ArgumentMismatch;
@@ -216,10 +230,20 @@ export class Callable implements Brs.BrsValue {
         return this.name || "";
     }
 
-    getFirstSatisfiedSignature(args: Brs.BrsType[]): SignatureAndImplementation | undefined {
-        return this.signatures.filter(
+    getFirstSatisfiedSignature(args: Brs.BrsType[]): CalledSignatureAndImplementation | undefined {
+        let maybeSatisfied = this.signatures.filter(
             (sigAndImpl) => this.getSignatureMismatches(sigAndImpl.signature, args).length === 0
         )[0];
+        if (maybeSatisfied == null) {
+            return undefined;
+        }
+
+        return {
+            ...maybeSatisfied,
+            ...{
+                signatureAsStackFrame: getStackFrameFormatter(maybeSatisfied.signature, args),
+            },
+        };
     }
 
     getAllSignatureMismatches(args: Brs.BrsType[]): SignatureAndMismatches[] {

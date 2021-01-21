@@ -32,6 +32,7 @@ export * from "./Float";
 export * from "./Double";
 export * from "./BrsInterface";
 export * from "./Callable";
+export * from "./components/BrsComponent";
 export * from "./components/RoDeviceInfo";
 export * from "./components/ComponentFactory";
 export * from "./components/RoArray";

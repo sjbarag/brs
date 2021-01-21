@@ -1,8 +1,7 @@
 import { ComponentDefinition, ComponentScript } from "../componentprocessor";
 import * as Stmt from "./Statement";
-import { BrsComponentName } from "../brsTypes";
 import pSettle from "p-settle";
-import { ExitForReason } from "./BlockEndReason";
+import { ComponentFactory } from "../brsTypes";
 
 export class ComponentScopeResolver {
     private readonly excludedNames: string[] = ["init"];
@@ -78,7 +77,7 @@ export class ComponentScopeResolver {
         let currentComponent: ComponentDefinition | undefined = component;
         while (currentComponent.extends) {
             // If this is a built-in component, then no work is needed and we can return.
-            if (currentComponent.extends in BrsComponentName) {
+            if (ComponentFactory.canResolveComponentType(currentComponent.extends)) {
                 return Promise.resolve();
             }
 

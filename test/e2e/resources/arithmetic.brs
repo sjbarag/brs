@@ -35,3 +35,8 @@ print 32 << 3
 print 32 >> 1
 print 32 >> 2
 print 32 >> 3
+
+' unary operations
+print -5 ' => -5
+print +5 ' => 5
+print -+-+-+5 ' => -5

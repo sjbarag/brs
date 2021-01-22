@@ -476,6 +476,10 @@ export class Lexer {
 
             if (numberOfDigits >= 10 && designator !== "&") {
                 // numeric literals over 10 digits with no type designator are implicitly Doubles
+                if (designator === "#") {
+                    // but it's legal to explicitly designate it a double anyway
+                    advance();
+                }
                 addToken(Lexeme.Double, Double.fromString(asString));
                 return;
             } else if (designator === "#") {

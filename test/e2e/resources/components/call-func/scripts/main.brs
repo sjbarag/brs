@@ -19,6 +19,8 @@ sub main()
 
     print node.callFunc("overridenParentFunc")
 
+    node.callFunc("testObserve")
+
     _brs_.mockComponent("CallFuncTestbed", {
         voidFuncNoArgs: function() as string
             return "this is a mock"

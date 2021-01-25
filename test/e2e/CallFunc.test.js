@@ -52,6 +52,7 @@ describe("callFunc", () => {
             "component: inside privateFunction",
             "private return value",
             "component: overriding parent func",
+            "callFunc can trigger observeField",
             "main: mocked component voidFuncNoArgs return value:",
             "this is a mock",
         ]);

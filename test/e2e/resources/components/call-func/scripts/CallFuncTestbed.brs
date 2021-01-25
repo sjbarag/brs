@@ -1,5 +1,9 @@
 sub init()
     m.componentField = "componentField value"
+    m.emptyNode = createObject("roSGNode", "ContentNode")
+    m.emptyNode.update({
+        observeMe: false
+    }, true)
 end sub
 
 function returnValFuncOneArg(args as object) as object
@@ -31,3 +35,12 @@ end function
 function overridenParentFunc() as string
     return "component: overriding parent func"
 end function
+
+sub testObserve()
+    m.emptyNode.observeField("observeMe", "onObserveMeChanged")
+    m.emptyNode.observeMe = true
+end sub
+
+sub onObserveMeChanged(event as object)
+    print "callFunc can trigger observeField"
+end sub

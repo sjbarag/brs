@@ -636,6 +636,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
                         subInterpreter.environment.setM(this.m);
                         subInterpreter.environment.setRootM(this.m);
+                        subInterpreter.environment.hostNode = this;
 
                         try {
                             // Determine whether the function should get arguments or not.

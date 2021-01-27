@@ -415,4 +415,27 @@ describe("Int64", () => {
             expect(six.or(new Double(3.4444))).toEqual(new Int64(7));
         });
     });
+
+    describe("validate typecasting", () => {
+        it("passing float", () => {
+            let floatValue = new Float(6.2);
+            let longIntValue = new Int64(floatValue);
+
+            expect(longIntValue.equalTo(new Int64(6))).toBe(BrsBoolean.True);
+        });
+
+        it("passing Integer", () => {
+            let intValue = new Int32(20);
+            let longIntValue = new Int64(intValue);
+
+            expect(longIntValue.equalTo(new Int64(20))).toBe(BrsBoolean.True);
+        });
+
+        it("passing Double", () => {
+            let doubleValue = new Double(10.888888888888888888888888);
+            let longIntValue = new Int64(doubleValue);
+
+            expect(longIntValue.equalTo(new Int64(10))).toBe(BrsBoolean.True);
+        });
+    });
 });

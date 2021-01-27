@@ -94,19 +94,19 @@ describe("interpreter variables", () => {
             },
             {
                 lhs: "int32%",
-                values: [str, float, double, int64],
+                values: [str],
             },
             {
                 lhs: "float!",
-                values: [str, int32, double, int64],
+                values: [str],
             },
             {
                 lhs: "double#",
-                values: [str, int32, int64],
+                values: [str],
             },
             {
                 lhs: "int64&",
-                values: [str, float, double],
+                values: [str],
             },
         ].forEach(({ lhs, values }) => {
             test(lhs, () => {

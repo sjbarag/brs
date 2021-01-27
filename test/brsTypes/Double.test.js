@@ -413,4 +413,39 @@ describe("Double", () => {
             expect(six.or(new Double(3.4444))).toEqual(new Int32(7));
         });
     });
+
+    describe("validate typecasting", () => {
+        // If we pass floatValue as argument for Double() thne doubleValue = 'Double { kind: 7, value: Float { kind: 6, value: 10.88889 } }'
+        // But if pass '6.2' then it = 'Double { kind: 7, value: 10.88889 }'
+        // while running in interpreter: Double, value: 10.88889
+        // on Roku:                      Double, value: 10.88888835907
+        xit("passing float", () => {
+            let floatValue = new Float(10.88889);
+            let doubleValue = new Double(floatValue);
+
+            expect(doubleValue.equalTo(new Double(10.88888835907))).toBe(BrsBoolean.True);
+        });
+
+        // the same here: 'doubleValue = Double { kind: 7, value: Int32 { kind: 4, value: 20 } }'
+        // while running in interpreter: Double, value: 20
+        // on Roku:                      Double, value: 20
+        xit("passing Integer", () => {
+            let intValue = new Int32(20);
+            let doubleValue = new Double(intValue);
+
+            expect(doubleValue.equalTo(new Double(20))).toBe(BrsBoolean.True);
+        });
+
+        // the same: Double { kind: 7, value: Int64 { kind: 5, value: Long { low: -881, high: 499, unsigned: false } } }
+        // while running in interpreter: type: Double, value: 2147483647119
+        // on Roku:                      type: Double, value: 2147483647119
+        xit("passing LongInteger", () => {
+            let longIntValue = new Int64(2147483647119);
+            let doubleValue = new Double(longIntValue);
+            console.log("doubleValue");
+            console.log(doubleValue);
+
+            expect(doubleValue.equalTo(new Double(10))).toBe(BrsBoolean.True);
+        });
+    });
 });

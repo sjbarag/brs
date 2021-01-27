@@ -459,9 +459,33 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let requiredType = typeDesignators[name.charAt(name.length - 1)];
 
         if (requiredType && requiredType !== value.kind) {
-            if (requiredType === ValueKind.Int64 && value.kind === ValueKind.Int32) {
+            if (
+                requiredType === ValueKind.Int32 &&
+                (value.kind === ValueKind.Float ||
+                    value.kind === ValueKind.Int64 ||
+                    value.kind === ValueKind.Double)
+            ) {
+                value = new Int32(value.getValue());
+            } else if (
+                requiredType === ValueKind.Int64 &&
+                (value.kind === ValueKind.Int32 ||
+                    value.kind === ValueKind.Float ||
+                    value.kind === ValueKind.Double)
+            ) {
                 value = new Int64(value.getValue());
-            } else if (requiredType === ValueKind.Double && value.kind === ValueKind.Float) {
+            } else if (
+                requiredType === ValueKind.Float &&
+                (value.kind === ValueKind.Int32 ||
+                    value.kind === ValueKind.Int64 ||
+                    value.kind === ValueKind.Double)
+            ) {
+                value = new Float(value.getValue());
+            } else if (
+                requiredType === ValueKind.Double &&
+                (value.kind === ValueKind.Float ||
+                    value.kind === ValueKind.Int32 ||
+                    value.kind === ValueKind.Int64)
+            ) {
                 value = new Double(value.getValue());
             } else {
                 return this.addError(

@@ -84,6 +84,9 @@ describe("e2e/resources/components/mocks", () => {
             "foo",
             "0",
             "foo",
+            "invalid",
+            "invalid",
+            "mocked!",
         ]);
     });
 

@@ -80,6 +80,10 @@ describe("e2e/resources/components/mocks", () => {
             "mocked implementation!",
             "0",
             "0",
+            "1234",
+            "foo",
+            "0",
+            "foo",
         ]);
     });
 

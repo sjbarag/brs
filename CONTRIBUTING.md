@@ -45,10 +45,6 @@ Regardless of whether you're fixing bugs or implementing new features, there's a
 1. Create a fork of this repo if you haven't already
 1. Send us a [pull request](https://github.com/sjbarag/brs/pulls)!
 
-### Adding a component
-
-For guidelines on adding a component to `brs`, see [this doc](docs/AddingComponents.md).
-
 ## What We Look For in a Pull Request
 
 There aren't to many mandatory things for pull requests, besides what you'd expect from any open-source project (e.g. "don't delete all the code", "don't delete a user's home directory at runtime"). The most important project-specific "must-haves" that we'll look for that are:

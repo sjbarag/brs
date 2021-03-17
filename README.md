@@ -150,4 +150,4 @@ $ yarn run-s clean build test
 
 ## Documentation
 
-For the most part, `brs` attempts to emulate BrightScript as closely as possible. However, there are certain implementation gaps. Also, in the spirit of unit testing, there are a few extensions that will help with testing. All of our documentation for APIs, extensions, gaps, and more is hosted on our docs site, [https://hulu.github.io/roca](hulu.github.io/roca).
+For the most part, `brs` attempts to emulate BrightScript as closely as possible. However, there are certain implementation gaps. Also, in the spirit of unit testing, there are a few extensions that will help with testing. All of our documentation for APIs, extensions, gaps, and more is hosted on our docs site, [hulu.github.io/roca](https://hulu.github.io/roca).

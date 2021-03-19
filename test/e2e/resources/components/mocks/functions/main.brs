@@ -61,6 +61,27 @@ sub main()
     mock.clearMock()
     print mock.calls.count() ' => 0
     print mock.results.count() ' => 0
+
+    mock.mockReturnValue("foo")
+    spyOnMe(1234)
+    print mock.calls[0][0] ' => 1234
+    print mock.results[0] ' => "foo"
+
+    ' Should be able to call with any number of args
+    spyOnMe()
+    print mock.calls[1].count() ' => 0
+    print mock.results[1] ' => "foo"
+
+    ' Implicit mock
+    mock = _brs_.mockFunction("originalHasArgs")
+    ' should work with no args
+    print originalHasArgs() ' => invalid
+
+    ' should work with args that don't match the original signature
+    print originalHasArgs(1, 2, 3, 4, 5) ' => invalid
+
+    mock.mockReturnValue("mocked!")
+    print originalHasArgs(1, 2, 3, 4, 5) ' => mocked!
 end sub
 
 function mockMe()
@@ -73,4 +94,8 @@ end function
 
 function spyOnMe(arg1 as string, arg2 as integer)
     return "original return value!"
+end function
+
+function originalHasArgs(arg1 as integer, arg2 as string, arg3 as object)
+    return "abcd"
 end function

@@ -1,5 +1,6 @@
 const BrsTypes = require("../../lib/brsTypes");
 const { UCase, LCase } = require("../../lib/stdlib");
+const { Interpreter } = require("../../lib/interpreter");
 
 describe("Callable", () => {
     it("is less than nothing", () => {
@@ -127,6 +128,41 @@ describe("Callable", () => {
                 received: "Boolean",
                 argName: "foo",
             });
+        });
+
+        it("doesn't mutate args while checking for argument mismatches", () => {
+            let func = new BrsTypes.Callable(
+                "acceptsIntOrFloat",
+                {
+                    signature: {
+                        args: [
+                            new BrsTypes.StdlibArgument("input", BrsTypes.ValueKind.Int32),
+                            new BrsTypes.StdlibArgument("something_else", BrsTypes.ValueKind.Int32),
+                        ],
+                        returns: BrsTypes.Int32,
+                    },
+                    impl: (_interpreter, input) => input,
+                },
+                {
+                    signature: {
+                        args: [
+                            new BrsTypes.StdlibArgument("input", BrsTypes.ValueKind.Float),
+                            new BrsTypes.StdlibArgument(
+                                "something_else",
+                                BrsTypes.ValueKind.Boolean
+                            ),
+                        ],
+                        returns: BrsTypes.Float,
+                    },
+                    impl: (_interpreter, input) => input,
+                }
+            );
+
+            let pi = new BrsTypes.Float(3.1415927);
+            let result = func.call(new Interpreter(), pi, BrsTypes.BrsBoolean.False);
+
+            // mutation between checks would cause `input` to be the integer 3 - make sure that doesn't happen
+            expect(result).toEqual(pi);
         });
 
         describe("coercion", () => {

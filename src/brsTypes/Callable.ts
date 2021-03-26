@@ -219,14 +219,15 @@ export class Callable implements Brs.BrsValue {
 
     getFirstSatisfiedSignature(args: Brs.BrsType[]): SignatureAndImplementation | undefined {
         return this.signatures.filter(
-            (sigAndImpl) => this.getSignatureMismatches(sigAndImpl.signature, args).length === 0
+            (sigAndImpl) =>
+                this.getSignatureMismatches(sigAndImpl.signature, [...args]).length === 0
         )[0];
     }
 
     getAllSignatureMismatches(args: Brs.BrsType[]): SignatureAndMismatches[] {
         return this.signatures.map((sigAndImpl) => ({
             signature: sigAndImpl.signature,
-            mismatches: this.getSignatureMismatches(sigAndImpl.signature, args),
+            mismatches: this.getSignatureMismatches(sigAndImpl.signature, [...args]),
         }));
     }
 
@@ -261,7 +262,9 @@ export class Callable implements Brs.BrsValue {
 
             if (
                 expected.type.kind === Brs.ValueKind.Float &&
-                received.kind === Brs.ValueKind.Int32
+                (received.kind === Brs.ValueKind.Int32 ||
+                    received.kind === Brs.ValueKind.Int64 ||
+                    received.kind === Brs.ValueKind.Double)
             ) {
                 args[index] = new Float(received.getValue());
                 return;
@@ -269,7 +272,9 @@ export class Callable implements Brs.BrsValue {
 
             if (
                 expected.type.kind === Brs.ValueKind.Int32 &&
-                received.kind === Brs.ValueKind.Float
+                (received.kind === Brs.ValueKind.Float ||
+                    received.kind === Brs.ValueKind.Int64 ||
+                    received.kind === Brs.ValueKind.Double)
             ) {
                 args[index] = new Int32(received.getValue());
                 return;
@@ -277,7 +282,9 @@ export class Callable implements Brs.BrsValue {
 
             if (
                 expected.type.kind === Brs.ValueKind.Double &&
-                received.kind === Brs.ValueKind.Float
+                (received.kind === Brs.ValueKind.Float ||
+                    received.kind === Brs.ValueKind.Int32 ||
+                    received.kind === Brs.ValueKind.Int64)
             ) {
                 args[index] = new Double(received.getValue());
                 return;
@@ -285,7 +292,9 @@ export class Callable implements Brs.BrsValue {
 
             if (
                 expected.type.kind === Brs.ValueKind.Int64 &&
-                received.kind === Brs.ValueKind.Int32
+                (received.kind === Brs.ValueKind.Float ||
+                    received.kind === Brs.ValueKind.Int32 ||
+                    received.kind === Brs.ValueKind.Double)
             ) {
                 args[index] = new Int64(received.getValue());
                 return;

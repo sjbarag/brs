@@ -22,7 +22,12 @@ export class Int32 implements Numeric, Comparable, Boxable {
      *              integer.
      */
     constructor(value: number | Long) {
-        if (value instanceof Long) value = value.toNumber();
+        if (value instanceof Long) {
+            // RBI ignores the 32 most significant bits when converting a 64-bit int to a 32-bit int, effectively
+            // performing a bitwise AND with `0x00000000FFFFFFFF`.  Since Long already tracks the lower and upper
+            // portions as separate 32-bit values, we can simply extract the least-significant portion.
+            value = value.low;
+        }
         this.value = Math.trunc(value);
     }
 

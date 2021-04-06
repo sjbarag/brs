@@ -188,6 +188,35 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/roXMLElement.brs", () => {
+        return execute([resourceFile("components", "roXMLElement.brs")], outputStreams).then(() => {
+            expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+                "xmlParser = ",
+                "<Component: roXMLElement>",
+                "type(xmlParser) = ",
+                "roXMLElement",
+                "parse bad xml string, result = ",
+                "false",
+                "parse good xml string, result = ",
+                "true",
+                "getName() = ",
+                "tag1",
+                "getAttributes() = ",
+                `<Component: roAssociativeArray> =\n` +
+                    `{\n` +
+                    `    id: someId\n` +
+                    `    attr1: 0\n` +
+                    `}`,
+                'getNamedElementsCi("child1") count = ',
+                "2",
+                "name of first child  = ",
+                "Child1",
+                "mame of second child = ",
+                "CHILD1",
+            ]);
+        });
+    });
+
     test("components/customComponent.brs", async () => {
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
@@ -227,6 +256,12 @@ describe("end to end brightscript functions", () => {
             "ExtendedChild init",
             "ExtendedComponent init",
             "ExtendedComponent start",
+            "true", //m.top.isSubtype("ExtendedComponent")
+            "true", //m.top.isSubtype("BaseComponent")
+            "true", //m.top.isSubtype("Node")
+            "false", // m.top.isSubtype("OtherComponent")
+            "BaseComponent", //m.top.parentSubtype("ExtendedComponent")
+            "Node", //m.top.parentSubtype("BaseComponent")
         ]);
     });
 
@@ -259,6 +294,10 @@ describe("end to end brightscript functions", () => {
             "789.012",
             "Integer to string ",
             "23",
+            "LongInteger object type",
+            "roLongInteger",
+            "LongInteger to string ",
+            "2000111222333",
         ]);
     });
 

@@ -13,6 +13,7 @@ const {
     ValueKind,
     Uninitialized,
     Callable,
+    MarkupGrid,
 } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 const { Scope } = require("../../../lib/interpreter/Environment");
@@ -2435,6 +2436,83 @@ describe("RoSGNode", () => {
 
                 let result = subtype.call(interpreter);
                 expect(result.value).toBe("randomType");
+            });
+
+            describe("issubtype", () => {
+                class ParentComponent extends RoSGNode {
+                    constructor(name = "ParentComponent") {
+                        super([], name);
+                    }
+                }
+
+                class ChildComponent extends ParentComponent {
+                    constructor(name = "ChildComponent") {
+                        super(name);
+                    }
+                }
+
+                it("returns true for all ancestor types, false otherwise", () => {
+                    let childNode = new ChildComponent();
+                    let issubtype = childNode.getMethod("issubtype");
+
+                    expect(issubtype.call(interpreter, new BrsString("ChildComponent")).value).toBe(
+                        true
+                    );
+                    expect(
+                        issubtype.call(interpreter, new BrsString("ParentComponent")).value
+                    ).toBe(true);
+                    expect(issubtype.call(interpreter, new BrsString("Node")).value).toBe(true);
+
+                    let parentNode = new ParentComponent();
+                    issubtype = parentNode.getMethod("issubtype");
+
+                    expect(issubtype.call(interpreter, new BrsString("ChildComponent")).value).toBe(
+                        false
+                    );
+                    expect(issubtype.call(interpreter, new BrsString("MarkupGrid")).value).toBe(
+                        false
+                    );
+                });
+
+                it("is case-insensitive", () => {
+                    let childNode = new ChildComponent();
+                    let issubtype = childNode.getMethod("issubtype");
+
+                    expect(issubtype.call(interpreter, new BrsString("Node")).value).toBe(true);
+                    expect(issubtype.call(interpreter, new BrsString("node")).value).toBe(true);
+                    expect(issubtype.call(interpreter, new BrsString("NODE")).value).toBe(true);
+                });
+
+                it("does isSubType for other built in components", () => {
+                    let markupNode = new MarkupGrid();
+                    let issubtype = markupNode.getMethod("issubtype");
+
+                    expect(issubtype.call(interpreter, new BrsString("MarkupGrid")).value).toBe(
+                        true
+                    );
+                    expect(issubtype.call(interpreter, new BrsString("ArrayGrid")).value).toBe(
+                        true
+                    );
+                    expect(issubtype.call(interpreter, new BrsString("Node")).value).toBe(true);
+                });
+            });
+
+            describe("parentsubtype", () => {
+                it("returns the parent subtype", () => {
+                    let markupNode = new MarkupGrid();
+                    let parentsubtype = markupNode.getMethod("parentsubtype");
+
+                    let result = parentsubtype.call(interpreter, new BrsString("MarkUpGrid"));
+                    expect(result.value).toBe("ArrayGrid");
+                });
+
+                it("returns invalid if it does not exist", () => {
+                    let node = new RoSGNode([]);
+                    let parentsubtype = node.getMethod("parentsubtype");
+
+                    let result = parentsubtype.call(interpreter, new BrsString("UnknownNode"));
+                    expect(result).toBe(BrsInvalid.Instance);
+                });
             });
         });
     });

@@ -12,16 +12,27 @@
       steps: [
         { uses: "actions/checkout@v2" },
         {
+          id: "commits_since_last_nightly",
+          name: "Check for commits since last night's build",
+          run: "test -n \"$(git log --oneline --since '25 hours ago')\"",
+          "continue-on-error": true
+        },
+        {
           name: "Set up node 12",
           uses: "actions/setup-node@v1",
+          if: "${{ job.commits_since_last_nightly.outcome == 'success' }}",
           with: {
             registry-url: "https://registry.npmjs.com",
             node-version: "12"
           }
         },
-        { run: "yarn" },
+        {
+          run: "yarn",
+          if: "${{ job.commits_since_last_nightly.outcome == 'success' }}"
+        },
         {
           run: "yarn publish --no-git-tag-version --new-version `node scripts/getNightlyVersion.js` --tag nightly",
+          if: "${{ job.commits_since_last_nightly.outcome == 'success' }}",
           env: {
             NODE_AUTH_TOKEN: "${{ secrets.NPM_PUBLISH_TOKEN }}"
           }

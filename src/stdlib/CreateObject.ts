@@ -39,7 +39,6 @@ export const CreateObject = new Callable("CreateObject", {
         if (possibleMock instanceof RoAssociativeArray) {
             return new MockNode(possibleMock, objToMock);
         }
-
         let ctor = BrsObjects.get(objName.value.toLowerCase());
 
         return ctor ? ctor(interpreter, ...additionalArgs) : BrsInvalid.Instance;

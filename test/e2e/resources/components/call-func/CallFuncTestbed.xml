@@ -6,5 +6,6 @@
         <function name="voidFuncFiveArgs" />
         <function name="returnValFuncOneArg" />
         <function name="overridenParentFunc" />
+        <function name="testObserve" />
     </interface>
 </component>

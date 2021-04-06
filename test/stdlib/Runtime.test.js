@@ -11,6 +11,10 @@ const {
     Float,
     Double,
     Uninitialized,
+    ValueKind,
+    Callable,
+    BrsComponent,
+    extendBrsObjects,
 } = brs.types;
 const { CreateObject, Type } = require("../../lib/stdlib");
 const { Interpreter } = require("../../lib/interpreter");
@@ -28,6 +32,34 @@ describe("global runtime functions", () => {
             let obj = CreateObject.call(interpreter, new BrsString("notAnObject"));
             expect(obj).toEqual(BrsInvalid.Instance);
         });
+
+        describe("extendBrsObjects", () => {
+            class HelloWorld extends BrsComponent {
+                constructor() {
+                    super("HelloWorld");
+
+                    this.sayHello = new Callable("sayHello", {
+                        signature: {
+                            args: [],
+                            returns: ValueKind.String,
+                        },
+                        impl: (_interpreter) => {
+                            return "Hello world";
+                        },
+                    });
+
+                    this.registerMethods({
+                        ifHelloWorld: [this.sayHello],
+                    });
+                }
+            }
+
+            it("can return a new object defined at run time", () => {
+                extendBrsObjects([["HelloWorld", (_interpreter) => new HelloWorld()]]);
+                let obj = CreateObject.call(interpreter, new BrsString("HelloWorld"));
+                expect(obj.sayHello.call(interpreter)).toEqual("Hello world");
+            });
+        });
     });
 
     describe("Type", () => {
@@ -44,7 +76,7 @@ describe("global runtime functions", () => {
                 { value: CreateObject, type: "Function" },
                 { value: new RoArray([]), type: "roArray" },
                 { value: new RoAssociativeArray([]), type: "roAssociativeArray" },
-                { value: Uninitialized.Instance, type: "<UNINITIALIZED>" },
+                { value: Uninitialized.Instance, type: "<uninitialized>" },
             ].forEach((testCase) =>
                 test(testCase.type, () => {
                     expect(Type.call(interpreter, testCase.value, new Int32(3))).toEqual(
@@ -67,7 +99,7 @@ describe("global runtime functions", () => {
                 { value: CreateObject, type: "Function" },
                 { value: new RoArray([]), type: "roArray" },
                 { value: new RoAssociativeArray([]), type: "roAssociativeArray" },
-                { value: Uninitialized.Instance, type: "<UNINITIALIZED>" },
+                { value: Uninitialized.Instance, type: "<uninitialized>" },
             ].forEach((testCase) =>
                 test(testCase.type, () => {
                     expect(Type.call(interpreter, testCase.value)).toEqual(

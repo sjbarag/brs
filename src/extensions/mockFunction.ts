@@ -25,9 +25,10 @@ export class MockFunction extends RoAssociativeArray {
         this.func = func;
 
         this.set(new BrsString("calls"), this.calls);
-        this.set(new BrsString("results"), this.results);
         this.set(new BrsString("clearMock"), this.clearMock);
         this.set(new BrsString("getMockName"), this.getMockName);
+        this.set(new BrsString("mockReturnValue"), this.mockReturnValue);
+        this.set(new BrsString("results"), this.results);
     }
 
     /**
@@ -86,23 +87,86 @@ export class MockFunction extends RoAssociativeArray {
             return this.name;
         },
     });
+
+    /** Overwrites the mock implementation and returns a new value. */
+    private mockReturnValue = new Callable("mockReturnValue", {
+        signature: {
+            args: [new StdlibArgument("returnValue", ValueKind.Dynamic)],
+            returns: ValueKind.String,
+        },
+        impl: (interpreter: Interpreter, returnValue: BrsType) => {
+            this.func = new Callable(
+                this.name.toString(),
+                ...Callable.variadic({
+                    signature: {
+                        args: [],
+                        returns: returnValue.kind,
+                    },
+                    impl: (interpreter: Interpreter, ...args: BrsType[]) => {
+                        return returnValue;
+                    },
+                })
+            );
+
+            interpreter.environment.setMockFunction(
+                this.name.toString(),
+                this.createMockFunction()
+            );
+
+            return BrsInvalid.Instance;
+        },
+    });
 }
 
-export const mockFunction = new Callable("mockFunction", {
-    signature: {
-        args: [
-            new StdlibArgument("functionToMock", ValueKind.String),
-            new StdlibArgument("mock", ValueKind.Callable),
-        ],
-        returns: ValueKind.Invalid,
-    },
-    impl: (interpreter: Interpreter, functionToMock: BrsString, mock: Callable) => {
-        let mockFunctionNode = new MockFunction(functionToMock, mock);
-        interpreter.environment.setMockFunction(
-            functionToMock.toString(),
-            mockFunctionNode.createMockFunction()
-        );
+export const mockFunction = new Callable(
+    "mockFunction",
+    ...[
+        {
+            signature: {
+                args: [new StdlibArgument("functionToMock", ValueKind.String)],
+                returns: ValueKind.Invalid,
+            },
+            impl: (interpreter: Interpreter, functionToMock: BrsString) => {
+                // Create a function that accepts any number of parameters and returns invalid.
+                let mock = new Callable(
+                    functionToMock.toString(),
+                    ...Callable.variadic({
+                        signature: {
+                            args: [],
+                            returns: ValueKind.Invalid,
+                        },
+                        impl: (interpreter: Interpreter) => {
+                            return BrsInvalid.Instance;
+                        },
+                    })
+                );
 
-        return mockFunctionNode;
-    },
-});
+                let mockFunctionNode = new MockFunction(functionToMock, mock);
+                interpreter.environment.setMockFunction(
+                    functionToMock.toString(),
+                    mockFunctionNode.createMockFunction()
+                );
+
+                return mockFunctionNode;
+            },
+        },
+        {
+            signature: {
+                args: [
+                    new StdlibArgument("functionToMock", ValueKind.String),
+                    new StdlibArgument("mock", ValueKind.Callable),
+                ],
+                returns: ValueKind.Invalid,
+            },
+            impl: (interpreter: Interpreter, functionToMock: BrsString, mock: Callable) => {
+                let mockFunctionNode = new MockFunction(functionToMock, mock);
+                interpreter.environment.setMockFunction(
+                    functionToMock.toString(),
+                    mockFunctionNode.createMockFunction()
+                );
+
+                return mockFunctionNode;
+            },
+        },
+    ]
+);

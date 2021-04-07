@@ -422,7 +422,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             returns: ValueKind.Boolean,
         },
         impl: (_interpreter) => {
-            return BrsBoolean.from(this.intrinsic.value.length == 0);
+            return BrsBoolean.from(this.intrinsic.value.length === 0);
         },
     });
 

@@ -46,6 +46,7 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
                 this.decodeUri,
                 this.encodeUriComponent,
                 this.decodeUriComponent,
+                this.isEmpty,
             ],
             ifToStr: [this.toStr],
         });
@@ -411,6 +412,17 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
         },
         impl: (_interpreter) => {
             return new BrsString(decodeURIComponent(this.intrinsic.value));
+        },
+    });
+
+    /** returns whether string is empty or not */
+    private isEmpty = new Callable("isEmpty", {
+        signature: {
+            args: [],
+            returns: ValueKind.Boolean,
+        },
+        impl: (_interpreter) => {
+            return BrsBoolean.from(this.intrinsic.value.length === 0);
         },
     });
 

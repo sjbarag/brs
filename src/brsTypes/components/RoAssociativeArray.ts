@@ -36,6 +36,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
                 this.keys,
                 this.items,
                 this.lookup,
+                this.lookupCI,
                 this.setmodecasesensitive,
             ],
             ifEnum: [this.isEmpty],
@@ -77,7 +78,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             .map((value: BrsType) => value);
     }
 
-    get(index: BrsType) {
+    get(index: BrsType, forceCaseInsensitive = false) {
         if (index.kind !== ValueKind.String) {
             throw new Error("Associative array indexes must be strings");
         }
@@ -93,7 +94,10 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         // method with the desired name separately? That last bit would work but it's pretty gross.
         // That'd allow roArrays to have methods with the methods not accessible via `arr["count"]`.
         // Same with RoAssociativeArrays I guess.
-        let indexValue = this.modeCaseSensitive ? index.value : index.value.toLowerCase();
+        let indexValue =
+            this.modeCaseSensitive && !forceCaseInsensitive
+                ? index.value
+                : index.value.toLowerCase();
         return this.elements.get(indexValue) || this.getMethod(index.value) || BrsInvalid.Instance;
     }
 
@@ -232,6 +236,17 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         impl: (interpreter: Interpreter, key: BrsString) => {
             let lKey = key.value;
             return this.get(new BrsString(lKey));
+        },
+    });
+
+    private lookupCI = new Callable("lookupCI", {
+        signature: {
+            args: [new StdlibArgument("key", ValueKind.String)],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, key: BrsString) => {
+            let lKey = key.value;
+            return this.get(new BrsString(lKey), true);
         },
     });
 

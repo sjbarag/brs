@@ -372,6 +372,20 @@ describe("RoAssociativeArray", () => {
 
                 result2 = aa.get(new BrsString("KeY2"));
                 expect(result2).toBe(v2);
+
+                // check lookupCI method
+                let lookupCI = aa.getMethod("lookupCI");
+                expect(lookupCI).toBeTruthy();
+
+                addreplace.call(interpreter, new BrsString("key2"), v1);
+                let result = lookup.call(interpreter, new BrsString("key2"));
+                expect(result).toBe(v1);
+
+                result = lookupCI.call(interpreter, new BrsString("KEY2"));
+                expect(result).toBe(v1);
+
+                result = lookupCI.call(interpreter, new BrsString("Key2"));
+                expect(result).toBe(v1);
             });
         });
     });

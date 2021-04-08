@@ -60,6 +60,8 @@ describe("end to end brightscript functions", () => {
             "true",
             "can look up elements (brackets): ",
             "true",
+            "can case insensitive look up elements: ",
+            "true",
             "can check for existence: ",
             "true",
             "items() example key: ",

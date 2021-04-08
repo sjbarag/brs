@@ -327,6 +327,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.keys,
                 this.items,
                 this.lookup,
+                this.lookupCI,
             ],
             ifSGNodeField: [
                 this.addfield,
@@ -800,6 +801,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             return this.get(new BrsString(lKey));
         },
     });
+
+    private lookupCI = new Callable("lookupCI", this.lookup.signatures[0]);
 
     /** Adds a new field to the node, if the field already exists it doesn't change the current value. */
     private addfield = new Callable("addfield", {

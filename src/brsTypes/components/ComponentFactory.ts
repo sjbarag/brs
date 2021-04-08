@@ -18,7 +18,6 @@ import {
 
 export enum BrsComponentName {
     Node = "Node",
-    Node_lowerCase = "node",
     Group = "Group",
     LayoutGroup = "LayoutGroup",
     Rectangle = "Rectangle",
@@ -68,8 +67,6 @@ export class ComponentFactory {
             case BrsComponentName.LayoutGroup:
                 return new LayoutGroup([], name);
             case BrsComponentName.Node:
-                return new RoSGNode([], name);
-            case BrsComponentName.Node_lowerCase:
                 return new RoSGNode([], name);
             case BrsComponentName.Rectangle:
                 return new Rectangle([], name);

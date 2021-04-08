@@ -38,12 +38,12 @@ describe("RoSGNode", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
+    id: ""
     array: <Component: roArray>
     associative-array: <Component: roAssociativeArray>
     node: <Component: roSGNode:Node>
     boolean: true
-    string: a string
+    string: "a string"
     number: -1
 }`
             );

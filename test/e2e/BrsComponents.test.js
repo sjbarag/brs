@@ -206,8 +206,8 @@ describe("end to end brightscript functions", () => {
                 "getAttributes() = ",
                 `<Component: roAssociativeArray> =\n` +
                     `{\n` +
-                    `    id: someId\n` +
-                    `    attr1: 0\n` +
+                    `    id: "someId"\n` +
+                    `    attr1: "0"\n` +
                     `}`,
                 'getNamedElementsCi("child1") count = ',
                 "2",

@@ -13,7 +13,7 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
+    id: ""
 }`
             );
         });
@@ -145,8 +145,8 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
-    DESCRIPTION: 
+    id: ""
+    DESCRIPTION: ""
 }`
                 );
             });
@@ -163,8 +163,8 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
-    DESCRIPTION: 
+    id: ""
+    DESCRIPTION: ""
 }`
                 );
             });
@@ -185,8 +185,8 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
-    DESCRIPTION: new value
+    id: ""
+    DESCRIPTION: "new value"
 }`
                 );
             });
@@ -208,8 +208,8 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
-    DESCRIPTION: new value
+    id: ""
+    DESCRIPTION: "new value"
 }`
                 );
             });
@@ -226,8 +226,8 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
-    DESCRIPTION: 
+    id: ""
+    DESCRIPTION: ""
 }`
                 );
             });
@@ -244,8 +244,8 @@ describe("ContentNode.js", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
-    DESCRIPTION: 
+    id: ""
+    DESCRIPTION: ""
 }`
                 );
             });

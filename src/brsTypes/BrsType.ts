@@ -255,6 +255,7 @@ export class BrsString implements BrsValue, Comparable, Boxable {
     }
 
     toString(parent?: BrsType) {
+        if (parent) return `"${this.value}"`;
         return this.value;
     }
 

@@ -58,9 +58,10 @@ export interface BrsIterable {
     /**
      * Retrieves an element from this component at the provided `index`.
      * @param index the index in this component from which to retrieve the desired element.
+     * @param isCaseSensitiveGet determinate whether operation of getting should be case sensitive or not.
      * @returns the element at `index` if one exists, otherwise throws an Error.
      */
-    get(index: BrsType): BrsType;
+    get(index: BrsType, isCaseSensitiveGet?: boolean): BrsType;
 
-    set(index: BrsType, value: BrsType): BrsInvalid;
+    set(index: BrsType, value: BrsType, isCaseSensitiveSet?: boolean): BrsInvalid;
 }

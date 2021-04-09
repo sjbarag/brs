@@ -76,6 +76,14 @@ describe("end to end brightscript functions", () => {
             "value1",
             "can empty itself: ",
             "true",
+            "saved key: ",
+            "DD",
+            "saved key after accessing by dot: ",
+            "dd",
+            "saved key after accessing by index: ",
+            "Dd",
+            "AA keys size: ",
+            "1",
         ]);
     });
 

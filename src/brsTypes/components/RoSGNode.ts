@@ -436,7 +436,39 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return this.getMethod(index.value) || BrsInvalid.Instance;
     }
 
-    set(index: BrsType, value: BrsType, alwaysNotify: boolean = false, kind?: FieldKind) {
+    set(index: BrsType, value: BrsType) {
+        if (index.kind !== ValueKind.String) {
+            throw new Error("RoSGNode indexes must be strings");
+        }
+
+        let mapKey = index.value.toLowerCase();
+        let field = this.fields.get(mapKey);
+
+        if (!field) {
+            // TODO: change to using interpreter.stderr
+            console.warn(
+                `=================================================================\n` +
+                    `Warning occurred while setting a field of an RoSGNode\n` +
+                    `-- Tried to set nonexistent field "${mapKey}" of a "${this.nodeSubtype}" node\n` +
+                    `=================================================================\n`
+            );
+        } else if (field.canAcceptValue(value)) {
+            // Fields are not overwritten if they haven't the same type.
+            field.setValue(value);
+            this.fields.set(mapKey, field);
+        } else {
+            console.warn(`BRIGHTSCRIPT: ERROR: roSGNode.AddReplace: "${field}": Type mismatch`);
+        }
+
+        return BrsInvalid.Instance;
+    }
+
+    private _addField(
+        index: BrsType,
+        value: BrsType,
+        alwaysNotify: boolean = false,
+        kind?: FieldKind
+    ) {
         if (index.kind !== ValueKind.String) {
             throw new Error("RoSGNode indexes must be strings");
         }
@@ -445,19 +477,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         let fieldType = kind || FieldKind.fromBrsType(value);
         let field = this.fields.get(mapKey);
 
-        if (!field) {
-            // RBI does not create a new field if the value isn't valid.
-            if (fieldType) {
-                field = new Field(value, fieldType, alwaysNotify);
-                this.fields.set(mapKey, field);
-            }
-        } else if (field.canAcceptValue(value)) {
-            // Fields are not overwritten if they haven't the same type.
-            field.setValue(value);
+        if (!field && fieldType) {
+            field = new Field(value, fieldType, alwaysNotify);
             this.fields.set(mapKey, field);
         }
-
-        return BrsInvalid.Instance;
     }
 
     getParent() {
@@ -802,6 +825,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /** Given a key, returns the value associated with that key. This method is case insensitive. */
     private lookupCI = new Callable("lookupCI", this.lookup.signatures[0]);
 
     /** Adds a new field to the node, if the field already exists it doesn't change the current value. */
@@ -824,7 +848,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let fieldKind = FieldKind.fromString(type.value);
 
             if (defaultValue !== Uninitialized.Instance && !this.fields.has(fieldname.value)) {
-                this.set(fieldname, defaultValue, alwaysnotify.toBoolean(), fieldKind);
+                this._addField(fieldname, defaultValue, alwaysnotify.toBoolean(), fieldKind);
             }
 
             return BrsBoolean.True;
@@ -845,7 +869,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             fields.getValue().forEach((value, key) => {
                 let fieldName = new BrsString(key);
                 if (!this.fields.has(key)) {
-                    this.set(fieldName, value);
+                    this._addField(fieldName, value);
                 }
             });
 

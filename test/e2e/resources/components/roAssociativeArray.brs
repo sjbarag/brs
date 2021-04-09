@@ -25,4 +25,13 @@ sub main()
 
     aa.clear()
     print "can empty itself: " aa.isEmpty()                     ' => true
+
+    ' check mimic of RBI AA keys saving logic
+    aa = {"dd": 0, "DD":1}
+    print "saved key: "aa.keys()[0] ' => DD
+    aa.dd = 2
+    print "saved key after accessing by dot: "aa.keys()[0] ' => dd
+    aa["Dd"] = 3
+    print "saved key after accessing by index: "aa.keys()[0] ' => Dd
+    print "AA keys size: " aa.keys().count() ' => 1
 end sub

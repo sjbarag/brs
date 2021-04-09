@@ -259,7 +259,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
 
     /** Given a key, returns the value associated with that key.
      * This method is case insensitive either-or case sensitive, depends on whether `setModeCasesensitive` was called or not.
-     * */
+     */
     private lookup = new Callable("lookup", {
         signature: {
             args: [new StdlibArgument("key", ValueKind.String)],

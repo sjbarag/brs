@@ -10,12 +10,17 @@
     publish: {
       runs-on: "ubuntu-latest",
       steps: [
-        { uses: "actions/checkout@v2" },
+        {
+          uses: "actions/checkout@v2",
+          with: {
+            fetch-depth: 2
+          }
+        },
         {
           id: "commits_since_last_nightly",
           name: "Check for commits since last night's build",
           run: "test -n \"$(git log --oneline --since '25 hours ago')\"",
-          "continue-on-error": true
+          continue-on-error: true
         },
         {
           name: "Set up node 12",

@@ -2,8 +2,8 @@
   name: "Nightly build",
   on: {
     schedule: [
-      # build at ~00:05 PT daily (startup delays may affect that)
-      { cron: "05 17 * * *" }
+      # build at ~1:32pm PT daily (startup delays may affect that)
+      { cron: "32 20 * * *" }
     ]
   },
   jobs: {
@@ -13,9 +13,11 @@
         {
           uses: "actions/checkout@v2",
           with: {
-            fetch-depth: 2
+            fetch-depth: 2,
+            ref: "main"
           }
         },
+        { run: "git log --oneline" },
         {
           id: "commits_since_last_nightly",
           name: "Check for commits since last night's build",

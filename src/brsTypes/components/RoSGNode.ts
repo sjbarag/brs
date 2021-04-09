@@ -301,7 +301,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly defaultFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
-        { name: "focusedChild", type: "node", alwaysNotify: true },
+        { name: "focusedchild", type: "node", alwaysNotify: true },
         { name: "id", type: "string" },
     ];
     m: RoAssociativeArray = new RoAssociativeArray([]);

@@ -64,6 +64,7 @@ export * from "./components/ArrayGrid";
 export * from "./components/MarkupGrid";
 export * from "./components/ContentNode";
 export * from "./components/Timer";
+export * from "./components/RoAppInfo";
 
 /**
  * Determines whether or not the given value is a number.

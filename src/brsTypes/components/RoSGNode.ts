@@ -1472,7 +1472,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 if (this.parent instanceof RoSGNode) {
                     this.parent.removeChildByReference(this);
                 }
-                this.setParent(newParent);
+                newParent.appendChildToParent(this);
                 return BrsBoolean.True;
             }
             return BrsBoolean.False;

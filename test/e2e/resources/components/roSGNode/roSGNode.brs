@@ -100,7 +100,7 @@ sub init()
     print "parent child count: " parentNode.getChildCount()         ' => 4
     childNode3.reparent(childNode4, false)
     print "new parent id: " childNode3.getParent().id         ' => new node
-
+    print "new child count after reparent: " childNode4.getChildCount()    ' => 1
     'ifNodeDict tests
     ' no node exists
     currentNode = createObject("roSGNode", "Node")

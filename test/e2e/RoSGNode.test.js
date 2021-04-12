@@ -174,6 +174,8 @@ describe("components/roSGNode", () => {
             "4",
             "new parent id: ",
             "new node",
+            "new child count after reparent: ",
+            "1",
             //ifNodeDict tests
             "find node that does not exist: ",
             "invalid",

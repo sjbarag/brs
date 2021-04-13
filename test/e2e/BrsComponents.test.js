@@ -719,4 +719,17 @@ describe("end to end brightscript functions", () => {
             "",
         ]);
     });
+
+    test("components/roAppInfo.brs", async () => {
+        await execute([resourceFile("components", "roAppInfo.brs")], outputStreams);
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "dev",
+            "true",
+            "..",
+            "",
+            "",
+            "34c6fceca75e456f25e7e99531e2425c6c1de443",
+            "",
+        ]);
+    });
 });

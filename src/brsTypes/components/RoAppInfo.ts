@@ -8,7 +8,7 @@ import * as PP from "../../preprocessor";
 export class RoAppInfo extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
 
-    private readonly manifest = PP.getManifestSync(process.cwd() + "/test/");
+    private readonly manifest = PP.getManifestSync(process.cwd());
 
     constructor() {
         super("roAppInfo");

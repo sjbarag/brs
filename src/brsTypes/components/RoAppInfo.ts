@@ -69,14 +69,16 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         },
         impl: (interpreter: Interpreter) => {
             let manifest = this.manifest;
-            let majorV =
-                manifest.get("major_version") != undefined ? manifest.get("major_version") : "";
-            let minorV =
-                manifest.get("minor_version") != undefined ? manifest.get("minor_version") : "";
-            let buildV =
-                manifest.get("build_version") != undefined ? manifest.get("build_version") : "";
 
-            let version = majorV + "." + minorV + "." + buildV;
+            let subVersions = ["major_version", "minor_version", "build_version"];
+            let version = "";
+
+            for (let i = 0; i < subVersions.length; i++) {
+                let subVersion = manifest.get(subVersions[i]);
+
+                if (subVersion !== undefined) version += subVersion;
+                if (i < subVersions.length - 1) version += ".";
+            }
 
             return new BrsString(version);
         },
@@ -90,7 +92,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         impl: (interpreter: Interpreter) => {
             let title = this.manifest.get("title");
 
-            return title != undefined ? new BrsString(title.toString()) : new BrsString("");
+            return title !== undefined ? new BrsString(title.toString()) : new BrsString("");
         },
     });
 
@@ -102,7 +104,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         impl: (interpreter: Interpreter) => {
             let subtitle = this.manifest.get("subtitle");
 
-            return subtitle != undefined ? new BrsString(subtitle.toString()) : new BrsString("");
+            return subtitle !== undefined ? new BrsString(subtitle.toString()) : new BrsString("");
         },
     });
 
@@ -132,7 +134,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         impl: (interpreter: Interpreter, key: BrsString) => {
             let value = this.manifest.get(key.value);
 
-            return value != undefined ? new BrsString(value.toString()) : new BrsString("");
+            return value !== undefined ? new BrsString(value.toString()) : new BrsString("");
         },
     });
 }

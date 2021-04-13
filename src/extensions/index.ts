@@ -30,3 +30,7 @@ export const _brs_ = new RoAssociativeArray([
     { name: new BrsString("triggerKeyEvent"), value: triggerKeyEvent },
     { name: new BrsString("getStackTrace"), value: GetStackTrace },
 ]);
+
+export function _resetTestData() {
+    _brs_.set(new BrsString("testData"), new RoAssociativeArray([]));
+}

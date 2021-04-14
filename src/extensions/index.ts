@@ -31,6 +31,7 @@ export const _brs_ = new RoAssociativeArray([
     { name: new BrsString("getStackTrace"), value: GetStackTrace },
 ]);
 
-export function _resetTestData() {
+/** resets _brs_.testData values to `{}` in brightscript representation */
+export function resetTestData() {
     _brs_.set(new BrsString("testData"), new RoAssociativeArray([]));
 }

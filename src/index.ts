@@ -16,7 +16,7 @@ import {
 } from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
-import { _resetTestData } from "./extensions";
+export { resetTestData } from "./extensions";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
 import { CoverageCollector } from "./coverage";
@@ -326,9 +326,4 @@ function run(
         //options.stderr.write(e.message);
         return;
     }
-}
-
-/** resets _brs_.testData values to `{}` */
-export function resetTestData() {
-    _resetTestData();
 }

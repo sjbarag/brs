@@ -76,7 +76,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             .map((value: BrsType) => value);
     }
 
-    get(index: BrsType, isCaseSensitiveGet = false) {
+    get(index: BrsType, isCaseSensitive = false) {
         if (index.kind !== ValueKind.String) {
             throw new Error("Associative array indexes must be strings");
         }
@@ -93,13 +93,13 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         // That'd allow roArrays to have methods with the methods not accessible via `arr["count"]`.
         // Same with RoAssociativeArrays I guess.
         return (
-            this.findElement(index.value, isCaseSensitiveGet) ||
+            this.findElement(index.value, isCaseSensitive) ||
             this.getMethod(index.value) ||
             BrsInvalid.Instance
         );
     }
 
-    set(index: BrsType, value: BrsType, isCaseSensitiveSet = false) {
+    set(index: BrsType, value: BrsType, isCaseSensitive = false) {
         if (index.kind !== ValueKind.String) {
             throw new Error("Associative array indexes must be strings");
         }
@@ -109,10 +109,11 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             this.elements.delete(oldKey);
         }
 
-        let indexValue = isCaseSensitiveSet ? index.value : index.value.toLowerCase();
+        let indexValue = isCaseSensitive ? index.value : index.value.toLowerCase();
         this.elements.set(indexValue, value);
         return BrsInvalid.Instance;
     }
+
     /** if AA is in insensitive mode, it means that we should do insensitive search of real key */
     private findElementKey(elementKey: string, isCaseSensitiveFind = false) {
         let useCaseSensitiveSearch = this.modeCaseSensitive && isCaseSensitiveFind;

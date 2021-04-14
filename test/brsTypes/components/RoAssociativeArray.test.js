@@ -374,6 +374,7 @@ describe("RoAssociativeArray", () => {
                 expect(result2).toBe(v2);
             });
         });
+
         describe("lookupCI", () => {
             it("changes lookups to case sensitive mode", () => {
                 let v1 = new BrsString("value1");

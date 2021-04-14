@@ -122,4 +122,12 @@ describe("end to end functions", () => {
             "false",
         ]);
     });
+
+    test("function/casing.brs", async () => {
+        await execute([resourceFile("function", "casing.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "but I'm only interested in...",
+        ]);
+    });
 });

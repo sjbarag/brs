@@ -12,26 +12,26 @@ describe("MiniKeyboard", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
+    id: ""
     visible: true
     opacity: 1
     translation: <Component: roArray>
     rotation: 0
     scale: <Component: roArray>
     scalerotatecenter: <Component: roArray>
-    childrenderorder: renderLast
+    childrenderorder: "renderLast"
     inheritparenttransform: true
     inheritparentopacity: true
     clippingrect: <Component: roArray>
     renderpass: 0
     muteaudioguide: false
     enablerendertracking: false
-    rendertracking: disabled
-    text: 
-    keycolor: 0x000000FF
-    focusedkeycolor: 0x000000FF
-    keyboardbitmapuri: 
-    focusbitmapuri: 
+    rendertracking: "disabled"
+    text: ""
+    keycolor: "0x000000FF"
+    focusedkeycolor: "0x000000FF"
+    keyboardbitmapuri: ""
+    focusbitmapuri: ""
     texteditbox: <Component: roSGNode:TextEditBox>
     showtexteditbox: true
     lowercase: true

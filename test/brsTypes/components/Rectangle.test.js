@@ -12,24 +12,24 @@ describe("Rectangle", () => {
     change: <Component: roAssociativeArray>
     focusable: false
     focusedchild: invalid
-    id: 
+    id: ""
     visible: true
     opacity: 1
     translation: <Component: roArray>
     rotation: 0
     scale: <Component: roArray>
     scalerotatecenter: <Component: roArray>
-    childrenderorder: renderLast
+    childrenderorder: "renderLast"
     inheritparenttransform: true
     inheritparentopacity: true
     clippingrect: <Component: roArray>
     renderpass: 0
     muteaudioguide: false
     enablerendertracking: false
-    rendertracking: disabled
+    rendertracking: "disabled"
     width: 0
     height: 0
-    color: 0xFFFFFFFF
+    color: "0xFFFFFFFF"
     blendingenabled: true
 }`
             );

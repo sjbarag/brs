@@ -70,15 +70,11 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         impl: (interpreter: Interpreter) => {
             let manifest = this.manifest;
 
-            let subVersions = ["major_version", "minor_version", "build_version"];
-            let version = "";
-
-            for (let i = 0; i < subVersions.length; i++) {
-                let subVersion = manifest.get(subVersions[i]);
-
-                if (subVersion !== undefined) version += subVersion;
-                if (i < subVersions.length - 1) version += ".";
-            }
+            let version = ["major_version", "minor_version", "build_version"]
+                .map((key) => manifest.get(key))
+                .filter((key) => !!key)
+                .join(".");
+            version = version !== "" ? version : "..";
 
             return new BrsString(version);
         },

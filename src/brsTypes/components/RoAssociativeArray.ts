@@ -156,20 +156,21 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         impl: (interpreter: Interpreter, str: BrsString) => {
             let key = this.findElementKey(str.value, this.modeCaseSensitive);
             let deleted = key ? this.elements.delete(key) : false;
-            this.keyMap.delete(str.value.toLowerCase());
 
-            // if we have {"DD": 0, "dD": 0},  keyMap["dd"] is pointed to "DD",
-            // and we delets it, then we should find another value for case insensitive accessing ("dD")
-            if (this.modeCaseSensitive) {
-                let lKey = str.value.toLowerCase();
-                for (let key of this.elements.keys()) {
-                    if (key.toLowerCase() === lKey) {
-                        this.keyMap.set(lKey, key);
-                        break;
+            let lKey = str.value.toLowerCase();
+            if (this.keyMap.get(lKey) === key) {
+                this.keyMap.delete(lKey);
+                // if we have {"DD": 0, "dD": 0},  keyMap["dd"] is pointed to "DD",
+                // and we delets it, then we should find another value for case insensitive accessing ("dD")
+                if (this.modeCaseSensitive) {
+                    for (let key of this.elements.keys()) {
+                        if (key.toLowerCase() === lKey) {
+                            this.keyMap.set(lKey, key);
+                            break;
+                        }
                     }
                 }
             }
-
             return BrsBoolean.from(deleted);
         },
     });

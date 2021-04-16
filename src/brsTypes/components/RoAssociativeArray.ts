@@ -17,6 +17,10 @@ export interface AAMember {
 export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     elements = new Map<string, BrsType>();
+    /** keyMap - maps lowercased key to original one which used in this.elements to store value
+     * Main benefit of it is fast case insensitive access
+     */
+    keyMap = new Map<string, string>();
     private modeCaseSensitive: boolean = false;
 
     constructor(elements: AAMember[]) {
@@ -111,25 +115,18 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
 
         let indexValue = isCaseSensitive ? index.value : index.value.toLowerCase();
         this.elements.set(indexValue, value);
+        this.keyMap.set(index.value.toLowerCase(), indexValue);
+
         return BrsInvalid.Instance;
     }
 
     /** if AA is in insensitive mode, it means that we should do insensitive search of real key */
     private findElementKey(elementKey: string, isCaseSensitiveFind = false) {
-        let useCaseSensitiveSearch = this.modeCaseSensitive && isCaseSensitiveFind;
-        elementKey = useCaseSensitiveSearch ? elementKey : elementKey.toLowerCase();
-        if (this.elements.has(elementKey)) {
+        if (this.modeCaseSensitive && isCaseSensitiveFind) {
             return elementKey;
+        } else {
+            return this.keyMap.get(elementKey.toLowerCase());
         }
-
-        let realElementKey = undefined;
-        for (let key of this.elements.keys()) {
-            if ((useCaseSensitiveSearch ? key : key.toLowerCase()) === elementKey) {
-                realElementKey = key;
-                break;
-            }
-        }
-        return realElementKey;
     }
 
     private findElement(elementKey: string, isCaseSensitiveFind = false) {
@@ -145,6 +142,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         },
         impl: (interpreter: Interpreter) => {
             this.elements.clear();
+            this.keyMap.clear();
             return BrsInvalid.Instance;
         },
     });
@@ -158,6 +156,20 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         impl: (interpreter: Interpreter, str: BrsString) => {
             let key = this.findElementKey(str.value, this.modeCaseSensitive);
             let deleted = key ? this.elements.delete(key) : false;
+            this.keyMap.delete(str.value.toLowerCase());
+
+            // if we have {"DD": 0, "dD": 0},  keyMap["dd"] is pointed to "DD",
+            // and we delets it, then we should find another value for case insensitive accessing ("dD")
+            if (this.modeCaseSensitive) {
+                let lKey = str.value.toLowerCase();
+                for (let key of this.elements.keys()) {
+                    if (key.toLowerCase() === lKey) {
+                        this.keyMap.set(lKey, key);
+                        break;
+                    }
+                }
+            }
+
             return BrsBoolean.from(deleted);
         },
     });
@@ -267,8 +279,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter, key: BrsString) => {
-            let lKey = key.value;
-            return this.get(new BrsString(lKey), true);
+            return this.get(key, true);
         },
     });
 
@@ -279,8 +290,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter, key: BrsString) => {
-            let lKey = key.value;
-            return this.get(new BrsString(lKey));
+            return this.get(key);
         },
     });
 

@@ -8,7 +8,7 @@ import * as PP from "../../preprocessor";
 export class RoAppInfo extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
 
-    private readonly manifest = PP.getManifestSync(process.cwd());
+    private static _manifest = PP.getManifestSync(process.cwd());
 
     constructor() {
         super("roAppInfo");
@@ -68,7 +68,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let manifest = this.manifest;
+            let manifest = RoAppInfo._manifest;
 
             let version = ["major_version", "minor_version", "build_version"]
                 .map((key) => manifest.get(key))
@@ -86,7 +86,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let title = this.manifest.get("title");
+            let title = RoAppInfo._manifest.get("title");
 
             return title !== undefined ? new BrsString(title.toString()) : new BrsString("");
         },
@@ -98,7 +98,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let subtitle = this.manifest.get("subtitle");
+            let subtitle = RoAppInfo._manifest.get("subtitle");
 
             return subtitle !== undefined ? new BrsString(subtitle.toString()) : new BrsString("");
         },
@@ -128,9 +128,14 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter, key: BrsString) => {
-            let value = this.manifest.get(key.value);
+            let value = RoAppInfo._manifest.get(key.value);
 
             return value !== undefined ? new BrsString(value.toString()) : new BrsString("");
         },
     });
+
+    /** Sets the manifest for Brightscript functions. */
+    public static set manifest(manifest: PP.Manifest) {
+        RoAppInfo._manifest = manifest;
+    }
 }

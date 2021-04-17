@@ -38,23 +38,21 @@ describe("RoAppInfo", () => {
 
     describe("getVersion", () => {
         it("returns version based on data in the manifest file", () => {
-            manifest = new Map([
+            RoAppInfo.manifest = new Map([
                 ["major_version", "4"],
                 ["minor_version", "3"],
                 ["build_version", "0"],
             ]);
-
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: manifest });
             let getVersion = appInfo.getMethod("getVersion");
 
             expect(getVersion).toBeTruthy();
             expect(getVersion.call(interpreter)).toEqual(new BrsString("4.3.0"));
         });
 
-        it("returns two dots if versions aren't defined", () => {
+        it("returns two dots if sub versions aren't defined", () => {
+            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: new Map() });
             let getVersion = appInfo.getMethod("getVersion");
 
             expect(getVersion).toBeTruthy();
@@ -64,10 +62,8 @@ describe("RoAppInfo", () => {
 
     describe("getTitle", () => {
         it("returns title based on data in the manifest file", () => {
-            manifest = new Map([["title", "Some title"]]);
-
+            RoAppInfo.manifest = new Map([["title", "Some title"]]);
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: manifest });
             let getTitle = appInfo.getMethod("getTitle");
 
             expect(getTitle).toBeTruthy();
@@ -75,8 +71,8 @@ describe("RoAppInfo", () => {
         });
 
         it("returns an empty string if title isn't defined", () => {
+            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: new Map() });
             let getTitle = appInfo.getMethod("getTitle");
 
             expect(getTitle).toBeTruthy();
@@ -86,10 +82,8 @@ describe("RoAppInfo", () => {
 
     describe("getSubtitle", () => {
         it("returns subtitle based on data in the manifest file", () => {
-            manifest = new Map([["subtitle", "Some message"]]);
-
+            RoAppInfo.manifest = new Map([["subtitle", "Some message"]]);
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: manifest });
             let getSubtitle = appInfo.getMethod("getSubtitle");
 
             expect(getSubtitle).toBeTruthy();
@@ -97,8 +91,8 @@ describe("RoAppInfo", () => {
         });
 
         it("returns an empty string if subtitle isn't defined", () => {
+            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: new Map() });
             let getSubtitle = appInfo.getMethod("getSubtitle");
 
             expect(getSubtitle).toBeTruthy();
@@ -120,10 +114,8 @@ describe("RoAppInfo", () => {
 
     describe("getValue", () => {
         it("returns value based on data in the manifest file", () => {
-            manifest = new Map([["some_field", "Some text"]]);
-
+            RoAppInfo.manifest = new Map([["some_field", "Some text"]]);
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: manifest });
             let getValue = appInfo.getMethod("getValue");
 
             expect(getValue).toBeTruthy();
@@ -133,8 +125,8 @@ describe("RoAppInfo", () => {
         });
 
         it("returns an empty string if field isn't defined", () => {
+            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
-            Object.defineProperty(appInfo, "manifest", { value: new Map() });
             let getValue = appInfo.getMethod("getValue");
 
             expect(getValue).toBeTruthy();

@@ -7,8 +7,10 @@ import {
     RoDeviceInfo,
     BrsInvalid,
     StdlibArgument,
+    RoAppInfo,
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
+import * as PP from "../preprocessor";
 
 export const Process = new RoAssociativeArray([
     {
@@ -36,6 +38,22 @@ export const Process = new RoAssociativeArray([
             },
             impl: (_: Interpreter, newLocale: BrsString) => {
                 RoDeviceInfo.locale = newLocale.value;
+                return BrsInvalid.Instance;
+            },
+        }),
+    },
+    {
+        name: new BrsString("setManifest"),
+        value: new Callable("setManifest", {
+            signature: {
+                returns: ValueKind.Invalid,
+                args: [new StdlibArgument("path", ValueKind.String)],
+            },
+            // Specify the root directory in which a `manifest` file is expected or set an empty string to use default root folder.
+            impl: (_: Interpreter, path: BrsString) => {
+                let root = process.cwd() + path.toString();
+
+                RoAppInfo.manifest = PP.getManifestSync(root);
                 return BrsInvalid.Instance;
             },
         }),

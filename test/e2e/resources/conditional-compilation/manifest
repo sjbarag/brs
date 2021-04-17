@@ -1,2 +1,8 @@
 name=A manifest test
 bs_const=lorem=false;another=false
+title=Some title
+subtitle= subtitle
+major_version=3
+minor_version=1
+build_version=2
+some_field=Some text

@@ -74,6 +74,8 @@ describe("end to end brightscript functions", () => {
             "value1",
             "lookup uses mode case too",
             "value1",
+            "lookupCI ignore mode case",
+            "value1",
             "can empty itself: ",
             "true",
             "saved key: ",

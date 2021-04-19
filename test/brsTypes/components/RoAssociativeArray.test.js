@@ -379,6 +379,7 @@ describe("RoAssociativeArray", () => {
             it("changes lookups to case sensitive mode", () => {
                 let v1 = new BrsString("value1");
                 let v2 = new BrsString("value2");
+                let v3 = new BrsString("value3");
 
                 let aa = new RoAssociativeArray([{ name: new BrsString("key1"), value: v1 }]);
 
@@ -395,6 +396,8 @@ describe("RoAssociativeArray", () => {
 
                 // check lookupCI method
                 let lookupCI = aa.getMethod("lookupCI");
+                // RBI uses last value for key when uses lookupCI, if do not set new value it will use old v2 value
+                addreplace.call(interpreter, new BrsString("Key1"), v3);
                 expect(lookupCI).toBeTruthy();
 
                 let result = lookup.call(interpreter, new BrsString("key1"));
@@ -404,10 +407,10 @@ describe("RoAssociativeArray", () => {
                 expect(result).toBe(v2);
 
                 result = lookupCI.call(interpreter, new BrsString("kEy1"));
-                expect(result).toBe(v1);
+                expect(result).toBe(v3);
 
                 result = lookupCI.call(interpreter, new BrsString("KeY1"));
-                expect(result).toBe(v1);
+                expect(result).toBe(v3);
             });
         });
     });

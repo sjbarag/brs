@@ -17,8 +17,8 @@ export interface AAMember {
 export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     elements = new Map<string, BrsType>();
-    /** keyMap - maps lowercased key to original one which used in this.elements to store value
-     * Main benefit of it is fast case insensitive access
+    /** Maps lowercased element name to original name used in this.elements.
+     * Main benefit of it is fast, case-insensitive access.
      */
     keyMap = new Map<string, string>();
     private modeCaseSensitive: boolean = false;
@@ -161,7 +161,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             if (this.keyMap.get(lKey) === key) {
                 this.keyMap.delete(lKey);
                 // if we have {"DD": 0, "dD": 0},  keyMap["dd"] is pointed to "DD",
-                // and we delets it, then we should find another value for case insensitive accessing ("dD")
+                // and we delete it, then we should find another value for case insensitive accessing ("dD")
                 if (this.modeCaseSensitive) {
                     for (let key of this.elements.keys()) {
                         if (key.toLowerCase() === lKey) {
@@ -187,7 +187,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             returns: ValueKind.Void,
         },
         impl: (interpreter: Interpreter, key: BrsString, value: BrsType) => {
-            this.set(key, value, true);
+            this.set(key, value, /* isCaseSensitive */ true);
             return BrsInvalid.Instance;
         },
     });

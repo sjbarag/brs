@@ -22,6 +22,7 @@ sub main()
     print "key is not found if sensitive mode is enabled" aa.doesExist("key1") ' => false
     print "key exits with correct casing" aa["KeY1"] ' => value1
     print "lookup uses mode case too" aa.lookup("KeY1") ' => value1
+    print "lookupCI ignore mode case " aa.lookupCI("kEy1") ' => value1
 
     aa.clear()
     print "can empty itself: " aa.isEmpty()                     ' => true

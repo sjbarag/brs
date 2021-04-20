@@ -724,9 +724,11 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roAppInfo.brs", async () => {
-        manifest = preprocessor.getManifestSync(process.cwd() + "/test/e2e/resources/conditional-compilation");
+        manifest = preprocessor.getManifestSync(
+            process.cwd() + "/test/e2e/resources/conditional-compilation"
+        );
         RoAppInfo.manifest = manifest;
-        
+
         await execute([resourceFile("components", "roAppInfo.brs")], outputStreams);
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "dev",

@@ -45,7 +45,7 @@ export class ComponentScopeResolver {
         let statementMemo = new Set(
             statements
                 .filter((_): _ is Stmt.Function => true)
-                .map((statement) => statement.name.text)
+                .map((statement) => statement.name.text.toLowerCase())
         );
         while (statementMap.length > 0) {
             let extendedFns = statementMap.shift() || [];
@@ -53,7 +53,7 @@ export class ComponentScopeResolver {
                 extendedFns
                     .filter((_): _ is Stmt.Function => true)
                     .filter((statement) => {
-                        let statementName = statement.name.text;
+                        let statementName = statement.name.text.toLowerCase();
                         let haveFnName = statementMemo.has(statementName);
                         if (!haveFnName) {
                             statementMemo.add(statementName);

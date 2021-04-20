@@ -258,6 +258,7 @@ describe("end to end brightscript functions", () => {
             "ExtendedChild init",
             "ExtendedComponent init",
             "ExtendedComponent start",
+            "BaseComponent caseinsensitivefunction",
             "true", //m.top.isSubtype("ExtendedComponent")
             "true", //m.top.isSubtype("BaseComponent")
             "true", //m.top.isSubtype("Node")

@@ -8,7 +8,7 @@ import * as PP from "../../preprocessor";
 export class RoAppInfo extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
 
-    private static _manifest = PP.getManifestSync(process.cwd());
+    private static manifest = PP.getManifestSync(process.cwd());
 
     constructor() {
         super("roAppInfo");
@@ -62,13 +62,17 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         },
     });
 
+    /**
+     * Returns the conglomerate version number from the manifest, as formatted major_version + minor_version + build_version.
+     * @returns {string} - Channel version number. e.g. "1.2.3" or ".." if not available
+     */
     private getVersion = new Callable("getVersion", {
         signature: {
             args: [],
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let manifest = RoAppInfo._manifest;
+            let manifest = RoAppInfo.manifest;
 
             let version = ["major_version", "minor_version", "build_version"]
                 .map((key) => manifest.get(key))
@@ -80,27 +84,35 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
         },
     });
 
+    /**
+     * Returns the title value from the manifest.
+     * @returns {string} - title of the channel
+     */
     private getTitle = new Callable("getTitle", {
         signature: {
             args: [],
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let title = RoAppInfo._manifest.get("title");
+            let title = RoAppInfo.manifest.get("title");
 
-            return title !== undefined ? new BrsString(title.toString()) : new BrsString("");
+            return title != null ? new BrsString(title.toString()) : new BrsString("");
         },
     });
 
+    /**
+     * Returns the subtitle value from the manifest.
+     * @returns {string} - possible subtitle configuration
+     */
     private getSubtitle = new Callable("getSubtitle", {
         signature: {
             args: [],
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let subtitle = RoAppInfo._manifest.get("subtitle");
+            let subtitle = RoAppInfo.manifest.get("subtitle");
 
-            return subtitle !== undefined ? new BrsString(subtitle.toString()) : new BrsString("");
+            return subtitle != null ? new BrsString(subtitle.toString()) : new BrsString("");
         },
     });
 
@@ -128,14 +140,9 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter, key: BrsString) => {
-            let value = RoAppInfo._manifest.get(key.value);
+            let value = RoAppInfo.manifest.get(key.value);
 
-            return value !== undefined ? new BrsString(value.toString()) : new BrsString("");
+            return value != null ? new BrsString(value.toString()) : new BrsString("");
         },
     });
-
-    /** Sets the manifest for Brightscript functions. */
-    public static set manifest(manifest: PP.Manifest) {
-        RoAppInfo._manifest = manifest;
-    }
 }

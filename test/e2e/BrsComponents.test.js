@@ -1,6 +1,9 @@
 const { execute } = require("../../lib/");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 const lolex = require("lolex");
+const brs = require("brs");
+const { RoAppInfo } = brs.types;
+const { preprocessor } = require("brs");
 
 describe("end to end brightscript functions", () => {
     let outputStreams;
@@ -721,6 +724,9 @@ describe("end to end brightscript functions", () => {
     });
 
     test("components/roAppInfo.brs", async () => {
+        manifest = preprocessor.getManifestSync(process.cwd() + "/test/e2e/resources/conditional-compilation");
+        RoAppInfo.manifest = manifest;
+        
         await execute([resourceFile("components", "roAppInfo.brs")], outputStreams);
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "dev",
@@ -730,13 +736,6 @@ describe("end to end brightscript functions", () => {
             "subtitle",
             "34c6fceca75e456f25e7e99531e2425c6c1de443",
             "Some text",
-            "dev",
-            "true",
-            "..",
-            "",
-            "",
-            "34c6fceca75e456f25e7e99531e2425c6c1de443",
-            "",
         ]);
     });
 });

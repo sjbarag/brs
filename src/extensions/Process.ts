@@ -7,7 +7,6 @@ import {
     RoDeviceInfo,
     BrsInvalid,
     StdlibArgument,
-    RoAppInfo,
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
 

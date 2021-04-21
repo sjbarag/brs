@@ -20,7 +20,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
     /** Maps lowercased element name to original name used in this.elements.
      * Main benefit of it is fast, case-insensitive access.
      */
-    keyMap = new Map<string, string>();
+    keyMap = new Map<string, Set<string>>();
     private modeCaseSensitive: boolean = false;
 
     constructor(elements: AAMember[]) {
@@ -111,11 +111,17 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         let oldKey = this.findElementKey(index.value);
         if (!this.modeCaseSensitive && oldKey) {
             this.elements.delete(oldKey);
+            this.keyMap.set(oldKey.toLowerCase(), new Set()); // clear key set cuz in insensitive mode we should have 1 key in set
         }
 
         let indexValue = isCaseSensitive ? index.value : index.value.toLowerCase();
         this.elements.set(indexValue, value);
-        this.keyMap.set(index.value.toLowerCase(), indexValue);
+
+        let lkey = index.value.toLowerCase();
+        if (!this.keyMap.has(lkey)) {
+            this.keyMap.set(lkey, new Set());
+        }
+        this.keyMap.get(lkey)?.add(indexValue);
 
         return BrsInvalid.Instance;
     }
@@ -125,7 +131,7 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
         if (this.modeCaseSensitive && isCaseSensitiveFind) {
             return elementKey;
         } else {
-            return this.keyMap.get(elementKey.toLowerCase());
+            return this.keyMap.get(elementKey.toLowerCase())?.values().next().value;
         }
     }
 
@@ -158,18 +164,14 @@ export class RoAssociativeArray extends BrsComponent implements BrsValue, BrsIte
             let deleted = key ? this.elements.delete(key) : false;
 
             let lKey = str.value.toLowerCase();
-            if (this.keyMap.get(lKey) === key) {
-                this.keyMap.delete(lKey);
-                // if we have {"DD": 0, "dD": 0},  keyMap["dd"] is pointed to "DD",
-                // and we delete it, then we should find another value for case insensitive accessing ("dD")
-                if (this.modeCaseSensitive) {
-                    for (let key of this.elements.keys()) {
-                        if (key.toLowerCase() === lKey) {
-                            this.keyMap.set(lKey, key);
-                            break;
-                        }
-                    }
+            if (this.modeCaseSensitive) {
+                let keySet = this.keyMap.get(lKey);
+                keySet?.delete(key);
+                if (keySet?.size === 0) {
+                    this.keyMap.delete(lKey);
                 }
+            } else {
+                this.keyMap.delete(lKey);
             }
             return BrsBoolean.from(deleted);
         },

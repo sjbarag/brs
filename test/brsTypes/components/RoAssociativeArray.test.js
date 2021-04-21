@@ -396,7 +396,7 @@ describe("RoAssociativeArray", () => {
 
                 // check lookupCI method
                 let lookupCI = aa.getMethod("lookupCI");
-                // RBI uses last value for key when uses lookupCI, if do not set new value it will use old v2 value
+
                 addreplace.call(interpreter, new BrsString("Key1"), v3);
                 expect(lookupCI).toBeTruthy();
 
@@ -407,10 +407,10 @@ describe("RoAssociativeArray", () => {
                 expect(result).toBe(v2);
 
                 result = lookupCI.call(interpreter, new BrsString("kEy1"));
-                expect(result).toBe(v3);
+                expect(result).toBe(v1);
 
                 result = lookupCI.call(interpreter, new BrsString("KeY1"));
-                expect(result).toBe(v3);
+                expect(result).toBe(v1);
             });
         });
     });

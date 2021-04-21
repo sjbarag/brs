@@ -16,7 +16,7 @@ import {
 } from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
-export { resetTestData } from "./extensions";
+import { resetTestData } from "./extensions";
 import * as BrsError from "./Error";
 import * as LexerParser from "./LexerParser";
 import { CoverageCollector } from "./coverage";
@@ -231,6 +231,7 @@ export async function createExecuteWithScope(
     interpreter.errors = [];
 
     return (filenames: string[], args: BrsTypes.BrsType[]) => {
+        resetTestData();
         let ast = lexParseSync(filenames, interpreter.options);
         let execErrors: BrsError.BrsError[] = [];
         let returnValue = interpreter.inSubEnv((subInterpreter) => {

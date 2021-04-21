@@ -7,6 +7,7 @@ describe("RoAppInfo", () => {
 
     beforeEach(() => {
         interpreter = new Interpreter();
+        interpreter.manifest = new Map();
     });
 
     describe("stringification", () => {
@@ -38,7 +39,7 @@ describe("RoAppInfo", () => {
 
     describe("getVersion", () => {
         it("returns version based on data in the manifest file", () => {
-            RoAppInfo.manifest = new Map([
+            interpreter.manifest = new Map([
                 ["major_version", "4"],
                 ["minor_version", "3"],
                 ["build_version", "0"],
@@ -51,7 +52,6 @@ describe("RoAppInfo", () => {
         });
 
         it("returns two dots if sub versions aren't defined", () => {
-            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
             let getVersion = appInfo.getMethod("getVersion");
 
@@ -62,7 +62,7 @@ describe("RoAppInfo", () => {
 
     describe("getTitle", () => {
         it("returns title based on data in the manifest file", () => {
-            RoAppInfo.manifest = new Map([["title", "Some title"]]);
+            interpreter.manifest = new Map([["title", "Some title"]]);
             let appInfo = new RoAppInfo();
             let getTitle = appInfo.getMethod("getTitle");
 
@@ -71,7 +71,6 @@ describe("RoAppInfo", () => {
         });
 
         it("returns an empty string if title isn't defined", () => {
-            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
             let getTitle = appInfo.getMethod("getTitle");
 
@@ -82,7 +81,7 @@ describe("RoAppInfo", () => {
 
     describe("getSubtitle", () => {
         it("returns subtitle based on data in the manifest file", () => {
-            RoAppInfo.manifest = new Map([["subtitle", "Some message"]]);
+            interpreter.manifest = new Map([["subtitle", "Some message"]]);
             let appInfo = new RoAppInfo();
             let getSubtitle = appInfo.getMethod("getSubtitle");
 
@@ -91,7 +90,6 @@ describe("RoAppInfo", () => {
         });
 
         it("returns an empty string if subtitle isn't defined", () => {
-            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
             let getSubtitle = appInfo.getMethod("getSubtitle");
 
@@ -114,7 +112,7 @@ describe("RoAppInfo", () => {
 
     describe("getValue", () => {
         it("returns value based on data in the manifest file", () => {
-            RoAppInfo.manifest = new Map([["some_field", "Some text"]]);
+            interpreter.manifest = new Map([["some_field", "Some text"]]);
             let appInfo = new RoAppInfo();
             let getValue = appInfo.getMethod("getValue");
 
@@ -125,7 +123,6 @@ describe("RoAppInfo", () => {
         });
 
         it("returns an empty string if field isn't defined", () => {
-            RoAppInfo.manifest = new Map();
             let appInfo = new RoAppInfo();
             let getValue = appInfo.getMethod("getValue");
 

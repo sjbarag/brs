@@ -3,12 +3,9 @@ import { BrsComponent } from "./BrsComponent";
 import { BrsType } from "..";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
-import * as PP from "../../preprocessor";
 
 export class RoAppInfo extends BrsComponent implements BrsValue {
     readonly kind = ValueKind.Object;
-
-    private static manifest = PP.getManifestSync(process.cwd());
 
     constructor() {
         super("roAppInfo");
@@ -72,7 +69,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let manifest = RoAppInfo.manifest;
+            let manifest = interpreter.manifest;
 
             let version = ["major_version", "minor_version", "build_version"]
                 .map((key) => manifest.get(key))
@@ -94,7 +91,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let title = RoAppInfo.manifest.get("title");
+            let title = interpreter.manifest.get("title");
 
             return title != null ? new BrsString(title.toString()) : new BrsString("");
         },
@@ -110,7 +107,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter) => {
-            let subtitle = RoAppInfo.manifest.get("subtitle");
+            let subtitle = interpreter.manifest.get("subtitle");
 
             return subtitle != null ? new BrsString(subtitle.toString()) : new BrsString("");
         },
@@ -140,7 +137,7 @@ export class RoAppInfo extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (interpreter: Interpreter, key: BrsString) => {
-            let value = RoAppInfo.manifest.get(key.value);
+            let value = interpreter.manifest.get(key.value);
 
             return value != null ? new BrsString(value.toString()) : new BrsString("");
         },

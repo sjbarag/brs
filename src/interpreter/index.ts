@@ -1,4 +1,5 @@
 import { EventEmitter } from "events";
+import * as PP from "../preprocessor";
 
 import {
     BrsType,
@@ -44,6 +45,7 @@ import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 import { ComponentDefinition } from "../componentprocessor";
 import pSettle from "p-settle";
 import { CoverageCollector } from "../coverage";
+import { ManifestValue } from "../preprocessor/Manifest";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -75,6 +77,7 @@ Object.freeze(defaultExecutionOptions);
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
     private coverageCollector: CoverageCollector | null = null;
+    private _manifest: PP.Manifest | undefined;
 
     readonly options: ExecutionOptions;
     readonly stdout: OutputProxy;
@@ -92,6 +95,14 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     get environment() {
         return this._environment;
+    }
+
+    get manifest() {
+        return this._manifest != null ? this._manifest : new Map<string, ManifestValue>();
+    }
+
+    set manifest(manifest: PP.Manifest) {
+        this._manifest = manifest;
     }
 
     setCoverageCollector(collector: CoverageCollector) {

@@ -150,6 +150,9 @@ async function loadFiles(options: Partial<ExecutionOptions>) {
         throw new Error("Unable to build interpreter.");
     }
 
+    // Store manifest as a property on the Interpreter for further reusing
+    interpreter.manifest = manifest;
+
     let componentLibraryInterpreters = (await pSettle(componentLibrariesToLoad))
         .filter((result) => result.isFulfilled)
         .map((result) => result.value!.interpreter);

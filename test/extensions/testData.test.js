@@ -2,6 +2,7 @@ const brs = require("brs");
 const { BrsString, BrsInvalid, ValueKind } = brs.types;
 const { Interpreter } = require("../../lib/interpreter");
 const { identifier } = require("../parser/ParserTests");
+const { resetTestData } = require("../../lib/extensions");
 
 describe("_brs_.testData", () => {
     it("check testData object", () => {
@@ -19,7 +20,7 @@ describe("_brs_.testData", () => {
             .get(new BrsString("testData"));
         expect(testData.elements.size).toBe(1);
 
-        brs.resetTestData(); // will clear testData for next new Interpreter instances
+        resetTestData(); // will clear testData for next new Interpreter instances
 
         testData = new Interpreter().environment
             .get(identifier("_brs_"))

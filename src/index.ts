@@ -234,7 +234,10 @@ export async function createExecuteWithScope(
     interpreter.errors = [];
 
     return (filenames: string[], args: BrsTypes.BrsType[]) => {
+        // Reset any mocks so that subsequent executions don't interfere with each other.
+        interpreter.environment.resetMocks();
         resetTestData();
+
         let ast = lexParseSync(filenames, interpreter.options);
         let execErrors: BrsError.BrsError[] = [];
         let returnValue = interpreter.inSubEnv((subInterpreter) => {

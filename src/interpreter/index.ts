@@ -1278,7 +1278,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         }
 
         try {
-            return source.get(index);
+            return source.get(index, true);
         } catch (err) {
             return this.addError(new BrsError(err.message, expression.closingSquare.location));
         }
@@ -1537,7 +1537,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         let value = this.evaluate(statement.value);
 
         try {
-            source.set(index, value);
+            source.set(index, value, true);
         } catch (err) {
             return this.addError(new BrsError(err.message, statement.closingSquare.location));
         }

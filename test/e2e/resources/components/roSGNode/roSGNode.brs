@@ -12,6 +12,7 @@ sub init()
     print "can delete elements: " node1.delete("baz")              ' => true
     print "can look up elements: " node1.lookup("foo") = "foo"     ' => true
     print "can look up elements (brackets): " node1["foo"] = "foo" ' => true
+    print "can case insensitive look up elements: " node1.lookupCI("foO") = "foo" ' => true
     print "can check for existence: " node1.doesExist("bar")       ' => true
 
     node1.clear()

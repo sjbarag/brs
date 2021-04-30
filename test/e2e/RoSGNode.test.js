@@ -103,6 +103,8 @@ describe("components/roSGNode", () => {
             "true",
             "can look up elements (brackets): ",
             "true",
+            "can case insensitive look up elements: ",
+            "true",
             "can check for existence: ",
             "true",
             "can empty itself: ",

@@ -301,7 +301,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly defaultFields: FieldModel[] = [
         { name: "change", type: "roAssociativeArray" },
         { name: "focusable", type: "boolean" },
-        { name: "focusedChild", type: "node", alwaysNotify: true },
+        { name: "focusedchild", type: "node", alwaysNotify: true },
         { name: "id", type: "string" },
     ];
     m: RoAssociativeArray = new RoAssociativeArray([]);
@@ -327,6 +327,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.keys,
                 this.items,
                 this.lookup,
+                this.lookupCI,
             ],
             ifSGNodeField: [
                 this.addfield,
@@ -800,6 +801,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             return this.get(new BrsString(lKey));
         },
     });
+
+    /** Given a key, returns the value associated with that key. This method is case insensitive. */
+    private lookupCI = new Callable("lookupCI", this.lookup.signatures[0]);
 
     /** Adds a new field to the node, if the field already exists it doesn't change the current value. */
     private addfield = new Callable("addfield", {

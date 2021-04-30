@@ -528,7 +528,7 @@ describe("RoSGNode", () => {
                 let expected = new RoAssociativeArray([
                     { name: new BrsString("change"), value: new RoAssociativeArray([]) },
                     { name: new BrsString("focusable"), value: BrsBoolean.False },
-                    { name: new BrsString("focusedChild"), value: BrsInvalid.Instance },
+                    { name: new BrsString("focusedchild"), value: BrsInvalid.Instance },
                     { name: new BrsString("id"), value: new BrsString("") },
                 ]);
                 result.elements.forEach((value, name) => {

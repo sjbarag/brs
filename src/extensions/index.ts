@@ -26,6 +26,12 @@ export const _brs_ = new RoAssociativeArray([
     { name: new BrsString("runInScope"), value: RunInScope },
     { name: new BrsString("process"), value: Process },
     { name: new BrsString("global"), value: mGlobal },
+    { name: new BrsString("testData"), value: new RoAssociativeArray([]) },
     { name: new BrsString("triggerKeyEvent"), value: triggerKeyEvent },
     { name: new BrsString("getStackTrace"), value: GetStackTrace },
 ]);
+
+/** resets _brs_.testData values to `{}` in brightscript representation */
+export function resetTestData() {
+    _brs_.set(new BrsString("testData"), new RoAssociativeArray([]));
+}

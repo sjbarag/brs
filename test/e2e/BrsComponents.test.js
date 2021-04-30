@@ -1,6 +1,7 @@
 const { execute } = require("../../lib/");
 const { createMockStreams, resourceFile, allArgs } = require("./E2ETests");
 const lolex = require("lolex");
+const path = require("path");
 
 describe("end to end brightscript functions", () => {
     let outputStreams;
@@ -732,6 +733,21 @@ describe("end to end brightscript functions", () => {
             "-1",
             "textEditBox backgroundUri:",
             "",
+        ]);
+    });
+
+    test("components/roAppInfo.brs", async () => {
+        outputStreams.root = path.join(__dirname, "resources", "conditional-compilation");
+
+        await execute([resourceFile("components", "roAppInfo.brs")], outputStreams);
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "dev",
+            "true",
+            "3.1.2",
+            "Some title",
+            "subtitle",
+            "34c6fceca75e456f25e7e99531e2425c6c1de443",
+            "Some text",
         ]);
     });
 });

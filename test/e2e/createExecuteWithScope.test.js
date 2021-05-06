@@ -73,4 +73,22 @@ describe("createExecuteWithScope", () => {
             "main:onlyInScopeForMain",
         ]);
     });
+
+    test("mocks defined in earlier execution calls do not exist in subsequent executions", async () => {
+        let execute = await createExecuteWithScope([resourceFile("in-scope.brs")], outputStreams);
+
+        // mock.brs mocks the function
+        execute([resourceFile("mock.brs")], []);
+
+        // main calls the function
+        execute([resourceFile("main.brs")], [new BrsString("argz4main")]);
+
+        // the output from both files should be there
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "mock:mocked",
+            "main:arg:argz4main",
+            "main:commonUtil",
+            "main:onlyInScopeForMain",
+        ]);
+    });
 });

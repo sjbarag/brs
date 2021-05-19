@@ -432,30 +432,4 @@ describe("Int32", () => {
             expect(six.or(new Double(3.4444))).toEqual(new Int32(7));
         });
     });
-
-    describe("validate typecasting", () => {
-        it("passing float", () => {
-            let floatValue = new Float(6.2);
-            let intValue = new Int32(floatValue);
-
-            expect(intValue.equalTo(new Int32(6))).toBe(BrsBoolean.True);
-        });
-
-        // test skipped cuz Int32 can contain value greater then Integer capacity
-        // intValue while running test = type: Integer, value: 2147483647119
-        // intValue on Roku            = type: Integer, value:-881
-        xit("passing LongInteger", () => {
-            let longValue = new Int64(2147483647119);
-            let intValue = new Int32(longValue);
-
-            expect(intValue.equalTo(new Int32(-881))).toBe(BrsBoolean.True);
-        });
-
-        it("passing Double", () => {
-            let doubleValue = new Double(10.888888888888888888888888);
-            let intValue = new Int32(doubleValue);
-
-            expect(intValue.equalTo(new Int32(10))).toBe(BrsBoolean.True);
-        });
-    });
 });

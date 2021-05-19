@@ -413,32 +413,4 @@ describe("Float", () => {
             expect(six.or(new Double(3.4444))).toEqual(new Int32(7));
         });
     });
-
-    describe("validate typecasting", () => {
-        it("passing Integer", () => {
-            let intValue = new Int32(5);
-            let floatValue = new Float(intValue);
-
-            expect(floatValue.equalTo(new Float(5))).toBe(BrsBoolean.True);
-        });
-
-        // test skipped for now cuz Float behaves differently from Roku
-        // floatValue while running test = 2,147,484,000,000
-        // floatValue on Roku            = 2.14748e+12
-        xit("passing LongInteger", () => {
-            let longValue = new Int64(2147483647119);
-            let floatValue = new Float(longValue);
-            console.log("floatValue");
-            console.log(floatValue);
-
-            expect(floatValue.equalTo(new Float(2147484000000))).toBe(BrsBoolean.True);
-        });
-
-        it("passing Double", () => {
-            let doubleValue = new Double(10.888888888888888888888888);
-            let floatValue = new Float(doubleValue);
-
-            expect(floatValue.equalTo(new Float(10.88889))).toBe(BrsBoolean.True);
-        });
-    });
 });

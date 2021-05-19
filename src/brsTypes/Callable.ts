@@ -246,7 +246,7 @@ export class Callable implements Brs.BrsValue {
      * @returns the signature, implementation, type mismatches, and coerced arguments for each signature in this
      *          Callable.
      */
-    getAllSignatureMismatches(args: Brs.BrsType[]): SignatureAndMismatches[] {
+    getAllSignatureMismatches(args: Brs.BrsType[]): SignatureSatisfaction[] {
         return this.signatures.map((sigAndImpl) => this.trySatisfySignature(sigAndImpl, args));
     }
 

@@ -19,17 +19,17 @@ export function tryCoerce(value: BrsType, target: ValueKind): BrsType | undefine
 
     if (target === ValueKind.Object) {
         if (isBoxable(value)) {
-            // boxable types should be promoted to their boxed equivalents when necessary
+            // boxable types should be promoted to their boxed equivalents whenever possible
             return value.box();
         } else if (value instanceof BrsComponent) {
-            // types that are always objets should be returned unmodified
+            // types that are always objects should be returned unmodified
             return value;
         }
     }
 
     if (PrimitiveKinds.has(target) && isUnboxable(value)) {
-        // unboxable types should be demoted to their unboxed equivalents when necessary
-        return value.unbox();
+        // unboxable types should be demoted to their unboxed equivalents whenever possible
+        value = value.unbox();
     }
 
     // numeric types can be cast between each other

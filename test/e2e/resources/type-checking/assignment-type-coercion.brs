@@ -3,7 +3,7 @@ sub main()
         "integer": 13,
         "float": 3.14159!,
         "double": 2.71828#,
-        "longInteger": 2147483647119&,
+        "longinteger": 2147483647119&,
     }
 
     for each kv in values.items()

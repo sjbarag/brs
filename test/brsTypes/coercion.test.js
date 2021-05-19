@@ -59,21 +59,8 @@ describe("type coercion", () => {
                 ["integer", new Int32(1234), types.roInt],
                 ["float", new Float(2.345), types.roFloat],
                 ["double", new Double(3.456), types.roDouble],
-                ["string", new String("lorem"), types.roString],
-            ])("boxes %s for object target", (_type, input, ctor) => {
-                let output = tryCoerce(input, ValueKind.Object);
-                expect(output).toBeInstanceOf(ctor);
-                expect(output.unbox()).toEqual(input);
-            });
-        });
-
-        describe("boxing", () => {
-            it.each([
-                ["integer", new Int32(1234), types.roInt],
-                ["float", new Float(2.345), types.roFloat],
-                ["double", new Double(3.456), types.roDouble],
                 ["longinteger", new Int64(3.456), types.roLongInteger],
-                ["string", new BrsString("lorem"), types.roString],
+                ["string", new BrsString("lorem"), types.RoString],
                 ["boolean", BrsBoolean.False, types.roBoolean],
             ])("boxes %s for object target", (_type, input, ctor) => {
                 let output = tryCoerce(input, ValueKind.Object);

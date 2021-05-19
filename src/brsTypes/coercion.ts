@@ -19,8 +19,9 @@ export function tryCoerce(value: BrsType, target: ValueKind): BrsType | undefine
 
     if (target === ValueKind.Object) {
         if (isBoxable(value)) {
-            // boxable types should be promoted to their boxed equivalents whenever possible
-            return value.box();
+            // boxable types should be promoted to their boxed equivalents whenever possible,
+            // with their boxed equivalents coerced if necessary
+            return tryCoerce(value.box(), target);
         } else if (value instanceof BrsComponent) {
             // types that are always objects should be returned unmodified
             return value;
@@ -28,8 +29,9 @@ export function tryCoerce(value: BrsType, target: ValueKind): BrsType | undefine
     }
 
     if (PrimitiveKinds.has(target) && isUnboxable(value)) {
-        // unboxable types should be demoted to their unboxed equivalents whenever possible
-        value = value.unbox();
+        // unboxable types should be demoted to their unboxed equivalents whenever possible,
+        // with their unboxed equivalents coerced if necessary
+        return tryCoerce(value.unbox(), target);
     }
 
     // numeric types can be cast between each other

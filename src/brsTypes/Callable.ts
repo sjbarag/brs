@@ -7,6 +7,7 @@ import { Int32 } from "./Int32";
 import { Float } from "./Float";
 import { Double } from "./Double";
 import { Int64 } from "./Int64";
+import { tryCoerce } from "./coercion";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
@@ -278,54 +279,10 @@ export class Callable implements Brs.BrsValue {
                 let expected = signature.args[index];
                 let received = args[index];
 
-                if (
-                    expected.type.kind === Brs.ValueKind.Dynamic ||
-                    expected.type.kind === Brs.ValueKind.Object
-                ) {
-                    return;
-                }
-
-                if (
-                    expected.type.kind === Brs.ValueKind.Float &&
-                    (received.kind === Brs.ValueKind.Int32 ||
-                        received.kind === Brs.ValueKind.Int64 ||
-                        received.kind === Brs.ValueKind.Double)
-                ) {
-                    coercedArgs[index] = new Float(received.getValue());
-                    return;
-                }
-
-                if (
-                    expected.type.kind === Brs.ValueKind.Int32 &&
-                    (received.kind === Brs.ValueKind.Float ||
-                        received.kind === Brs.ValueKind.Int64 ||
-                        received.kind === Brs.ValueKind.Double)
-                ) {
-                    coercedArgs[index] = new Int32(received.getValue());
-                    return;
-                }
-
-                if (
-                    expected.type.kind === Brs.ValueKind.Double &&
-                    (received.kind === Brs.ValueKind.Float ||
-                        received.kind === Brs.ValueKind.Int32 ||
-                        received.kind === Brs.ValueKind.Int64)
-                ) {
-                    coercedArgs[index] = new Double(received.getValue());
-                    return;
-                }
-
-                if (
-                    expected.type.kind === Brs.ValueKind.Int64 &&
-                    (received.kind === Brs.ValueKind.Float ||
-                        received.kind === Brs.ValueKind.Int32 ||
-                        received.kind === Brs.ValueKind.Double)
-                ) {
-                    coercedArgs[index] = new Int64(received.getValue());
-                    return;
-                }
-
-                if (expected.type.kind !== received.kind) {
+                let coercedValue = tryCoerce(received, expected.type.kind);
+                if (coercedValue != null) {
+                    coercedArgs[index] = coercedValue;
+                } else {
                     reasons.push({
                         reason: MismatchReason.ArgumentTypeMismatch,
                         expected: Brs.ValueKind.toString(expected.type.kind),

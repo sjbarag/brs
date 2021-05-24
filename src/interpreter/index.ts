@@ -22,6 +22,7 @@ import {
     BrsNumber,
     Float,
     Double,
+    tryCoerce,
 } from "../brsTypes";
 
 import { Lexeme, Location } from "../lexer";
@@ -458,11 +459,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         };
         let requiredType = typeDesignators[name.charAt(name.length - 1)];
 
-        if (requiredType && requiredType !== value.kind) {
-            if (requiredType === ValueKind.Int64 && value.kind === ValueKind.Int32) {
-                value = new Int64(value.getValue());
-            } else if (requiredType === ValueKind.Double && value.kind === ValueKind.Float) {
-                value = new Double(value.getValue());
+        if (requiredType) {
+            let coercedValue = tryCoerce(value, requiredType);
+            if (coercedValue != null) {
+                value = coercedValue;
             } else {
                 return this.addError(
                     new TypeMismatch({

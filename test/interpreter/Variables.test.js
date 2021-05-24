@@ -126,6 +126,7 @@ describe("interpreter variables", () => {
                 expect(interpreter.environment.get(identifier("double#"))).toEqual(lhs_result);
             });
         });
+
         describe("into longinteger LHS", () => {
             test.each([
                 // pairs of [type, rhs, lhs_result]

@@ -178,8 +178,8 @@ export class RoDateTime extends BrsComponent implements BrsValue {
             returns: ValueKind.String,
         },
         impl: (_: Interpreter) => {
-            var date = new Date(this.markTime);
-            var options = {
+            let date = new Date(this.markTime);
+            let options: Intl.DateTimeFormatOptions = {
                 weekday: "long",
                 year: "numeric",
                 month: "long",

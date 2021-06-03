@@ -532,16 +532,7 @@ describe("lexer", () => {
         it("tracks starting and ending lines", () => {
             let { tokens } = Lexer.scan(`sub foo()\n\n    print "bar"\nend sub`);
             expect(tokens.map((t) => t.location.start.line)).toEqual([
-                1,
-                1,
-                1,
-                1,
-                1,
-                3,
-                3,
-                3,
-                4,
-                4,
+                1, 1, 1, 1, 1, 3, 3, 3, 4, 4,
             ]);
 
             expect(tokens.map((t) => t.location.end.line)).toEqual([1, 1, 1, 1, 1, 3, 3, 3, 4, 4]);

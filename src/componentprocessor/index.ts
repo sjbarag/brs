@@ -174,9 +174,10 @@ async function processXmlTree(
  * @return { fields, functions }: the fields and functions parsed as
  * ComponentFields and ComponentFunctions respectively
  */
-function processInterface(
-    node: XmlDocument
-): { fields: ComponentFields; functions: ComponentFunctions } {
+function processInterface(node: XmlDocument): {
+    fields: ComponentFields;
+    functions: ComponentFunctions;
+} {
     let iface = node.childNamed("interface");
     let fields: ComponentFields = {};
     let functions: ComponentFunctions = {};

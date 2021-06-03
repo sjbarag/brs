@@ -1084,11 +1084,8 @@ export class Parser {
         function printStatement(...additionalterminators: BlockTerminator[]): Stmt.Print {
             let printKeyword = advance();
 
-            let values: (
-                | Expr.Expression
-                | Stmt.PrintSeparator.Tab
-                | Stmt.PrintSeparator.Space
-            )[] = [];
+            let values: (Expr.Expression | Stmt.PrintSeparator.Tab | Stmt.PrintSeparator.Space)[] =
+                [];
 
             //print statements can be empty, so look for empty print conditions
             if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {

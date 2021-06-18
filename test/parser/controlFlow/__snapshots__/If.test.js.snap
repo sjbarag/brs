@@ -320,6 +320,26 @@ Array [
           ],
           "type": "Block",
         },
+        "tokens": Object {
+          "elseIf": Object {
+            "isReserved": false,
+            "kind": "ElseIf",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": 23,
+                "line": 4,
+              },
+              "file": "",
+              "start": Object {
+                "column": 16,
+                "line": 4,
+              },
+            },
+            "text": "else if",
+          },
+          "then": undefined,
+        },
         "type": "ElseIf",
       },
     ],
@@ -414,25 +434,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [
-        Object {
-          "isReserved": false,
-          "kind": "ElseIf",
-          "literal": undefined,
-          "location": Object {
-            "end": Object {
-              "column": 23,
-              "line": 4,
-            },
-            "file": "",
-            "start": Object {
-              "column": 16,
-              "line": 4,
-            },
-          },
-          "text": "else if",
-        },
-      ],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -667,7 +668,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -1006,7 +1006,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -1384,6 +1383,42 @@ Array [
           ],
           "type": "Block",
         },
+        "tokens": Object {
+          "elseIf": Object {
+            "isReserved": false,
+            "kind": "ElseIf",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": 23,
+                "line": 4,
+              },
+              "file": "",
+              "start": Object {
+                "column": 16,
+                "line": 4,
+              },
+            },
+            "text": "else if",
+          },
+          "then": Object {
+            "isReserved": true,
+            "kind": "Identifier",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": 34,
+                "line": 4,
+              },
+              "file": "",
+              "start": Object {
+                "column": 30,
+                "line": 4,
+              },
+            },
+            "text": "then",
+          },
+        },
         "type": "ElseIf",
       },
     ],
@@ -1478,25 +1513,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [
-        Object {
-          "isReserved": false,
-          "kind": "ElseIf",
-          "literal": undefined,
-          "location": Object {
-            "end": Object {
-              "column": 23,
-              "line": 4,
-            },
-            "file": "",
-            "start": Object {
-              "column": 16,
-              "line": 4,
-            },
-          },
-          "text": "else if",
-        },
-      ],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -1726,6 +1742,42 @@ Array [
                   ],
                   "type": "Block",
                 },
+                "tokens": Object {
+                  "elseIf": Object {
+                    "isReserved": false,
+                    "kind": "ElseIf",
+                    "literal": undefined,
+                    "location": Object {
+                      "end": Object {
+                        "column": 27,
+                        "line": 5,
+                      },
+                      "file": "",
+                      "start": Object {
+                        "column": 20,
+                        "line": 5,
+                      },
+                    },
+                    "text": "else if",
+                  },
+                  "then": Object {
+                    "isReserved": true,
+                    "kind": "Identifier",
+                    "literal": undefined,
+                    "location": Object {
+                      "end": Object {
+                        "column": 37,
+                        "line": 5,
+                      },
+                      "file": "",
+                      "start": Object {
+                        "column": 33,
+                        "line": 5,
+                      },
+                    },
+                    "text": "then",
+                  },
+                },
                 "type": "ElseIf",
               },
             ],
@@ -1805,25 +1857,6 @@ Array [
                 },
                 "text": "else",
               },
-              "elseIfs": Array [
-                Object {
-                  "isReserved": false,
-                  "kind": "ElseIf",
-                  "literal": undefined,
-                  "location": Object {
-                    "end": Object {
-                      "column": 27,
-                      "line": 5,
-                    },
-                    "file": "",
-                    "start": Object {
-                      "column": 20,
-                      "line": 5,
-                    },
-                  },
-                  "text": "else if",
-                },
-              ],
               "endIf": Object {
                 "isReserved": false,
                 "kind": "EndIf",
@@ -2060,7 +2093,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -2205,7 +2237,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -2559,7 +2590,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -2829,7 +2859,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -3122,6 +3151,25 @@ Array [
           ],
           "type": "Block",
         },
+        "tokens": Object {
+          "elseIf": Object {
+            "isReserved": false,
+            "kind": "ElseIf",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "else if",
+          },
+          "then": undefined,
+        },
         "type": "ElseIf",
       },
     ],
@@ -3212,24 +3260,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [
-        Object {
-          "isReserved": false,
-          "kind": "ElseIf",
-          "literal": undefined,
-          "location": Object {
-            "end": Object {
-              "column": -9,
-              "line": -9,
-            },
-            "start": Object {
-              "column": -9,
-              "line": -9,
-            },
-          },
-          "text": "else if",
-        },
-      ],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -3400,7 +3430,6 @@ Array [
           },
           "tokens": Object {
             "else": undefined,
-            "elseIfs": Array [],
             "endIf": undefined,
             "if": Object {
               "isReserved": true,
@@ -3460,7 +3489,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -4058,6 +4086,26 @@ Array [
           ],
           "type": "Block",
         },
+        "tokens": Object {
+          "elseIf": Object {
+            "isReserved": false,
+            "kind": "ElseIf",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": 19,
+                "line": 5,
+              },
+              "file": "",
+              "start": Object {
+                "column": 12,
+                "line": 5,
+              },
+            },
+            "text": "else if",
+          },
+          "then": undefined,
+        },
         "type": "ElseIf",
       },
     ],
@@ -4432,7 +4480,6 @@ Array [
           },
           "tokens": Object {
             "else": undefined,
-            "elseIfs": Array [],
             "endIf": undefined,
             "if": Object {
               "isReserved": true,
@@ -4492,25 +4539,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [
-        Object {
-          "isReserved": false,
-          "kind": "ElseIf",
-          "literal": undefined,
-          "location": Object {
-            "end": Object {
-              "column": 19,
-              "line": 5,
-            },
-            "file": "",
-            "start": Object {
-              "column": 12,
-              "line": 5,
-            },
-          },
-          "text": "else if",
-        },
-      ],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -4682,7 +4710,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -4936,7 +4963,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -5227,6 +5253,40 @@ Array [
           ],
           "type": "Block",
         },
+        "tokens": Object {
+          "elseIf": Object {
+            "isReserved": false,
+            "kind": "ElseIf",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "else if",
+          },
+          "then": Object {
+            "isReserved": true,
+            "kind": "Identifier",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
+            "text": "then",
+          },
+        },
         "type": "ElseIf",
       },
     ],
@@ -5317,24 +5377,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [
-        Object {
-          "isReserved": false,
-          "kind": "ElseIf",
-          "literal": undefined,
-          "location": Object {
-            "end": Object {
-              "column": -9,
-              "line": -9,
-            },
-            "start": Object {
-              "column": -9,
-              "line": -9,
-            },
-          },
-          "text": "else if",
-        },
-      ],
       "endIf": undefined,
       "if": Object {
         "isReserved": true,
@@ -5457,7 +5499,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -5656,6 +5697,26 @@ Array [
           ],
           "type": "Block",
         },
+        "tokens": Object {
+          "elseIf": Object {
+            "isReserved": false,
+            "kind": "ElseIf",
+            "literal": undefined,
+            "location": Object {
+              "end": Object {
+                "column": 46,
+                "line": 2,
+              },
+              "file": "",
+              "start": Object {
+                "column": 39,
+                "line": 2,
+              },
+            },
+            "text": "else if",
+          },
+          "then": undefined,
+        },
         "type": "ElseIf",
       },
     ],
@@ -5735,25 +5796,6 @@ Array [
         },
         "text": "else",
       },
-      "elseIfs": Array [
-        Object {
-          "isReserved": false,
-          "kind": "ElseIf",
-          "literal": undefined,
-          "location": Object {
-            "end": Object {
-              "column": 46,
-              "line": 2,
-            },
-            "file": "",
-            "start": Object {
-              "column": 39,
-              "line": 2,
-            },
-          },
-          "text": "else if",
-        },
-      ],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -5914,7 +5956,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -6133,7 +6174,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",
@@ -6439,6 +6479,26 @@ Array [
                   ],
                   "type": "Block",
                 },
+                "tokens": Object {
+                  "elseIf": Object {
+                    "isReserved": false,
+                    "kind": "ElseIf",
+                    "literal": undefined,
+                    "location": Object {
+                      "end": Object {
+                        "column": 23,
+                        "line": 5,
+                      },
+                      "file": "",
+                      "start": Object {
+                        "column": 16,
+                        "line": 5,
+                      },
+                    },
+                    "text": "else if",
+                  },
+                  "then": undefined,
+                },
                 "type": "ElseIf",
               },
             ],
@@ -6518,25 +6578,6 @@ Array [
                 },
                 "text": "else",
               },
-              "elseIfs": Array [
-                Object {
-                  "isReserved": false,
-                  "kind": "ElseIf",
-                  "literal": undefined,
-                  "location": Object {
-                    "end": Object {
-                      "column": 23,
-                      "line": 5,
-                    },
-                    "file": "",
-                    "start": Object {
-                      "column": 16,
-                      "line": 5,
-                    },
-                  },
-                  "text": "else if",
-                },
-              ],
               "endIf": Object {
                 "isReserved": false,
                 "kind": "EndIf",
@@ -6757,7 +6798,6 @@ Array [
     },
     "tokens": Object {
       "else": undefined,
-      "elseIfs": Array [],
       "endIf": Object {
         "isReserved": false,
         "kind": "EndIf",

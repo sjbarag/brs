@@ -850,11 +850,12 @@ export class Parser {
 
                 // attempt to read a bunch of "else if" clauses
                 while (blockEnd.kind === Lexeme.ElseIf) {
-                    elseIfTokens.push(blockEnd);
+                    let elseIf = blockEnd;
                     let elseIfCondition = expression();
+                    let maybeThen: Token | undefined;
                     if (checkThen()) {
                         // `then` is optional after `else if ...condition...`, so only advance to the next token if `then` is present
-                        advance();
+                        maybeThen = advance();
                     }
 
                     let maybeElseIfThen = block(Lexeme.EndIf, Lexeme.Else, Lexeme.ElseIf);
@@ -874,6 +875,10 @@ export class Parser {
                         type: "ElseIf",
                         condition: elseIfCondition,
                         thenBranch: maybeElseIfThen.body,
+                        tokens: {
+                            elseIf,
+                            then: maybeThen,
+                        }
                     });
                 }
 
@@ -928,9 +933,10 @@ export class Parser {
                     let elseIf = maybeThenBranch.closingToken;
                     elseIfTokens.push(elseIf);
                     let elseIfCondition = expression();
+                    let maybeThen: Token | undefined;
                     if (checkThen()) {
                         // `then` is optional after `else if ...condition...`, so only advance to the next token if `then` is present
-                        advance();
+                        maybeThen = advance();
                     }
 
                     let maybeElseIfBranch = block(
@@ -951,6 +957,10 @@ export class Parser {
                         type: "ElseIf",
                         condition: elseIfCondition,
                         thenBranch: maybeElseIfBranch.body,
+                        tokens: {
+                            elseIf,
+                            then: maybeThen,
+                        }
                     });
                 }
 
@@ -971,7 +981,6 @@ export class Parser {
                 {
                     if: ifToken,
                     then: thenToken,
-                    elseIfs: elseIfTokens,
                     endIf: endIfToken,
                     else: elseToken,
                 },

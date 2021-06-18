@@ -615,6 +615,42 @@ Array [
                   ],
                   "type": "Block",
                 },
+                "tokens": Object {
+                  "elseIf": Object {
+                    "isReserved": false,
+                    "kind": "ElseIf",
+                    "literal": undefined,
+                    "location": Object {
+                      "end": Object {
+                        "column": 23,
+                        "line": 5,
+                      },
+                      "file": "",
+                      "start": Object {
+                        "column": 16,
+                        "line": 5,
+                      },
+                    },
+                    "text": "else if",
+                  },
+                  "then": Object {
+                    "isReserved": true,
+                    "kind": "Identifier",
+                    "literal": undefined,
+                    "location": Object {
+                      "end": Object {
+                        "column": 33,
+                        "line": 5,
+                      },
+                      "file": "",
+                      "start": Object {
+                        "column": 29,
+                        "line": 5,
+                      },
+                    },
+                    "text": "then",
+                  },
+                },
                 "type": "ElseIf",
               },
             ],
@@ -694,25 +730,6 @@ Array [
                 },
                 "text": "else",
               },
-              "elseIfs": Array [
-                Object {
-                  "isReserved": false,
-                  "kind": "ElseIf",
-                  "literal": undefined,
-                  "location": Object {
-                    "end": Object {
-                      "column": 23,
-                      "line": 5,
-                    },
-                    "file": "",
-                    "start": Object {
-                      "column": 16,
-                      "line": 5,
-                    },
-                  },
-                  "text": "else if",
-                },
-              ],
               "endIf": Object {
                 "isReserved": false,
                 "kind": "EndIf",

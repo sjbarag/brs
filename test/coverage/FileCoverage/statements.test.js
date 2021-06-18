@@ -178,11 +178,17 @@ describe("FileCoverage statements", () => {
                         condition: elseIfCondition1,
                         thenBranch: elseIfBlocks[0],
                         type: "else if",
+                        tokens: {
+                            elseIf: token(Lexeme.ElseIf, "else if")
+                        }
                     },
                     {
                         condition: elseIfCondition2,
                         thenBranch: elseIfBlocks[1],
                         type: "else if",
+                        tokens: {
+                            elseIf: token(Lexeme.ElseIf, "else if")
+                        }
                     },
                 ]
             );

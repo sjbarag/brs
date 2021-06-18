@@ -198,6 +198,10 @@ export interface ElseIf {
     thenBranch: Block;
     /** Signal to ESLint to walk condition and thenBranch */
     type: string;
+    readonly tokens: {
+        elseIf: Token;
+        then?: Token;
+    }
 }
 
 export class If extends AstNode implements Statement {
@@ -205,9 +209,6 @@ export class If extends AstNode implements Statement {
         readonly tokens: {
             if: Token;
             then?: Token;
-            // TODO: figure a decent way to represent the if/then + elseif/then pairs to enable a
-            // linter to check for the lack of `then` with this AST. maybe copy ESTree's format?
-            elseIfs?: Token[];
             else?: Token;
             endIf?: Token;
         },

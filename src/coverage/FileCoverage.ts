@@ -107,7 +107,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                         if (elseIfBlock) {
                             // use the tokens as the start for the branch rather than the condition
                             let start =
-                                statement.tokens.elseIfs?.[index].location.start ||
+                                branch.tokens.elseIf.location.start ||
                                 branch.condition.location.start;
                             locations.push({ ...branch.condition.location, start });
                             branchHits.push(elseIfBlock.hits);

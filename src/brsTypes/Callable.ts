@@ -8,6 +8,8 @@ import { Float } from "./Float";
 import { Double } from "./Double";
 import { Int64 } from "./Int64";
 import { tryCoerce } from "./coercion";
+import { BrsError } from "../Error";
+import { generateArgumentMismatchError } from "../interpreter/ArgumentMismatch";
 
 /** An argument to a BrightScript `function` or `sub`. */
 export interface Argument {
@@ -157,10 +159,7 @@ export class Callable implements Brs.BrsValue {
     call(interpreter: Interpreter, ...args: Brs.BrsType[]) {
         let satisfiedSignature = this.getFirstSatisfiedSignature(args);
         if (satisfiedSignature == null) {
-            throw new Error(
-                "BrightScript function called without first checking for satisfied signatures. " +
-                    "Ensure `Callable#getAllSignatureMismatches` is called before `Callable#call`."
-            );
+            interpreter.addError(generateArgumentMismatchError(this, args, interpreter.location));
         }
 
         let { signature, impl } = satisfiedSignature;

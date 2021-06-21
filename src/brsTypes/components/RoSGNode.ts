@@ -27,6 +27,7 @@ import { roInvalid } from "./RoInvalid";
 import type * as MockNodeModule from "../../extensions/MockNode";
 import { BlockEnd } from "../../parser/Statement";
 import { Stmt } from "../../parser";
+import { generateArgumentMismatchError } from "../../interpreter/ArgumentMismatch";
 
 interface BrsCallback {
     interpreter: Interpreter;
@@ -643,8 +644,16 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                             // Determine whether the function should get arguments or not.
                             if (functionToCall.getFirstSatisfiedSignature(functionargs)) {
                                 return functionToCall.call(subInterpreter, ...functionargs);
-                            } else {
+                            } else if (functionToCall.getFirstSatisfiedSignature([])) {
                                 return functionToCall.call(subInterpreter);
+                            } else {
+                                return interpreter.addError(
+                                    generateArgumentMismatchError(
+                                        functionToCall,
+                                        functionargs,
+                                        subInterpreter.stack[subInterpreter.stack.length - 1]
+                                    )
+                                );
                             }
                         } catch (reason) {
                             if (!(reason instanceof Stmt.ReturnValue)) {

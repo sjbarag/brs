@@ -3,12 +3,7 @@ import * as Brs from ".";
 import * as Expr from "../parser/Expression";
 import { Scope } from "../interpreter/Environment";
 import { Location } from "../lexer";
-import { Int32 } from "./Int32";
-import { Float } from "./Float";
-import { Double } from "./Double";
-import { Int64 } from "./Int64";
 import { tryCoerce } from "./coercion";
-import { BrsError } from "../Error";
 import { generateArgumentMismatchError } from "../interpreter/ArgumentMismatch";
 
 /** An argument to a BrightScript `function` or `sub`. */

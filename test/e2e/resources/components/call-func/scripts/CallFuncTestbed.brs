@@ -44,3 +44,7 @@ end sub
 sub onObserveMeChanged(event as object)
     print "callFunc can trigger observeField"
 end sub
+
+function stronglyTyped(arg1 as string) as string
+    return "CallFuncTestBed::stronglyTyped"
+end function

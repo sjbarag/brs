@@ -7,5 +7,6 @@
         <function name="returnValFuncOneArg" />
         <function name="overridenParentFunc" />
         <function name="testObserve" />
+        <function name="stronglyTyped" />
     </interface>
 </component>

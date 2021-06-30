@@ -4,7 +4,7 @@ exports[`parser while statements nested 1`] = `
 Array [
   While {
     "body": Block {
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": 12,
           "line": 8,
@@ -18,7 +18,7 @@ Array [
       "statements": Array [
         While {
           "body": Block {
-            "location": Object {
+            "loc": Object {
               "end": Object {
                 "column": 16,
                 "line": 6,
@@ -32,7 +32,7 @@ Array [
             "statements": Array [
               While {
                 "body": Block {
-                  "location": Object {
+                  "loc": Object {
                     "end": Object {
                       "column": 43,
                       "line": 4,
@@ -49,7 +49,7 @@ Array [
                         "isReserved": false,
                         "kind": "PlusPlus",
                         "literal": undefined,
-                        "location": Object {
+                        "loc": Object {
                           "end": Object {
                             "column": 40,
                             "line": 4,
@@ -68,7 +68,7 @@ Array [
                           "isReserved": false,
                           "kind": "Identifier",
                           "literal": undefined,
-                          "location": Object {
+                          "loc": Object {
                             "end": Object {
                               "column": 38,
                               "line": 4,
@@ -93,7 +93,7 @@ Array [
                       "isReserved": false,
                       "kind": "Identifier",
                       "literal": undefined,
-                      "location": Object {
+                      "loc": Object {
                         "end": Object {
                           "column": 27,
                           "line": 4,
@@ -130,7 +130,7 @@ Array [
                     "isReserved": false,
                     "kind": "Less",
                     "literal": undefined,
-                    "location": Object {
+                    "loc": Object {
                       "end": Object {
                         "column": 29,
                         "line": 4,
@@ -150,7 +150,7 @@ Array [
                     "isReserved": false,
                     "kind": "EndWhile",
                     "literal": undefined,
-                    "location": Object {
+                    "loc": Object {
                       "end": Object {
                         "column": 52,
                         "line": 4,
@@ -167,7 +167,7 @@ Array [
                     "isReserved": true,
                     "kind": "While",
                     "literal": undefined,
-                    "location": Object {
+                    "loc": Object {
                       "end": Object {
                         "column": 25,
                         "line": 4,
@@ -188,7 +188,7 @@ Array [
                   "isReserved": false,
                   "kind": "PlusPlus",
                   "literal": undefined,
-                  "location": Object {
+                  "loc": Object {
                     "end": Object {
                       "column": 23,
                       "line": 5,
@@ -207,7 +207,7 @@ Array [
                     "isReserved": false,
                     "kind": "Identifier",
                     "literal": undefined,
-                    "location": Object {
+                    "loc": Object {
                       "end": Object {
                         "column": 21,
                         "line": 5,
@@ -232,7 +232,7 @@ Array [
                 "isReserved": false,
                 "kind": "Identifier",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": 23,
                     "line": 3,
@@ -269,7 +269,7 @@ Array [
               "isReserved": false,
               "kind": "Less",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": 25,
                   "line": 3,
@@ -289,7 +289,7 @@ Array [
               "isReserved": false,
               "kind": "EndWhile",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": 25,
                   "line": 6,
@@ -306,7 +306,7 @@ Array [
               "isReserved": true,
               "kind": "While",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": 21,
                   "line": 3,
@@ -327,7 +327,7 @@ Array [
             "isReserved": false,
             "kind": "PlusPlus",
             "literal": undefined,
-            "location": Object {
+            "loc": Object {
               "end": Object {
                 "column": 19,
                 "line": 7,
@@ -346,7 +346,7 @@ Array [
               "isReserved": false,
               "kind": "Identifier",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": 17,
                   "line": 7,
@@ -371,7 +371,7 @@ Array [
           "isReserved": false,
           "kind": "Identifier",
           "literal": undefined,
-          "location": Object {
+          "loc": Object {
             "end": Object {
               "column": 19,
               "line": 2,
@@ -408,7 +408,7 @@ Array [
         "isReserved": false,
         "kind": "Less",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": 21,
             "line": 2,
@@ -428,7 +428,7 @@ Array [
         "isReserved": false,
         "kind": "EndWhile",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": 21,
             "line": 8,
@@ -445,7 +445,7 @@ Array [
         "isReserved": true,
         "kind": "While",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": 17,
             "line": 2,
@@ -468,7 +468,7 @@ exports[`parser while statements while with exit 1`] = `
 Array [
   While {
     "body": Block {
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -505,7 +505,7 @@ Array [
               "isReserved": true,
               "kind": "Print",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -526,7 +526,7 @@ Array [
               "isReserved": false,
               "kind": "ExitWhile",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -566,7 +566,7 @@ Array [
         "isReserved": false,
         "kind": "EndWhile",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -582,7 +582,7 @@ Array [
         "isReserved": true,
         "kind": "While",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -604,7 +604,7 @@ exports[`parser while statements while without exit 1`] = `
 Array [
   While {
     "body": Block {
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -641,7 +641,7 @@ Array [
               "isReserved": true,
               "kind": "Print",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -681,7 +681,7 @@ Array [
         "isReserved": false,
         "kind": "EndWhile",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -697,7 +697,7 @@ Array [
         "isReserved": true,
         "kind": "While",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,

@@ -7,7 +7,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -24,7 +24,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -78,7 +78,7 @@ Array [
           "isReserved": false,
           "kind": "Plus",
           "literal": undefined,
-          "location": Object {
+          "loc": Object {
             "end": Object {
               "column": -9,
               "line": -9,
@@ -113,7 +113,7 @@ Array [
         "isReserved": false,
         "kind": "Plus",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -138,7 +138,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -155,7 +155,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -209,7 +209,7 @@ Array [
           "isReserved": false,
           "kind": "Minus",
           "literal": undefined,
-          "location": Object {
+          "loc": Object {
             "end": Object {
               "column": -9,
               "line": -9,
@@ -244,7 +244,7 @@ Array [
         "isReserved": false,
         "kind": "Minus",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,

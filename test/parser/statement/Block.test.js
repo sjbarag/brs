@@ -14,7 +14,7 @@ describe("block statements", () => {
         const { statements, errors } = brs.parser.Parser.parse(tokens);
         expect(errors.length).toEqual(0);
 
-        let blockLocation = statements[0].func.body.location;
+        let blockLocation = statements[0].func.body.loc;
         //the block location should begin immediately following `sub Main()`, and end immediately preceeding the first character of `end sub`
         expect(blockLocation).toEqual({
             file: "",
@@ -43,21 +43,21 @@ describe("block statements", () => {
         const ifStatement = statements[0].func.body.statements[0];
 
         const thenBlock = ifStatement.thenBranch;
-        expect(thenBlock.location).toEqual({
+        expect(thenBlock.loc).toEqual({
             file: "",
             start: { line: 3, column: 28 },
             end: { line: 5, column: 16 },
         });
 
         const elseIfBlock = ifStatement.elseIfs[0].thenBranch;
-        expect(elseIfBlock.location).toEqual({
+        expect(elseIfBlock.loc).toEqual({
             file: "",
             start: { line: 5, column: 33 },
             end: { line: 7, column: 16 },
         });
 
         const elseBlock = ifStatement.elseBranch;
-        expect(elseBlock.location).toEqual({
+        expect(elseBlock.loc).toEqual({
             file: "",
             start: { line: 7, column: 20 },
             end: { line: 9, column: 16 },
@@ -79,7 +79,7 @@ describe("block statements", () => {
 
         let loopBlock = statements[0].func.body.statements[0].body;
         //the block location should begin immediately following `step 1`, and end immediately preceeding the first character of `end for`
-        expect(loopBlock.location).toEqual({
+        expect(loopBlock.loc).toEqual({
             file: "",
             start: { line: 3, column: 38 },
             end: { line: 5, column: 16 },

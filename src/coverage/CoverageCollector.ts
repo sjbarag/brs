@@ -29,7 +29,7 @@ export class CoverageCollector {
         let statements = await this.parseFn(scripts);
 
         statements.forEach((statement) => {
-            let file = this.files.get(statement.location.file);
+            let file = this.files.get(statement.loc.file);
             if (file) {
                 file.execute(statement);
             }
@@ -37,7 +37,7 @@ export class CoverageCollector {
     }
 
     logHit(statement: Expr.Expression | Stmt.Statement) {
-        let file = this.files.get(statement.location.file);
+        let file = this.files.get(statement.loc.file);
         if (file) {
             file.logHit(statement);
         }

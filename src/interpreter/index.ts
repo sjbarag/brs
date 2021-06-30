@@ -256,7 +256,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 kind: Lexeme.Identifier,
                 text: "main",
                 isReserved: false,
-                location: {
+                loc: {
                     start: {
                         line: -1,
                         column: -1,
@@ -277,7 +277,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         new Expr.Call(
                             mainVariable,
                             mainVariable.name,
-                            args.map((arg) => new Expr.Literal(arg, mainVariable.location))
+                            args.map((arg) => new Expr.Literal(arg, mainVariable.loc))
                         )
                     ),
                 ];
@@ -299,7 +299,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             kind: Lexeme.Identifier,
             text: functionName,
             isReserved: false,
-            location: {
+            loc: {
                 start: {
                     line: -1,
                     column: -1,
@@ -329,7 +329,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             kind: Lexeme.Identifier,
             text: "init",
             isReserved: false,
-            location: {
+            loc: {
                 start: {
                     line: -1,
                     column: -1,
@@ -355,7 +355,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return this.addError(
                 new BrsError(
                     `Cannot create a named function with reserved name '${statement.name.text}'`,
-                    statement.name.location
+                    statement.name.loc
                 )
             );
         }
@@ -367,7 +367,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 new BrsError(
                     `Attempting to declare function '${statement.name.text}', but ` +
                         `a property of that name already exists in this scope.`,
-                    statement.name.location
+                    statement.name.loc
                 )
             );
         }
@@ -382,11 +382,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
     visitReturn(statement: Stmt.Return): never {
         if (!statement.value) {
-            throw new Stmt.ReturnValue(statement.tokens.return.location);
+            throw new Stmt.ReturnValue(statement.tokens.return.loc);
         }
 
         let toReturn = this.evaluate(statement.value);
-        throw new Stmt.ReturnValue(statement.tokens.return.location, toReturn);
+        throw new Stmt.ReturnValue(statement.tokens.return.loc, toReturn);
     }
 
     visitExpression(statement: Stmt.Expression): BrsType {
@@ -416,7 +416,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         this.addError(
                             new BrsError(
                                 `Found unexpected print separator '${printable.text}'`,
-                                printable.location
+                                printable.loc
                             )
                         );
                 }
@@ -441,7 +441,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             this.addError(
                 new BrsError(
                     `Cannot assign a value to reserved name '${statement.name.text}'`,
-                    statement.name.location
+                    statement.name.loc
                 )
             );
             return BrsInvalid.Instance;
@@ -470,11 +470,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: `Attempting to assign incorrect value to statically-typed variable '${name}'`,
                         left: {
                             type: requiredType,
-                            location: statement.name.location,
+                            location: statement.name.loc,
                         },
                         right: {
                             type: value,
-                            location: statement.value.location,
+                            location: statement.value.loc,
                         },
                     })
                 );
@@ -490,7 +490,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             this.addError(
                 new BrsError(
                     `Cannot assign a value to reserved name '${statement.name.text}'`,
-                    statement.name.location
+                    statement.name.loc
                 )
             );
             return BrsInvalid.Instance;
@@ -504,9 +504,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         statement.dimensions.forEach((expr) => {
             let val = this.evaluate(expr);
             if (val.kind !== ValueKind.Int32) {
-                this.addError(
-                    new BrsError(`Dim expression must evaluate to an integer`, expr.location)
-                );
+                this.addError(new BrsError(`Dim expression must evaluate to an integer`, expr.loc));
                 return BrsInvalid.Instance;
             }
             // dim takes max-index, so +1 to get the actual array size
@@ -585,11 +583,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                                 "In a bitshift expression the right value must be >= 0 and < 32.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -599,11 +597,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to bitshift non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -624,11 +622,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                                 "In a bitshift expression the right value must be >= 0 and < 32.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -638,11 +636,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to bitshift non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -657,11 +655,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to subtract non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -676,11 +674,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to multiply non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -694,11 +692,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to exponentiate non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -713,11 +711,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to dividie non-numeric values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -730,11 +728,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to modulo non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -749,11 +747,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to integer-divide non-numeric values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -770,11 +768,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to add non-homogeneous values.",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -792,11 +790,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to compare non-primitive values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -816,11 +814,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to compare non-primitive values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -838,11 +836,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to compare non-primitive values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -861,11 +859,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to compare non-primitive values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -879,11 +877,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to compare non-primitive values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -897,11 +895,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         message: "Attempting to compare non-primitive values.",
                         left: {
                             type: left,
-                            location: expression.left.location,
+                            location: expression.left.loc,
                         },
                         right: {
                             type: right,
-                            location: expression.right.location,
+                            location: expression.right.loc,
                         },
                     })
                 );
@@ -920,11 +918,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to 'and' boolean with non-boolean value",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -942,11 +940,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to bitwise 'and' number with non-numberic value",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -956,11 +954,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to 'and' unexpected values",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -979,11 +977,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                                 message: "Attempting to 'or' boolean with non-boolean value",
                                 left: {
                                     type: left,
-                                    location: expression.left.location,
+                                    location: expression.left.loc,
                                 },
                                 right: {
                                     type: right,
-                                    location: expression.right.location,
+                                    location: expression.right.loc,
                                 },
                             })
                         );
@@ -1001,11 +999,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                                 "Attempting to bitwise 'or' number with non-numeric expression",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -1015,11 +1013,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                             message: "Attempting to 'or' unexpected values",
                             left: {
                                 type: left,
-                                location: expression.left.location,
+                                location: expression.left.loc,
                             },
                             right: {
                                 type: right,
-                                location: expression.right.location,
+                                location: expression.right.loc,
                             },
                         })
                     );
@@ -1028,7 +1026,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 return this.addError(
                     new BrsError(
                         `Received unexpected token kind '${expression.token.kind}'`,
-                        expression.token.location
+                        expression.token.loc
                     )
                 );
         }
@@ -1040,11 +1038,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     visitExitFor(statement: Stmt.ExitFor): never {
-        throw new Stmt.ExitForReason(statement.location);
+        throw new Stmt.ExitForReason(statement.loc);
     }
 
     visitExitWhile(expression: Stmt.ExitWhile): never {
-        throw new Stmt.ExitWhileReason(expression.location);
+        throw new Stmt.ExitWhileReason(expression.loc);
     }
 
     visitCall(expression: Expr.Call) {
@@ -1066,7 +1064,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return this.addError(
                 new BrsError(
                     `'${functionName}' is not a function and cannot be called.`,
-                    expression.closingParen.location
+                    expression.closingParen.loc
                 )
             );
         }
@@ -1104,7 +1102,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         return this.addError(
                             new BrsError(
                                 "Attempted to retrieve a function from a primitive value",
-                                expression.closingParen.location
+                                expression.closingParen.loc
                             )
                         );
                     }
@@ -1121,7 +1119,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 }
 
                 let returnedValue = (reason as Stmt.ReturnValue).value;
-                let returnLocation = (reason as Stmt.ReturnValue).location;
+                let returnLocation = (reason as Stmt.ReturnValue).loc;
 
                 if (returnedValue && satisfiedSignature.signature.returns === ValueKind.Void) {
                     this.addError(
@@ -1172,7 +1170,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             }
         } else {
             return this.addError(
-                generateArgumentMismatchError(callee, args, expression.closingParen.location)
+                generateArgumentMismatchError(callee, args, expression.closingParen.loc)
             );
         }
     }
@@ -1184,7 +1182,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             try {
                 return source.get(new BrsString(expression.name.text));
             } catch (err) {
-                return this.addError(new BrsError(err.message, expression.name.location));
+                return this.addError(new BrsError(err.message, expression.name.loc));
             }
         }
 
@@ -1193,7 +1191,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             try {
                 return boxedSource.getMethod(expression.name.text) || BrsInvalid.Instance;
             } catch (err) {
-                return this.addError(new BrsError(err.message, expression.name.location));
+                return this.addError(new BrsError(err.message, expression.name.loc));
             }
         } else {
             return this.addError(
@@ -1201,7 +1199,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     message: "Attempting to retrieve property from non-iterable value",
                     left: {
                         type: source,
-                        location: expression.location,
+                        location: expression.loc,
                     },
                 })
             );
@@ -1216,7 +1214,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     message: "Attempting to retrieve property from non-iterable value",
                     left: {
                         type: source,
-                        location: expression.location,
+                        location: expression.loc,
                     },
                 })
             );
@@ -1230,11 +1228,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         "Attempting to retrieve property from iterable with illegal index type",
                     left: {
                         type: source,
-                        location: expression.obj.location,
+                        location: expression.obj.loc,
                     },
                     right: {
                         type: index,
-                        location: expression.index.location,
+                        location: expression.index.loc,
                     },
                 })
             );
@@ -1243,7 +1241,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         try {
             return source.get(index, true);
         } catch (err) {
-            return this.addError(new BrsError(err.message, expression.closingSquare.location));
+            return this.addError(new BrsError(err.message, expression.closingSquare.loc));
         }
     }
 
@@ -1278,7 +1276,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     kind: Lexeme.Plus,
                     text: "+",
                     isReserved: false,
-                    location: {
+                    loc: {
                         start: {
                             line: -1,
                             column: -1,
@@ -1290,7 +1288,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         file: "(internal)",
                     },
                 },
-                new Expr.Literal(increment, statement.increment.location)
+                new Expr.Literal(increment, statement.increment.loc)
             )
         );
 
@@ -1354,7 +1352,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 new BrsError(
                     `Attempting to iterate across values of non-iterable type ` +
                         ValueKind.toString(target.kind),
-                    statement.item.location
+                    statement.item.loc
                 )
             );
         }
@@ -1450,7 +1448,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     message: "Attempting to set property on non-iterable value",
                     left: {
                         type: source,
-                        location: statement.name.location,
+                        location: statement.name.loc,
                     },
                 })
             );
@@ -1459,7 +1457,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         try {
             source.set(new BrsString(statement.name.text), value);
         } catch (err) {
-            return this.addError(new BrsError(err.message, statement.name.location));
+            return this.addError(new BrsError(err.message, statement.name.loc));
         }
 
         return BrsInvalid.Instance;
@@ -1474,7 +1472,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     message: "Attempting to set property on non-iterable value",
                     left: {
                         type: source,
-                        location: statement.obj.location,
+                        location: statement.obj.loc,
                     },
                 })
             );
@@ -1487,11 +1485,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     message: "Attempting to set property on iterable with illegal index type",
                     left: {
                         type: source,
-                        location: statement.obj.location,
+                        location: statement.obj.loc,
                     },
                     right: {
                         type: index,
-                        location: statement.index.location,
+                        location: statement.index.loc,
                     },
                 })
             );
@@ -1502,7 +1500,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         try {
             source.set(index, value, true);
         } catch (err) {
-            return this.addError(new BrsError(err.message, statement.closingSquare.location));
+            return this.addError(new BrsError(err.message, statement.closingSquare.loc));
         }
 
         return BrsInvalid.Instance;
@@ -1518,7 +1516,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                     `Attempting to ${operation} value of non-numeric type ${ValueKind.toString(
                         target.kind
                     )}`,
-                    expression.location
+                    expression.loc
                 )
             );
         }
@@ -1539,7 +1537,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 new Stmt.DottedSet(
                     expression.value.obj,
                     expression.value.name,
-                    new Expr.Literal(result, expression.location)
+                    new Expr.Literal(result, expression.loc)
                 )
             );
         } else if (expression.value instanceof Expr.IndexedGet) {
@@ -1548,7 +1546,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 new Stmt.IndexedSet(
                     expression.value.obj,
                     expression.value.index,
-                    new Expr.Literal(result, expression.location),
+                    new Expr.Literal(result, expression.loc),
                     expression.value.closingSquare
                 )
             );
@@ -1570,7 +1568,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         new BrsError(
                             `Attempting to negate non-numeric value.
                             value type: ${ValueKind.toString(right.kind)}`,
-                            expression.operator.location
+                            expression.operator.loc
                         )
                     );
                 }
@@ -1582,7 +1580,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         new BrsError(
                             `Attempting to apply unary positive operator to non-numeric value.
                             value type: ${ValueKind.toString(right.kind)}`,
-                            expression.operator.location
+                            expression.operator.loc
                         )
                     );
                 }
@@ -1594,7 +1592,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         new BrsError(
                             `Attempting to NOT non-boolean value.
                             value type: ${ValueKind.toString(right.kind)}`,
-                            expression.operator.location
+                            expression.operator.loc
                         )
                     );
                 }
@@ -1616,7 +1614,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     evaluate(this: Interpreter, expression: Expr.Expression): BrsType {
-        this.location = expression.location;
+        this.location = expression.loc;
         this.stack.push(this.location);
         this.reportCoverageHit(expression);
 
@@ -1633,7 +1631,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
     }
 
     execute(this: Interpreter, statement: Stmt.Statement): BrsType {
-        this.location = statement.location;
+        this.location = statement.loc;
         this.stack.push(this.location);
         this.reportCoverageHit(statement);
 

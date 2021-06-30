@@ -436,7 +436,7 @@ describe("parser", () => {
                 kind: Lexeme.Identifier,
                 text: "_",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 1 },
                 },
@@ -445,7 +445,7 @@ describe("parser", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 2 },
                     end: { line: 1, column: 3 },
                 },
@@ -454,7 +454,7 @@ describe("parser", () => {
                 kind: Lexeme.Sub,
                 text: "sub",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 7 },
                 },
@@ -463,7 +463,7 @@ describe("parser", () => {
                 kind: Lexeme.LeftParen,
                 text: "(",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 11 },
                     end: { line: 1, column: 12 },
                 },
@@ -472,7 +472,7 @@ describe("parser", () => {
                 kind: Lexeme.RightParen,
                 text: ")",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 12 },
                     end: { line: 1, column: 13 },
                 },
@@ -481,7 +481,7 @@ describe("parser", () => {
                 kind: Lexeme.Newline,
                 text: "\n",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 13 },
                     end: { line: 1, column: 14 },
                 },
@@ -490,7 +490,7 @@ describe("parser", () => {
                 kind: Lexeme.EndSub,
                 text: "end sub",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 0 },
                     end: { line: 3, column: 7 },
                 },
@@ -499,7 +499,7 @@ describe("parser", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 7 },
                     end: { line: 3, column: 8 },
                 },
@@ -508,7 +508,7 @@ describe("parser", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].value.location).toEqual({
+        expect(statements[0].value.loc).toEqual({
             start: { line: 1, column: 4 },
             end: { line: 3, column: 7 },
         });

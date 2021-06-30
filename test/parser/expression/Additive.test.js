@@ -58,7 +58,7 @@ describe("parser additive expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "_",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 1 },
                 },
@@ -67,7 +67,7 @@ describe("parser additive expressions", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 2 },
                     end: { line: 1, column: 2 },
                 },
@@ -77,7 +77,7 @@ describe("parser additive expressions", () => {
                 text: "1",
                 isReserved: false,
                 literal: new Int32(1),
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 5 },
                 },
@@ -86,7 +86,7 @@ describe("parser additive expressions", () => {
                 kind: Lexeme.Plus,
                 text: "+",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 6 },
                     end: { line: 1, column: 7 },
                 },
@@ -96,7 +96,7 @@ describe("parser additive expressions", () => {
                 text: "2",
                 isReserved: false,
                 literal: new Int32(2),
-                location: {
+                loc: {
                     start: { line: 1, column: 8 },
                     end: { line: 1, column: 9 },
                 },
@@ -105,7 +105,7 @@ describe("parser additive expressions", () => {
                 kind: Lexeme.Plus,
                 text: "+",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 10 },
                     end: { line: 1, column: 11 },
                 },
@@ -115,7 +115,7 @@ describe("parser additive expressions", () => {
                 text: "3",
                 isReserved: false,
                 literal: new Int32(3),
-                location: {
+                loc: {
                     start: { line: 1, column: 12 },
                     end: { line: 1, column: 13 },
                 },
@@ -124,7 +124,7 @@ describe("parser additive expressions", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 13 },
                     end: { line: 1, column: 14 },
                 },
@@ -133,7 +133,7 @@ describe("parser additive expressions", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].value.location).toEqual({
+        expect(statements[0].value.loc).toEqual({
             start: { line: 1, column: 4 },
             end: { line: 1, column: 13 },
         });

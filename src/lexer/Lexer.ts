@@ -101,7 +101,7 @@ export class Lexer {
             kind: Lexeme.Eof,
             isReserved: false,
             text: "\0",
-            location: {
+            loc: {
                 start: {
                     line: line,
                     column: column,
@@ -670,7 +670,7 @@ export class Lexer {
             // similar to JS-like `//`.  Everything else is a "block" comment, similar to JS-like
             // `/* */` or `/** */`
             const commentType: Comment["type"] =
-                peekPrevious()?.location.start.line === line ? "Line" : "Block";
+                peekPrevious()?.loc.start.line === line ? "Line" : "Block";
 
             let commentText = "";
             while (peek() !== "\n" && !isAtEnd()) {
@@ -813,7 +813,7 @@ export class Lexer {
                 text: text,
                 isReserved: ReservedWords.has(text.toLowerCase()),
                 literal: literal,
-                location: locationOf(text),
+                loc: locationOf(text),
             });
         }
 

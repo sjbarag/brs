@@ -1,7 +1,7 @@
 import type { Location } from "./lexer";
 
 export class BrsError extends Error {
-    constructor(message: string, readonly location: Location) {
+    constructor(message: string, readonly loc: Location) {
         super(message);
     }
 
@@ -13,7 +13,7 @@ export class BrsError extends Error {
      * @see BrsError#format
      */
     format() {
-        return BrsError.format(this.message, this.location);
+        return BrsError.format(this.message, this.loc);
     }
 
     /**

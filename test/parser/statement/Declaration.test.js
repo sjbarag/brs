@@ -97,7 +97,7 @@ describe("parser variable declarations", () => {
                 kind: Lexeme.Identifier,
                 text: "foo",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 3 },
                 },
@@ -106,7 +106,7 @@ describe("parser variable declarations", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 5 },
                 },
@@ -116,7 +116,7 @@ describe("parser variable declarations", () => {
                 text: "invalid",
                 literal: BrsInvalid.Instance,
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 6 },
                     end: { line: 1, column: 13 },
                 },
@@ -125,7 +125,7 @@ describe("parser variable declarations", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 13 },
                     end: { line: 1, column: 14 },
                 },
@@ -134,7 +134,7 @@ describe("parser variable declarations", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].location).toEqual({
+        expect(statements[0].loc).toEqual({
             start: { line: 1, column: 0 },
             end: { line: 1, column: 13 },
         });

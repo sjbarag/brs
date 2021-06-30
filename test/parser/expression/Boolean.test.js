@@ -55,7 +55,7 @@ describe("parser boolean expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "a",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 1 },
                 },
@@ -64,7 +64,7 @@ describe("parser boolean expressions", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 2 },
                     end: { line: 1, column: 3 },
                 },
@@ -74,7 +74,7 @@ describe("parser boolean expressions", () => {
                 text: "true",
                 literal: BrsBoolean.True,
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 8 },
                 },
@@ -83,7 +83,7 @@ describe("parser boolean expressions", () => {
                 kind: Lexeme.And,
                 text: "and",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 9 },
                     end: { line: 1, column: 12 },
                 },
@@ -93,7 +93,7 @@ describe("parser boolean expressions", () => {
                 text: "false",
                 literal: BrsBoolean.False,
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 13 },
                     end: { line: 1, column: 18 },
                 },
@@ -102,7 +102,7 @@ describe("parser boolean expressions", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 18 },
                     end: { line: 1, column: 19 },
                 },
@@ -111,7 +111,7 @@ describe("parser boolean expressions", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].value.location).toEqual({
+        expect(statements[0].value.loc).toEqual({
             start: { line: 1, column: 4 },
             end: { line: 1, column: 18 },
         });

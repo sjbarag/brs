@@ -65,7 +65,7 @@ describe("Environment", () => {
             kind: Lexeme.Identifier,
             text: "line_num",
             isReserved: true,
-            location: {
+            loc: {
                 file: "does-not-exist.brs",
                 start: {
                     line: 13,

@@ -99,7 +99,7 @@ export class Parser {
          */
         function hashIf(): CC.Chunk | undefined {
             if (match(Lexeme.HashIf)) {
-                let startingLine = previous().location.start.line;
+                let startingLine = previous().loc.start.line;
                 let elseChunk: CC.Chunk[] | undefined;
 
                 let ifCondition = advance();

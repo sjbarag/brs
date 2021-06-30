@@ -95,7 +95,7 @@ describe("parser for loops", () => {
                 kind: Lexeme.For,
                 text: "for",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 3 },
                 },
@@ -104,7 +104,7 @@ describe("parser for loops", () => {
                 kind: Lexeme.Identifier,
                 text: "i",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 5 },
                 },
@@ -113,7 +113,7 @@ describe("parser for loops", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 6 },
                     end: { line: 1, column: 7 },
                 },
@@ -123,7 +123,7 @@ describe("parser for loops", () => {
                 text: "0",
                 literal: new Int32(0),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 8 },
                     end: { line: 1, column: 9 },
                 },
@@ -132,7 +132,7 @@ describe("parser for loops", () => {
                 kind: Lexeme.To,
                 text: "to",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 10 },
                     end: { start: 1, column: 12 },
                 },
@@ -142,7 +142,7 @@ describe("parser for loops", () => {
                 text: "10",
                 literal: new Int32(10),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 13 },
                     end: { line: 1, column: 15 },
                 },
@@ -151,7 +151,7 @@ describe("parser for loops", () => {
                 kind: Lexeme.Newline,
                 text: "\n",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 15 },
                     end: { line: 1, column: 16 },
                 },
@@ -166,7 +166,7 @@ describe("parser for loops", () => {
                 kind: Lexeme.EndFor,
                 text: "end for",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 0 },
                     end: { line: 3, column: 8 },
                 },
@@ -176,7 +176,7 @@ describe("parser for loops", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].location).toEqual({
+        expect(statements[0].loc).toEqual({
             start: { line: 1, column: 0 },
             end: { line: 3, column: 8 },
         });

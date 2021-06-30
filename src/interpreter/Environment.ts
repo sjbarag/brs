@@ -159,7 +159,7 @@ export class Environment {
 
         // the special "LINE_NUM" variable always resolves to the line number on which it appears
         if (lowercaseName === "line_num") {
-            return new Int32(name.location.start.line);
+            return new Int32(name.loc.start.line);
         }
 
         // "m" always maps to the special `m` pointer

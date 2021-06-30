@@ -30,7 +30,7 @@ describe("FileCoverage statements", () => {
 
         let statementLocation = coverageResults.statementMap[statementKeys[0]];
         let statementHits = coverageResults.s[statementKeys[0]];
-        expect(locationEqual(statementLocation, statement.location)).toBeTruthy();
+        expect(locationEqual(statementLocation, statement.loc)).toBeTruthy();
         expect(statementHits).toEqual(numHits);
     }
 
@@ -362,7 +362,7 @@ describe("FileCoverage statements", () => {
 
         let statementCoverage = coverageResults.fnMap[statementKeys[0]];
         let statementHits = coverageResults.f[statementKeys[0]];
-        expect(locationEqual(statementCoverage.loc, statement.location)).toBeTruthy();
+        expect(locationEqual(statementCoverage.loc, statement.loc)).toBeTruthy();
         expect(statementHits).toEqual(1);
     });
 

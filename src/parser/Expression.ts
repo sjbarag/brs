@@ -36,11 +36,11 @@ export class Binary extends AstNode implements Expression {
         return visitor.visitBinary(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.token.location.file,
-            start: this.left.location.start,
-            end: this.right.location.end,
+            file: this.token.loc.file,
+            start: this.left.loc.start,
+            end: this.right.loc.end,
         };
     }
 }
@@ -60,11 +60,11 @@ export class Call extends AstNode implements Expression {
         return visitor.visitCall(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.closingParen.location.file,
-            start: this.callee.location.start,
-            end: this.closingParen.location.end,
+            file: this.closingParen.loc.file,
+            start: this.callee.loc.start,
+            end: this.closingParen.loc.end,
         };
     }
 }
@@ -84,11 +84,11 @@ export class Function extends AstNode implements Expression {
         return visitor.visitAnonymousFunction(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.keyword.location.file,
-            start: this.keyword.location.start,
-            end: this.endKeyword.location.end,
+            file: this.keyword.loc.file,
+            start: this.keyword.loc.start,
+            end: this.endKeyword.loc.end,
         };
     }
 }
@@ -102,11 +102,11 @@ export class DottedGet extends AstNode implements Expression {
         return visitor.visitDottedGet(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.obj.location.file,
-            start: this.obj.location.start,
-            end: this.name.location.end,
+            file: this.obj.loc.file,
+            start: this.obj.loc.start,
+            end: this.name.loc.end,
         };
     }
 }
@@ -124,11 +124,11 @@ export class IndexedGet extends AstNode implements Expression {
         return visitor.visitIndexedGet(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.obj.location.file,
-            start: this.obj.location.start,
-            end: this.closingSquare.location.end,
+            file: this.obj.loc.file,
+            start: this.obj.loc.start,
+            end: this.closingSquare.loc.end,
         };
     }
 }
@@ -148,11 +148,11 @@ export class Grouping extends AstNode implements Expression {
         return visitor.visitGrouping(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.left.location.file,
-            start: this.tokens.left.location.start,
-            end: this.tokens.right.location.end,
+            file: this.tokens.left.loc.file,
+            start: this.tokens.left.loc.start,
+            end: this.tokens.right.loc.end,
         };
     }
 }
@@ -166,7 +166,7 @@ export class Literal extends AstNode implements Expression {
         return visitor.visitLiteral(this);
     }
 
-    get location() {
+    get loc() {
         return (
             this._location || {
                 file: "(internal)",
@@ -192,11 +192,11 @@ export class ArrayLiteral extends AstNode implements Expression {
         return visitor.visitArrayLiteral(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.open.location.file,
-            start: this.open.location.start,
-            end: this.close.location.end,
+            file: this.open.loc.file,
+            start: this.open.loc.start,
+            end: this.close.loc.end,
         };
     }
 }
@@ -218,11 +218,11 @@ export class AALiteral extends AstNode implements Expression {
         return visitor.visitAALiteral(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.open.location.file,
-            start: this.open.location.start,
-            end: this.close.location.end,
+            file: this.open.loc.file,
+            start: this.open.loc.start,
+            end: this.close.loc.end,
         };
     }
 }
@@ -236,11 +236,11 @@ export class Unary extends AstNode implements Expression {
         return visitor.visitUnary(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.operator.location.file,
-            start: this.operator.location.start,
-            end: this.right.location.end,
+            file: this.operator.loc.file,
+            start: this.operator.loc.start,
+            end: this.right.loc.end,
         };
     }
 }
@@ -254,7 +254,7 @@ export class Variable extends AstNode implements Expression {
         return visitor.visitVariable(this);
     }
 
-    get location() {
-        return this.name.location;
+    get loc() {
+        return this.name.loc;
     }
 }

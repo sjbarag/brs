@@ -120,7 +120,7 @@ describe("parser postfix unary expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "someNumber",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 10 },
                 },
@@ -129,7 +129,7 @@ describe("parser postfix unary expressions", () => {
                 kind: Lexeme.PlusPlus,
                 text: "++",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 10 },
                     end: { line: 1, column: 12 },
                 },
@@ -138,7 +138,7 @@ describe("parser postfix unary expressions", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 12 },
                     end: { line: 1, column: 13 },
                 },
@@ -147,7 +147,7 @@ describe("parser postfix unary expressions", () => {
 
         expect(errors).toEqual([]);
         expect(statements).toHaveLength(1);
-        expect(statements[0].location).toMatchObject({
+        expect(statements[0].loc).toMatchObject({
             start: { line: 1, column: 0 },
             end: { line: 1, column: 12 },
         });

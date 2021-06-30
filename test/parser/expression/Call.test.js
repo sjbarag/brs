@@ -37,7 +37,7 @@ describe("parser call expressions", () => {
         expect(errors.length).toBeGreaterThan(0);
 
         //ALL of the errors should be on the `DoThin` line
-        let lineNumbers = errors.map((x) => x.location.start.line);
+        let lineNumbers = errors.map((x) => x.loc.start.line);
         for (let lineNumber of lineNumbers) {
             expect(lineNumber).toEqual(3);
         }
@@ -57,7 +57,7 @@ describe("parser call expressions", () => {
         //there should only be 1 error
         expect(errors.length).toEqual(1);
         //the error should be BEFORE the `name = "bob"` statement
-        expect(errors[0].location.end.column).toBeLessThan(25);
+        expect(errors[0].loc.end.column).toBeLessThan(25);
         expect(statements).toMatchSnapshot();
     });
 
@@ -107,7 +107,7 @@ describe("parser call expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "foo",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 3 },
                 },
@@ -116,7 +116,7 @@ describe("parser call expressions", () => {
                 kind: Lexeme.LeftParen,
                 text: "(",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 3 },
                     end: { line: 1, column: 4 },
                 },
@@ -126,7 +126,7 @@ describe("parser call expressions", () => {
                 text: `"bar"`,
                 literal: new BrsString("bar"),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 9 },
                 },
@@ -135,7 +135,7 @@ describe("parser call expressions", () => {
                 kind: Lexeme.Comma,
                 text: ",",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 9 },
                     end: { line: 1, column: 10 },
                 },
@@ -145,7 +145,7 @@ describe("parser call expressions", () => {
                 text: `"baz"`,
                 literal: new BrsString("baz"),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 11 },
                     end: { line: 1, column: 16 },
                 },
@@ -154,7 +154,7 @@ describe("parser call expressions", () => {
                 kind: Lexeme.RightParen,
                 text: ")",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 16 },
                     end: { line: 1, column: 17 },
                 },
@@ -163,7 +163,7 @@ describe("parser call expressions", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 17 },
                     end: { line: 1, column: 18 },
                 },
@@ -172,7 +172,7 @@ describe("parser call expressions", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].location).toEqual({
+        expect(statements[0].loc).toEqual({
             start: { line: 1, column: 0 },
             end: { line: 1, column: 17 },
         });

@@ -81,11 +81,11 @@ export class Assignment extends AstNode implements Statement {
         return visitor.visitAssignment(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.name.location.file,
-            start: this.name.location.start,
-            end: this.value.location.end,
+            file: this.name.loc.file,
+            start: this.name.loc.start,
+            end: this.value.loc.end,
         };
     }
 }
@@ -106,17 +106,17 @@ export class Dim extends AstNode implements Statement {
         return visitor.visitDim(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.dim.location.file,
-            start: this.tokens.dim.location.start,
-            end: this.tokens.closingBrace.location.end,
+            file: this.tokens.dim.loc.file,
+            start: this.tokens.dim.loc.start,
+            end: this.tokens.closingBrace.loc.end,
         };
     }
 }
 
 export class Block extends AstNode implements Statement {
-    constructor(readonly statements: ReadonlyArray<Statement>, readonly location: Location) {
+    constructor(readonly statements: ReadonlyArray<Statement>, readonly loc: Location) {
         super("Block");
     }
 
@@ -134,8 +134,8 @@ export class Expression extends AstNode implements Statement {
         return visitor.visitExpression(this);
     }
 
-    get location() {
-        return this.expression.location;
+    get loc() {
+        return this.expression.loc;
     }
 }
 
@@ -152,8 +152,8 @@ export class ExitFor extends AstNode implements Statement {
         return visitor.visitExitFor(this);
     }
 
-    get location() {
-        return this.tokens.exitFor.location;
+    get loc() {
+        return this.tokens.exitFor.loc;
     }
 }
 
@@ -170,8 +170,8 @@ export class ExitWhile extends AstNode implements Statement {
         return visitor.visitExitWhile(this);
     }
 
-    get location() {
-        return this.tokens.exitWhile.location;
+    get loc() {
+        return this.tokens.exitWhile.loc;
     }
 }
 
@@ -184,11 +184,11 @@ export class Function extends AstNode implements Statement {
         return visitor.visitNamedFunction(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.name.location.file,
-            start: this.func.location.start,
-            end: this.func.location.end,
+            file: this.name.loc.file,
+            start: this.func.loc.start,
+            end: this.func.loc.end,
         };
     }
 }
@@ -225,20 +225,20 @@ export class If extends AstNode implements Statement {
 
     private getEndLocation(): Location {
         if (this.tokens.endIf) {
-            return this.tokens.endIf.location;
+            return this.tokens.endIf.loc;
         } else if (this.elseBranch) {
-            return this.elseBranch.location;
+            return this.elseBranch.loc;
         } else if (this.elseIfs.length) {
-            return this.elseIfs[this.elseIfs.length - 1].thenBranch.location;
+            return this.elseIfs[this.elseIfs.length - 1].thenBranch.loc;
         } else {
-            return this.thenBranch.location;
+            return this.thenBranch.loc;
         }
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.if.location.file,
-            start: this.tokens.if.location.start,
+            file: this.tokens.if.loc.file,
+            start: this.tokens.if.loc.start,
             end: this.getEndLocation().end,
         };
     }
@@ -253,11 +253,11 @@ export class Increment extends AstNode implements Statement {
         return visitor.visitIncrement(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.value.location.file,
-            start: this.value.location.start,
-            end: this.token.location.end,
+            file: this.value.loc.file,
+            start: this.value.loc.start,
+            end: this.token.loc.end,
         };
     }
 }
@@ -297,14 +297,14 @@ export class Print extends AstNode implements Statement {
         return visitor.visitPrint(this);
     }
 
-    get location() {
+    get loc() {
         let end = this.expressions.length
-            ? this.expressions[this.expressions.length - 1].location.end
-            : this.tokens.print.location.end;
+            ? this.expressions[this.expressions.length - 1].loc.end
+            : this.tokens.print.loc.end;
 
         return {
-            file: this.tokens.print.location.file,
-            start: this.tokens.print.location.start,
+            file: this.tokens.print.loc.file,
+            start: this.tokens.print.loc.start,
             end: end,
         };
     }
@@ -325,11 +325,11 @@ export class Goto extends AstNode implements Statement {
         throw new Error("Not implemented");
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.goto.location.file,
-            start: this.tokens.goto.location.start,
-            end: this.tokens.label.location.end,
+            file: this.tokens.goto.loc.file,
+            start: this.tokens.goto.loc.start,
+            end: this.tokens.label.loc.end,
         };
     }
 }
@@ -348,11 +348,11 @@ export class Label extends AstNode implements Statement {
         throw new Error("Not implemented");
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.identifier.location.file,
-            start: this.tokens.identifier.location.start,
-            end: this.tokens.colon.location.end,
+            file: this.tokens.identifier.loc.file,
+            start: this.tokens.identifier.loc.start,
+            end: this.tokens.colon.loc.end,
         };
     }
 }
@@ -371,11 +371,11 @@ export class Return extends AstNode implements Statement {
         return visitor.visitReturn(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.return.location.file,
-            start: this.tokens.return.location.start,
-            end: (this.value && this.value.location.end) || this.tokens.return.location.end,
+            file: this.tokens.return.loc.file,
+            start: this.tokens.return.loc.start,
+            end: (this.value && this.value.loc.end) || this.tokens.return.loc.end,
         };
     }
 }
@@ -394,11 +394,11 @@ export class End extends AstNode implements Statement {
         throw new Error("Not implemented");
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.end.location.file,
-            start: this.tokens.end.location.start,
-            end: this.tokens.end.location.end,
+            file: this.tokens.end.loc.file,
+            start: this.tokens.end.loc.start,
+            end: this.tokens.end.loc.end,
         };
     }
 }
@@ -417,11 +417,11 @@ export class Stop extends AstNode implements Statement {
         throw new Error("Not implemented");
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.stop.location.file,
-            start: this.tokens.stop.location.start,
-            end: this.tokens.stop.location.end,
+            file: this.tokens.stop.loc.file,
+            start: this.tokens.stop.loc.start,
+            end: this.tokens.stop.loc.end,
         };
     }
 }
@@ -446,11 +446,11 @@ export class For extends AstNode implements Statement {
         return visitor.visitFor(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.for.location.file,
-            start: this.tokens.for.location.start,
-            end: this.tokens.endFor.location.end,
+            file: this.tokens.for.loc.file,
+            start: this.tokens.for.loc.start,
+            end: this.tokens.endFor.loc.end,
         };
     }
 }
@@ -473,11 +473,11 @@ export class ForEach extends AstNode implements Statement {
         return visitor.visitForEach(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.forEach.location.file,
-            start: this.tokens.forEach.location.start,
-            end: this.tokens.endFor.location.end,
+            file: this.tokens.forEach.loc.file,
+            start: this.tokens.forEach.loc.start,
+            end: this.tokens.endFor.loc.end,
         };
     }
 }
@@ -498,11 +498,11 @@ export class While extends AstNode implements Statement {
         return visitor.visitWhile(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.while.location.file,
-            start: this.tokens.while.location.start,
-            end: this.tokens.endWhile.location.end,
+            file: this.tokens.while.loc.file,
+            start: this.tokens.while.loc.start,
+            end: this.tokens.endWhile.loc.end,
         };
     }
 }
@@ -520,11 +520,11 @@ export class DottedSet extends AstNode implements Statement {
         return visitor.visitDottedSet(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.obj.location.file,
-            start: this.obj.location.start,
-            end: this.value.location.end,
+            file: this.obj.loc.file,
+            start: this.obj.loc.start,
+            end: this.value.loc.end,
         };
     }
 }
@@ -543,11 +543,11 @@ export class IndexedSet extends AstNode implements Statement {
         return visitor.visitIndexedSet(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.obj.location.file,
-            start: this.obj.location.start,
-            end: this.value.location.end,
+            file: this.obj.loc.file,
+            start: this.obj.loc.start,
+            end: this.value.loc.end,
         };
     }
 }
@@ -566,13 +566,11 @@ export class Library extends AstNode implements Statement {
         return visitor.visitLibrary(this);
     }
 
-    get location() {
+    get loc() {
         return {
-            file: this.tokens.library.location.file,
-            start: this.tokens.library.location.start,
-            end: this.tokens.filePath
-                ? this.tokens.filePath.location.end
-                : this.tokens.library.location.end,
+            file: this.tokens.library.loc.file,
+            start: this.tokens.library.loc.start,
+            end: this.tokens.filePath ? this.tokens.filePath.loc.end : this.tokens.library.loc.end,
         };
     }
 }

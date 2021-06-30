@@ -91,7 +91,7 @@ describe("parser return statements", () => {
                 kind: Lexeme.Return,
                 text: "return",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 2, column: 2 },
                     end: { line: 2, column: 8 },
                 },
@@ -101,7 +101,7 @@ describe("parser return statements", () => {
                 text: "5",
                 literal: new Int32(5),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 9 },
                     end: { line: 2, column: 10 },
                 },
@@ -112,7 +112,7 @@ describe("parser return statements", () => {
         ]);
 
         expect(errors).toEqual([]);
-        expect(statements[0].func.body.statements[0].location).toEqual({
+        expect(statements[0].func.body.statements[0].loc).toEqual({
             start: { line: 2, column: 2 },
             end: { line: 2, column: 10 },
         });

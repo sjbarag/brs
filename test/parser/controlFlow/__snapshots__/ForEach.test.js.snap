@@ -4,7 +4,7 @@ exports[`parser foreach loops allows 'next' to terminate loop 1`] = `
 Array [
   ForEach {
     "body": Block {
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -22,7 +22,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -39,7 +39,7 @@ Array [
         "isReserved": false,
         "kind": "Identifier",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -58,7 +58,7 @@ Array [
         "isReserved": true,
         "kind": "Next",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -74,7 +74,7 @@ Array [
         "isReserved": false,
         "kind": "ForEach",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -90,7 +90,7 @@ Array [
         "isReserved": false,
         "kind": "Identifier",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -112,7 +112,7 @@ exports[`parser foreach loops requires a name and target 1`] = `
 Array [
   ForEach {
     "body": Block {
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -130,7 +130,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -147,7 +147,7 @@ Array [
         "isReserved": false,
         "kind": "Identifier",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -166,7 +166,7 @@ Array [
         "isReserved": false,
         "kind": "EndFor",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -182,7 +182,7 @@ Array [
         "isReserved": false,
         "kind": "ForEach",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -198,7 +198,7 @@ Array [
         "isReserved": false,
         "kind": "Identifier",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,

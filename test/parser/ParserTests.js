@@ -35,7 +35,7 @@ exports.token = function (kind, text, literal, locationNum = -9) {
         text: text,
         isReserved: brs.lexer.ReservedWords.has((text || "").toLowerCase()),
         literal: literal,
-        location: exports.generateLocation(locationNum),
+        loc: exports.generateLocation(locationNum),
     };
 };
 

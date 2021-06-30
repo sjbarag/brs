@@ -8,6 +8,6 @@ export class ParseError extends BrsError {
             m = "(At end of file) " + message;
         }
 
-        super(m, token.location);
+        super(m, token.loc);
     }
 }

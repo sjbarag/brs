@@ -41,7 +41,7 @@ describe("parser", () => {
             let { statements, errors } = parser.parse(tokens);
             expect(errors.length).toEqual(1);
             //specifically check for the error location, because the identifier location was wrong in the past
-            expect(errors[0].location).toEqual({
+            expect(errors[0].loc).toEqual({
                 file: "",
                 start: { line: 3, column: 20 },
                 end: { line: 3, column: 23 },

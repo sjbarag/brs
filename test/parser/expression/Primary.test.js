@@ -71,7 +71,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "a",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 1 },
                 },
@@ -80,7 +80,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 2 },
                     end: { line: 1, column: 3 },
                 },
@@ -90,7 +90,7 @@ describe("parser primary expressions", () => {
                 text: "5",
                 literal: new Int32(5),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 5 },
                 },
@@ -99,8 +99,8 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Newline,
                 text: "\n",
                 isReserved: false,
-                location: false,
-                location: {
+                loc: false,
+                loc: {
                     start: { line: 1, column: 5 },
                     end: { line: 1, column: 6 },
                 },
@@ -109,7 +109,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "b",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 0 },
                     end: { line: 2, column: 1 },
                 },
@@ -118,7 +118,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 2 },
                     end: { line: 2, column: 3 },
                 },
@@ -128,7 +128,7 @@ describe("parser primary expressions", () => {
                 text: `"foo"`,
                 literal: new BrsString("foo"),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 4 },
                     end: { line: 2, column: 9 },
                 },
@@ -137,7 +137,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Newline,
                 text: "\n",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 9 },
                     end: { line: 2, column: 10 },
                 },
@@ -146,7 +146,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "c",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 0 },
                     end: { line: 3, column: 1 },
                 },
@@ -155,7 +155,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 2 },
                     end: { line: 3, column: 3 },
                 },
@@ -164,7 +164,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.LeftParen,
                 text: "(",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 4 },
                     end: { line: 3, column: 5 },
                 },
@@ -174,7 +174,7 @@ describe("parser primary expressions", () => {
                 text: "0",
                 literal: new Int32(0),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 6 },
                     end: { line: 3, column: 7 },
                 },
@@ -183,7 +183,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.RightParen,
                 text: ")",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 8 },
                     end: { line: 3, column: 9 },
                 },
@@ -192,7 +192,7 @@ describe("parser primary expressions", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 9 },
                     end: { line: 2, column: 10 },
                 },
@@ -201,7 +201,7 @@ describe("parser primary expressions", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(3);
-        expect(statements.map((s) => s.value.location)).toEqual([
+        expect(statements.map((s) => s.value.loc)).toEqual([
             {
                 start: { line: 1, column: 4 },
                 end: { line: 1, column: 5 },

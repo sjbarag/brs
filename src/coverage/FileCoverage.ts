@@ -41,7 +41,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
      * @param statement statement for which to generate a key.
      */
     getStatementKey(statement: Expr.Expression | Stmt.Statement) {
-        let { start, end } = statement.location;
+        let { start, end } = statement.loc;
         let kind = isStatement(statement) ? "stmt" : "expr";
         return `${kind}:${statement.type}:${start.line},${start.column}-${end.line},${end.column}`;
     }
@@ -80,8 +80,8 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                 let thenBranchCoverage = this.get(statement.thenBranch);
                 if (thenBranchCoverage) {
                     locations.push({
-                        ...statement.location,
-                        end: statement.condition.location.end,
+                        ...statement.loc,
+                        end: statement.condition.loc.end,
                     });
                     branchHits.push(thenBranchCoverage.hits);
                 }
@@ -89,7 +89,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                 // the condition is a statement as well as a branch, so put it in the statement map
                 let ifCondition = this.get(statement.condition);
                 if (ifCondition) {
-                    coverageSummary.statementMap[`${key}.if`] = statement.condition.location;
+                    coverageSummary.statementMap[`${key}.if`] = statement.condition.loc;
                     coverageSummary.s[`${key}.if`] = ifCondition.hits;
                 }
 
@@ -99,7 +99,7 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     if (elseIfCoverage) {
                         // the condition is a statement as well as a branch, so put it in the statement map
                         coverageSummary.statementMap[`${key}.elseif-${index}`] =
-                            branch.condition.location;
+                            branch.condition.loc;
                         coverageSummary.s[`${key}.elseif-${index}`] = elseIfCoverage.hits;
 
                         // add to the list of branches
@@ -107,9 +107,9 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                         if (elseIfBlock) {
                             // use the tokens as the start for the branch rather than the condition
                             let start =
-                                statement.tokens.elseIfs?.[index].location.start ||
-                                branch.condition.location.start;
-                            locations.push({ ...branch.condition.location, start });
+                                statement.tokens.elseIfs?.[index].loc.start ||
+                                branch.condition.loc.start;
+                            locations.push({ ...branch.condition.loc, start });
                             branchHits.push(elseIfBlock.hits);
                         }
                     }
@@ -121,18 +121,17 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                     if (elseCoverage) {
                         // use the tokens as the start rather than the condition
                         let start =
-                            statement.tokens.else?.location.start ||
-                            statement.elseBranch.location.start;
-                        locations.push({ ...statement.elseBranch.location, start });
+                            statement.tokens.else?.loc.start || statement.elseBranch.loc.start;
+                        locations.push({ ...statement.elseBranch.loc, start });
                         branchHits.push(elseCoverage.hits);
                     }
                 }
 
                 coverageSummary.branchMap[key] = {
-                    loc: statement.location,
+                    loc: statement.loc,
                     type: "if",
                     locations,
-                    line: statement.location.start.line,
+                    line: statement.loc.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
             } else if (statement instanceof Stmt.Function) {
@@ -141,12 +140,12 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                 if (functionCoverage) {
                     coverageSummary.fnMap[key] = {
                         name: statement.name.text,
-                        loc: statement.location,
+                        loc: statement.loc,
                         decl: {
-                            ...statement.func.keyword.location,
-                            end: statement.name.location.end,
+                            ...statement.func.keyword.loc,
+                            end: statement.name.loc.end,
                         },
-                        line: statement.location.start.line,
+                        line: statement.loc.start.line,
                     };
                     coverageSummary.f[key] = functionCoverage.hits;
                 }
@@ -156,9 +155,9 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
                 if (functionCoverage) {
                     coverageSummary.fnMap[key] = {
                         name: "[Function]",
-                        loc: statement.location,
-                        decl: statement.keyword.location,
-                        line: statement.location.start.line,
+                        loc: statement.loc,
+                        decl: statement.keyword.loc,
+                        line: statement.loc.start.line,
                     };
                     coverageSummary.f[key] = functionCoverage.hits;
                 }
@@ -171,31 +170,31 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
 
                 let leftCoverage = this.get(statement.left);
                 if (leftCoverage) {
-                    locations.push(statement.left.location);
+                    locations.push(statement.left.loc);
                     branchHits.push(leftCoverage.hits);
                 }
                 let rightCoverage = this.get(statement.right);
                 if (rightCoverage) {
-                    locations.push(statement.right.location);
+                    locations.push(statement.right.loc);
                     branchHits.push(rightCoverage.hits);
                 }
 
                 coverageSummary.branchMap[key] = {
-                    loc: statement.location,
+                    loc: statement.loc,
                     type: statement.token.kind,
                     locations,
-                    line: statement.location.start.line,
+                    line: statement.loc.start.line,
                 };
                 coverageSummary.b[key] = branchHits;
 
                 // this is a statement as well as a branch, so put it in the statement map
-                coverageSummary.statementMap[key] = statement.location;
+                coverageSummary.statementMap[key] = statement.loc;
                 coverageSummary.s[key] = hits;
             } else if (
                 isStatement(statement) &&
                 !(statement instanceof Stmt.Block) // blocks are part of other statements, so don't include them
             ) {
-                coverageSummary.statementMap[key] = statement.location;
+                coverageSummary.statementMap[key] = statement.loc;
                 coverageSummary.s[key] = hits;
             }
         });
@@ -218,11 +217,11 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
     }
 
     visitExitFor(statement: Stmt.ExitFor): never {
-        throw new Stmt.ExitForReason(statement.location);
+        throw new Stmt.ExitForReason(statement.loc);
     }
 
     visitExitWhile(statement: Stmt.ExitWhile): never {
-        throw new Stmt.ExitWhileReason(statement.location);
+        throw new Stmt.ExitWhileReason(statement.loc);
     }
 
     visitPrint(statement: Stmt.Print) {
@@ -287,11 +286,11 @@ export class FileCoverage implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType
 
     visitReturn(statement: Stmt.Return): never {
         if (!statement.value) {
-            throw new Stmt.ReturnValue(statement.tokens.return.location);
+            throw new Stmt.ReturnValue(statement.tokens.return.loc);
         }
 
         let toReturn = this.evaluate(statement.value);
-        throw new Stmt.ReturnValue(statement.tokens.return.location, toReturn);
+        throw new Stmt.ReturnValue(statement.tokens.return.loc, toReturn);
     }
 
     visitDottedSet(statement: Stmt.DottedSet) {

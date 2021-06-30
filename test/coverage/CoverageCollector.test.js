@@ -51,7 +51,7 @@ describe("CoverageCollector.ts", () => {
         );
         await coverageCollector.crawlBrsFiles();
 
-        coverageCollector.logHit({ location: { file: "script1.brs" } });
+        coverageCollector.logHit({ loc: { file: "script1.brs" } });
 
         FileCoverage.mock.instances.forEach((fileMock, index) => {
             // only the first one should have been called

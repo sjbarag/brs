@@ -61,7 +61,7 @@ Array [
         "isReserved": false,
         "kind": "Print",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -104,7 +104,7 @@ Array [
         "isReserved": false,
         "kind": "Semicolon",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -137,7 +137,7 @@ Array [
         "isReserved": false,
         "kind": "Semicolon",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -172,7 +172,7 @@ Array [
         "isReserved": false,
         "kind": "Print",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -214,7 +214,7 @@ Array [
         "isReserved": false,
         "kind": "Print",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -259,7 +259,7 @@ Array [
         "isReserved": false,
         "kind": "Print",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,

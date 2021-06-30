@@ -76,7 +76,7 @@ describe("parser print statements", () => {
                 kind: Lexeme.Print,
                 text: "print",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 5 },
                 },
@@ -86,7 +86,7 @@ describe("parser print statements", () => {
                 text: `"foo"`,
                 literal: new BrsString("foo"),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 6 },
                     end: { line: 1, column: 11 },
                 },
@@ -95,7 +95,7 @@ describe("parser print statements", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 11 },
                     end: { line: 1, column: 12 },
                 },
@@ -104,7 +104,7 @@ describe("parser print statements", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].location).toEqual({
+        expect(statements[0].loc).toEqual({
             start: { line: 1, column: 0 },
             end: { line: 1, column: 11 },
         });

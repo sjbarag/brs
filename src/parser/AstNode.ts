@@ -15,9 +15,6 @@ export abstract class AstNode {
     /** Currently only used by ESLint for walking the tree */
     public parent: AstNode | undefined;
 
-    /** Alias for location used by ESLint */
-    public get loc() {
-        return this.location;
-    }
-    public abstract location: Location;
+    /** The location at which the AST node starts and ends. */
+    public abstract loc: Location;
 }

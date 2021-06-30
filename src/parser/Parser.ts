@@ -406,7 +406,7 @@ export class Parser {
                                 kind: Lexeme.Identifier,
                                 text: arg.name.text,
                                 isReserved: ReservedWords.has(arg.name.text),
-                                location: arg.location,
+                                loc: arg.location,
                             },
                             `Argument '${arg.name.text}' has no default value, but comes after arguments with default values`
                         );
@@ -501,16 +501,19 @@ export class Parser {
             }
 
             return {
-                name: name,
+                name: {
+                    ...name,
+                    location: name.loc,
+                },
                 type: {
                     kind: type,
-                    location: typeToken ? typeToken.location : StdlibArgument.InternalLocation,
+                    location: typeToken ? typeToken.loc : StdlibArgument.InternalLocation,
                 },
                 defaultValue: defaultValue,
                 location: {
-                    file: name.location.file,
-                    start: name.location.start,
-                    end: typeToken ? typeToken.location.end : name.location.end,
+                    file: name.loc.file,
+                    start: name.loc.start,
+                    end: typeToken ? typeToken.loc.end : name.loc.end,
                 },
             };
         }
@@ -669,7 +672,7 @@ export class Parser {
                 increment = expression();
             } else {
                 // BrightScript for/to/step loops default to a step of 1 if no `step` is provided
-                increment = new Expr.Literal(new Int32(1), peek().location);
+                increment = new Expr.Literal(new Int32(1), peek().loc);
             }
 
             let maybeBody = block(Lexeme.EndFor, Lexeme.Next);
@@ -743,14 +746,14 @@ export class Parser {
             //no token following library keyword token
             if (!libraryStatement.tokens.filePath && check(Lexeme.Newline, Lexeme.Colon)) {
                 addErrorAtLocation(
-                    libraryStatement.tokens.library.location,
+                    libraryStatement.tokens.library.loc,
                     `Missing string literal after ${libraryStatement.tokens.library.text} keyword`
                 );
             }
             //does not have a string literal as next token
             else if (!libraryStatement.tokens.filePath && peek().kind === Lexeme.Newline) {
                 addErrorAtLocation(
-                    peek().location,
+                    peek().loc,
                     `Expected string literal after ${libraryStatement.tokens.library.text} keyword`
                 );
             }
@@ -762,7 +765,7 @@ export class Parser {
                 //add an error for every invalid token
                 for (let invalidToken of invalidTokens) {
                     addErrorAtLocation(
-                        invalidToken.location,
+                        invalidToken.loc,
                         `Found unexpected token '${invalidToken.text}' after library statement`
                     );
                 }
@@ -780,7 +783,7 @@ export class Parser {
             //libraries must be a root-level statement (i.e. NOT nested inside of functions)
             if (!isAtRootLevel() || !isAtTopOfFile) {
                 addErrorAtLocation(
-                    libraryStatement.location,
+                    libraryStatement.loc,
                     "Library statements may only appear at the top of a file"
                 );
             }
@@ -791,7 +794,7 @@ export class Parser {
 
         function ifStatement(): Stmt.If {
             const ifToken = advance();
-            const startingLine = ifToken.location;
+            const startingLine = ifToken.loc;
 
             const condition = expression();
             let thenBranch: Stmt.Block;
@@ -887,7 +890,7 @@ export class Parser {
                     endIfToken = maybeElseBranch.closingToken;
 
                     //ensure that single-line `if` statements have a colon right before 'end if'
-                    if (ifToken.location.start.line === endIfToken.location.start.line) {
+                    if (ifToken.loc.start.line === endIfToken.loc.start.line) {
                         let index = tokens.indexOf(endIfToken);
                         let previousToken = tokens[index - 1];
                         if (previousToken.kind !== Lexeme.Colon) {
@@ -904,7 +907,7 @@ export class Parser {
                     }
 
                     //ensure that single-line `if` statements have a colon right before 'end if'
-                    if (ifToken.location.start.line === endIfToken.location.start.line) {
+                    if (ifToken.loc.start.line === endIfToken.loc.start.line) {
                         let index = tokens.indexOf(endIfToken);
                         let previousToken = tokens[index - 1];
                         if (previousToken.kind !== Lexeme.Colon) {
@@ -1089,7 +1092,7 @@ export class Parser {
 
             //print statements can be empty, so look for empty print conditions
             if (isAtEnd() || check(Lexeme.Newline, Lexeme.Colon)) {
-                let emptyStringLiteral = new Expr.Literal(new BrsString(""), printKeyword.location);
+                let emptyStringLiteral = new Expr.Literal(new BrsString(""), printKeyword.loc);
                 values.push(emptyStringLiteral);
             } else {
                 values.push(expression());
@@ -1279,9 +1282,9 @@ export class Parser {
 
             //the block's location starts at the end of the preceeding token, and stops at the beginning of the `end` token
             const location: Location = {
-                file: startingToken.location.file,
-                start: startingToken.location.start,
-                end: closingToken.location.start,
+                file: startingToken.loc.file,
+                start: startingToken.loc.start,
+                end: closingToken.loc.start,
             };
 
             return {
@@ -1472,11 +1475,11 @@ export class Parser {
         function primary(): Expression {
             switch (true) {
                 case match(Lexeme.False):
-                    return new Expr.Literal(BrsBoolean.False, previous().location);
+                    return new Expr.Literal(BrsBoolean.False, previous().loc);
                 case match(Lexeme.True):
-                    return new Expr.Literal(BrsBoolean.True, previous().location);
+                    return new Expr.Literal(BrsBoolean.True, previous().loc);
                 case match(Lexeme.Invalid):
-                    return new Expr.Literal(BrsInvalid.Instance, previous().location);
+                    return new Expr.Literal(BrsInvalid.Instance, previous().loc);
                 case match(
                     Lexeme.Integer,
                     Lexeme.LongInteger,
@@ -1484,7 +1487,7 @@ export class Parser {
                     Lexeme.Double,
                     Lexeme.String
                 ):
-                    return new Expr.Literal(previous().literal!, previous().location);
+                    return new Expr.Literal(previous().literal!, previous().loc);
                 case match(Lexeme.Identifier):
                     return new Expr.Variable(previous() as Identifier);
                 case match(Lexeme.LeftParen):

@@ -145,7 +145,7 @@ describe("parser prefix unary expressions", () => {
                 kind: Lexeme.Identifier,
                 text: "_false",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 6 },
                 },
@@ -154,7 +154,7 @@ describe("parser prefix unary expressions", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 7 },
                     end: { line: 1, column: 8 },
                 },
@@ -163,7 +163,7 @@ describe("parser prefix unary expressions", () => {
                 kind: Lexeme.Not,
                 text: "not",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 9 },
                     end: { line: 1, column: 12 },
                 },
@@ -173,7 +173,7 @@ describe("parser prefix unary expressions", () => {
                 text: "true",
                 literal: BrsBoolean.True,
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 13 },
                     end: { line: 1, column: 17 },
                 },
@@ -182,7 +182,7 @@ describe("parser prefix unary expressions", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 17 },
                     end: { line: 1, column: 18 },
                 },
@@ -191,7 +191,7 @@ describe("parser prefix unary expressions", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].value.location).toEqual({
+        expect(statements[0].value.loc).toEqual({
             start: { line: 1, column: 9 },
             end: { line: 1, column: 17 },
         });

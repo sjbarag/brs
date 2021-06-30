@@ -7,7 +7,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -24,7 +24,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -40,7 +40,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -77,7 +77,7 @@ Array [
                 "isReserved": true,
                 "kind": "Print",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -99,7 +99,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -115,7 +115,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -142,7 +142,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -159,7 +159,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -175,7 +175,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -193,7 +193,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -209,7 +209,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -255,6 +255,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -315,6 +325,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -349,7 +369,7 @@ Array [
                 "isReserved": false,
                 "kind": "Identifier",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -384,7 +404,7 @@ Array [
               "isReserved": false,
               "kind": "Plus",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -413,6 +433,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -455,7 +485,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -472,7 +502,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -488,7 +518,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -506,7 +536,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -522,7 +552,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -552,6 +582,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -596,6 +636,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -638,7 +688,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -655,7 +705,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -671,7 +721,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -689,7 +739,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -705,7 +755,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -735,6 +785,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -778,6 +838,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -821,6 +891,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -862,7 +942,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -879,7 +959,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -895,7 +975,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -913,7 +993,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -929,7 +1009,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -975,6 +1055,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -1008,7 +1098,7 @@ Array [
                 "isReserved": false,
                 "kind": "Identifier",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -1043,7 +1133,7 @@ Array [
               "isReserved": false,
               "kind": "Plus",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -1072,6 +1162,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -1113,7 +1213,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1130,7 +1230,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1146,7 +1246,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1164,7 +1264,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1180,7 +1280,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1207,7 +1307,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1224,7 +1324,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1240,7 +1340,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1277,7 +1377,7 @@ Array [
                 "isReserved": true,
                 "kind": "Print",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -1299,7 +1399,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1315,7 +1415,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1342,7 +1442,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1359,7 +1459,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1375,7 +1475,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1393,7 +1493,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1409,7 +1509,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1436,7 +1536,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1453,7 +1553,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1469,7 +1569,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1487,7 +1587,7 @@ Array [
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1503,7 +1603,7 @@ Array [
         "isReserved": true,
         "kind": "Sub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1530,7 +1630,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1547,7 +1647,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1563,7 +1663,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1600,7 +1700,7 @@ Array [
                 "isReserved": true,
                 "kind": "Print",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -1622,7 +1722,7 @@ Array [
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1638,7 +1738,7 @@ Array [
         "isReserved": true,
         "kind": "Sub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1665,7 +1765,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1682,7 +1782,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1698,7 +1798,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1716,7 +1816,7 @@ Array [
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1732,7 +1832,7 @@ Array [
         "isReserved": true,
         "kind": "Sub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -1778,6 +1878,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -1838,6 +1948,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -1872,7 +1992,7 @@ Array [
                 "isReserved": false,
                 "kind": "Identifier",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -1907,7 +2027,7 @@ Array [
               "isReserved": false,
               "kind": "Plus",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -1936,6 +2056,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -1978,7 +2108,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -1995,7 +2125,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2011,7 +2141,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2029,7 +2159,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2045,7 +2175,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2075,6 +2205,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2119,6 +2259,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2161,7 +2311,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -2178,7 +2328,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2194,7 +2344,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2212,7 +2362,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2228,7 +2378,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2258,6 +2408,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2301,6 +2461,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2344,6 +2514,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2385,7 +2565,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -2402,7 +2582,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2418,7 +2598,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2436,7 +2616,7 @@ Array [
         "isReserved": false,
         "kind": "EndSub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2452,7 +2632,7 @@ Array [
         "isReserved": true,
         "kind": "Sub",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2498,6 +2678,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2531,7 +2721,7 @@ Array [
                 "isReserved": false,
                 "kind": "Identifier",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -2566,7 +2756,7 @@ Array [
               "isReserved": false,
               "kind": "Plus",
               "literal": undefined,
-              "location": Object {
+              "loc": Object {
                 "end": Object {
                   "column": -9,
                   "line": -9,
@@ -2595,6 +2785,16 @@ Array [
             "isReserved": false,
             "kind": "Identifier",
             "literal": undefined,
+            "loc": Object {
+              "end": Object {
+                "column": -9,
+                "line": -9,
+              },
+              "start": Object {
+                "column": -9,
+                "line": -9,
+              },
+            },
             "location": Object {
               "end": Object {
                 "column": -9,
@@ -2636,7 +2836,7 @@ Array [
       "isReserved": false,
       "kind": "Identifier",
       "literal": undefined,
-      "location": Object {
+      "loc": Object {
         "end": Object {
           "column": -9,
           "line": -9,
@@ -2653,7 +2853,7 @@ Array [
         "isReserved": false,
         "kind": "Equal",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2669,7 +2869,7 @@ Array [
     "type": "Assignment",
     "value": Function {
       "body": Block {
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2706,7 +2906,7 @@ Array [
                 "isReserved": true,
                 "kind": "Print",
                 "literal": undefined,
-                "location": Object {
+                "loc": Object {
                   "end": Object {
                     "column": -9,
                     "line": -9,
@@ -2728,7 +2928,7 @@ Array [
         "isReserved": false,
         "kind": "EndFunction",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2744,7 +2944,7 @@ Array [
         "isReserved": true,
         "kind": "Function",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,
@@ -2771,7 +2971,7 @@ Array [
       "args": Array [
         Function {
           "body": Block {
-            "location": Object {
+            "loc": Object {
               "end": Object {
                 "column": -9,
                 "line": -9,
@@ -2808,7 +3008,7 @@ Array [
                     "isReserved": true,
                     "kind": "Print",
                     "literal": undefined,
-                    "location": Object {
+                    "loc": Object {
                       "end": Object {
                         "column": -9,
                         "line": -9,
@@ -2830,7 +3030,7 @@ Array [
             "isReserved": false,
             "kind": "EndFunction",
             "literal": undefined,
-            "location": Object {
+            "loc": Object {
               "end": Object {
                 "column": -9,
                 "line": -9,
@@ -2846,7 +3046,7 @@ Array [
             "isReserved": true,
             "kind": "Function",
             "literal": undefined,
-            "location": Object {
+            "loc": Object {
               "end": Object {
                 "column": -9,
                 "line": -9,
@@ -2868,7 +3068,7 @@ Array [
           "isReserved": false,
           "kind": "Identifier",
           "literal": undefined,
-          "location": Object {
+          "loc": Object {
             "end": Object {
               "column": -9,
               "line": -9,
@@ -2886,7 +3086,7 @@ Array [
         "isReserved": false,
         "kind": "RightParen",
         "literal": undefined,
-        "location": Object {
+        "loc": Object {
           "end": Object {
             "column": -9,
             "line": -9,

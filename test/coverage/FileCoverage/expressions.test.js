@@ -92,7 +92,7 @@ describe("FileCoverage expressions", () => {
                 // a branch is still a statement
                 expect(Object.keys(coverageResults.statementMap).length).toEqual(1);
                 expect(Object.keys(coverageResults.s).length).toEqual(1);
-                expect(locationEqual(branchStatement, expression.location)).toBeTruthy();
+                expect(locationEqual(branchStatement, expression.loc)).toBeTruthy();
                 expect(branchStatementHits).toEqual(1);
 
                 let branch = coverageResults.branchMap[key];
@@ -129,7 +129,7 @@ describe("FileCoverage expressions", () => {
                 // a branch is still a statement
                 expect(Object.keys(coverageResults.statementMap).length).toEqual(1);
                 expect(Object.keys(coverageResults.s).length).toEqual(1);
-                expect(locationEqual(branchStatement, expression.location)).toBeTruthy();
+                expect(locationEqual(branchStatement, expression.loc)).toBeTruthy();
                 expect(branchStatementHits).toEqual(1);
 
                 let branch = coverageResults.branchMap[key];
@@ -168,7 +168,7 @@ describe("FileCoverage expressions", () => {
             // a branch is still a statement
             expect(Object.keys(coverageResults.statementMap).length).toEqual(1);
             expect(Object.keys(coverageResults.s).length).toEqual(1);
-            expect(locationEqual(branchStatement, expression.location)).toBeTruthy();
+            expect(locationEqual(branchStatement, expression.loc)).toBeTruthy();
             expect(branchStatementHits).toEqual(2);
 
             let branch = coverageResults.branchMap[key];

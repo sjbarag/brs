@@ -141,7 +141,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Identifier,
                 text: "arr",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 3 },
                 },
@@ -150,7 +150,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.LeftSquare,
                 text: "[",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 3 },
                     end: { line: 1, column: 4 },
                 },
@@ -160,7 +160,7 @@ describe("parser indexed assignment", () => {
                 text: "0",
                 literal: new Int32(0),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 4 },
                     end: { line: 1, column: 5 },
                 },
@@ -169,7 +169,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.RightSquare,
                 text: "]",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 5 },
                     end: { line: 1, column: 6 },
                 },
@@ -178,7 +178,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 7 },
                     end: { line: 1, column: 8 },
                 },
@@ -188,7 +188,7 @@ describe("parser indexed assignment", () => {
                 text: "1",
                 literal: new Int32(1),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 9 },
                     end: { line: 1, column: 10 },
                 },
@@ -197,7 +197,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Newline,
                 text: "\n",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 10 },
                     end: { line: 1, column: 11 },
                 },
@@ -206,7 +206,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Identifier,
                 text: "obj",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 0 },
                     end: { line: 2, column: 3 },
                 },
@@ -215,7 +215,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Dot,
                 text: ".",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 3 },
                     end: { line: 2, column: 4 },
                 },
@@ -224,7 +224,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Identifier,
                 text: "a",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 4 },
                     end: { line: 2, column: 5 },
                 },
@@ -233,7 +233,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Equal,
                 text: "=",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 6 },
                     end: { line: 2, column: 7 },
                 },
@@ -243,7 +243,7 @@ describe("parser indexed assignment", () => {
                 text: "5",
                 literal: new Int32(5),
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 8 },
                     end: { line: 2, column: 9 },
                 },
@@ -252,7 +252,7 @@ describe("parser indexed assignment", () => {
                 kind: Lexeme.Eof,
                 text: "\0",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 2, column: 10 },
                     end: { line: 2, column: 11 },
                 },
@@ -261,7 +261,7 @@ describe("parser indexed assignment", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(2);
-        expect(statements.map((s) => s.location)).toEqual([
+        expect(statements.map((s) => s.loc)).toEqual([
             {
                 start: { line: 1, column: 0 },
                 end: { line: 1, column: 10 },

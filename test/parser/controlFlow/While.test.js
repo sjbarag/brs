@@ -83,7 +83,7 @@ describe("parser while statements", () => {
                 kind: Lexeme.While,
                 text: "while",
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 5 },
                 },
@@ -93,7 +93,7 @@ describe("parser while statements", () => {
                 text: "true",
                 literal: BrsBoolean.True,
                 isReserved: true,
-                location: {
+                loc: {
                     start: { line: 1, column: 6 },
                     end: { line: 1, column: 10 },
                 },
@@ -102,7 +102,7 @@ describe("parser while statements", () => {
                 kind: Lexeme.Newline,
                 text: "\n",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 1, column: 10 },
                     end: { line: 1, column: 11 },
                 },
@@ -118,7 +118,7 @@ describe("parser while statements", () => {
                 kind: Lexeme.EndWhile,
                 text: "end while",
                 isReserved: false,
-                location: {
+                loc: {
                     start: { line: 3, column: 0 },
                     end: { line: 3, column: 9 },
                 },
@@ -128,7 +128,7 @@ describe("parser while statements", () => {
 
         expect(errors).toEqual([]);
         expect(statements.length).toBe(1);
-        expect(statements[0].location).toEqual({
+        expect(statements[0].loc).toEqual({
             start: { line: 1, column: 0 },
             end: { line: 3, column: 9 },
         });

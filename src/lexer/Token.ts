@@ -14,7 +14,7 @@ export interface Token {
     /** The literal value (using the BRS type system) associated with this token, if any. */
     literal?: BrsType;
     /** The starting and ending line/column pairs where the token was found. */
-    location: Location;
+    loc: Location;
 }
 
 /** Represents a BrightScript comment scanned by the lexer. */
@@ -81,5 +81,5 @@ export interface Identifier extends Token {
  * @returns `true` if `obj` is a `Token`, otherwise `false`
  */
 export function isToken(obj: Record<string, any>): obj is Token {
-    return !!(obj.kind && obj.text && obj.location);
+    return !!(obj.kind && obj.text && obj.loc);
 }

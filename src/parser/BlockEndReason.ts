@@ -21,8 +21,8 @@ export class ExitWhileReason extends BlockEnd {
 
 /** An error thrown to handle a `return` statement. */
 export class ReturnValue extends BlockEnd {
-    constructor(readonly location: Location, readonly value?: BrsType) {
-        super("`return` encountered", location);
+    constructor(readonly loc: Location, readonly value?: BrsType) {
+        super("`return` encountered", loc);
     }
 }
 

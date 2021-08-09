@@ -2516,4 +2516,20 @@ describe("RoSGNode", () => {
             });
         });
     });
+
+    describe("ifSGNodeBoundingRect", () => {
+        let interpreter, node;
+
+        beforeEach(() => {
+            interpreter = new Interpreter();
+            node = new RoSGNode([{ name: new BrsString("id"), value: new BrsString("root") }]);
+        });
+
+        it("should return bounding rect", () => {
+            let boundingRectCall = node.getMethod("boundingRect");
+            expect(boundingRectCall).toBeTruthy();
+            let result = boundingRectCall.call(interpreter);
+            expect(result).toBeTruthy();
+        });
+    });
 });

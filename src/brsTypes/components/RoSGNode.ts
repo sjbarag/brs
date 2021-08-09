@@ -373,6 +373,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.issubtype,
                 this.parentsubtype,
             ],
+            ifSGNodeBoundingRect: [this.boundingRect],
         });
     }
 
@@ -1500,6 +1501,22 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter) => {
             return BrsBoolean.from(interpreter.environment.getFocusedNode() === this);
+        },
+    });
+
+    private boundingRect = new Callable("boundingRect", {
+        signature: {
+            args: [],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter) => {
+            const zeroValue = new Int32(0);
+            return new RoAssociativeArray([
+                { name: new BrsString("x"), value: zeroValue },
+                { name: new BrsString("y"), value: zeroValue },
+                { name: new BrsString("height"), value: zeroValue },
+                { name: new BrsString("width"), value: zeroValue },
+            ]);
         },
     });
 

@@ -213,6 +213,13 @@ sub init()
     ?node.FrameRate
     node.ClipStart = 37
     ?node.ClipStart
+
+    ' ifSGNodeBoundingRect
+    rect = node.boundingRect()
+    print rect.x          ' => 0
+    print rect.y          ' => 0
+    print rect.height  ' => 0
+    print rect.width  ' => 0
 end sub
 
 sub onCB1Called()

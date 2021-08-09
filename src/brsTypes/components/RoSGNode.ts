@@ -1507,7 +1507,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     private boundingRect = new Callable("boundingRect", {
         signature: {
             args: [],
-            returns: ValueKind.Object,
+            returns: ValueKind.Dynamic,
         },
         impl: (interpreter: Interpreter) => {
             const zeroValue = new Int32(0);

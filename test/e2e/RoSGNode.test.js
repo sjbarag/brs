@@ -209,6 +209,10 @@ describe("components/roSGNode", () => {
             "invalid",
             "33",
             "37",
+            "0",
+            "0",
+            "0",
+            "0",
         ]);
     });
 });

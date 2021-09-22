@@ -30,8 +30,9 @@ export function getLexerParserFn(
             try {
                 contents = await readFile(filename, "utf-8");
             } catch (err) {
+                let errno = (err as NodeJS.ErrnoException)?.errno || -4858;
                 return Promise.reject({
-                    message: `brs: can't open file '${filename}': [Errno ${err.errno}]`,
+                    message: `brs: can't open file '${filename}': [Errno ${errno}]`,
                 });
             }
 

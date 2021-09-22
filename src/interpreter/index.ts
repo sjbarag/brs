@@ -1183,7 +1183,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         if (isIterable(source)) {
             try {
                 return source.get(new BrsString(expression.name.text));
-            } catch (err) {
+            } catch (err: any) {
                 return this.addError(new BrsError(err.message, expression.name.location));
             }
         }
@@ -1192,7 +1192,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         if (boxedSource instanceof BrsComponent) {
             try {
                 return boxedSource.getMethod(expression.name.text) || BrsInvalid.Instance;
-            } catch (err) {
+            } catch (err: any) {
                 return this.addError(new BrsError(err.message, expression.name.location));
             }
         } else {
@@ -1242,7 +1242,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         try {
             return source.get(index, true);
-        } catch (err) {
+        } catch (err: any) {
             return this.addError(new BrsError(err.message, expression.closingSquare.location));
         }
     }
@@ -1458,7 +1458,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         try {
             source.set(new BrsString(statement.name.text), value);
-        } catch (err) {
+        } catch (err: any) {
             return this.addError(new BrsError(err.message, statement.name.location));
         }
 
@@ -1501,7 +1501,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         try {
             source.set(index, value, true);
-        } catch (err) {
+        } catch (err: any) {
             return this.addError(new BrsError(err.message, statement.closingSquare.location));
         }
 

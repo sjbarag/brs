@@ -929,7 +929,6 @@ describe("RoSGNode", () => {
                 ]);
 
                 let addFields = node.getMethod("addfields");
-
                 let update = node.getMethod("update");
                 let getField = node.getMethod("getfield");
                 expect(update).toBeTruthy();
@@ -2502,6 +2501,7 @@ describe("RoSGNode", () => {
                 it("returns the parent subtype", () => {
                     let markupNode = new MarkupGrid();
                     let parentsubtype = markupNode.getMethod("parentsubtype");
+
                     let result = parentsubtype.call(interpreter, new BrsString("MarkUpGrid"));
                     expect(result.value).toBe("ArrayGrid");
                 });

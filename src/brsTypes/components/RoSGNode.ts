@@ -1929,7 +1929,6 @@ function addChildren(
                 let setField = newChild.getMethod("setfield");
                 if (setField) {
                     let nodeFields = newChild.getFields();
-
                     for (let [key, value] of Object.entries(child.fields)) {
                         let field = nodeFields.get(key.toLowerCase());
                         if (field) {

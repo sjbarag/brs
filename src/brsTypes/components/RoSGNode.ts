@@ -372,6 +372,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.callfunc,
                 this.issubtype,
                 this.parentsubtype,
+                this.clone,
             ],
             ifSGNodeBoundingRect: [this.boundingRect],
         });
@@ -1695,6 +1696,41 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    private clone = new Callable("clone", {
+        signature: {
+            args: [new StdlibArgument("isDeepCopy", ValueKind.Boolean)],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter, isDeepCopy: BrsBoolean) => {
+            let copy = createNodeByType(interpreter, new BrsString(this.nodeSubtype));
+
+            let originalFields = this.getFields();
+            let newFields = new RoAssociativeArray([]);
+
+            let addReplace = newFields.getMethod("addreplace");
+
+            for (let [key, value] of originalFields) {
+                if (addReplace) {
+                    addReplace.call(
+                        interpreter,
+                        new BrsString(key),
+                        getBrsValueFromFieldType(value.getType(), value.toString())
+                    );
+                }
+            }
+
+            if (!(copy instanceof BrsInvalid)) {
+                let update = copy.getMethod("update");
+
+                if (update) {
+                    update.call(interpreter, newFields, BrsBoolean.True);
+                }
+            }
+
+            return copy;
+        },
+    });
+
     /* Returns the subtype of this node as specified when it was created */
     private subtype = new Callable("subtype", {
         signature: {
@@ -1893,6 +1929,7 @@ function addChildren(
                 let setField = newChild.getMethod("setfield");
                 if (setField) {
                     let nodeFields = newChild.getFields();
+
                     for (let [key, value] of Object.entries(child.fields)) {
                         let field = nodeFields.get(key.toLowerCase());
                         if (field) {

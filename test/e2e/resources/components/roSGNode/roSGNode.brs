@@ -214,6 +214,16 @@ sub init()
     node.ClipStart = 37
     ?node.ClipStart
 
+    ' it clones nodes
+     node = createObject("roSGNode", "ContentNode")
+     node.update({
+        id: "updatedId",
+        newField: "newValue"
+    }, true)
+    clonedNode = node.clone(true)
+    print clonedNode.id
+    print clonedNode.newField
+
     ' ifSGNodeBoundingRect
     rect = node.boundingRect()
     print rect.x          ' => 0

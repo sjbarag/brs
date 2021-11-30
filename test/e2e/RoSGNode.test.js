@@ -209,6 +209,8 @@ describe("components/roSGNode", () => {
             "invalid",
             "33",
             "37",
+            "updatedId",
+            "newValue",
             "0",
             "0",
             "0",

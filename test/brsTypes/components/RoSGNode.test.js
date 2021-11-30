@@ -2586,7 +2586,7 @@ describe("RoSGNode", () => {
                     expect(childCount).toEqual(new Int32(0));
                 });
 
-                it("deep copy copies children and grandchildren", () => {
+                it("deep clone copies children and grandchildren", () => {
                     let cloneMethod = originalNode.getMethod("clone");
                     let copyNode = cloneMethod.call(interpreter, new BrsBoolean(true));
 

@@ -1703,15 +1703,6 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, isDeepCopy: BrsBoolean) => {
             return cloneNode(interpreter, this, isDeepCopy.toBoolean());
-            // let cloneHelper = this.getMethod("clonehelper");
-
-            // if (cloneHelper) {
-            //     let copy = cloneHelper.call(interpreter, this, isDeepCopy);
-
-            //     return copy;
-            // }
-
-            // return BrsInvalid.Instance;
         },
     });
 

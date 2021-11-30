@@ -373,6 +373,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.issubtype,
                 this.parentsubtype,
                 this.clone,
+                this.clonehelper,
             ],
             ifSGNodeBoundingRect: [this.boundingRect],
         });
@@ -1696,18 +1697,21 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    private clone = new Callable("clone", {
+    private clonehelper = new Callable("clonehelper", {
         signature: {
-            args: [new StdlibArgument("isDeepCopy", ValueKind.Boolean)],
+            args: [
+                new StdlibArgument("toBeCloned", ValueKind.Object),
+                new StdlibArgument("isDeepCopy", ValueKind.Boolean),
+            ],
             returns: ValueKind.Object,
         },
-        impl: (interpreter: Interpreter, isDeepCopy: BrsBoolean) => {
-            let copy = createNodeByType(interpreter, new BrsString(this.nodeSubtype));
+        impl: (interpreter: Interpreter, toBeCloned: RoSGNode, isDeepCopy: BrsBoolean) => {
+            let copy = createNodeByType(interpreter, new BrsString(toBeCloned.nodeSubtype));
 
-            let originalFields = this.getFields();
-            let newFields = new RoAssociativeArray([]);
+            let originalFields = toBeCloned.getFields();
+            let copiedFields = new RoAssociativeArray([]);
 
-            let addReplace = newFields.getMethod("addreplace");
+            let addReplace = copiedFields.getMethod("addreplace");
 
             for (let [key, value] of originalFields) {
                 if (addReplace) {
@@ -1723,11 +1727,42 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 let update = copy.getMethod("update");
 
                 if (update) {
-                    update.call(interpreter, newFields, BrsBoolean.True);
+                    update.call(interpreter, copiedFields, BrsBoolean.True);
+                }
+
+                if (isDeepCopy.toBoolean()) {
+                    let appendChild = copy.getMethod("appendchild");
+
+                    for (let child of toBeCloned.children) {
+                        let clone = child.getMethod("cloneHelper");
+
+                        if (clone && appendChild) {
+                            let childCopy = clone.call(interpreter, child, BrsBoolean.True);
+                            appendChild.call(interpreter, childCopy);
+                        }
+                    }
                 }
             }
 
             return copy;
+        },
+    });
+
+    private clone = new Callable("clone", {
+        signature: {
+            args: [new StdlibArgument("isDeepCopy", ValueKind.Boolean)],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter, isDeepCopy: BrsBoolean) => {
+            let cloneHelper = this.getMethod("clonehelper");
+
+            if (cloneHelper) {
+                let copy = cloneHelper.call(interpreter, this, isDeepCopy);
+
+                return copy;
+            }
+
+            return BrsInvalid.Instance;
         },
     });
 

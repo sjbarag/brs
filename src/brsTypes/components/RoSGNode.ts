@@ -1323,7 +1323,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 let childNodesElements = child_nodes.getElements();
                 if (childNodesElements.length !== 0) {
                     childNodesElements.forEach((childNode) => {
-                        if (childNode instanceof RoSGNode) {
+                        {
                             // Remove if it exists to reappend
                             this.removeChildByReference(childNode);
                             this.appendChildToParent(childNode);
@@ -1933,22 +1933,22 @@ function cloneNode(
 ): RoSGNode | BrsInvalid {
     let copy = createNodeByType(interpreter, new BrsString(toBeCloned.nodeSubtype));
 
-    let originalFields = toBeCloned.getFields();
-    let copiedFields = new RoAssociativeArray([]);
-    let addReplace = copiedFields.getMethod("addreplace");
+    if (copy instanceof RoSGNode) {
+        let originalFields = toBeCloned.getFields();
+        let copiedFields = new RoAssociativeArray([]);
+        let addReplace = copiedFields.getMethod("addreplace");
 
-    // Copy the fields.
-    for (let [key, value] of originalFields) {
-        if (addReplace) {
-            addReplace.call(
-                interpreter,
-                new BrsString(key),
-                getBrsValueFromFieldType(value.getType(), value.toString())
-            );
+        // Copy the fields.
+        for (let [key, value] of originalFields) {
+            if (addReplace) {
+                addReplace.call(
+                    interpreter,
+                    new BrsString(key),
+                    getBrsValueFromFieldType(value.getType(), value.toString())
+                );
+            }
         }
-    }
 
-    if (!(copy instanceof BrsInvalid)) {
         let update = copy.getMethod("update");
 
         if (update) {

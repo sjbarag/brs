@@ -1696,6 +1696,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /* Returns a copy of the entire node tree or just a shallow copy. */
     private clone = new Callable("clone", {
         signature: {
             args: [new StdlibArgument("isDeepCopy", ValueKind.Boolean)],

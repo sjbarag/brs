@@ -296,7 +296,7 @@ function isSubtypeCheck(currentNodeType: string, checkType: string): boolean {
 export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     readonly kind = ValueKind.Object;
     private fields = new Map<string, Field>();
-    private children: RoSGNode[] = [];
+    public children: RoSGNode[] = [];
     private parent: RoSGNode | BrsInvalid = BrsInvalid.Instance;
 
     readonly defaultFields: FieldModel[] = [
@@ -1958,17 +1958,14 @@ function cloneNode(
         // A deep clone also copies children.
         if (isDeepCopy) {
             let appendChild = copy.getMethod("appendchild");
-            let getChildren = toBeCloned.getMethod("getchildren");
 
-            if (getChildren && appendChild) {
-                let children = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+            if (appendChild) {
+                let children = toBeCloned.children;
 
-                if (children instanceof RoArray) {
-                    for (let child of children.getElements()) {
-                        if (child instanceof RoSGNode) {
-                            let childCopy = cloneNode(interpreter, child, isDeepCopy);
-                            appendChild.call(interpreter, childCopy);
-                        }
+                for (let child of children) {
+                    if (child instanceof RoSGNode) {
+                        let childCopy = cloneNode(interpreter, child, isDeepCopy);
+                        appendChild.call(interpreter, childCopy);
                     }
                 }
             }

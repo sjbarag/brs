@@ -1323,7 +1323,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 let childNodesElements = child_nodes.getElements();
                 if (childNodesElements.length !== 0) {
                     childNodesElements.forEach((childNode) => {
-                        {
+                        if (childNode instanceof RoSGNode) {
                             // Remove if it exists to reappend
                             this.removeChildByReference(childNode);
                             this.appendChildToParent(childNode);

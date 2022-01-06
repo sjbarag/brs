@@ -372,6 +372,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 this.callfunc,
                 this.issubtype,
                 this.parentsubtype,
+                this.clone,
             ],
             ifSGNodeBoundingRect: [this.boundingRect],
         });
@@ -1695,6 +1696,17 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /* Returns a copy of the entire node tree or just a shallow copy. */
+    private clone = new Callable("clone", {
+        signature: {
+            args: [new StdlibArgument("isDeepCopy", ValueKind.Boolean)],
+            returns: ValueKind.Object,
+        },
+        impl: (interpreter: Interpreter, isDeepCopy: BrsBoolean) => {
+            return cloneNode(interpreter, this, isDeepCopy.toBoolean());
+        },
+    });
+
     /* Returns the subtype of this node as specified when it was created */
     private subtype = new Callable("subtype", {
         signature: {
@@ -1913,4 +1925,56 @@ function addChildren(
             }
         }
     });
+}
+
+function cloneNode(
+    interpreter: Interpreter,
+    toBeCloned: RoSGNode,
+    isDeepCopy: Boolean
+): RoSGNode | BrsInvalid {
+    let copy = createNodeByType(interpreter, new BrsString(toBeCloned.nodeSubtype));
+
+    if (copy instanceof RoSGNode) {
+        let originalFields = toBeCloned.getFields();
+        let copiedFields = new RoAssociativeArray([]);
+        let addReplace = copiedFields.getMethod("addreplace");
+
+        // Copy the fields.
+        for (let [key, value] of originalFields) {
+            if (addReplace) {
+                addReplace.call(
+                    interpreter,
+                    new BrsString(key),
+                    getBrsValueFromFieldType(value.getType(), value.toString())
+                );
+            }
+        }
+
+        let update = copy.getMethod("update");
+
+        if (update) {
+            update.call(interpreter, copiedFields, BrsBoolean.True);
+        }
+
+        // A deep clone also copies children.
+        if (isDeepCopy) {
+            let appendChild = copy.getMethod("appendchild");
+            let getChildren = toBeCloned.getMethod("getchildren");
+
+            if (getChildren && appendChild) {
+                let children = getChildren.call(interpreter, new Int32(-1), new Int32(0));
+
+                if (children instanceof RoArray) {
+                    for (let child of children.getElements()) {
+                        if (child instanceof RoSGNode) {
+                            let childCopy = cloneNode(interpreter, child, isDeepCopy);
+                            appendChild.call(interpreter, childCopy);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return copy;
 }

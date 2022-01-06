@@ -2514,6 +2514,109 @@ describe("RoSGNode", () => {
                     expect(result).toBe(BrsInvalid.Instance);
                 });
             });
+
+            describe("clone", () => {
+                let interpreter, originalNode;
+
+                beforeEach(() => {
+                    interpreter = new Interpreter();
+                    originalNode = new MarkupGrid([
+                        { name: new BrsString("field1"), value: new BrsString("a string") },
+                        { name: new BrsString("field2"), value: new Int32(-19999) },
+                        { name: new BrsString("field3"), value: BrsBoolean.False },
+                        { name: new BrsString("<33"), value: new BrsString("") },
+                    ]);
+
+                    child1 = new RoSGNode([
+                        { name: new BrsString("child1name"), value: new BrsString("1") },
+                    ]);
+                    child2 = new RoSGNode([
+                        { name: new BrsString("child2name"), value: new Int32(2) },
+                    ]);
+                    child3 = new RoSGNode([
+                        { name: new BrsString("child3name"), value: BrsBoolean.False },
+                    ]);
+                    grandchild1 = new RoSGNode([
+                        { name: new BrsString("grandchild1name"), value: new Int32(1.2) },
+                    ]);
+                    grandchild2 = new RoSGNode([
+                        {
+                            name: new BrsString("grandchild2name"),
+                            value: new BrsString("second grandchild"),
+                        },
+                    ]);
+
+                    let appendGrandchildren = child1.getMethod("appendchildren");
+                    appendGrandchildren.call(interpreter, new RoArray([grandchild1, grandchild2]));
+
+                    let appendChildren = originalNode.getMethod("appendchildren");
+                    appendChildren.call(interpreter, new RoArray([child1, child2, child3]));
+                });
+
+                it("return type is same as of subject", () => {
+                    let cloneMethod = originalNode.getMethod("clone");
+                    let copyNode = cloneMethod.call(interpreter, new BrsBoolean(true));
+
+                    expect(copyNode).toBeInstanceOf(RoSGNode);
+                    expect(copyNode).toBeInstanceOf(MarkupGrid);
+                });
+
+                it("copies field values", () => {
+                    let cloneMethod = originalNode.getMethod("clone");
+                    let copyNode = cloneMethod.call(interpreter, new BrsBoolean(true));
+
+                    expect(copyNode.get(new BrsString("field1"))).toEqual(
+                        new BrsString("a string")
+                    );
+                    expect(copyNode.get(new BrsString("field2"))).toEqual(new Int32(-19999));
+                    expect(copyNode.get(new BrsString("field3"))).toEqual(BrsBoolean.False);
+                    expect(copyNode.get(new BrsString("<33"))).toEqual(new BrsString(""));
+
+                    let isSameNode = originalNode.getMethod("isSameNode");
+                    expect(isSameNode.call(interpreter, copyNode)).toEqual(BrsBoolean.False);
+                });
+
+                it("shallow copy doesn't copy children", () => {
+                    let cloneMethod = originalNode.getMethod("clone");
+                    let copyNode = cloneMethod.call(interpreter, new BrsBoolean(false));
+
+                    let getChildCount = copyNode.getMethod("getchildcount");
+                    let childCount = getChildCount.call(interpreter);
+
+                    expect(childCount).toEqual(new Int32(0));
+                });
+
+                it("deep clone copies children and grandchildren", () => {
+                    let cloneMethod = originalNode.getMethod("clone");
+                    let copyNode = cloneMethod.call(interpreter, new BrsBoolean(true));
+
+                    let getChildCount = copyNode.getMethod("getchildcount");
+                    let childCount = getChildCount.call(interpreter);
+
+                    expect(childCount).toEqual(new Int32(3));
+
+                    getChild = copyNode.getMethod("getchild");
+                    let child1copy = getChild.call(interpreter, new Int32(0));
+
+                    expect(child1copy.get(new BrsString("child1name"))).toEqual(new BrsString("1"));
+
+                    let getGrandchildCount = child1copy.getMethod("getchildcount");
+                    let grandchildCount = getGrandchildCount.call(interpreter);
+
+                    expect(grandchildCount).toEqual(new Int32(2));
+
+                    getChild = child1copy.getMethod("getchild");
+                    let grandchild1copy = getChild.call(interpreter, new Int32(0));
+                    let grandchild2copy = getChild.call(interpreter, new Int32(1));
+
+                    expect(grandchild1copy.get(new BrsString("grandchild1name"))).toEqual(
+                        new Int32(1.2)
+                    );
+                    expect(grandchild2copy.get(new BrsString("grandchild2name"))).toEqual(
+                        new BrsString("second grandchild")
+                    );
+                });
+            });
         });
     });
 

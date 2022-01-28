@@ -13,7 +13,7 @@
       runs-on: "ubuntu-latest",
       strategy: {
         matrix: {
-          node_version: [ 12, 14, 16 ]
+          node_version: [12, 14, 16 ]
         }
       },
       steps: [

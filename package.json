@@ -30,7 +30,7 @@
     "decompress": "^4.2.1",
     "fast-glob": "^3.0.1",
     "long": "^3.2.0",
-    "luxon": "^1.8.3",
+    "luxon": "^2.5.2",
     "memory-fs": "^0.4.1",
     "nanomatch": "^1.2.13",
     "p-settle": "^2.1.0",

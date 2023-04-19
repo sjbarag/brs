@@ -15,7 +15,7 @@ Since this project is still maturing, many of its initial contributions will tak
 
 ## Submitting Issues
 
-If you find something wrong with `brs`, or something doesn't seem right, feel free to [open a new issue](https://github.com/sjbarag/brs/issues/new). Please try to avoid "how do I X in BrightScript" questions however &mdash; those are best suited for [StackOverflow](https://stackoverflow.com) or similar Q&A sites.
+If you find something wrong with `brs`, or something doesn't seem right, feel free to [open a new issue](https://github.com/rokucommunity/brs/issues/new). Please try to avoid "how do I X in BrightScript" questions however &mdash; those are best suited for [StackOverflow](https://stackoverflow.com) or similar Q&A sites.
 
 ### Bug Reports
 
@@ -43,7 +43,7 @@ Regardless of whether you're fixing bugs or implementing new features, there's a
 
 1. Comment on the issue and tell us that you're intereseted in working on it. This should lower the (admittedly rare) chances of someone stealing your that bug/feature from you :smile:.
 1. Create a fork of this repo if you haven't already
-1. Send us a [pull request](https://github.com/sjbarag/brs/pulls)!
+1. Send us a [pull request](https://github.com/rokucommunity/brs/pulls)!
 
 ### Adding a component
 
@@ -53,6 +53,6 @@ For guidelines on adding a component to `brs`, see [this doc](docs/AddingCompone
 
 There aren't to many mandatory things for pull requests, besides what you'd expect from any open-source project (e.g. "don't delete all the code", "don't delete a user's home directory at runtime"). The most important project-specific "must-haves" that we'll look for that are:
 
-1. Pull requests should be based on a pretty recent version of the `main` branch, to minimize merge conflicts.
+1. Pull requests should be based on a pretty recent version of the `master` branch, to minimize merge conflicts.
 1. All tests should pass (Travis CI will let us know if any fail).
 1. End to end tests written in BrightScript should be present to exercise the bug or new feature. These don't need to be exhaustive &mdash; just enough to ensure that the major use-cases are covered. More in-depth testing can happen via unit test.

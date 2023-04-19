@@ -24,20 +24,19 @@
 # BRS: Off-Roku BrightScript
 An interpreter for the BrightScript language that runs on non-Roku platforms.
 
-[![CircleCI](https://circleci.com/gh/sjbarag/brs.svg?style=svg)](https://circleci.com/gh/sjbarag/brs)
-[![NPM Version](https://badge.fury.io/js/brs.svg?style=flat)](https://npmjs.org/package/brs)
+[![build status](https://img.shields.io/github/actions/workflow/status/rokucommunity/brs/build.yml?branch=master&logo=github)](https://github.com/rokucommunity/brs/actions?query=branch%3Amaster+workflow%3Abuild)
+[![coverage status](https://img.shields.io/coveralls/github/rokucommunity/brs?logo=coveralls)](https://coveralls.io/github/rokucommunity/brs?branch=master)
+[![monthly downloads](https://img.shields.io/npm/dm/@rokucommunity/brs.svg?sanitize=true&logo=npm&logoColor=)](https://npmcharts.com/compare/@rokucommunity/brs?minimal=true)
+[![npm version](https://img.shields.io/npm/v/@rokucommunity/brs.svg?logo=npm)](https://www.npmjs.com/package/@rokucommunity/brs)
+[![license](https://img.shields.io/github/license/rokucommunity/brs.svg)](LICENSE)
+[![Slack](https://img.shields.io/badge/Slack-RokuCommunity-4A154B?logo=slack)](https://join.slack.com/t/rokudevelopers/shared_invite/zt-4vw7rg6v-NH46oY7hTktpRIBM_zGvwA)
+
 
 ## Installation
 The BRS project is published as a `node` package, so use `npm`:
 
 ```shell
 $ npm install -g brs
-```
-
-or `yarn` if that's your preference:
-
-```shell
-$ yarn global add brs
 ```
 
 ## Usage
@@ -77,32 +76,23 @@ The BRS project follows pretty standard `node` development patterns, with the ca
 ### Prerequisites
 BRS builds (and runs) in `node`, so you'll need to [install that first](https://nodejs.org).
 
-Once that's ready, install [yarn](https://yarnpkg.com).  Installing it with `npm` is probably the simplest:
-
-```shell
-$ npm install -g yarn
-```
 ### Setup
 1. Clone this repo:
    ```
-   $ git clone https://github.com/sjbarag/brs.git
+   $ git clone https://github.com/rokucommunity/brs.git
    ```
 
 2. Install dependencies:
     ```shell
-    $ yarn install     # or just `yarn`
+    $ npm install
     ```
 
-3. Get `brs` onto your `PATH`:
-    ``` shell
-    $ yarn link
-    ```
 ### The build-test-clean dance
 #### Build
-This project is written in TypeScript, so it needs to be compiled before it can be executed.  `yarn build` compiles files in `src/` into JavaScript and TypeScript declarations, and puts them in `lib/` and `types/` respectively.
+This project is written in TypeScript, so it needs to be compiled before it can be executed.  `npm run build` compiles files in `src/` into JavaScript and TypeScript declarations, and puts them in `lib/` and `types/` respectively.
 
 ```shell
-$ yarn build
+$ npm run build
 
 $ ls lib/
 index.js (and friends)
@@ -111,17 +101,17 @@ $ ls types/
 index.d.ts (and friends)
 ```
 
-Alternatively, you can run the build step in "watch" mode. This will run `yarn build` for you automatically, every time it detects source file changes:
+Alternatively, you can run the build step in "watch" mode. This will run `npm run build` for you automatically, every time it detects source file changes:
 ```shell
-$ yarn watch
+$ npm run watch
 ```
-This is often useful for testing that local changes work in your BrightScript project, without having to run `yarn build` over and over.
+This is often useful for testing that local changes work in your BrightScript project, without having to run `npm run build` over and over.
 
 #### Testing
 Tests are written in plain-old JavaScript with [Facebook's Jest](http://facebook.github.io/jest/), and can be run with the `test` target:
 
 ```shell
-$ yarn test
+$ npm run test
 
 # tests start running
 ```

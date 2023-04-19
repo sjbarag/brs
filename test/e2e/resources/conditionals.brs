@@ -126,7 +126,7 @@ sub main()
     test_481()
 end sub
 
-' MWE from https://github.com/sjbarag/brs/issues/481
+' MWE from https://github.com/rokucommunity/brs/issues/481
 sub test_481()
     nop = sub() : end sub
 

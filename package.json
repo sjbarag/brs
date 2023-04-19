@@ -16,7 +16,7 @@
     "clean": "rimraf ./lib ./types",
     "test": "jest",
     "test:nocover": "jest",
-    "publish-coverage": "coveralls",
+    "publish-coverage": "coveralls < coverage/lcov.info",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand -- ",
     "lint": "tslint --project .",
     "prettier:write": "prettier --write \"{bin,src,test}/**/*.{js,ts}\"",

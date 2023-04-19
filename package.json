@@ -15,6 +15,8 @@
     "watch": "tsc -w",
     "clean": "rimraf ./lib ./types",
     "test": "jest",
+    "test:nocover": "jest",
+    "publish-coverage": "coveralls",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand -- ",
     "lint": "tslint --project .",
     "prettier:write": "prettier --write \"{bin,src,test}/**/*.{js,ts}\"",
@@ -49,12 +51,14 @@
     "@types/p-settle": "^2.0.1",
     "@types/uuid": "^8.3.0",
     "@types/xmldoc": "^1.1.4",
+    "coveralls": "^3.0.0",
     "doctoc": "^1.4.0",
     "jest": "26",
     "jest-junit": "^6.1.0",
     "lint-staged": ">=8",
     "lolex": "^3.0.0",
     "npm-run-all": "^4.1.2",
+    "nyc": "^15.1.0",
     "prettier": "2",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
@@ -63,7 +67,11 @@
   },
   "repository": "https://github.com/rokucommunity/brs",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "lib/**/*.js"
+    ]
   },
   "prettier": {
     "trailingComma": "es5",

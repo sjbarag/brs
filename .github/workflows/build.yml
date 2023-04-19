@@ -22,6 +22,7 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: "12.22.7"
+      - run: npm ci
       - run: npm run preversion
   npm-release:
     #only run this task if a tag starting with 'v' was used to trigger this (i.e. a tagged release)

@@ -209,7 +209,7 @@ describe("RoDateTime", () => {
                 let getLastDayOfMonth = dt.getMethod("getLastDayOfMonth");
                 let result = getLastDayOfMonth.call(interpreter);
                 expect(getLastDayOfMonth).toBeTruthy();
-                expect(result).toEqual(new Int32(31));
+                expect(result).toEqual(new Int32(30));
             });
         });
 

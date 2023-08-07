@@ -29,6 +29,7 @@ describe("end to end brightscript functions", () => {
             "function in same file: from sameFileFunc()",
             "function in different file: from differentFileFunc()",
             "function with dependency: from dependentFunc() with help from: from dependencyFunc()",
+            "test for optional chaining value",
         ]);
     });
 });

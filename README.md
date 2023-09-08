@@ -31,6 +31,8 @@ An interpreter for the BrightScript language that runs on non-Roku platforms.
 [![license](https://img.shields.io/github/license/rokucommunity/brs.svg)](LICENSE)
 [![Slack](https://img.shields.io/badge/Slack-RokuCommunity-4A154B?logo=slack)](https://join.slack.com/t/rokudevelopers/shared_invite/zt-4vw7rg6v-NH46oY7hTktpRIBM_zGvwA)
 
+**NOTE:** Development on the original [brs](https://github.com/sjbarag/brs) project stalled in September of 2021. We at RokuCommunity believe in the vision of [brs](https://github.com/sjbarag/brs), so after [some discussions with the original author](https://github.com/sjbarag/brs/issues/681), we decided to fork the project in order to ensure its continued development. 
+
 ## Installation
 
 The BRS project is published as a `node` package, so use `npm`:

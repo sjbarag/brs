@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { Callable, BrsString, BrsInvalid, RoArray, RoAssociativeArray, ValueKind } = brs.types;
 const { RunInScope } = require("../../lib/extensions/RunInScope");
 const { Interpreter } = require("../../lib/interpreter");

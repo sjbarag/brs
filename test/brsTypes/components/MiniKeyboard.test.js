@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { MiniKeyboard } = brs.types;
 
 describe("MiniKeyboard", () => {

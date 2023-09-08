@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { BrsString, RoXMLElement } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 

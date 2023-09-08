@@ -1,4 +1,4 @@
-const { preprocessor } = require("brs");
+const { preprocessor } = require("../../lib");
 const { getManifest, getBsConst } = preprocessor;
 
 jest.mock("fs");

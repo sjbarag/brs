@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { RoAssociativeArray, BrsBoolean, BrsInvalid, roInvalid } = brs.types;
 
 describe("RoInvalid", () => {

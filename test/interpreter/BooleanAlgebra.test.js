@@ -1,7 +1,7 @@
 const Expr = require("../../lib/parser/Expression");
 const Stmt = require("../../lib/parser/Statement");
 const { token } = require("../parser/ParserTests");
-const brs = require("brs");
+const brs = require("../../lib");
 const { Lexeme } = brs.lexer;
 const { Interpreter } = require("../../lib/interpreter");
 

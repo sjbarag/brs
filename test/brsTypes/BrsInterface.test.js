@@ -1,4 +1,4 @@
-const Brs = require("brs");
+const Brs = require("../../lib");
 const { BrsInterface, BrsBoolean, Callable } = Brs.types;
 
 describe("Interface", () => {

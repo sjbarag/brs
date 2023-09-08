@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { BrsString, BrsInvalid, ValueKind } = brs.types;
 const { Interpreter } = require("../../lib/interpreter");
 const { identifier } = require("../parser/ParserTests");

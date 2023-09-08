@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { ArrayGrid } = brs.types;
 
 describe("ArrayGrid", () => {

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { TextEditBox } = brs.types;
 
 describe("TextEditBox", () => {

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { RoDateTime, Int32, BrsString, BrsInvalid } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 const lolex = require("lolex");

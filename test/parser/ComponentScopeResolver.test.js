@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const path = require("path");
 const { getComponentDefinitionMap } = require("../../lib/componentprocessor");
 const { defaultExecutionOptions } = require("../../lib/interpreter");

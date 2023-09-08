@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { Int32 } = require("../../lib/brsTypes/Int32");
 const { Callable, BrsString, BrsInvalid, RoArray, RoAssociativeArray, ValueKind } = brs.types;
 const { GetStackTrace } = require("../../lib/extensions/GetStackTrace");

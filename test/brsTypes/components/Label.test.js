@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { Label } = brs.types;
 
 describe("Label", () => {

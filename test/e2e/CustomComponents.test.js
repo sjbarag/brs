@@ -1,7 +1,7 @@
 const { execute } = require("../../lib");
 const { createMockStreams, allArgs } = require("./E2ETests");
 const lolex = require("lolex");
-const brs = require("brs");
+const brs = require("../../lib");
 const { RoSGNode, BrsString, Callable, ValueKind } = brs.types;
 const path = require("path");
 

@@ -1,6 +1,6 @@
 const { binary } = require("./InterpreterTests");
 const { Interpreter } = require("../../lib/interpreter");
-const brs = require("brs");
+const brs = require("../../lib");
 const { Lexeme } = brs.lexer;
 const {
     Int32,

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { LayoutGroup } = brs.types;
 
 describe("LayoutGroup", () => {

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { ValueKind, Callable, BrsString, RoSGNode, StdlibArgument } = brs.types;
 const { Interpreter } = require("../../lib/interpreter");
 const { mockFunction } = require("../../lib/extensions/mockFunction");

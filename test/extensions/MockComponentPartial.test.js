@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { ValueKind, Callable, BrsString, RoAssociativeArray } = brs.types;
 
 const { ComponentDefinition } = require("../../lib/componentprocessor");

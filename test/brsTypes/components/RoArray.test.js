@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { RoArray, RoAssociativeArray, BrsBoolean, BrsString, Int32, BrsInvalid, Float } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 const { createMockStreams } = require("../../e2e/E2ETests");

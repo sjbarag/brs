@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { RoSGNode, Field, RoSGNodeEvent, BrsString } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 

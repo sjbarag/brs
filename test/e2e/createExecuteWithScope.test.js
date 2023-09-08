@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { createExecuteWithScope } = brs;
 const { RoArray, BrsString } = brs.types;
 let { createMockStreams, resourceFile, allArgs } = require("./E2ETests");

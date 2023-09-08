@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { roDouble, Double, BrsBoolean, BrsString, Callable } = brs.types;
 const { Interpreter } = require("../../../lib/interpreter");
 

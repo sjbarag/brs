@@ -1,5 +1,5 @@
 const { Environment, Scope } = require("../../lib/interpreter/Environment");
-const brs = require("brs");
+const brs = require("../../lib");
 const { Lexeme } = brs.lexer;
 const { BrsString, RoAssociativeArray, Int32, BrsInvalid, Callable } = brs.types;
 

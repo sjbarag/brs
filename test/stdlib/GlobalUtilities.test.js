@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { RoAssociativeArray, BrsString, BrsInvalid, BrsInterface, RoSGNode } = brs.types;
 const { GetInterface, FindMemberFunction } = require("../../lib/stdlib");
 const { Interpreter } = require("../../lib/interpreter");

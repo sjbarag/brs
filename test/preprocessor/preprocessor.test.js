@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { Lexeme } = brs.lexer;
 const { Chunk } = brs.preprocessor;
 const { BrsString, BrsBoolean } = brs.types;

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { Expr, Stmt } = brs.parser;
 const { Lexeme } = brs.lexer;
 const { Int32, BrsString } = brs.types;

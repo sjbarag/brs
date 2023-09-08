@@ -14,7 +14,7 @@ const {
     getVolumeByPath,
 } = require("../../lib/stdlib/index");
 const { Interpreter } = require("../../lib/interpreter");
-const brs = require("brs");
+const brs = require("../../lib");
 const { BrsString, RoArray } = brs.types;
 
 const fs = require("fs");

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 const { Lexeme } = brs.lexer;
 const { Expr, Stmt } = brs.parser;
 

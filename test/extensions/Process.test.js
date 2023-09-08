@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../lib");
 const { BrsString } = brs.types;
 const { Process: brsProcess } = require("../../lib/extensions/Process");
 

@@ -1,4 +1,4 @@
-const brs = require("brs");
+const brs = require("../../../lib");
 
 describe("parser", () => {
     let parser;

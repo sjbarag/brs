@@ -75,6 +75,16 @@ describe("end to end syntax", () => {
         ]);
     });
 
+    test("negative-precedence.brs", async () => {
+        await execute([resourceFile("negative-precedence.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "0000",
+            "0",
+            "foo is not 1",
+        ]);
+    });
+
     test("assignment.brs", async () => {
         await execute([resourceFile("assignment.brs")], outputStreams);
 

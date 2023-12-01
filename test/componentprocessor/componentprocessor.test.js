@@ -35,7 +35,7 @@ describe("component parsing support", () => {
 
         it("only searches components if no custom directories", async () => {
             fg.sync.mockImplementation((pattern, options) => {
-                expect(pattern.includes("{components,}")).toBeTruthy();
+                expect(pattern.includes("{components, }")).toBeTruthy();
                 return [];
             });
 

@@ -87,7 +87,10 @@ export async function getComponentDefinitionMap(
     additionalDirs: string[] = [],
     libraryName: string | undefined
 ) {
-    let searchString = `{components,${additionalDirs.join(",")}}`;
+    let searchString = "{components, }";
+    if (additionalDirs.length) {
+        searchString = `{components,${additionalDirs.join(",")}}`;
+    }
     const componentsPattern = path.join(rootDir, searchString, "**", "*.xml");
     const xmlFiles: string[] = fg.sync(componentsPattern, {});
 
@@ -108,11 +111,13 @@ async function processXmlTree(
     // create map of just ComponentDefinition objects
     nodeDefs.map((item) => {
         if (item.isFulfilled && !item.isRejected) {
-            let name = item.value!.name!.toLowerCase();
+            let name = item.value?.name?.toLowerCase();
             if (libraryName) {
                 name = `${libraryName.toLowerCase()}:${name}`;
             }
-            nodeDefMap.set(name, item.value!);
+            if (name) {
+                nodeDefMap.set(name, item.value!);
+            }
         }
     });
 

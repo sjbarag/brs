@@ -131,6 +131,8 @@ describe("end to end syntax", () => {
             "foo is not < 2",
             "foo is not < 2 and not > 2",
             "#481 fixed",
+            "2",
+            "5",
         ]);
     });
 

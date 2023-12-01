@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [0.45.3](https://github.com/rokucommunity/brs/compare/v0.45.2...0.45.3) - 2023-12-01
+### Added
+ - missing `ifEnum` methods in `roArray` and `roAssociativeArray` ([#33](https://github.com/rokucommunity/brs/pull/33))
+ - stub try/catch implementation ([#34](https://github.com/rokucommunity/brs/pull/34))
+### Changed
+ - replace package luxon by day.js on `roDateTime` and `roTimespan` #28 ([#29](https://github.com/rokucommunity/brs/pull/29))
+### Fixed
+ - component XML path parsing was failing on edge case ([#37](https://github.com/rokucommunity/brs/pull/37))
+ - optional chaining implementation side effect #30 ([#31](https://github.com/rokucommunity/brs/pull/31))
+
+
+
 ## [0.45.2](https://github.com/rokucommunity/brs/compare/v0.45.1...v0.45.2) - 2023-11-07
 ### Added
  - logic for optional chaining ([#21](https://github.com/rokucommunity/brs/pull/21))

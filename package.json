@@ -15,7 +15,7 @@
     "watch": "tsc -w",
     "clean": "rimraf ./lib ./types",
     "test": "jest",
-    "test:nocover": "jest",
+    "test:nocover": "jest --collectCoverage=false",
     "publish-coverage": "coveralls < coverage/lcov.info",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand -- ",
     "lint": "tslint --project .",

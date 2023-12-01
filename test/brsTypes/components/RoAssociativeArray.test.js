@@ -38,11 +38,11 @@ describe("RoAssociativeArray", () => {
 {
     array: <Component: roArray>
     associative-array: <Component: roAssociativeArray>
-    node: <Component: roSGNode:Node>
     boolean: true
-    string: "a string"
-    number: -1
     invalid: invalid
+    node: <Component: roSGNode:Node>
+    number: -1
+    string: "a string"
 }`
             );
         });

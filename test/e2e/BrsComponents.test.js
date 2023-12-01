@@ -90,6 +90,68 @@ describe("end to end brightscript functions", () => {
         ]);
     });
 
+    test("components/ifEnum.brs", async () => {
+        await execute([resourceFile("components", "ifEnum.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
+            "testing roArray ifEnum",
+            "isNext Not Empty:",
+            " ",
+            "true",
+            "isEmpty:",
+            " ",
+            "true",
+            "isNext Empty:",
+            " ",
+            "false",
+            "isNext before Reset:",
+            " ",
+            "true",
+            "isNext after Reset:",
+            " ",
+            "true",
+            "a",
+            "b",
+            "c",
+            "c",
+            "testing AA ifEnum",
+            "isNext before Reset:",
+            " ",
+            "true",
+            "isNext after Reset:",
+            " ",
+            "true",
+            "a",
+            "b",
+            "c",
+            "d",
+            "9",
+            "x",
+            "isEmpty:",
+            " ",
+            "false",
+            "isNext Empty:",
+            " ",
+            "false",
+            "isNext before Reset:",
+            " ",
+            "true",
+            "isNext after Reset:",
+            " ",
+            "true",
+            "a",
+            "b",
+            "c",
+            "Reset()",
+            "a",
+            "b",
+            "c",
+            "d",
+            "x",
+            "9",
+        ]);
+    });
+
     test("components/roDateTime.brs", async () => {
         await execute([resourceFile("components", "roDateTime.brs")], outputStreams);
 
@@ -233,8 +295,8 @@ describe("end to end brightscript functions", () => {
                 "getAttributes() = ",
                 `<Component: roAssociativeArray> =\n` +
                     `{\n` +
-                    `    id: "someId"\n` +
                     `    attr1: "0"\n` +
+                    `    id: "someId"\n` +
                     `}`,
                 'getNamedElementsCi("child1") count = ',
                 "2",

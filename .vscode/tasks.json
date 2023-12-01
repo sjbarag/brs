@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "test",
+			"command": "npm run test:nocover",
+			"type": "shell",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			}
+		}
+	]
+}

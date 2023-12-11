@@ -142,6 +142,9 @@ export class Callable implements Brs.BrsValue {
     /** The signature of this callable within the BrightScript runtime. */
     readonly signatures: SignatureAndImplementation[];
 
+    /** The context (m) that this callable is running under (if `undefined` is running on root m) */
+    private context: Brs.RoAssociativeArray | undefined;
+
     /**
      * Calls the function this `Callable` represents with the provided `arg`uments using the
      * provided `Interpreter` instance.
@@ -214,6 +217,14 @@ export class Callable implements Brs.BrsValue {
 
     getName(): string {
         return this.name || "";
+    }
+
+    getContext() {
+        return this.context;
+    }
+
+    setContext(context: Brs.RoAssociativeArray) {
+        this.context = context;
     }
 
     /**

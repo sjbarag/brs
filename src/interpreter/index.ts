@@ -75,7 +75,6 @@ Object.freeze(defaultExecutionOptions);
 
 export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType> {
     private _environment = new Environment();
-    private _lastDotGetAA: RoAssociativeArray = this._environment.getRootM();
     private coverageCollector: CoverageCollector | null = null;
     private _manifest: PP.Manifest | undefined;
 
@@ -1086,8 +1085,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         if (satisfiedSignature) {
             try {
-                let mPointer = this._environment.getRootM();
-
                 let signature = satisfiedSignature.signature;
                 args = args.map((arg, index) => {
                     // any arguments of type "object" must be automatically boxed
@@ -1097,34 +1094,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
                     return arg;
                 });
-
-                if (
-                    expression.callee instanceof Expr.DottedGet ||
-                    expression.callee instanceof Expr.IndexedGet
-                ) {
-                    if (expression.callee.obj instanceof Expr.Call) {
-                        mPointer = this._lastDotGetAA;
-                    } else {
-                        let maybeM = this.evaluate(expression.callee.obj);
-                        maybeM = isBoxable(maybeM) ? maybeM.box() : maybeM;
-
-                        if (maybeM.kind === ValueKind.Object) {
-                            if (maybeM instanceof RoAssociativeArray) {
-                                mPointer = maybeM;
-                            }
-                        } else {
-                            return this.addError(
-                                new BrsError(
-                                    "Attempted to retrieve a function from a primitive value",
-                                    expression.closingParen.location
-                                )
-                            );
-                        }
-                    }
-                } else {
-                    this._lastDotGetAA = this.environment.getRootM();
+                let mPointer = this._environment.getRootM();
+                if (expression.callee instanceof Expr.DottedGet) {
+                    mPointer = callee.getContext() ?? mPointer;
                 }
-
                 return this.inSubEnv((subInterpreter) => {
                     subInterpreter.environment.setM(mPointer);
                     return callee.call(this, ...args);
@@ -1197,10 +1170,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
         if (isIterable(source)) {
             try {
-                if (source instanceof RoAssociativeArray) {
-                    this._lastDotGetAA = source;
+                const target = source.get(new BrsString(expression.name.text));
+                if (isBrsCallable(target) && source instanceof RoAssociativeArray) {
+                    target.setContext(source);
                 }
-                return source.get(new BrsString(expression.name.text));
+                return target;
             } catch (err: any) {
                 return this.addError(new BrsError(err.message, expression.name.location));
             }
@@ -1216,7 +1190,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         } else {
             return this.addError(
                 new TypeMismatch({
-                    message: "Attempting to retrieve property from non-iterable value",
+                    message: "DottedGet: Attempting to retrieve property from non-iterable value",
                     left: {
                         type: source,
                         location: expression.location,
@@ -1231,7 +1205,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         if (!isIterable(source)) {
             this.addError(
                 new TypeMismatch({
-                    message: "Attempting to retrieve property from non-iterable value",
+                    message: "IndexedGet: Attempting to retrieve property from non-iterable value",
                     left: {
                         type: source,
                         location: expression.location,

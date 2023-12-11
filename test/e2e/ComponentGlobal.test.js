@@ -22,7 +22,7 @@ describe("m.global usage in scenegraph components", () => {
 
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "inside component init, m.global.brsIntField: ",
-            "123",
+            " 123",
             "MGlobalWidget.text: ",
             "",
             "MUniversalWidget.text: ",

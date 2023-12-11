@@ -44,6 +44,7 @@ import pSettle from "p-settle";
 import { CoverageCollector } from "../coverage";
 import { ManifestValue } from "../preprocessor/Manifest";
 import { generateArgumentMismatchError } from "./ArgumentMismatch";
+import Long from "long";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -422,7 +423,9 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                         );
                 }
             } else {
-                this.stdout.write(this.evaluate(printable).toString());
+                const toPrint = this.evaluate(printable);
+                const str = isBrsNumber(toPrint) && this.isPositive(toPrint.getValue()) ? " " : "";
+                this.stdout.write(str + toPrint.toString());
             }
         });
 
@@ -575,8 +578,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 if (
                     isBrsNumber(left) &&
                     isBrsNumber(right) &&
-                    right.getValue() >= 0 &&
-                    right.getValue() < 32
+                    this.isPositive(right.getValue()) &&
+                    this.lessThan(right.getValue(), 32)
                 ) {
                     return left.leftShift(right);
                 } else if (isBrsNumber(left) && isBrsNumber(right)) {
@@ -614,8 +617,8 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 if (
                     isBrsNumber(left) &&
                     isBrsNumber(right) &&
-                    right.getValue() >= 0 &&
-                    right.getValue() < 32
+                    this.isPositive(right.getValue()) &&
+                    this.lessThan(right.getValue(), 32)
                 ) {
                     return left.rightShift(right);
                 } else if (isBrsNumber(left) && isBrsNumber(right)) {
@@ -1672,5 +1675,19 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
         this.errors.push(err);
         this.events.emit("err", err);
         throw err;
+    }
+
+    private isPositive(value: number | Long): boolean {
+        if (value instanceof Long) {
+            return value.isPositive();
+        }
+        return value >= 0;
+    }
+
+    private lessThan(value: number | Long, compare: number): boolean {
+        if (value instanceof Long) {
+            return value.lessThan(compare);
+        }
+        return value < compare;
     }
 }

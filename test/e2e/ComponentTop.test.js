@@ -28,8 +28,8 @@ describe("m.top usage in scenegraph components", () => {
             "this is a default value defined in xml",
             "true",
             "false",
-            "300",
-            "100",
+            " 300",
+            " 100",
             "this value set using m.top",
             "invalid",
         ]);

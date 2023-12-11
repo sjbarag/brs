@@ -101,7 +101,7 @@ describe("interperter print statements", () => {
 
         const [result] = interpreter.exec([ast]);
         expect(result).toEqual(BrsInvalid.Instance);
-        expect(allArgs(stdout.write).join("")).toEqual("foo 4\n");
+        expect(allArgs(stdout.write).join("")).toEqual("foo  4\n");
     });
 
     it("indents to an arbitrary position via `tab`", () => {

@@ -23,15 +23,15 @@ describe("end to end functions", () => {
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "noArgsFunc",
             "requiredArgsFunc:",
-            "1",
-            "2",
+            " 1",
+            " 2",
             "typedArgsFunc:",
-            "2.5",
-            "3",
+            " 2.5",
+            " 3",
             "false",
             "optionalArgsFunc:",
             "-5",
-            "2",
+            " 2",
             "-10",
         ]);
     });
@@ -42,13 +42,13 @@ describe("end to end functions", () => {
         expect(allArgs(outputStreams.stdout.write).filter((arg) => arg !== "\n")).toEqual([
             "staticReturn",
             "conditionalReturn:",
-            "5",
+            " 5",
             "conditionalReturn:",
             "invalid",
             "forLoopReturn:",
-            "2",
+            " 2",
             "whileLoopReturn:",
-            "3",
+            " 3",
             "boxedReturnType:",
             "roFloat",
             "3.14159",
@@ -66,7 +66,7 @@ describe("end to end functions", () => {
             "immediately-invoked function expression (IIFE)",
             "pre-callback",
             "callback:",
-            "14",
+            " 14",
             "post-callback",
         ]);
     });

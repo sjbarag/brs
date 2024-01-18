@@ -3,4 +3,8 @@ sub main()
     print getInterface(1.123, "ifFloat")
     print findMemberFunction({}, "count")
     print findMemberFunction(node, "findNode")
+    print FindMemberFunction("", "left")
+    print GetInterface("", "ifStringOps")
+    print FindMemberFunction(1, "tostr")
+    print GetInterface(1, "iftostr")
 end sub

@@ -8,7 +8,9 @@ import {
     RoAssociativeArray,
     BrsInterface,
 } from "../brsTypes";
+import { isBoxable } from "../brsTypes/Boxing";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
+import { Interpreter } from "../interpreter";
 
 let warningShown = false;
 
@@ -35,8 +37,12 @@ export const GetInterface = new Callable("GetInterface", {
         ],
         returns: ValueKind.Interface,
     },
-    impl: (interpreter, object: BrsComponent, ifname: BrsString): BrsInterface | BrsInvalid => {
-        return object.interfaces.get(ifname.value.toLowerCase()) || BrsInvalid.Instance;
+    impl: (_: Interpreter, object: BrsType, ifname: BrsString): BrsInterface | BrsInvalid => {
+        const boxedObj = isBoxable(object) ? object.box() : object;
+        if (boxedObj instanceof BrsComponent) {
+            return boxedObj.interfaces.get(ifname.value.toLowerCase()) || BrsInvalid.Instance;
+        }
+        return BrsInvalid.Instance;
     },
 });
 
@@ -44,18 +50,19 @@ export const FindMemberFunction = new Callable("FindMemberFunction", {
     signature: {
         args: [
             new StdlibArgument("object", ValueKind.Object),
-            new StdlibArgument("funname", ValueKind.String),
+            new StdlibArgument("funName", ValueKind.String),
         ],
         returns: ValueKind.Interface,
     },
-    impl: (interpreter, object: BrsComponent, funName: BrsString): BrsInterface | BrsInvalid => {
-        let iface: BrsType = BrsInvalid.Instance;
-        object.interfaces.forEach((interfaceName) => {
-            if (interfaceName.methodNames.has(funName.value.toLowerCase())) {
-                iface = interfaceName;
+    impl: (_: Interpreter, object: BrsType, funName: BrsString): BrsInterface | BrsInvalid => {
+        const boxedObj = isBoxable(object) ? object.box() : object;
+        if (boxedObj instanceof BrsComponent) {
+            for (let [_, iface] of boxedObj.interfaces) {
+                if (iface.hasMethod(funName.value)) {
+                    return iface;
+                }
             }
-        });
-
-        return iface;
+        }
+        return BrsInvalid.Instance;
     },
 });

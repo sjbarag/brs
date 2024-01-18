@@ -6,7 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [0.45.3](https://github.com/rokucommunity/brs/compare/v0.45.2...0.45.3) - 2023-12-01
+## [0.45.4](https://github.com/rokucommunity/brs/compare/v0.45.3...v0.45.4) - 2024-01-18
+### Fixed
+ - fixed #41 - Global functions `GetInterface()` and `FindMemberFunction()` are not properly boxing parameters ([#42](https://github.com/rokucommunity/brs/pull/42))
+ - fixed #38 - Improved context handling for Callables ([#40](https://github.com/rokucommunity/brs/pull/40))
+ - fixed #16 - Print leading space before positive numbers ([#39](https://github.com/rokucommunity/brs/pull/39))
+
+
+
+## [0.45.3](https://github.com/rokucommunity/brs/compare/v0.45.2...v0.45.3) - 2023-12-01
 ### Added
  - missing `ifEnum` methods in `roArray` and `roAssociativeArray` ([#33](https://github.com/rokucommunity/brs/pull/33))
  - stub try/catch implementation ([#34](https://github.com/rokucommunity/brs/pull/34))

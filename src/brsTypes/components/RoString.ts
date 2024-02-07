@@ -46,6 +46,8 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
                 this.decodeUri,
                 this.encodeUriComponent,
                 this.decodeUriComponent,
+                this.startsWith,
+                this.endsWith,
                 this.isEmpty,
             ],
             ifToStr: [this.toStr],
@@ -475,6 +477,44 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
         },
         impl: (_interpreter) => {
             return new BrsString(decodeURIComponent(this.intrinsic.value));
+        },
+    });
+
+    /** Checks whether the string starts with the substring specified in matchString, starting at the matchPos parameter (0-based character offset). */
+    private startsWith = new Callable("startsWith", {
+        signature: {
+            args: [
+                new StdlibArgument("matchString", ValueKind.String),
+                new StdlibArgument("position", ValueKind.Int32, BrsInvalid.Instance),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (_: Interpreter, matchString: BrsString, position: Int32 | BrsInvalid) => {
+            if (position instanceof BrsInvalid) {
+                return BrsBoolean.from(this.intrinsic.value.startsWith(matchString.value));
+            }
+            return BrsBoolean.from(
+                this.intrinsic.value.startsWith(matchString.value, position.getValue())
+            );
+        },
+    });
+
+    /** Checks whether the string ends with the substring specified in matchString, starting at the position specified in the length parameter. */
+    private endsWith = new Callable("endsWith", {
+        signature: {
+            args: [
+                new StdlibArgument("matchString", ValueKind.String),
+                new StdlibArgument("position", ValueKind.Int32, BrsInvalid.Instance),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (_: Interpreter, matchString: BrsString, position: Int32 | BrsInvalid) => {
+            if (position instanceof BrsInvalid) {
+                return BrsBoolean.from(this.intrinsic.value.endsWith(matchString.value));
+            }
+            return BrsBoolean.from(
+                this.intrinsic.value.endsWith(matchString.value, position.getValue())
+            );
         },
     });
 

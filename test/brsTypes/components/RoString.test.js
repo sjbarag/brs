@@ -638,6 +638,41 @@ describe("RoString", () => {
             });
         });
 
+        describe("startsWith and endsWith", () => {
+            let s;
+            beforeEach(() => {
+                s = new RoString(new BrsString("Hello, World!"));
+            });
+
+            it("startsWith", () => {
+                let startsWith = s.getMethod("startsWith");
+                expect(startsWith).toBeInstanceOf(Callable);
+                expect(startsWith.call(interpreter, new BrsString("Hello"))).toEqual(
+                    BrsBoolean.True
+                );
+                expect(startsWith.call(interpreter, new BrsString("World"), new Int32(7))).toEqual(
+                    BrsBoolean.True
+                );
+                expect(
+                    startsWith.call(interpreter, new BrsString("Universe"), new Int32(0))
+                ).toEqual(BrsBoolean.False);
+            });
+
+            it("endsWith", () => {
+                let endsWith = s.getMethod("endsWith");
+                expect(endsWith).toBeInstanceOf(Callable);
+                expect(endsWith.call(interpreter, new BrsString("World!"))).toEqual(
+                    BrsBoolean.True
+                );
+                expect(endsWith.call(interpreter, new BrsString("Hello"), new Int32(5))).toEqual(
+                    BrsBoolean.True
+                );
+                expect(
+                    endsWith.call(interpreter, new BrsString("Universe!"), new Int32(0))
+                ).toEqual(BrsBoolean.False);
+            });
+        });
+
         describe("isEmpty", () => {
             it("check if empty string is empty", () => {
                 let s = new RoString(new BrsString(""));

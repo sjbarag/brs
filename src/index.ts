@@ -99,10 +99,16 @@ async function loadFiles(options: Partial<ExecutionOptions>) {
                 );
                 continue;
             }
+            let posixRoot = executionOptions.root;
+            let posixXml = component.xmlPath;
+            if (process.platform === "win32") {
+                posixRoot = posixRoot.split(path.sep).join(path.posix.sep).replace(/^[a-zA-Z]:/, "");
+                posixXml = posixXml.split(path.sep).join(path.posix.sep).replace(/^[a-zA-Z]:/, "");
+            }
 
             let packageUri = new URL(
                 uri,
-                `pkg:/${path.posix.relative(executionOptions.root, component.xmlPath)}`
+                `pkg:/${path.posix.relative(posixRoot, posixXml)}`
             ).toString();
             if (knownComponentLibraries.has(packageUri)) {
                 continue;

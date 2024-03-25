@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as path from "path";
 import { promisify } from "util";
 import pSettle from "p-settle";
 const readFile = promisify(fs.readFile);
@@ -26,6 +27,9 @@ export function getLexerParserFn(
     let memoizedStatements = new Map<string, Promise<Stmt.Statement[]>>();
     return async function parse(filenames: string[]): Promise<Stmt.Statement[]> {
         async function lexAndParseFile(filename: string) {
+            if (process.platform === "win32") {
+                filename = filename.split(path.sep).join(path.posix.sep);
+            }
             let contents;
             try {
                 contents = await readFile(filename, "utf-8");

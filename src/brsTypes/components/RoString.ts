@@ -3,7 +3,7 @@ import { RoArray } from "./RoArray";
 import { BrsValue, ValueKind, BrsString, BrsBoolean, BrsInvalid, Comparable } from "../BrsType";
 import { Callable, StdlibArgument } from "../Callable";
 import { Interpreter } from "../../interpreter";
-import { BrsType } from "..";
+import { BrsType, RoList } from "..";
 import { Unboxable } from "../Boxing";
 import { Int32 } from "../Int32";
 import { Float } from "../Float";
@@ -343,11 +343,17 @@ export class RoString extends BrsComponent implements BrsValue, Comparable, Unbo
             args: [new StdlibArgument("delim", ValueKind.String)],
             returns: ValueKind.Object,
         },
-        impl: (_interpreter) => {
-            _interpreter.stderr.write(
-                "WARNING: tokenize not yet implemented, because it returns an RoList.  Returning `invalid`."
-            );
-            return BrsInvalid.Instance;
+        impl: (_interpreter, separator: BrsString) => {
+            let parts;
+            if (separator.value === "") {
+                // return the string with no splitting as a single-element list
+                parts = [this.intrinsic.value];
+            } else {
+                parts = this.intrinsic.value.split(separator.value).filter(function (el) {
+                    return el.length !== 0;
+                });
+            }
+            return new RoList(parts.map((part) => new BrsString(part)));
         },
     });
 
